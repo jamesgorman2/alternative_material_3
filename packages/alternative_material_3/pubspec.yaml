@@ -1,0 +1,22 @@
+name: alternative_material_3
+description: A reworking of flutter/material.dart to better support Material 3.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.0.1 <4.0.0'
+  flutter: ">=3.10.1"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_color_utilities:
+  meta: ^1.9.1
+  vector_math: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  leak_tracker: ^6.0.0
+  platform: ^3.1.0
