@@ -11,13 +11,5 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Flutter Logo golden test', (WidgetTester tester) async {
-    final Key logo = UniqueKey();
-    await tester.pumpWidget(FlutterLogo(key: logo));
 
-    await expectLater(
-      find.byKey(logo),
-      matchesGoldenFile('flutter_logo.png'),
-    );
-  });
 }

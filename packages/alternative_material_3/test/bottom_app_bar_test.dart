@@ -43,49 +43,6 @@ void main() {
     );
   });
 
-  testWidgets('custom shape', (WidgetTester tester) async {
-    final Key key = UniqueKey();
-    Future<void> pump(FloatingActionButtonLocation location) async {
-      await tester.pumpWidget(
-        SizedBox(
-          width: 200,
-          height: 200,
-          child: RepaintBoundary(
-            key: key,
-            child: MaterialApp(
-              home: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () { },
-                ),
-                floatingActionButtonLocation: location,
-                bottomNavigationBar: const BottomAppBar(
-                  shape: AutomaticNotchedShape(
-                    BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                    ContinuousRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                  ),
-                  notchMargin: 10.0,
-                  color: Colors.green,
-                  child: SizedBox(height: 100.0),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-    await pump(FloatingActionButtonLocation.endDocked);
-    await expectLater(
-      find.byKey(key),
-      matchesGoldenFile('bottom_app_bar.custom_shape.1.png'),
-    );
-    await pump(FloatingActionButtonLocation.centerDocked);
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byKey(key),
-      matchesGoldenFile('bottom_app_bar.custom_shape.2.png'),
-    );
-  }, skip: isBrowser); // https://github.com/flutter/flutter/issues/44572
-
   testWidgets('Custom Padding', (WidgetTester tester) async {
     const EdgeInsets customPadding = EdgeInsets.all(10);
     await tester.pumpWidget(

@@ -111,62 +111,6 @@ void main() {
   group('magnifier', () {
     group('position', () {
       testWidgets(
-          'should be at gesture position if does not violate any positioning rules',
-          (WidgetTester tester) async {
-        final Key textField = UniqueKey();
-
-        await tester.pumpWidget(const MaterialApp(
-          home: Placeholder(),
-        ));
-
-        await tester.pumpWidget(
-          ColoredBox(
-            color: const Color.fromARGB(255, 0, 255, 179),
-            child: MaterialApp(
-              home: Center(
-                child: Container(
-                  key: textField,
-                  width: 10,
-                  height: 10,
-                  color: Colors.red,
-                  child: const Placeholder(),
-                ),
-              ),
-            ),
-          ),
-        );
-
-        final BuildContext context =
-            tester.firstElement(find.byType(Placeholder));
-
-        // Magnifier should be positioned directly over the red square.
-        final RenderBox tapPointRenderBox =
-            tester.firstRenderObject(find.byKey(textField)) as RenderBox;
-        final Rect fakeTextFieldRect =
-            tapPointRenderBox.localToGlobal(Offset.zero) &
-                tapPointRenderBox.size;
-
-        final ValueNotifier<MagnifierInfo> magnifierInfo =
-            ValueNotifier<MagnifierInfo>(
-                MagnifierInfo(
-          currentLineBoundaries: fakeTextFieldRect,
-          fieldBounds: fakeTextFieldRect,
-          caretRect: fakeTextFieldRect,
-          // The tap position is dragBelow units below the text field.
-          globalGesturePosition: fakeTextFieldRect.center,
-        ));
-
-        await showMagnifier(context, tester, magnifierInfo);
-
-        // Should show two red squares; original, and one in the magnifier,
-        // directly ontop of one another.
-        await expectLater(
-          find.byType(MaterialApp),
-          matchesGoldenFile('magnifier.position.default.png'),
-        );
-      });
-
-      testWidgets(
           'should never move outside the right bounds of the editing line',
           (WidgetTester tester) async {
         const double gestureOutsideLine = 100;

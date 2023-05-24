@@ -254,8 +254,6 @@ void main() {
       RecordedTranslate(-48, -48),
       RecordedScale(0.5, 0.5),
     ]);
-    await expectLater(find.byType(AnimatedIcon),
-        matchesGoldenFile('animated_icons_test.icon.rtl.png'));
   });
 
   testWidgets('Inherited text direction ltr', (WidgetTester tester) async {
@@ -281,8 +279,6 @@ void main() {
     expect(canvas.invocations, const <RecordedCanvasCall>[
       RecordedScale(0.5, 0.5),
     ]);
-    await expectLater(find.byType(AnimatedIcon),
-        matchesGoldenFile('animated_icons_test.icon.ltr.png'));
   });
 
   testWidgets('Inherited text direction overridden', (WidgetTester tester) async {

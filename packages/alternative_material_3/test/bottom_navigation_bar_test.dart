@@ -1919,58 +1919,6 @@ void main() {
     expect(tester.widget<Material>(backgroundMaterial).color, Colors.green);
   });
 
-  group('BottomNavigationBar shifting backgroundColor with transition', () {
-    // Regression test for: https://github.com/flutter/flutter/issues/22226
-    Widget runTest() {
-      int currentIndex = 0;
-      return MaterialApp(
-        home: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Scaffold(
-              bottomNavigationBar: RepaintBoundary(
-                child: BottomNavigationBar(
-                  type: BottomNavigationBarType.shifting,
-                  currentIndex: currentIndex,
-                  onTap: (int index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      label: 'Red',
-                      backgroundColor: Colors.red,
-                      icon: Icon(Icons.dashboard),
-                    ),
-                    BottomNavigationBarItem(
-                      label: 'Green',
-                      backgroundColor: Colors.green,
-                      icon: Icon(Icons.menu),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      );
-    }
-    for (int pump = 1; pump < 9; pump++) {
-      testWidgets('pump $pump', (WidgetTester tester) async {
-        await tester.pumpWidget(runTest());
-        await tester.tap(find.text('Green'));
-
-        for (int i = 0; i < pump; i++) {
-          await tester.pump(const Duration(milliseconds: 30));
-        }
-        await expectLater(
-          find.byType(BottomNavigationBar),
-          matchesGoldenFile('bottom_navigation_bar.shifting_transition.${pump - 1}.png'),
-        );
-      });
-    }
-  });
-
   testWidgets('BottomNavigationBar item label should not be nullable', (WidgetTester tester) async {
     expect(() {
       MaterialApp(

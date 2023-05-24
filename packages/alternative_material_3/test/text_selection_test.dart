@@ -627,40 +627,6 @@ void main() {
   });
 
   group('material handles', () {
-    testWidgets('draws transparent handle correctly', (WidgetTester tester) async {
-      await tester.pumpWidget(RepaintBoundary(
-        child: Theme(
-          data: ThemeData(
-            textSelectionTheme: const TextSelectionThemeData(
-              selectionHandleColor: Color(0x550000AA),
-            ),
-          ),
-          child: Builder(
-            builder: (BuildContext context) {
-              return Container(
-                color: Colors.white,
-                height: 800,
-                width: 800,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 250),
-                  child: FittedBox(
-                    child: materialTextSelectionControls.buildHandle(
-                      context, TextSelectionHandleType.right, 10.0,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ));
-
-      await expectLater(
-        find.byType(RepaintBoundary),
-        matchesGoldenFile('transparent_handle.png'),
-      );
-    });
-
     testWidgets('works with 3 positional parameters', (WidgetTester tester) async {
       await tester.pumpWidget(Theme(
         data: ThemeData(

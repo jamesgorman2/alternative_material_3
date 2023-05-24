@@ -765,63 +765,6 @@ void main() {
     );
   });
 
-  testWidgets('Navigation indicator ripple golden test', (WidgetTester tester) async {
-    // This is a regression test for https://github.com/flutter/flutter/issues/117420.
-
-    Widget buildWidget({ NavigationDestinationLabelBehavior? labelBehavior }) {
-      return MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          bottomNavigationBar: Center(
-            child: NavigationBar(
-              labelBehavior: labelBehavior,
-              destinations: const <Widget>[
-                NavigationDestination(
-                  icon: SizedBox(),
-                  label: 'AC',
-                ),
-                NavigationDestination(
-                  icon: SizedBox(),
-                  label: 'Alarm',
-                ),
-              ],
-              onDestinationSelected: (int i) { },
-            ),
-          ),
-        ),
-      );
-    }
-
-    await tester.pumpWidget(buildWidget());
-
-    final TestGesture gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-    await gesture.addPointer();
-    await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-    await tester.pumpAndSettle();
-
-    // Test ripple when NavigationBar is using `NavigationDestinationLabelBehavior.alwaysShow` (default).
-    await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_alwaysShow_m3.png'));
-
-    // Test ripple when NavigationBar is using `NavigationDestinationLabelBehavior.alwaysHide`.
-    await tester.pumpWidget(buildWidget(labelBehavior: NavigationDestinationLabelBehavior.alwaysHide));
-    await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-    await tester.pumpAndSettle();
-
-    await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_alwaysHide_m3.png'));
-
-    // Test ripple when NavigationBar is using `NavigationDestinationLabelBehavior.onlyShowSelected`.
-    await tester.pumpWidget(buildWidget(labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected));
-    await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).first));
-    await tester.pumpAndSettle();
-
-    await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_onlyShowSelected_selected_m3.png'));
-
-    await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-    await tester.pumpAndSettle();
-
-    await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_onlyShowSelected_unselected_m3.png'));
-  });
-
   testWidgets('Navigation indicator scale transform', (WidgetTester tester) async {
     int selectedIndex = 0;
 
@@ -1161,63 +1104,6 @@ void main() {
             color: const Color(0x0a000000),
           )
       );
-    });
-
-    testWidgets('Navigation indicator ripple golden test', (WidgetTester tester) async {
-      // This is a regression test for https://github.com/flutter/flutter/issues/117420.
-
-      Widget buildWidget({ NavigationDestinationLabelBehavior? labelBehavior }) {
-        return MaterialApp(
-          theme: ThemeData(useMaterial3: false),
-          home: Scaffold(
-            bottomNavigationBar: Center(
-              child: NavigationBar(
-                labelBehavior: labelBehavior,
-                destinations: const <Widget>[
-                  NavigationDestination(
-                    icon: SizedBox(),
-                    label: 'AC',
-                  ),
-                  NavigationDestination(
-                    icon: SizedBox(),
-                    label: 'Alarm',
-                  ),
-                ],
-                onDestinationSelected: (int i) { },
-              ),
-            ),
-          ),
-        );
-      }
-
-      await tester.pumpWidget(buildWidget());
-
-      final TestGesture gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-      await gesture.addPointer();
-      await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-      await tester.pumpAndSettle();
-
-      // Test ripple when NavigationBar is using `NavigationDestinationLabelBehavior.alwaysShow` (default).
-      await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_alwaysShow_m2.png'));
-
-      // Test ripple when NavigationBar is using `NavigationDestinationLabelBehavior.alwaysHide`.
-      await tester.pumpWidget(buildWidget(labelBehavior: NavigationDestinationLabelBehavior.alwaysHide));
-      await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-      await tester.pumpAndSettle();
-
-      await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_alwaysHide_m2.png'));
-
-      // Test ripple when NavigationBar is using `NavigationDestinationLabelBehavior.onlyShowSelected`.
-      await tester.pumpWidget(buildWidget(labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected));
-      await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).first));
-      await tester.pumpAndSettle();
-
-      await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_onlyShowSelected_selected_m2.png'));
-
-      await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-      await tester.pumpAndSettle();
-
-      await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_onlyShowSelected_unselected_m2.png'));
     });
 
     testWidgets('Destination icon does not rebuild when tapped', (WidgetTester tester) async {

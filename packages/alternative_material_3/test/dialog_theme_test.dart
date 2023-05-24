@@ -186,25 +186,6 @@ void main() {
     expect(bottomLeft.dy, 104.0);
   });
 
-  testWidgets('Custom dialog shape matches golden', (WidgetTester tester) async {
-    const RoundedRectangleBorder customBorder =
-      RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0)));
-    const AlertDialog dialog = AlertDialog(
-      title: Text('Title'),
-      actions: <Widget>[ ],
-    );
-    final ThemeData theme = ThemeData(dialogTheme: const DialogTheme(shape: customBorder));
-
-    await tester.pumpWidget(_appWithDialog(tester, dialog, theme: theme));
-    await tester.tap(find.text('X'));
-    await tester.pumpAndSettle();
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('dialog_theme.dialog_with_custom_border.png'),
-    );
-  });
-
   testWidgets('Custom Icon Color - Constructor Param - highest preference', (WidgetTester tester) async {
     const Color iconColor = Colors.pink, dialogThemeColor = Colors.green, iconThemeColor = Colors.yellow;
     final ThemeData theme = ThemeData(

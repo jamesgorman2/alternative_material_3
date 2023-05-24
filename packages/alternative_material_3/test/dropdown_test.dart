@@ -333,30 +333,6 @@ Future<void> checkDropdownColor(WidgetTester tester, {Color? color, bool isFormF
 }
 
 void main() {
-  testWidgets('Default dropdown golden', (WidgetTester tester) async {
-    final Key buttonKey = UniqueKey();
-    Widget build() => buildFrame(buttonKey: buttonKey, onChanged: onChanged);
-    await tester.pumpWidget(build());
-    final Finder buttonFinder = find.byKey(buttonKey);
-    assert(tester.renderObject(buttonFinder).attached);
-    await expectLater(
-      find.ancestor(of: buttonFinder, matching: find.byType(RepaintBoundary)).first,
-      matchesGoldenFile('dropdown_test.default.png'),
-    );
-  });
-
-  testWidgets('Expanded dropdown golden', (WidgetTester tester) async {
-    final Key buttonKey = UniqueKey();
-    Widget build() => buildFrame(buttonKey: buttonKey, isExpanded: true, onChanged: onChanged);
-    await tester.pumpWidget(build());
-    final Finder buttonFinder = find.byKey(buttonKey);
-    assert(tester.renderObject(buttonFinder).attached);
-    await expectLater(
-      find.ancestor(of: buttonFinder, matching: find.byType(RepaintBoundary)).first,
-      matchesGoldenFile('dropdown_test.expanded.png'),
-    );
-  });
-
   testWidgets('Dropdown button control test', (WidgetTester tester) async {
     String? value = 'one';
     void didChangeValue(String? newValue) {

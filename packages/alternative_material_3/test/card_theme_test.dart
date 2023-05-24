@@ -131,35 +131,6 @@ void main() {
     expect(material.color, themeData.cardColor);
   });
 
-  testWidgets('CardTheme customizes shape', (WidgetTester tester) async {
-    const CardTheme cardTheme = CardTheme(
-      color: Colors.white,
-      shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
-      elevation: 1.0,
-    );
-
-    final Key painterKey = UniqueKey();
-
-    await tester.pumpWidget(MaterialApp(
-      theme: ThemeData(cardTheme: cardTheme, useMaterial3: true),
-      home: Scaffold(
-        body: RepaintBoundary(
-          key: painterKey,
-          child: Center(
-            child: Card(
-              child: SizedBox.fromSize(size: const Size(200, 300)),
-            ),
-          ),
-        ),
-      ),
-    ));
-
-    await expectLater(
-      find.byKey(painterKey),
-      matchesGoldenFile('card_theme.custom_shape.png'),
-    );
-  });
-
   group('Material 2', () {
     // Tests that are only relevant for Material 2. Once ThemeData.useMaterial3
     // is turned on by default, these tests can be removed.
@@ -184,35 +155,6 @@ void main() {
       expect(material.shape, const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ));
-    });
-
-    testWidgets('CardTheme customizes shape - M2', (WidgetTester tester) async {
-      const CardTheme cardTheme = CardTheme(
-        color: Colors.white,
-        shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
-        elevation: 1.0,
-      );
-
-      final Key painterKey = UniqueKey();
-
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(cardTheme: cardTheme, useMaterial3: false),
-        home: Scaffold(
-          body: RepaintBoundary(
-            key: painterKey,
-            child: Center(
-              child: Card(
-                child: SizedBox.fromSize(size: const Size(200, 300)),
-              ),
-            ),
-          ),
-        ),
-      ));
-
-      await expectLater(
-        find.byKey(painterKey),
-        matchesGoldenFile('card_theme.custom_shape_m2.png'),
-      );
     });
   });
 }

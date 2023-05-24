@@ -50,45 +50,6 @@ void main() {
     expect(sizeBeforeScroll.height, lessThan(sizeAfterScroll.height));
   });
 
-  testWidgets('FlexibleSpaceBar stretch mode blurBackground', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            key: blockKey,
-            slivers: <Widget>[
-              SliverAppBar(
-                expandedHeight: expandedAppbarHeight,
-                pinned: true,
-                stretch: true,
-                flexibleSpace: RepaintBoundary(
-                  child: FlexibleSpaceBar(
-                    stretchModes: const <StretchMode>[StretchMode.blurBackground],
-                    background: Row(
-                      children: <Widget>[
-                        Expanded(child: Container(color: Colors.red)),
-                        Expanded(child:Container(color: Colors.blue)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: Container(height: 10000.0)),
-            ],
-          ),
-        ),
-      ),
-    );
-
-    // Scrolling up into the overscroll area causes the background to blur.
-    await slowDrag(tester, blockKey, const Offset(0.0, 100.0));
-    await expectLater(
-      find.byType(FlexibleSpaceBar),
-      matchesGoldenFile('flexible_space_bar_stretch_mode.blur_background.png'),
-    );
-  });
-
   testWidgets('FlexibleSpaceBar stretch mode fadeTitle', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(

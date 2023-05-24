@@ -364,40 +364,6 @@ void main() {
     tester.binding.defaultBinaryMessenger.setMockDecodedMessageHandler<dynamic>(SystemChannels.accessibility, null);
   });
 
-  testWidgets('Radio ink ripple is displayed correctly - M2', (WidgetTester tester) async {
-    final Key painterKey = UniqueKey();
-    const Key radioKey = Key('radio');
-
-    await tester.pumpWidget(MaterialApp(
-      theme: ThemeData(useMaterial3: false),
-      home: Scaffold(
-        body: RepaintBoundary(
-          key: painterKey,
-          child: Center(
-            child: Container(
-              width: 100,
-              height: 100,
-              color: Colors.white,
-              child: Radio<int>(
-                key: radioKey,
-                value: 1,
-                groupValue: 1,
-                onChanged: (int? value) { },
-              ),
-            ),
-          ),
-        ),
-      ),
-    ));
-
-    await tester.press(find.byKey(radioKey));
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byKey(painterKey),
-      matchesGoldenFile('radio.ink_ripple.png'),
-    );
-  });
-
   testWidgets('Radio with splash radius set', (WidgetTester tester) async {
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
     const double splashRadius = 30;

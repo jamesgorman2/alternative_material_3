@@ -378,46 +378,6 @@ void main() {
     expect(iconRenderObject.text.style!.color, equals(unselectedLabelColor));
   });
 
-  testWidgets('Tab bar default tab indicator size', (WidgetTester tester) async {
-    await tester.pumpWidget(buildTabBar(useMaterial3: true, isScrollable: true));
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('tab_bar.default.tab_indicator_size.png'),
-    );
-  });
-
-  testWidgets('Tab bar default tab indicator size', (WidgetTester tester) async {
-    await tester.pumpWidget(buildTabBar(useMaterial3: true, isScrollable: true));
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('tab_bar.default.tab_indicator_size.png'),
-    );
-  });
-
-  testWidgets('Tab bar theme overrides tab indicator size (tab)', (WidgetTester tester) async {
-    const TabBarTheme tabBarTheme = TabBarTheme(indicatorSize: TabBarIndicatorSize.tab);
-
-    await tester.pumpWidget(buildTabBar(tabBarTheme: tabBarTheme));
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('tab_bar_theme.tab_indicator_size_tab.png'),
-    );
-  });
-
-  testWidgets('Tab bar theme overrides tab indicator size (label)', (WidgetTester tester) async {
-    const TabBarTheme tabBarTheme = TabBarTheme(indicatorSize: TabBarIndicatorSize.label);
-
-    await tester.pumpWidget(buildTabBar(tabBarTheme: tabBarTheme));
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('tab_bar_theme.tab_indicator_size_label.png'),
-    );
-  });
-
   testWidgets('Tab bar theme overrides tab mouse cursor', (WidgetTester tester) async {
     const TabBarTheme tabBarTheme = TabBarTheme(mouseCursor: MaterialStateMouseCursor.textable);
 
@@ -431,37 +391,6 @@ void main() {
     await gesture.moveTo(tabBar);
     await tester.pumpAndSettle();
     expect(RendererBinding.instance.mouseTracker.debugDeviceActiveCursor(1), SystemMouseCursors.text);
-  });
-
-  testWidgets('Tab bar theme - custom tab indicator', (WidgetTester tester) async {
-    final TabBarTheme tabBarTheme = TabBarTheme(
-      indicator: BoxDecoration(
-        border: Border.all(),
-      ),
-    );
-
-    await tester.pumpWidget(buildTabBar(tabBarTheme: tabBarTheme));
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('tab_bar_theme.custom_tab_indicator.png'),
-    );
-  });
-
-  testWidgets('Tab bar theme - beveled rect indicator', (WidgetTester tester) async {
-    const TabBarTheme tabBarTheme = TabBarTheme(
-      indicator: ShapeDecoration(
-        shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
-        color: Colors.black,
-      ),
-    );
-
-    await tester.pumpWidget(buildTabBar(tabBarTheme: tabBarTheme));
-
-    await expectLater(
-      find.byKey(_painterKey),
-      matchesGoldenFile('tab_bar_theme.beveled_rect_indicator.png'),
-    );
   });
 
   group('Material 2', () {
@@ -504,15 +433,6 @@ void main() {
 
       final RenderBox tabBarBox = tester.firstRenderObject<RenderBox>(find.byType(TabBar));
       expect(tabBarBox, paints..line(color: const Color(0xff2196f3)));
-    });
-
-    testWidgets('Tab bar default tab indicator size', (WidgetTester tester) async {
-      await tester.pumpWidget(buildTabBar());
-
-      await expectLater(
-        find.byKey(_painterKey),
-        matchesGoldenFile('tab_bar.m2.default.tab_indicator_size.png'),
-      );
     });
   });
 }

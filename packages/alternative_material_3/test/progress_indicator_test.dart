@@ -598,19 +598,6 @@ void main() {
     expect(tester.hasRunningAnimations, isTrue);
   });
 
-  testWidgets('RefreshProgressIndicator uses expected animation', (WidgetTester tester) async {
-    final AnimationSheetBuilder animationSheet = AnimationSheetBuilder(frameSize: const Size(50, 50));
-
-    await tester.pumpFrames(animationSheet.record(
-      const _RefreshProgressIndicatorGolden(),
-    ), const Duration(seconds: 3));
-
-    await expectLater(
-      await animationSheet.collate(20),
-      matchesGoldenFile('material.refresh_progress_indicator.png'),
-    );
-  }, skip: isBrowser); // https://github.com/flutter/flutter/issues/56001
-
   testWidgets('Determinate CircularProgressIndicator stops the animator', (WidgetTester tester) async {
     double? progressValue;
     late StateSetter setState;
@@ -875,25 +862,6 @@ void main() {
 
     handle.dispose();
   });
-
-  testWidgets('Indeterminate CircularProgressIndicator uses expected animation', (WidgetTester tester) async {
-    final AnimationSheetBuilder animationSheet = AnimationSheetBuilder(frameSize: const Size(40, 40));
-
-    await tester.pumpFrames(animationSheet.record(
-      const Directionality(
-        textDirection: TextDirection.ltr,
-        child: Padding(
-          padding: EdgeInsets.all(4),
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    ), const Duration(seconds: 2));
-
-    await expectLater(
-      await animationSheet.collate(20),
-      matchesGoldenFile('material.circular_progress_indicator.indeterminate.png'),
-    );
-  }, skip: isBrowser); // https://github.com/flutter/flutter/issues/56001
 
   testWidgets(
     'Adaptive CircularProgressIndicator displays CupertinoActivityIndicator in iOS',

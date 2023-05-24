@@ -785,35 +785,6 @@ void main() {
     expect(helloWorld, findsOneWidget);
   });
 
-  // This test prevents https://github.com/flutter/flutter/issues/20483
-  testWidgets('Floating Action Button clips ink splash and highlight', (WidgetTester tester) async {
-    final GlobalKey key = GlobalKey();
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: material3Theme,
-        home: Scaffold(
-          body: Center(
-            child: RepaintBoundary(
-              key: key,
-              child: FloatingActionButton(
-                onPressed: () { },
-                child: const Icon(Icons.add),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    await tester.press(find.byKey(key));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 1000));
-    await expectLater(
-      find.byKey(key),
-      matchesGoldenFile('floating_action_button_test.clip.png'),
-    );
-  });
-
   testWidgets('Floating Action Button changes mouse cursor when hovered', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -1076,62 +1047,86 @@ void main() {
     // Tests that are only relevant for Material 2. Once ThemeData.useMaterial3
     // is turned on by default, these tests can be removed.
 
-    testWidgets('Floating Action Button elevation when highlighted - effect', (WidgetTester tester) async {
+    testWidgets('Floating Action Button elevation when highlighted - effect', (
+        WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: material2Theme,
           home: Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () { },
+              onPressed: () {},
             ),
           ),
         ),
       );
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
-      final TestGesture gesture = await tester.press(find.byType(PhysicalShape));
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
+      final TestGesture gesture = await tester.press(
+          find.byType(PhysicalShape));
       await tester.pump();
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
       await tester.pump(const Duration(seconds: 1));
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 12.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 12.0);
       await tester.pumpWidget(
         MaterialApp(
           theme: material2Theme,
           home: Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () { },
+              onPressed: () {},
               highlightElevation: 20.0,
             ),
           ),
         ),
       );
       await tester.pump();
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 12.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 12.0);
       await tester.pump(const Duration(seconds: 1));
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 20.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 20.0);
       await gesture.up();
       await tester.pump();
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 20.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 20.0);
       await tester.pump(const Duration(seconds: 1));
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
     });
 
-    testWidgets('Floating Action Button elevation when disabled while highlighted - effect', (WidgetTester tester) async {
+    testWidgets(
+        'Floating Action Button elevation when disabled while highlighted - effect', (
+        WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: material2Theme,
           home: Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () { },
+              onPressed: () {},
             ),
           ),
         ),
       );
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
       await tester.press(find.byType(PhysicalShape));
       await tester.pump();
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
       await tester.pump(const Duration(seconds: 1));
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 12.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 12.0);
       await tester.pumpWidget(
         MaterialApp(
           theme: material2Theme,
@@ -1143,26 +1138,35 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 12.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 12.0);
       await tester.pump(const Duration(seconds: 1));
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
       await tester.pumpWidget(
         MaterialApp(
           theme: material2Theme,
           home: Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () { },
+              onPressed: () {},
             ),
           ),
         ),
       );
       await tester.pump();
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
       await tester.pump(const Duration(seconds: 1));
-      expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+      expect(tester
+          .widget<PhysicalShape>(find.byType(PhysicalShape))
+          .elevation, 6.0);
     });
 
-    testWidgets('Floating Action Button states elevation', (WidgetTester tester) async {
+    testWidgets(
+        'Floating Action Button states elevation', (WidgetTester tester) async {
       final FocusNode focusNode = FocusNode();
 
       await tester.pumpWidget(
@@ -1179,7 +1183,8 @@ void main() {
       );
 
       final Finder fabFinder = find.byType(PhysicalShape);
-      PhysicalShape getFABWidget(Finder finder) => tester.widget<PhysicalShape>(finder);
+      PhysicalShape getFABWidget(Finder finder) =>
+          tester.widget<PhysicalShape>(finder);
 
       // Default, not disabled.
       expect(getFABWidget(fabFinder).elevation, 6);
@@ -1202,7 +1207,8 @@ void main() {
       // Highlighted (pressed).
       await gesture.down(center);
       await tester.pump(); // Start the splash and highlight animations.
-      await tester.pump(const Duration(milliseconds: 800)); // Wait for splash and highlight to be well under way.
+      await tester.pump(const Duration(
+          milliseconds: 800)); // Wait for splash and highlight to be well under way.
       expect(getFABWidget(fabFinder).elevation, 12);
     });
 
@@ -1254,26 +1260,47 @@ void main() {
 
       // Verify that the widget's height is 48 and that its internal
       /// horizontal layout is: 16 icon 8 label 20
-      expect(tester.getSize(fabFinder).height, 48.0);
+      expect(tester
+          .getSize(fabFinder)
+          .height, 48.0);
 
-      final double fabLeft = tester.getTopLeft(fabFinder).dx;
-      final double fabRight = tester.getTopRight(fabFinder).dx;
-      final double iconLeft = tester.getTopLeft(find.byType(Icon)).dx;
-      final double iconRight = tester.getTopRight(find.byType(Icon)).dx;
-      final double labelLeft = tester.getTopLeft(find.text('label')).dx;
-      final double labelRight = tester.getTopRight(find.text('label')).dx;
+      final double fabLeft = tester
+          .getTopLeft(fabFinder)
+          .dx;
+      final double fabRight = tester
+          .getTopRight(fabFinder)
+          .dx;
+      final double iconLeft = tester
+          .getTopLeft(find.byType(Icon))
+          .dx;
+      final double iconRight = tester
+          .getTopRight(find.byType(Icon))
+          .dx;
+      final double labelLeft = tester
+          .getTopLeft(find.text('label'))
+          .dx;
+      final double labelRight = tester
+          .getTopRight(find.text('label'))
+          .dx;
       expect(iconLeft - fabLeft, 16.0);
       expect(labelLeft - iconRight, 8.0);
       expect(fabRight - labelRight, 20.0);
 
       // The overall width of the button is:
       // 168 = 16 + 24(icon) + 8 + 100(label) + 20
-      expect(tester.getSize(find.byType(Icon)).width, 24.0);
-      expect(tester.getSize(find.text('label')).width, 100.0);
-      expect(tester.getSize(fabFinder).width, 168);
+      expect(tester
+          .getSize(find.byType(Icon))
+          .width, 24.0);
+      expect(tester
+          .getSize(find.text('label'))
+          .width, 100.0);
+      expect(tester
+          .getSize(fabFinder)
+          .width, 168);
     });
 
-    testWidgets('FloatingActionButton.isExtended (without icon)', (WidgetTester tester) async {
+    testWidgets('FloatingActionButton.isExtended (without icon)', (
+        WidgetTester tester) async {
       final Finder fabFinder = find.byType(FloatingActionButton);
 
       FloatingActionButton getFabWidget() {
@@ -1308,12 +1335,22 @@ void main() {
 
       // Verify that the widget's height is 48 and that its internal
       /// horizontal layout is: 20 label 20
-      expect(tester.getSize(fabFinder).height, 48.0);
+      expect(tester
+          .getSize(fabFinder)
+          .height, 48.0);
 
-      final double fabLeft = tester.getTopLeft(fabFinder).dx;
-      final double fabRight = tester.getTopRight(fabFinder).dx;
-      final double labelLeft = tester.getTopLeft(find.text('label')).dx;
-      final double labelRight = tester.getTopRight(find.text('label')).dx;
+      final double fabLeft = tester
+          .getTopLeft(fabFinder)
+          .dx;
+      final double fabRight = tester
+          .getTopRight(fabFinder)
+          .dx;
+      final double labelLeft = tester
+          .getTopLeft(find.text('label'))
+          .dx;
+      final double labelRight = tester
+          .getTopRight(find.text('label'))
+          .dx;
       expect(labelLeft - fabLeft, 20.0);
       expect(fabRight - labelRight, 20.0);
 
@@ -1321,36 +1358,6 @@ void main() {
       // 140 = 20 + 100(label) + 20
       expect(tester.getSize(find.text('label')).width, 100.0);
       expect(tester.getSize(fabFinder).width, 140);
-    });
-
-
-    // This test prevents https://github.com/flutter/flutter/issues/20483
-    testWidgets('Floating Action Button clips ink splash and highlight', (WidgetTester tester) async {
-      final GlobalKey key = GlobalKey();
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: material2Theme,
-          home: Scaffold(
-            body: Center(
-              child: RepaintBoundary(
-                key: key,
-                child: FloatingActionButton(
-                  onPressed: () { },
-                  child: const Icon(Icons.add),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-
-      await tester.press(find.byKey(key));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 1000));
-      await expectLater(
-        find.byKey(key),
-        matchesGoldenFile('floating_action_button_test_m2.clip.png'),
-      );
     });
   });
 

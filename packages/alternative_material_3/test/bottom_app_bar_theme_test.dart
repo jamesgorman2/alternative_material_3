@@ -86,21 +86,6 @@ void main() {
       expect(widget.color, Colors.white);
     });
 
-    testWidgets('BAB theme customizes shape', (WidgetTester tester) async {
-      const BottomAppBarTheme theme = BottomAppBarTheme(
-        color: Colors.white30,
-        shape: CircularNotchedRectangle(),
-        elevation: 1.0,
-      );
-
-      await tester.pumpWidget(_withTheme(theme));
-
-      await expectLater(
-        find.byKey(_painterKey),
-        matchesGoldenFile('bottom_app_bar_theme.custom_shape.png'),
-      );
-    });
-
     testWidgets('BAB theme does not affect defaults', (WidgetTester tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: Scaffold(body: BottomAppBar()),

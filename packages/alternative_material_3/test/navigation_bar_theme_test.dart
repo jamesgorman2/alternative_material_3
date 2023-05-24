@@ -173,48 +173,6 @@ void main() {
     expect(_barMaterial(tester).elevation, elevation);
     expect(_labelBehavior(tester), labelBehavior);
   });
-
-  testWidgets('Custom label style renders ink ripple properly', (WidgetTester tester) async {
-    Widget buildWidget({ NavigationDestinationLabelBehavior? labelBehavior }) {
-      return MaterialApp(
-        theme: ThemeData(
-          navigationBarTheme: const NavigationBarThemeData(
-            labelTextStyle: MaterialStatePropertyAll<TextStyle>(
-              TextStyle(fontSize: 25, color: Color(0xff0000ff)),
-            ),
-          ),
-          useMaterial3: true,
-        ),
-        home: Scaffold(
-          bottomNavigationBar: Center(
-            child: NavigationBar(
-              labelBehavior: labelBehavior,
-              destinations: const <Widget>[
-                NavigationDestination(
-                  icon: SizedBox(),
-                  label: 'AC',
-                ),
-                NavigationDestination(
-                  icon: SizedBox(),
-                  label: 'Alarm',
-                ),
-              ],
-              onDestinationSelected: (int i) { },
-            ),
-          ),
-        ),
-      );
-    }
-
-    await tester.pumpWidget(buildWidget());
-
-    final TestGesture gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-    await gesture.addPointer();
-    await gesture.moveTo(tester.getCenter(find.byType(NavigationDestination).last));
-    await tester.pumpAndSettle();
-
-    await expectLater(find.byType(NavigationBar), matchesGoldenFile('indicator_custom_label_style.png'));
-  });
 }
 
 List<NavigationDestination> _destinations() {

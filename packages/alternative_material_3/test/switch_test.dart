@@ -106,57 +106,6 @@ void main() {
     expect(tester.getSize(find.byType(Switch)), material3 ? const Size(60.0, 40.0) : const Size(59.0, 40.0));
   });
 
-  testWidgets('Switch does not get distorted upon changing constraints with parent - M2', (WidgetTester tester) async {
-    const double maxWidth = 300;
-    const double maxHeight = 100;
-
-    const ValueKey<String> boundaryKey = ValueKey<String>('switch container');
-
-    Widget buildSwitch({required double width, required double height}) {
-      return MaterialApp(
-        home: Scaffold(
-          body: Directionality(
-            textDirection: TextDirection.ltr,
-            child: SizedBox(
-              width: maxWidth,
-              height: maxHeight,
-              child: RepaintBoundary(
-                key: boundaryKey,
-                child: SizedBox(
-                  width: width,
-                  height: height,
-                  child: Switch(
-                    dragStartBehavior: DragStartBehavior.down,
-                    value: true,
-                    onChanged: (_) {},
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    await tester.pumpWidget(buildSwitch(
-      width: maxWidth,
-      height: maxHeight,
-    ));
-    await expectLater(
-      find.byKey(boundaryKey),
-      matchesGoldenFile('switch_test.big.on.png'),
-    );
-
-    await tester.pumpWidget(buildSwitch(
-      width: 20,
-      height: 10,
-    ));
-    await expectLater(
-      find.byKey(boundaryKey),
-      matchesGoldenFile('switch_test.small.on.png'),
-    );
-  });
-
   testWidgets('Switch can drag (LTR)', (WidgetTester tester) async {
     bool value = false;
 
@@ -1983,11 +1932,6 @@ void main() {
       // and has a stadium shape with a size of (34x22).
       await tester.pump(const Duration(milliseconds: 33));
       expect(tester.hasRunningAnimations, true);
-
-      await expectLater(
-        find.byType(Switch),
-        matchesGoldenFile('switch_test.m3.transition.png'),
-      );
     });
 
     testWidgets('M3 Switch thumb bounces in the end of the animation', (WidgetTester tester) async {

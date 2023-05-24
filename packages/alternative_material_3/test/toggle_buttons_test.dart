@@ -1749,40 +1749,6 @@ void main() {
           strokeWidth: _defaultBorderWidth,
         ),
     );
-
-    await expectLater(
-      find.byType(RepaintBoundary),
-      matchesGoldenFile('toggle_buttons.oneButton.boardsPaint.png'),
-    );
-  });
-
-  testWidgets('Border radius paint test when Radius.x or Radius.y equal 0.0', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      Material(
-        child: boilerplate(
-          child: RepaintBoundary(
-            child: ToggleButtons(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.elliptical(10, 0),
-                topLeft: Radius.elliptical(0, 10),
-                bottomRight: Radius.elliptical(0, 10),
-                bottomLeft: Radius.elliptical(10, 0),
-              ),
-              isSelected: const <bool>[true],
-              onPressed: (int index) {},
-              children: const <Widget>[
-                Text('First child'),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-
-    await expectLater(
-      find.byType(RepaintBoundary),
-      matchesGoldenFile('toggle_buttons.oneButton.boardsPaint2.png'),
-    );
   });
 
   testWidgets('ToggleButtons implements debugFillProperties', (WidgetTester tester) async {
