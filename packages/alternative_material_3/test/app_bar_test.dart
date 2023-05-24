@@ -2,11 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
 
@@ -2966,7 +2967,7 @@ void main() {
       ),
     ));
 
-    final Finder endDrawerFinder = find.byTooltip('Open navigation menu');
+    final Finder endDrawerFinder = find.byTooltipM3('Open navigation menu');
     await tester.tap(endDrawerFinder);
     await tester.pump();
 

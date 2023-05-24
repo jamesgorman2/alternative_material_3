@@ -3,10 +3,11 @@
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'widgets/clipboard_utils.dart';
 import 'widgets/semantics_tester.dart';
 
@@ -29,7 +30,7 @@ void main() {
     final _TestSearchDelegate delegate = _TestSearchDelegate();
 
     await tester.pumpWidget(TestHomePage(delegate: delegate));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
@@ -61,7 +62,7 @@ void main() {
     expect(find.text('Suggestions'), findsNothing);
 
     // Open search
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
@@ -73,7 +74,7 @@ void main() {
     expect(textField.focusNode!.hasFocus, isTrue);
 
     // Close search
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsOneWidget);
@@ -99,7 +100,7 @@ void main() {
     expect(find.text('Suggestions'), findsNothing);
 
     // Open search
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
@@ -120,7 +121,7 @@ void main() {
     expect(find.text('Suggestions'), findsNothing);
 
     // Open search again
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
@@ -135,7 +136,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     final Text hintText = tester.widget(find.text(searchHintText));
@@ -148,7 +149,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(delegate.query, '');
@@ -179,7 +180,7 @@ void main() {
       delegate: delegate,
       results: selectedResults,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'Wow');
     await tester.pumpAndSettle();
@@ -197,7 +198,7 @@ void main() {
     expect(delegate.queriesForResults, <String>['Wow']);
 
     // Close search
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsOneWidget);
@@ -213,7 +214,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     // Showing suggestions
@@ -283,15 +284,15 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(delegate.query, '');
 
     delegate.query = 'Foo';
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(delegate.query, '');
@@ -307,7 +308,7 @@ void main() {
       passInInitialQuery: true,
       initialQuery: 'Foo',
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(delegate.query, 'Foo');
@@ -322,7 +323,7 @@ void main() {
       delegate: delegate,
       passInInitialQuery: true,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(delegate.query, 'Foo');
@@ -335,7 +336,7 @@ void main() {
       delegate: delegate,
       passInInitialQuery: true,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     delegate.query = 'Foo';
@@ -359,7 +360,7 @@ void main() {
 
     // runs while search fades in
     expect(delegate.transitionAnimation.status, AnimationStatus.dismissed);
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     expect(delegate.transitionAnimation.status, AnimationStatus.forward);
     await tester.pumpAndSettle();
     expect(delegate.transitionAnimation.status, AnimationStatus.completed);
@@ -371,7 +372,7 @@ void main() {
     expect(delegate.transitionAnimation.status, AnimationStatus.completed);
 
     // runs while search fades out
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     expect(delegate.transitionAnimation.status, AnimationStatus.reverse);
     await tester.pumpAndSettle();
     expect(delegate.transitionAnimation.status, AnimationStatus.dismissed);
@@ -410,21 +411,21 @@ void main() {
       results: selectedResults,
     ));
     expect(find.text('HomeBody'), findsOneWidget);
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
     expect(find.text('Suggestions'), findsOneWidget);
     expect(find.text('Nested Suggestions'), findsNothing);
 
-    await tester.tap(find.byTooltip('Nested Search'));
+    await tester.tap(find.byTooltipM3('Nested Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
     expect(find.text('Suggestions'), findsNothing);
     expect(find.text('Nested Suggestions'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pumpAndSettle();
     expect(nestedSearchResults, <String>['Nested Result']);
 
@@ -432,7 +433,7 @@ void main() {
     expect(find.text('Suggestions'), findsOneWidget);
     expect(find.text('Nested Suggestions'), findsNothing);
 
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsOneWidget);
@@ -489,21 +490,21 @@ void main() {
     ));
 
     expect(find.text('HomeBody'), findsOneWidget);
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
     expect(find.text('Suggestions'), findsOneWidget);
     expect(find.text('Nested Suggestions'), findsNothing);
 
-    await tester.tap(find.byTooltip('Nested Search'));
+    await tester.tap(find.byTooltipM3('Nested Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
     expect(find.text('Suggestions'), findsNothing);
     expect(find.text('Nested Suggestions'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Close Search'));
+    await tester.tap(find.byTooltipM3('Close Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsOneWidget);
@@ -522,7 +523,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text(searchHint), findsOneWidget);
@@ -537,7 +538,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text(searchHint), findsOneWidget);
@@ -550,7 +551,7 @@ void main() {
     final _TestSearchDelegate delegate = _TestSearchDelegate(searchHint: searchHintText, searchFieldStyle: searchFieldStyle);
 
     await tester.pumpWidget(TestHomePage(delegate: delegate));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     final Text hintText = tester.widget(find.text(searchHintText));
@@ -569,7 +570,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     await tester.showKeyboard(find.byType(TextField));
@@ -583,7 +584,7 @@ void main() {
     await tester.pumpWidget(TestHomePage(
       delegate: delegate,
     ));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
     await tester.showKeyboard(find.byType(TextField));
     expect(tester.testTextInput.setClientArgs!['inputAction'], TextInputAction.done.toString());
@@ -682,7 +683,7 @@ void main() {
         delegate: delegate,
       ));
 
-      await tester.tap(find.byTooltip('Search'));
+      await tester.tap(find.byTooltipM3('Search'));
       await tester.pumpAndSettle();
 
       expect(semantics, hasSemantics(
@@ -702,7 +703,7 @@ void main() {
         delegate: delegate,
       ));
 
-      await tester.tap(find.byTooltip('Search'));
+      await tester.tap(find.byTooltipM3('Search'));
       await tester.pumpAndSettle();
 
       expect(semantics, hasSemantics(
@@ -725,7 +726,7 @@ void main() {
     );
 
     await tester.pumpWidget(TestHomePage(delegate: delegate));
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     final ThemeData textFieldTheme = Theme.of(tester.element(find.byType(TextField)));
@@ -746,7 +747,7 @@ void main() {
       themeData: themeData,
     ));
 
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     final Material appBarBackground = tester.widget<Material>(find.descendant(
@@ -774,7 +775,7 @@ void main() {
       themeData: themeData,
     ));
 
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     final Material appBarBackground = tester.widget<Material>(find.descendant(
@@ -806,7 +807,7 @@ void main() {
     expect(find.text('Suggestions'), findsNothing);
 
     // Open the search page.
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsNothing);
@@ -818,7 +819,7 @@ void main() {
     expect(textField.focusNode!.hasFocus, isTrue);
 
     // Close the search page.
-    await tester.tap(find.byTooltip('Close'));
+    await tester.tap(find.byTooltipM3('Close'));
     await tester.pumpAndSettle();
 
     expect(find.text('HomeBody'), findsOneWidget);
@@ -870,7 +871,7 @@ void main() {
     // showSearch normal and back
     await tester.tap(find.text('showSearchLocalNavigator'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Close'));
+    await tester.tap(find.byTooltipM3('Close'));
     await tester.pumpAndSettle();
     expect(rootObserver.pushCount, 0);
     expect(localObserver.pushCount, 1);
@@ -878,7 +879,7 @@ void main() {
     // showSearch with rootNavigator
     await tester.tap(find.text('showSearchRootNavigator'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Close'));
+    await tester.tap(find.byTooltipM3('Close'));
     await tester.pumpAndSettle();
     expect(rootObserver.pushCount, 1);
     expect(localObserver.pushCount, 1);
@@ -896,7 +897,7 @@ void main() {
     ));
 
     // Open search.
-    await tester.tap(find.byTooltip('Search'));
+    await tester.tap(find.byTooltipM3('Search'));
     await tester.pumpAndSettle();
 
     final Finder textFieldFinder = find.byType(TextField);

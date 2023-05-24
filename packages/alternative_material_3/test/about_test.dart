@@ -7,9 +7,11 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'flutter_test/extensions.dart';
 
 void main() {
   tearDown(() {
@@ -189,7 +191,7 @@ void main() {
     expect(find.text('BBB'), findsOneWidget);
 
     /// Go back to list of packages.
-    await tester.pageBack();
+    await tester.pageBackM3();
     await tester.pumpAndSettle();
 
     /// Check license is displayed after entering into license page for
@@ -265,7 +267,7 @@ void main() {
     expect(find.text('BBB'), findsOneWidget);
 
     /// Go back to list of packages.
-    await tester.pageBack();
+    await tester.pageBackM3();
     await tester.pumpAndSettle();
 
     /// Check license is displayed after entering into license page for

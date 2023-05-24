@@ -6,10 +6,11 @@ import 'dart:ui' show DisplayFeature, DisplayFeatureState, DisplayFeatureType, S
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
 import 'feedback_tester.dart';
@@ -1901,7 +1902,7 @@ void main() {
     // The default tooltip is defined as [MaterialLocalizations.showMenuTooltip]
     // and it is used when no tooltip is provided.
     expect(find.byType(Tooltip), findsNWidgets(3));
-    expect(find.byTooltip(const DefaultMaterialLocalizations().showMenuTooltip), findsNWidgets(3));
+    expect(find.byTooltipM3(const DefaultMaterialLocalizations().showMenuTooltip), findsNWidgets(3));
   });
 
   testWidgets('PopupMenuButton custom tooltip', (WidgetTester tester) async {
@@ -1958,7 +1959,7 @@ void main() {
     );
 
     expect(find.byType(Tooltip), findsNWidgets(3));
-    expect(find.byTooltip('Test tooltip'), findsNWidgets(3));
+    expect(find.byTooltipM3('Test tooltip'), findsNWidgets(3));
   });
 
   testWidgets('Allow Widget for PopupMenuButton.icon', (WidgetTester tester) async {

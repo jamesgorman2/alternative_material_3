@@ -4,10 +4,11 @@
 
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
 import 'feedback_tester.dart';
@@ -440,9 +441,9 @@ void main() {
     );
 
     expect(find.byType(Tooltip), findsOneWidget);
-    expect(find.byTooltip('Test tooltip'), findsOneWidget);
+    expect(find.byTooltipM3('Test tooltip'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Test tooltip'));
+    await tester.tap(find.byTooltipM3('Test tooltip'));
     expect(mockOnPressedFunction.called, 1);
   });
 

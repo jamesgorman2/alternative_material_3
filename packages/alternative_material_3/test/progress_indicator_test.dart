@@ -14,7 +14,7 @@
 library;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 

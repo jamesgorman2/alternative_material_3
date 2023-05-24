@@ -3,11 +3,12 @@
 // found in the LICENSE file.
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
 import 'feedback_tester.dart';
@@ -401,19 +402,19 @@ void main() {
       ),
     );
 
-    expect(tester.widget(find.byTooltip('Delete chip A')), isNotNull);
-    expect(tester.widget(find.byTooltip('Delete chip B')), isNotNull);
+    expect(tester.widget(find.byTooltipM3('Delete chip A')), isNotNull);
+    expect(tester.widget(find.byTooltipM3('Delete chip B')), isNotNull);
 
     expect(feedback.clickSoundCount, 0);
 
     expect(deletedChipLabels, isEmpty);
-    await tester.tap(find.byTooltip('Delete chip A'));
+    await tester.tap(find.byTooltipM3('Delete chip A'));
     expect(deletedChipLabels, equals(<String>['A']));
 
     await tester.pumpAndSettle(const Duration(seconds: 1));
     expect(feedback.clickSoundCount, 1);
 
-    await tester.tap(find.byTooltip('Delete chip B'));
+    await tester.tap(find.byTooltipM3('Delete chip B'));
     expect(deletedChipLabels, equals(<String>['A', 'B']));
 
     await tester.pumpAndSettle(const Duration(seconds: 1));

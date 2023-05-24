@@ -3,11 +3,12 @@
 // found in the LICENSE file.
 
 import 'package:flutter/gestures.dart' show DragStartBehavior;
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'data_table_test_utils.dart';
+import 'flutter_test/extensions.dart';
 
 class TestDataSource extends DataTableSource {
   TestDataSource({
@@ -94,7 +95,7 @@ void main() {
       ),
     ));
 
-    await tester.tap(find.byTooltip('Next page'));
+    await tester.tap(find.byTooltipM3('Next page'));
 
     expect(log, <String>['page-changed: 2']);
     log.clear();
@@ -117,7 +118,7 @@ void main() {
     expect(find.text('Gingerbread (0)'), findsNothing);
 
     final Finder lastPageButton = find.ancestor(
-      of: find.byTooltip('Last page'),
+      of: find.byTooltipM3('Last page'),
       matching: find.byWidgetPredicate((Widget widget) => widget is IconButton),
     );
 
@@ -137,7 +138,7 @@ void main() {
     expect(find.text('KitKat (49)'), findsOneWidget);
 
     final Finder firstPageButton = find.ancestor(
-      of: find.byTooltip('First page'),
+      of: find.byTooltipM3('First page'),
       matching: find.byWidgetPredicate((Widget widget) => widget is IconButton),
     );
 

@@ -4,7 +4,7 @@
 
 // This file is run as part of a reduced test set in CI on Mac and Windows
 // machines.
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 

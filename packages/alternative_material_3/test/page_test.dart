@@ -9,10 +9,11 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart' show CupertinoPageRoute;
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 
 void main() {
@@ -882,7 +883,7 @@ void main() {
     expect(pageTapCount, 1);
 
     // Tapping the "page" route's back button doesn't do anything either.
-    await tester.tap(find.byTooltip('Back'), warnIfMissed: false);
+    await tester.tap(find.byTooltipM3('Back'), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(tester.getTopLeft(find.byKey(pageScaffoldKey)), const Offset(400, 0));
     expect(tester.getTopLeft(find.byKey(homeScaffoldKey)).dx, lessThan(0));

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 
 typedef Logger = void Function(String caller);
 

@@ -9,11 +9,12 @@ library;
 
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
 import 'feedback_tester.dart';
@@ -1549,15 +1550,15 @@ void main() {
 
     expect(find.text('A'), findsOneWidget);
     await tester.longPress(find.text('A'));
-    expect(find.byTooltip('A tooltip'), findsOneWidget);
+    expect(find.byTooltipM3('A tooltip'), findsOneWidget);
 
     expect(find.text('B'), findsOneWidget);
     await tester.longPress(find.text('B'));
-    expect(find.byTooltip('B'), findsNothing);
+    expect(find.byTooltipM3('B'), findsNothing);
 
     expect(find.text('C'), findsOneWidget);
     await tester.longPress(find.text('C'));
-    expect(find.byTooltip('C'), findsNothing);
+    expect(find.byTooltipM3('C'), findsNothing);
   });
 
   testWidgets('BottomNavigationBar limits width of tiles with long labels', (WidgetTester tester) async {

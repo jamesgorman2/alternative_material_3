@@ -11,9 +11,10 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 
 void main() {
@@ -390,15 +391,15 @@ void main() {
 
     expect(find.text('A'), findsOneWidget);
     await tester.longPress(find.text('A'));
-    expect(find.byTooltip('A tooltip'), findsOneWidget);
+    expect(find.byTooltipM3('A tooltip'), findsOneWidget);
 
     expect(find.text('B'), findsOneWidget);
     await tester.longPress(find.text('B'));
-    expect(find.byTooltip('B'), findsOneWidget);
+    expect(find.byTooltipM3('B'), findsOneWidget);
 
     expect(find.text('C'), findsOneWidget);
     await tester.longPress(find.text('C'));
-    expect(find.byTooltip('C'), findsNothing);
+    expect(find.byTooltipM3('C'), findsNothing);
   });
 
 

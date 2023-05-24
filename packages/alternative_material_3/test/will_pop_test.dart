@@ -2,8 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'flutter_test/extensions.dart';
 
 bool willPopValue = false;
 
@@ -120,7 +122,7 @@ void main() {
       ),
     );
 
-    expect(find.byTooltip('Back'), findsNothing);
+    expect(find.byTooltipM3('Back'), findsNothing);
     expect(find.text('Sample Page'), findsNothing);
 
     await tester.tap(find.text('X'));
@@ -130,7 +132,7 @@ void main() {
     expect(find.text('Sample Page'), findsOneWidget);
 
     willPopValue = false;
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump();
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
@@ -144,7 +146,7 @@ void main() {
     expect(find.text('Sample Page'), findsOneWidget);
 
     willPopValue = true;
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump();
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
@@ -185,7 +187,7 @@ void main() {
 
     // Should pop if callback returns true
     willPopValue = true;
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pumpAndSettle();
     expect(find.text('Sample Form'), findsNothing);
   });
@@ -227,7 +229,7 @@ void main() {
 
     willPopValue = false;
     willPopCount = 0;
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump(); // Start the pop "back" operation.
     await tester.pump(); // Complete the willPop() Future.
     await tester.pump(const Duration(seconds: 1)); // Wait until it has finished.
@@ -236,7 +238,7 @@ void main() {
 
     willPopValue = true;
     willPopCount = 0;
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump(); // Start the pop "back" operation.
     await tester.pump(); // Complete the willPop() Future.
     await tester.pump(const Duration(seconds: 1)); // Wait until it has finished.
@@ -302,7 +304,7 @@ void main() {
     // Press the Scaffold's back button. This causes the willPop callback
     // to run, which shows the YES/NO Alert Dialog. Veto the back operation
     // by pressing the Alert's NO button.
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump(); // Start the pop "back" operation.
     await tester.pump(); // Call willPop which will show an Alert.
     await tester.tap(find.text('NO'));
@@ -315,7 +317,7 @@ void main() {
     // Each time the Alert is shown and dismissed the FormState's
     // didChangeDependencies() method runs. We're making sure that the
     // didChangeDependencies() method doesn't add an extra willPop callback.
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump(); // Start the pop "back" operation.
     await tester.pump(); // Call willPop which will show an Alert.
     await tester.tap(find.text('NO'));
@@ -326,7 +328,7 @@ void main() {
 
     // This time really dismiss the SampleForm by pressing the Alert's
     // YES button.
-    await tester.tap(find.byTooltip('Back'));
+    await tester.tap(find.byTooltipM3('Back'));
     await tester.pump(); // Start the pop "back" operation.
     await tester.pump(); // Call willPop which will show an Alert.
     await tester.tap(find.text('YES'));
