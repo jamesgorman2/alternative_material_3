@@ -309,7 +309,7 @@ class _MaterialBannerState extends State<MaterialBanner> {
 
     final ThemeData theme = Theme.of(context);
     final MaterialBannerThemeData bannerTheme = MaterialBannerTheme.of(context);
-    final MaterialBannerThemeData defaults = theme.useMaterial3 ? _BannerDefaultsM3(context) : _BannerDefaultsM2(context);
+    final MaterialBannerThemeData defaults = _BannerDefaultsM3(context);
 
     final bool isSingleRow = widget.actions.length == 1 && !widget.forceActionsBelow;
     final EdgeInsetsGeometry padding = widget.padding ?? bannerTheme.padding ?? (isSingleRow
@@ -440,21 +440,6 @@ class _MaterialBannerState extends State<MaterialBanner> {
       child: ClipRect(child: materialBannerTransition),
     );
   }
-}
-
-class _BannerDefaultsM2 extends MaterialBannerThemeData {
-  _BannerDefaultsM2(this.context)
-    : _theme = Theme.of(context),
-      super(elevation: 0.0);
-
-  final BuildContext context;
-  final ThemeData _theme;
-
-  @override
-  Color? get backgroundColor => _theme.colorScheme.surface;
-
-  @override
-  TextStyle? get contentTextStyle => _theme.textTheme.bodyMedium;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Banner

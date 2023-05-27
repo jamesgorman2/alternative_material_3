@@ -270,7 +270,7 @@ class _DropdownMenuState<T> extends State<_DropdownMenu<T>> {
       opacity: _fadeOpacity,
       child: CustomPaint(
         painter: _DropdownMenuPainter(
-          color: widget.dropdownColor ?? Theme.of(context).canvasColor,
+          color: widget.dropdownColor ?? Theme.of(context).colorScheme.surfaceContainer,
           elevation: route.elevation,
           selectedIndex: route.selectedIndex,
           resize: _resize,
@@ -1330,7 +1330,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>> with WidgetsBindi
   // would be clipped.
   double get _denseButtonHeight {
     final double textScaleFactor = MediaQuery.textScaleFactorOf(context);
-    final double fontSize = _textStyle!.fontSize ?? Theme.of(context).textTheme.titleMedium!.fontSize!;
+    final double fontSize = _textStyle!.fontSize ?? Theme.of(context).textTheme.titleMedium.fontSize!;
     final double scaledFontSize = textScaleFactor * fontSize;
     return math.max(scaledFontSize, math.max(widget.iconSize, _kDenseButtonHeight));
   }
@@ -1401,7 +1401,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>> with WidgetsBindi
 
       hintIndex = items.length;
       items.add(DefaultTextStyle(
-        style: _textStyle!.copyWith(color: Theme.of(context).hintColor),
+        style: _textStyle!.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         child: IgnorePointer(
           ignoringSemantics: false,
           child: _DropdownMenuItemContainer(
@@ -1436,7 +1436,9 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>> with WidgetsBindi
     const Icon defaultIcon = Icon(Icons.arrow_drop_down);
 
     Widget result = DefaultTextStyle(
-      style: _enabled ? _textStyle! : _textStyle!.copyWith(color: Theme.of(context).disabledColor),
+      style: _enabled
+          ? _textStyle!
+          : _textStyle!.copyWith(color: Theme.of(context).colorScheme.onSurface),
       child: Container(
         padding: padding.resolve(Directionality.of(context)),
         height: widget.isDense ? _denseButtonHeight : null,
@@ -1512,7 +1514,8 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>> with WidgetsBindi
           borderRadius: widget.borderRadius,
           focusNode: focusNode,
           autofocus: widget.autofocus,
-          focusColor: widget.focusColor ?? Theme.of(context).focusColor,
+          // FIXME
+          focusColor: widget.focusColor ?? Theme.of(context).colorScheme.primary,
           enableFeedback: false,
           child: widget.padding == null ? result : Padding(padding: widget.padding!, child: result),
         ),

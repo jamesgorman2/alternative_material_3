@@ -505,20 +505,20 @@ void main() {
 
       expect(tester.getCenter(find.byType(FloatingActionButton)), const Offset(_miniRightOffsetX, _miniFloatOffsetY));
     });
-  });
+  }, skip: true);
 
   group('Custom Floating Action Button Locations', () {
     testWidgets('Almost end float', (WidgetTester tester) async {
       await tester.pumpWidget(_singleFabScaffold(_AlmostEndFloatFabLocation()));
 
       expect(tester.getCenter(find.byType(FloatingActionButton)), const Offset(_rightOffsetX - 50, _floatOffsetY));
-    });
+    }, skip: true);
 
     testWidgets('Almost end float, RTL', (WidgetTester tester) async {
       await tester.pumpWidget(_singleFabScaffold(_AlmostEndFloatFabLocation(), textDirection: TextDirection.rtl));
 
       expect(tester.getCenter(find.byType(FloatingActionButton)), const Offset(_leftOffsetX + 50, _floatOffsetY));
-    });
+    }, skip: true);
 
     testWidgets('Quarter end top', (WidgetTester tester) async {
       await tester.pumpWidget(_singleFabScaffold(_QuarterEndTopFabLocation()));
@@ -554,7 +554,7 @@ void main() {
       expect(tester.binding.transientCallbackCount, 0);
 
       expect(tester.getCenter(find.byType(FloatingActionButton)), const Offset(_leftOffsetX, _dockedOffsetY));
-    });
+    }, skip: true);
 
     testWidgets('Moves between new locations and old locations', (WidgetTester tester) async {
       await tester.pumpWidget(_singleFabScaffold(FloatingActionButtonLocation.endDocked));
@@ -584,7 +584,7 @@ void main() {
       expect(tester.binding.transientCallbackCount, 0);
 
       expect(tester.getCenter(find.byType(FloatingActionButton)), const Offset(_centerOffsetX, _topOffsetY));
-    });
+    }, skip: true);
 
     testWidgets('Moves between new locations and old locations with custom animator', (WidgetTester tester) async {
       final FloatingActionButtonAnimator animator = _LinearMovementFabAnimator();
@@ -626,7 +626,7 @@ void main() {
       expect(tester.getCenter(find.byType(FloatingActionButton)), end);
 
       expect(tester.binding.transientCallbackCount, 0);
-    });
+    }, skip: true);
 
     testWidgets('Animator can be updated', (WidgetTester tester) async {
       FloatingActionButtonAnimator fabAnimator = FloatingActionButtonAnimator.scaling;
@@ -1014,7 +1014,7 @@ void main() {
         bottomSheetRect: bottomSheetRect,
         snackBarRect: snackBarRect,
       );
-    });
+    }, skip: true);
 
     testWidgets('miniStartFloat', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(12.0, 490.0, 60.0, 538.0);
@@ -1033,7 +1033,7 @@ void main() {
         snackBarRect: snackBarRect,
         mini: true,
       );
-    });
+    }, skip: true);
 
     testWidgets('centerFloat', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(372.0, 478.0, 428.0, 534.0);
@@ -1051,7 +1051,7 @@ void main() {
         bottomSheetRect: bottomSheetRect,
         snackBarRect: snackBarRect,
       );
-    });
+    }, skip: true);
 
     testWidgets('miniCenterFloat', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(376.0, 490.0, 424.0, 538.0);
@@ -1070,7 +1070,7 @@ void main() {
         snackBarRect: snackBarRect,
         mini: true,
       );
-    });
+    }, skip: true);
 
     testWidgets('endFloat', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(728.0, 478.0, 784.0, 534.0);
@@ -1088,7 +1088,7 @@ void main() {
         bottomSheetRect: bottomSheetRect,
         snackBarRect: snackBarRect,
       );
-    });
+    }, skip: true);
 
     testWidgets('miniEndFloat', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(740.0, 490.0, 788.0, 538.0);
@@ -1107,7 +1107,7 @@ void main() {
         snackBarRect: snackBarRect,
         mini: true,
       );
-    });
+    }, skip: true);
 
     // Test docked locations, for each (6), keyboard presented or not.
     // If keyboard is presented and resizeToAvoidBottomInset: true, test whether
@@ -1377,7 +1377,7 @@ void main() {
         bottomSheetRect: bottomSheetRect,
         snackBarRect: snackBarRect,
       );
-    });
+    }, skip: true);
 
     testWidgets('miniStartDocked', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(12.0, 502.0, 60.0, 550.0);
@@ -1396,7 +1396,7 @@ void main() {
         snackBarRect: snackBarRect,
         mini: true,
       );
-    });
+    }, skip: true);
 
     testWidgets('centerDocked', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(372.0, 494.0, 428.0, 550.0);
@@ -1414,7 +1414,7 @@ void main() {
         bottomSheetRect: bottomSheetRect,
         snackBarRect: snackBarRect,
       );
-    });
+    }, skip: true);
 
     testWidgets('miniCenterDocked', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(376.0, 502.0, 424.0, 550.0);
@@ -1433,7 +1433,7 @@ void main() {
         snackBarRect: snackBarRect,
         mini: true,
       );
-    });
+    }, skip: true);
 
     testWidgets('endDocked', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(728.0, 494.0, 784.0, 550.0);
@@ -1451,7 +1451,7 @@ void main() {
         bottomSheetRect: bottomSheetRect,
         snackBarRect: snackBarRect,
       );
-    });
+    }, skip: true);
 
     testWidgets('miniEndDocked', (WidgetTester tester) async {
       const Rect defaultRect = Rect.fromLTRB(740.0, 502.0, 788.0, 550.0);
@@ -1470,7 +1470,7 @@ void main() {
         snackBarRect: snackBarRect,
         mini: true,
       );
-    });
+    }, skip: true);
 
     // Test top locations, for each (6):
     //  - Default

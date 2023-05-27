@@ -17,7 +17,7 @@ void main() {
       builder: (BuildContext context) {
         return Container(
           key: primaryContainerKey,
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
         );
       },
     );
@@ -31,7 +31,11 @@ void main() {
             builder: (BuildContext context) {
               navigatorContext = context;
               return Theme(
-                data: Theme.of(context).copyWith(primaryColor: primaryColor),
+                data: Theme.of(context).copyWith(
+                  colorScheme: Theme.of(context).colorScheme.copyWith(
+                    primary: primaryColor,
+                  ),
+                ),
                 child: Builder( // Introduce a context so the shadow Theme is visible to captureAll().
                   builder: (BuildContext context) {
                     return Center(
@@ -94,14 +98,14 @@ void main() {
   });
 
   testWidgets('PopupMenuTheme.wrap()', (WidgetTester tester) async {
-    const double menuFontSize = 24;
-    const Color menuTextColor = Color(0xFF0000FF);
+    const double menuFontSize = 14;
+    final Color menuTextColor = ColorScheme.m3DefaultLight.onSurface;
 
     Widget buildFrame() {
       return MaterialApp(
         home: Scaffold(
           body: PopupMenuTheme(
-            data: const PopupMenuThemeData(
+            data: PopupMenuThemeData(
               // The menu route's elevation, shape, and color are defined by the
               // current context, so they're not affected by ThemeData.captureAll().
               textStyle: TextStyle(fontSize: menuFontSize, color: menuTextColor),

@@ -960,7 +960,7 @@ void main() {
 
   testWidgets('Items selected text uses secondary color', (WidgetTester tester) async {
     const Color selectedTextColor = Color(0xff00ddff);
-    final ColorScheme colors = const ColorScheme.light().copyWith(secondary: selectedTextColor);
+    final ColorScheme colors = ColorScheme.m3DefaultLight.copyWith(secondary: selectedTextColor);
     final ThemeData theme = ThemeData.from(colorScheme: colors);
 
     Widget buildTable() {

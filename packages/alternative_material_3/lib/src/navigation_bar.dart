@@ -1308,38 +1308,7 @@ bool _isForwardOrCompleted(Animation<double> animation) {
 }
 
 NavigationBarThemeData _defaultsFor(BuildContext context) {
-  return Theme.of(context).useMaterial3 ? _NavigationBarDefaultsM3(context) : _NavigationBarDefaultsM2(context);
-}
-
-// Hand coded defaults based on Material Design 2.
-class _NavigationBarDefaultsM2 extends NavigationBarThemeData {
-  _NavigationBarDefaultsM2(BuildContext context)
-      : _theme = Theme.of(context),
-        _colors = Theme.of(context).colorScheme,
-        super(
-          height: 80.0,
-          elevation: 0.0,
-          indicatorShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        );
-
-  final ThemeData _theme;
-  final ColorScheme _colors;
-
-  // With Material 2, the NavigationBar uses an overlay blend for the
-  // default color regardless of light/dark mode.
-  @override Color? get backgroundColor => ElevationOverlay.colorWithOverlay(_colors.surface, _colors.onSurface, 3.0);
-
-  @override MaterialStateProperty<IconThemeData?>? get iconTheme {
-    return MaterialStatePropertyAll<IconThemeData>(IconThemeData(
-      size: 24,
-      color: _colors.onSurface,
-    ));
-  }
-
-  @override Color? get indicatorColor => _colors.secondary.withOpacity(0.24);
-
-  @override MaterialStateProperty<TextStyle?>? get labelTextStyle => MaterialStatePropertyAll<TextStyle?>(_theme.textTheme.labelSmall!.copyWith(color: _colors.onSurface));
+  return _NavigationBarDefaultsM3(context);
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - NavigationBar
@@ -1385,7 +1354,7 @@ class _NavigationBarDefaultsM3 extends NavigationBarThemeData {
 
   @override MaterialStateProperty<TextStyle?>? get labelTextStyle {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    final TextStyle style = _textTheme.labelMedium!;
+    final TextStyle style = _textTheme.labelMedium;
       return style.apply(color: states.contains(MaterialState.selected)
         ? _colors.onSurface
         : _colors.onSurfaceVariant

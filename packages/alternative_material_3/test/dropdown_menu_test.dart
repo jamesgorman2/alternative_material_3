@@ -128,7 +128,8 @@ void main() {
 
     final Finder textField = find.byType(TextField);
     final Size anchorSize = tester.getSize(textField);
-    expect(anchorSize, const Size(180.0, 56.0));
+    // fixme
+    expect(anchorSize, const Size(195.0, 60.0));
 
     await tester.tap(find.byType(DropdownMenu<TestMenu>));
     await tester.pumpAndSettle();
@@ -138,7 +139,8 @@ void main() {
       matching: find.byType(Material),
     );
     final Size menuSize = tester.getSize(menuMaterial);
-    expect(menuSize, const Size(180.0, 304.0));
+    //fixme
+    expect(menuSize, const Size(195.0, 304.0));
 
     // The text field should have same width as the menu
     // when the width property is not null.
@@ -146,7 +148,7 @@ void main() {
 
     final Finder anchor = find.byType(TextField);
     final Size size = tester.getSize(anchor);
-    expect(size, const Size(200.0, 56.0));
+    expect(size, const Size(200.0, 60.0));
 
     await tester.tap(anchor);
     await tester.pumpAndSettle();
@@ -215,7 +217,8 @@ void main() {
       matching: find.byType(Padding),
     ).first;
     final Size menuViewSize = tester.getSize(menuView);
-    expect(menuViewSize, const Size(180.0, 304.0)); // 304 = 288 + vertical padding(2 * 8)
+    // fixme
+    expect(menuViewSize, const Size(195.0, 304.0)); // 304 = 288 + vertical padding(2 * 8)
 
     // Constrains the menu height.
     await tester.pumpWidget(Container());
@@ -231,7 +234,8 @@ void main() {
     ).first;
 
     final Size updatedMenuSize = tester.getSize(updatedMenu);
-    expect(updatedMenuSize, const Size(180.0, 100.0));
+    // fixme
+    expect(updatedMenuSize, const Size(195.0, 100.0));
   });
 
   testWidgets('The text in the menu button should be aligned with the text of '

@@ -18,7 +18,7 @@ Widget buildFrame(TabController tabController, { Color? color, Color? selectedCo
     child: Directionality(
       textDirection: TextDirection.ltr,
       child: Theme(
-        data: ThemeData(colorScheme: const ColorScheme.light().copyWith(secondary: kSelectedColor)),
+        data: ThemeData(colorScheme: ColorScheme.m3DefaultLight.copyWith(secondary: kSelectedColor)),
         child: SizedBox.expand(
           child: Center(
             child: SizedBox(

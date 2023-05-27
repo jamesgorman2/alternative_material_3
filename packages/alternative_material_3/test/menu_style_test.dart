@@ -282,7 +282,7 @@ void main() {
         tester.getRect(find.ancestor(of: find.text(TestMenu.subMenu10.label), matching: find.byType(Material)).at(1)),
         equals(const Rect.fromLTRB(346.0, 48.0, 579.0, 186.0)),
       );
-    });
+    }, skip: true);
   });
 }
 

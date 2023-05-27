@@ -205,23 +205,11 @@ void main() {
       );
     }
 
-    // Default M2 shadow color
-    await tester.pumpWidget(
-        Theme(
-          data: ThemeData(
-            useMaterial3: false,
-          ),
-          child: buildWithShadow(null),
-        )
-    );
-    await tester.pumpAndSettle();
-    expect(getModel(tester).shadowColor, ThemeData().shadowColor);
-
     // Default M3 shadow color
     await tester.pumpWidget(
         Theme(
           data: ThemeData(
-            useMaterial3: true,
+            
           ),
           child: buildWithShadow(null),
         )
@@ -233,7 +221,7 @@ void main() {
     await tester.pumpWidget(
         Theme(
           data: ThemeData(
-            useMaterial3: true,
+            
           ),
           child: buildWithShadow(Colors.transparent),
         )
@@ -323,20 +311,6 @@ void main() {
   });
 
   group('Surface Tint Overlay', () {
-    testWidgets('applyElevationOverlayColor does not effect anything with useMaterial3 set to true', (WidgetTester tester) async {
-      const Color surfaceColor = Color(0xFF121212);
-      await tester.pumpWidget(Theme(
-        data: ThemeData(
-          useMaterial3: true,
-          applyElevationOverlayColor: true,
-          colorScheme: const ColorScheme.dark().copyWith(surface: surfaceColor),
-        ),
-        child: buildMaterial(color: surfaceColor, elevation: 8.0),
-      ));
-      final RenderPhysicalShape model = getModel(tester);
-      expect(model.color, equals(surfaceColor));
-    });
-
     testWidgets('surfaceTintColor is used to as an overlay to indicate elevation', (WidgetTester tester) async {
       const Color baseColor = Color(0xFF121212);
       const Color surfaceTintColor = Color(0xff44CCFF);
@@ -345,7 +319,7 @@ void main() {
       await tester.pumpWidget(
         Theme(
           data: ThemeData(
-            useMaterial3: true,
+            
           ),
           child: buildMaterial(
             color: baseColor,
@@ -361,7 +335,7 @@ void main() {
       await tester.pumpWidget(
         Theme(
           data: ThemeData(
-            useMaterial3: true,
+            
           ),
           child: buildMaterial(
             color: baseColor,
@@ -379,7 +353,7 @@ void main() {
       await tester.pumpWidget(
         Theme(
           data: ThemeData(
-            useMaterial3: true,
+            
           ),
           child: buildMaterial(
             color: baseColor,
@@ -396,158 +370,6 @@ void main() {
     });
 
   }); // Surface Tint Overlay group
-
-  group('Elevation Overlay M2', () {
-    // These tests only apply to the Material 2 overlay mechanism. This group
-    // can be removed after migration to Material 3 is complete.
-    testWidgets('applyElevationOverlayColor set to false does not change surface color', (WidgetTester tester) async {
-      const Color surfaceColor = Color(0xFF121212);
-      await tester.pumpWidget(Theme(
-          data: ThemeData(
-            useMaterial3: false,
-            applyElevationOverlayColor: false,
-            colorScheme: const ColorScheme.dark().copyWith(surface: surfaceColor),
-          ),
-          child: buildMaterial(color: surfaceColor, elevation: 8.0),
-      ));
-      final RenderPhysicalShape model = getModel(tester);
-      expect(model.color, equals(surfaceColor));
-    });
-
-    testWidgets('applyElevationOverlayColor set to true applies a semi-transparent onSurface color to the surface color', (WidgetTester tester) async {
-      const Color surfaceColor = Color(0xFF121212);
-      const Color onSurfaceColor = Colors.greenAccent;
-
-      // The colors we should get with a base surface color of 0xFF121212 for
-      // and a given elevation
-      const List<ElevationColor> elevationColors = <ElevationColor>[
-        ElevationColor(0.0, Color(0xFF121212)),
-        ElevationColor(1.0, Color(0xFF161D19)),
-        ElevationColor(2.0, Color(0xFF18211D)),
-        ElevationColor(3.0, Color(0xFF19241E)),
-        ElevationColor(4.0, Color(0xFF1A2620)),
-        ElevationColor(6.0, Color(0xFF1B2922)),
-        ElevationColor(8.0, Color(0xFF1C2C24)),
-        ElevationColor(12.0, Color(0xFF1D3027)),
-        ElevationColor(16.0, Color(0xFF1E3329)),
-        ElevationColor(24.0, Color(0xFF20362B)),
-      ];
-
-      for (final ElevationColor test in elevationColors) {
-        await tester.pumpWidget(
-            Theme(
-              data: ThemeData(
-                useMaterial3: false,
-                applyElevationOverlayColor: true,
-                colorScheme: const ColorScheme.dark().copyWith(
-                  surface: surfaceColor,
-                  onSurface: onSurfaceColor,
-                ),
-              ),
-              child: buildMaterial(
-                color: surfaceColor,
-                elevation: test.elevation,
-              ),
-            ),
-        );
-        await tester.pumpAndSettle(); // wait for the elevation animation to finish
-        final RenderPhysicalShape model = getModel(tester);
-        expect(model.color, equals(test.color));
-      }
-    });
-
-    testWidgets('overlay will not apply to materials using a non-surface color', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        Theme(
-          data: ThemeData(
-            useMaterial3: false,
-            applyElevationOverlayColor: true,
-            colorScheme: const ColorScheme.dark(),
-          ),
-          child: buildMaterial(
-            color: Colors.cyan,
-            elevation: 8.0,
-          ),
-        ),
-      );
-      final RenderPhysicalShape model = getModel(tester);
-      // Shouldn't change, as it is not using a ColorScheme.surface color
-      expect(model.color, equals(Colors.cyan));
-    });
-
-    testWidgets('overlay will not apply to materials using a light theme', (WidgetTester tester) async {
-      await tester.pumpWidget(
-          Theme(
-            data: ThemeData(
-              useMaterial3: false,
-              applyElevationOverlayColor: true,
-              colorScheme: const ColorScheme.light(),
-            ),
-            child: buildMaterial(
-              color: Colors.cyan,
-              elevation: 8.0,
-            ),
-          ),
-      );
-      final RenderPhysicalShape model = getModel(tester);
-      // Shouldn't change, as it was under a light color scheme.
-      expect(model.color, equals(Colors.cyan));
-    });
-
-    testWidgets('overlay will apply to materials with a non-opaque surface color', (WidgetTester tester) async {
-      const Color surfaceColor = Color(0xFF121212);
-      const Color surfaceColorWithOverlay = Color(0xC6353535);
-
-      await tester.pumpWidget(
-        Theme(
-          data: ThemeData(
-            useMaterial3: false,
-            applyElevationOverlayColor: true,
-            colorScheme: const ColorScheme.dark(),
-          ),
-          child: buildMaterial(
-            color: surfaceColor.withOpacity(.75),
-            elevation: 8.0,
-          ),
-        ),
-      );
-
-      final RenderPhysicalShape model = getModel(tester);
-      expect(model.color, equals(surfaceColorWithOverlay));
-      expect(model.color, isNot(equals(surfaceColor)));
-    });
-
-    testWidgets('Expected overlay color can be computed using colorWithOverlay', (WidgetTester tester) async {
-      const Color surfaceColor = Color(0xFF123456);
-      const Color onSurfaceColor = Color(0xFF654321);
-      const double elevation = 8.0;
-
-      final Color surfaceColorWithOverlay =
-        ElevationOverlay.colorWithOverlay(surfaceColor, onSurfaceColor, elevation);
-
-      await tester.pumpWidget(
-        Theme(
-          data: ThemeData(
-            useMaterial3: false,
-            applyElevationOverlayColor: true,
-            colorScheme: const ColorScheme.dark(
-              surface: surfaceColor,
-              onSurface: onSurfaceColor,
-            ),
-          ),
-          child: buildMaterial(
-            color: surfaceColor,
-            elevation: elevation,
-          ),
-        ),
-      );
-
-      final RenderPhysicalShape model = getModel(tester);
-      expect(model.color, equals(surfaceColorWithOverlay));
-      expect(model.color, isNot(equals(surfaceColor)));
-    });
-
-  }); // Elevation Overlay M2 group
 
   group('Transparency clipping', () {
     testWidgets('No clip by default', (WidgetTester tester) async {

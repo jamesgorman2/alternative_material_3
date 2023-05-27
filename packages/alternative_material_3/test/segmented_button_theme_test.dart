@@ -42,7 +42,7 @@ void main() {
   });
 
   testWidgets('With no other configuration, defaults are used', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     await tester.pumpWidget(
       MaterialApp(
         theme: theme,
@@ -110,7 +110,7 @@ void main() {
 
   testWidgets('ThemeData.segmentedButtonTheme overrides defaults', (WidgetTester tester) async {
     final ThemeData theme = ThemeData(
-      useMaterial3: true,
+      
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
@@ -251,7 +251,7 @@ void main() {
       selectedIcon: const Icon(Icons.plus_one),
     );
     final ThemeData theme = ThemeData(
-      useMaterial3: true,
+      
       segmentedButtonTheme: global,
     );
     await tester.pumpWidget(
@@ -378,7 +378,7 @@ void main() {
       selectedIcon: const Icon(Icons.plus_one),
     );
     final ThemeData theme = ThemeData(
-      useMaterial3: true,
+      
       segmentedButtonTheme: global,
     );
     await tester.pumpWidget(

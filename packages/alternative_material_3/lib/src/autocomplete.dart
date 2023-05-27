@@ -175,7 +175,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
                       });
                     }
                     return Container(
-                      color: highlight ? Theme.of(context).focusColor : null,
+                      color: highlight ? Theme.of(context).colorScheme.focusColor : null,
                       padding: const EdgeInsets.all(16.0),
                       child: Text(displayStringForOption(option)),
                     );

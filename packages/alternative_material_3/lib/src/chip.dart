@@ -987,41 +987,21 @@ class _RawChipState extends State<RawChip> with MaterialStateMixin, TickerProvid
   /// Picks between three different colors, depending upon the state of two
   /// different animations.
   Color? _getBackgroundColor(ThemeData theme, ChipThemeData chipTheme, ChipThemeData chipDefaults) {
-    if (theme.useMaterial3) {
-      final ColorTween backgroundTween = ColorTween(
-        begin: widget.disabledColor
-          ?? chipTheme.disabledColor
-          ?? chipDefaults.disabledColor,
-        end: widget.backgroundColor
-          ?? chipTheme.backgroundColor
-          ?? chipDefaults.backgroundColor,
-      );
-      final ColorTween selectTween = ColorTween(
-        begin: backgroundTween.evaluate(enableController),
-        end: widget.selectedColor
-          ?? chipTheme.selectedColor
-          ?? chipDefaults.selectedColor,
-      );
-      return selectTween.evaluate(selectionFade);
-    } else {
-      final ColorTween backgroundTween = ColorTween(
-        begin: widget.disabledColor
-            ?? chipTheme.disabledColor
-            ?? theme.disabledColor,
-        end: widget.backgroundColor
-            ?? chipTheme.backgroundColor
-            ?? theme.chipTheme.backgroundColor
-            ?? chipDefaults.backgroundColor,
-      );
-      final ColorTween selectTween = ColorTween(
-        begin: backgroundTween.evaluate(enableController),
-        end: widget.selectedColor
-            ?? chipTheme.selectedColor
-            ?? theme.chipTheme.selectedColor
-            ?? chipDefaults.selectedColor,
-      );
-      return selectTween.evaluate(selectionFade);
-    }
+    final ColorTween backgroundTween = ColorTween(
+      begin: widget.disabledColor
+        ?? chipTheme.disabledColor
+        ?? chipDefaults.disabledColor,
+      end: widget.backgroundColor
+        ?? chipTheme.backgroundColor
+        ?? chipDefaults.backgroundColor,
+    );
+    final ColorTween selectTween = ColorTween(
+      begin: backgroundTween.evaluate(enableController),
+      end: widget.selectedColor
+        ?? chipTheme.selectedColor
+        ?? chipDefaults.selectedColor,
+    );
+    return selectTween.evaluate(selectionFade);
   }
 
   @override
@@ -1135,14 +1115,7 @@ class _RawChipState extends State<RawChip> with MaterialStateMixin, TickerProvid
     final ChipThemeData chipTheme = ChipTheme.of(context);
     final Brightness brightness = chipTheme.brightness ?? theme.brightness;
     final ChipThemeData chipDefaults = widget.defaultProperties ??
-      (theme.useMaterial3
-        ? _ChipDefaultsM3(context, widget.isEnabled)
-        : ChipThemeData.fromDefaults(
-            brightness: brightness,
-            secondaryColor: brightness == Brightness.dark ? Colors.tealAccent[200]! : theme.primaryColor,
-            labelStyle: theme.textTheme.bodyLarge!,
-          )
-        );
+        _ChipDefaultsM3(context, widget.isEnabled);
     final TextDirection? textDirection = Directionality.maybeOf(context);
     final OutlinedBorder resolvedShape = _getShape(theme, chipTheme, chipDefaults);
 

@@ -337,9 +337,7 @@ class _LinearProgressIndicatorState extends State<LinearProgressIndicator> with 
   }
 
   Widget _buildIndicator(BuildContext context, double animationValue, TextDirection textDirection) {
-    final ProgressIndicatorThemeData defaults = Theme.of(context).useMaterial3
-      ? _LinearProgressIndicatorDefaultsM3(context)
-      : _LinearProgressIndicatorDefaultsM2(context);
+    final ProgressIndicatorThemeData defaults = _LinearProgressIndicatorDefaultsM3(context);
 
     final ProgressIndicatorThemeData indicatorTheme = ProgressIndicatorTheme.of(context);
     final Color trackColor = widget.backgroundColor ??
@@ -599,9 +597,7 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator> w
   }
 
   Widget _buildMaterialIndicator(BuildContext context, double headValue, double tailValue, double offsetValue, double rotationValue) {
-    final ProgressIndicatorThemeData defaults = Theme.of(context).useMaterial3
-      ? _CircularProgressIndicatorDefaultsM3(context)
-      : _CircularProgressIndicatorDefaultsM2(context);
+    final ProgressIndicatorThemeData defaults = _CircularProgressIndicatorDefaultsM3(context);
     final Color? trackColor = widget.backgroundColor ?? ProgressIndicatorTheme.of(context).circularTrackColor;
 
     return widget._buildSemanticsWrapper(
@@ -849,7 +845,7 @@ class _RefreshProgressIndicatorState extends _CircularProgressIndicatorState {
     final Color backgroundColor =
       widget.backgroundColor ??
       ProgressIndicatorTheme.of(context).refreshBackgroundColor ??
-      Theme.of(context).canvasColor;
+      Theme.of(context).colorScheme.surface;
 
     return widget._buildSemanticsWrapper(
       context: context,
@@ -886,33 +882,6 @@ class _RefreshProgressIndicatorState extends _CircularProgressIndicatorState {
       ),
     );
   }
-}
-
-// Hand coded defaults based on Material Design 2.
-class _CircularProgressIndicatorDefaultsM2 extends ProgressIndicatorThemeData {
-  _CircularProgressIndicatorDefaultsM2(this.context);
-
-  final BuildContext context;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  @override
-  Color get color => _colors.primary;
-}
-
-class _LinearProgressIndicatorDefaultsM2 extends ProgressIndicatorThemeData {
-  _LinearProgressIndicatorDefaultsM2(this.context);
-
-  final BuildContext context;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  @override
-  Color get color => _colors.primary;
-
-  @override
-  Color get linearTrackColor => _colors.background;
-
-  @override
-  double get linearMinHeight => 4.0;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - ProgressIndicator

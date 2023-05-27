@@ -13,7 +13,6 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'ink_ripple.dart';
 import 'ink_well.dart';
 import 'material_state.dart';
 import 'outlined_button_theme.dart';
@@ -312,35 +311,7 @@ class OutlinedButton extends ButtonStyleButton {
   /// [padding] is reduced from 24 to 16.
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
-    return Theme.of(context).useMaterial3
-      ? _OutlinedButtonDefaultsM3(context)
-      : styleFrom(
-          foregroundColor: colorScheme.primary,
-          disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
-          backgroundColor: Colors.transparent,
-          disabledBackgroundColor: Colors.transparent,
-          shadowColor: theme.shadowColor,
-          elevation: 0,
-          textStyle: theme.textTheme.labelLarge,
-          padding: _scaledPadding(context),
-          minimumSize: const Size(64, 36),
-          maximumSize: Size.infinite,
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-          ),
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-          enabledMouseCursor: SystemMouseCursors.click,
-          disabledMouseCursor: SystemMouseCursors.basic,
-          visualDensity: theme.visualDensity,
-          tapTargetSize: theme.materialTapTargetSize,
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-          splashFactory: InkRipple.splashFactory,
-        );
+    return _OutlinedButtonDefaultsM3(context);
   }
 
   @override
@@ -350,12 +321,11 @@ class OutlinedButton extends ButtonStyleButton {
 }
 
 EdgeInsetsGeometry _scaledPadding(BuildContext context) {
-  final bool useMaterial3 = Theme.of(context).useMaterial3;
-  final double padding1x = useMaterial3 ? 24.0 : 16.0;
+  const double padding1x = 24.0;
   return ButtonStyleButton.scaledPadding(
-     EdgeInsets.symmetric(horizontal: padding1x),
-     EdgeInsets.symmetric(horizontal: padding1x / 2),
-     EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
+     const EdgeInsets.symmetric(horizontal: padding1x),
+     const EdgeInsets.symmetric(horizontal: padding1x / 2),
+     const EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
     MediaQuery.textScaleFactorOf(context),
   );
 }
@@ -430,10 +400,6 @@ class _OutlinedButtonWithIcon extends OutlinedButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final bool useMaterial3 = Theme.of(context).useMaterial3;
-    if (!useMaterial3) {
-      return super.defaultStyleOf(context);
-    }
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsetsDirectional.fromSTEB(16, 0, 24, 0),
       const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),

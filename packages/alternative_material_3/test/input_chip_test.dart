@@ -16,7 +16,7 @@ Widget wrapForChip({
   bool useMaterial3 = false,
 }) {
   return MaterialApp(
-    theme: ThemeData(brightness: brightness, useMaterial3: useMaterial3),
+    theme: ThemeData.ofBrightness(brightness),
     home: Directionality(
       textDirection: textDirection,
       child: MediaQuery(
@@ -256,11 +256,11 @@ void main() {
   });
 
   testWidgets('Input chip has correct selected color when enabled - M3 defaults', (WidgetTester tester) async {
-    final ChipThemeData material3ChipDefaults = ThemeData(useMaterial3: true).chipTheme;
+    final ChipThemeData material3ChipDefaults = ThemeData().chipTheme;
     await pumpCheckmarkChip(
       tester,
       chip: selectedInputChip(enabled: true),
-      useMaterial3: true,
+      
     );
 
     final RenderBox materialBox = getMaterialBox(tester);
@@ -268,11 +268,11 @@ void main() {
   });
 
   testWidgets('Input chip has correct selected color when disabled - M3 defaults', (WidgetTester tester) async {
-    final ChipThemeData material3ChipDefaults = ThemeData(useMaterial3: true).chipTheme;
+    final ChipThemeData material3ChipDefaults = ThemeData().chipTheme;
     await pumpCheckmarkChip(
       tester,
       chip: selectedInputChip(),
-      useMaterial3: true,
+      
     );
 
     final RenderBox materialBox = getMaterialBox(tester);

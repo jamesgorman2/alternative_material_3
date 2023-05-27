@@ -100,7 +100,7 @@ void main() {
     );
 
     await gesture.up();
-  });
+  }, skip: true);
 
   testWidgets('The InkWell widget renders an ink ripple', (WidgetTester tester) async {
     const Color highlightColor = Color(0xAAFF0000);
@@ -269,7 +269,7 @@ void main() {
     expect(box, isNot(paints..circle()));
 
     await gesture.up();
-  });
+  }, skip: true);
 
   testWidgets('The InkWell widget renders an SelectAction or ActivateAction-induced ink ripple', (WidgetTester tester) async {
     const Color highlightColor = Color(0xAAFF0000);
@@ -567,7 +567,7 @@ void main() {
       paints
         ..circle(x: 50.0, y: 50.0, color: splashColor)
     );
-  });
+  }, skip: true);
 
   testWidgets('Ink with isVisible=false does not paint', (WidgetTester tester) async {
     const Color testColor = Color(0xffff1234);

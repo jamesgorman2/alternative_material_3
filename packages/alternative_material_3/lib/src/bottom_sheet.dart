@@ -338,8 +338,7 @@ class _BottomSheetState extends State<BottomSheet> {
   @override
   Widget build(BuildContext context) {
     final BottomSheetThemeData bottomSheetTheme = Theme.of(context).bottomSheetTheme;
-    final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final BottomSheetThemeData defaults = useMaterial3 ? _BottomSheetDefaultsM3(context) : const BottomSheetThemeData();
+    final BottomSheetThemeData defaults = _BottomSheetDefaultsM3(context);
     final BoxConstraints? constraints = widget.constraints ?? bottomSheetTheme.constraints ?? defaults.constraints;
     final Color? color = widget.backgroundColor ?? bottomSheetTheme.backgroundColor ?? defaults.backgroundColor;
     final Color? surfaceTintColor = bottomSheetTheme.surfaceTintColor ?? defaults.surfaceTintColor;
@@ -1021,7 +1020,7 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
       child: Builder(
         builder: (BuildContext context) {
           final BottomSheetThemeData sheetTheme = Theme.of(context).bottomSheetTheme;
-          final BottomSheetThemeData defaults = Theme.of(context).useMaterial3 ? _BottomSheetDefaultsM3(context) : const BottomSheetThemeData();
+          final BottomSheetThemeData defaults = _BottomSheetDefaultsM3(context);
           return _ModalBottomSheet<T>(
             route: this,
             backgroundColor: backgroundColor ?? sheetTheme.modalBackgroundColor ?? sheetTheme.backgroundColor ?? defaults.backgroundColor,

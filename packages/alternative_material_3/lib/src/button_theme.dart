@@ -131,10 +131,10 @@ class ButtonTheme extends InheritedTheme {
     ButtonThemeData? buttonTheme = inheritedButtonTheme?.data;
     if (buttonTheme?.colorScheme == null) { // if buttonTheme or buttonTheme.colorScheme is null
       final ThemeData theme = Theme.of(context);
-      buttonTheme ??= theme.buttonTheme;
+      buttonTheme ??= const ButtonThemeData();
       if (buttonTheme.colorScheme == null) {
         buttonTheme = buttonTheme.copyWith(
-          colorScheme: theme.buttonTheme.colorScheme ?? theme.colorScheme,
+          colorScheme: theme.colorScheme,
         );
         assert(buttonTheme.colorScheme != null);
       }
@@ -163,6 +163,7 @@ class ButtonTheme extends InheritedTheme {
 /// A button theme can be specified as part of the overall Material theme
 /// using [ThemeData.buttonTheme]. The Material theme's button theme data
 /// can be overridden with [ButtonTheme].
+@Deprecated('DELETE ME and fix up users')
 @immutable
 class ButtonThemeData with Diagnosticable {
   /// Create a button theme object that can be used with [ButtonTheme]

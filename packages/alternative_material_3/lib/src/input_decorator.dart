@@ -700,15 +700,13 @@ class _RenderDecoration extends RenderBox with SlottedContainerRenderObjectMixin
     required TextBaseline textBaseline,
     required bool isFocused,
     required bool expands,
-    required bool material3,
     TextAlignVertical? textAlignVertical,
   }) : _decoration = decoration,
        _textDirection = textDirection,
        _textBaseline = textBaseline,
        _textAlignVertical = textAlignVertical,
        _isFocused = isFocused,
-       _expands = expands,
-       _material3 = material3;
+       _expands = expands;
 
   static const double subtextGap = 8.0;
 
@@ -818,16 +816,6 @@ class _RenderDecoration extends RenderBox with SlottedContainerRenderObjectMixin
       return;
     }
     _expands = value;
-    markNeedsLayout();
-  }
-
-  bool get material3 => _material3;
-  bool _material3 = false;
-  set material3(bool value) {
-    if (_material3 == value) {
-      return;
-    }
-    _material3 = value;
     markNeedsLayout();
   }
 
@@ -1498,7 +1486,7 @@ class _RenderDecoration extends RenderBox with SlottedContainerRenderObjectMixin
         case TextDirection.rtl:
           double offsetToPrefixIcon = 0.0;
           if (prefixIcon != null && !decoration.alignLabelWithHint) {
-            offsetToPrefixIcon = material3 ? _boxSize(prefixIcon).width - left : 0;
+            offsetToPrefixIcon = _boxSize(prefixIcon).width - left;
           }
           decoration.borderGap.start = lerpDouble(labelX + _boxSize(label).width + offsetToPrefixIcon,
             _boxSize(container).width / 2.0 + floatWidth / 2.0,
@@ -1510,7 +1498,7 @@ class _RenderDecoration extends RenderBox with SlottedContainerRenderObjectMixin
           // floating label is centered, it's already relative to _BorderContainer.
           double offsetToPrefixIcon = 0.0;
           if (prefixIcon != null && !decoration.alignLabelWithHint) {
-            offsetToPrefixIcon = material3 ? (-_boxSize(prefixIcon).width + left) : 0;
+            offsetToPrefixIcon = -_boxSize(prefixIcon).width + left;
           }
           decoration.borderGap.start = lerpDouble(labelX - _boxSize(icon).width + offsetToPrefixIcon,
             _boxSize(container).width / 2.0 - floatWidth / 2.0,
@@ -1565,13 +1553,13 @@ class _RenderDecoration extends RenderBox with SlottedContainerRenderObjectMixin
           startX = labelOffset.dx + labelWidth * (1.0 - scale);
           floatStartX = startX;
           if (prefixIcon != null && !decoration.alignLabelWithHint && isOutlineBorder) {
-            floatStartX += material3 ? _boxSize(prefixIcon).width - contentPadding.left : 0.0;
+            floatStartX += _boxSize(prefixIcon).width - contentPadding.left;
           }
         case TextDirection.ltr: // origin on the left
           startX = labelOffset.dx;
           floatStartX = startX;
           if (prefixIcon != null && !decoration.alignLabelWithHint && isOutlineBorder) {
-            floatStartX += material3 ? -_boxSize(prefixIcon).width + contentPadding.left : 0.0;
+            floatStartX += -_boxSize(prefixIcon).width + contentPadding.left;
           }
       }
       final double floatEndX = lerpDouble(floatStartX, centeredFloatX, floatAlign)!;
@@ -1694,7 +1682,6 @@ class _Decorator extends RenderObjectWidget with SlottedMultiChildRenderObjectWi
       textAlignVertical: textAlignVertical,
       isFocused: isFocused,
       expands: expands,
-      material3: Theme.of(context).useMaterial3,
     );
   }
 
@@ -1997,29 +1984,6 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
     }
   }
 
-  Color _getDefaultM2BorderColor(ThemeData themeData) {
-    if (!decoration.enabled && !isFocused) {
-      return ((decoration.filled ?? false) && !(decoration.border?.isOutline ?? false))
-          ? Colors.transparent
-          : themeData.disabledColor;
-    }
-    if (decoration.errorText != null) {
-      return themeData.colorScheme.error;
-    }
-    if (isFocused) {
-      return themeData.colorScheme.primary;
-    }
-    if (decoration.filled!) {
-      return themeData.hintColor;
-    }
-    final Color enabledColor = themeData.colorScheme.onSurface.withOpacity(0.38);
-    if (isHovering) {
-      final Color hoverColor = decoration.hoverColor ?? themeData.inputDecorationTheme.hoverColor ?? themeData.hoverColor;
-      return Color.alphaBlend(hoverColor.withOpacity(0.12), enabledColor);
-    }
-    return enabledColor;
-  }
-
   Color _getFillColor(ThemeData themeData, InputDecorationTheme defaults) {
     if (decoration.filled != true) { // filled == null same as filled == false
       return Colors.transparent;
@@ -2034,7 +1998,7 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
     if (decoration.filled == null || !decoration.filled! || isFocused || !decoration.enabled) {
       return Colors.transparent;
     }
-    return decoration.hoverColor ?? themeData.inputDecorationTheme.hoverColor ?? themeData.hoverColor;
+    return decoration.hoverColor ?? themeData.inputDecorationTheme.hoverColor ?? themeData.colorScheme.hoverColor;
   }
 
   Color _getIconColor(ThemeData themeData, InputDecorationTheme defaults) {
@@ -2076,8 +2040,7 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
     final TextStyle? style = MaterialStateProperty.resolveAs(decoration.labelStyle, materialState)
       ?? MaterialStateProperty.resolveAs(themeData.inputDecorationTheme.labelStyle, materialState);
 
-    return themeData.textTheme.titleMedium!
-      .merge(widget.baseStyle)
+    return themeData.textTheme.titleMedium.merge(widget.baseStyle)
       .merge(defaultStyle)
       .merge(style)
       .copyWith(height: 1);
@@ -2091,8 +2054,7 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
     final TextStyle? style = MaterialStateProperty.resolveAs(decoration.hintStyle, materialState)
       ?? MaterialStateProperty.resolveAs(themeData.inputDecorationTheme.hintStyle, materialState);
 
-    return themeData.textTheme.titleMedium!
-      .merge(widget.baseStyle)
+    return themeData.textTheme.titleMedium.merge(widget.baseStyle)
       .merge(defaultStyle)
       .merge(style);
   }
@@ -2107,8 +2069,7 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
     final TextStyle? style = MaterialStateProperty.resolveAs(decoration.floatingLabelStyle, materialState)
       ?? MaterialStateProperty.resolveAs(themeData.inputDecorationTheme.floatingLabelStyle, materialState);
 
-    return themeData.textTheme.titleMedium!
-      .merge(widget.baseStyle)
+    return themeData.textTheme.titleMedium.merge(widget.baseStyle)
       .copyWith(height: 1)
       .merge(defaultTextStyle)
       .merge(style);
@@ -2146,25 +2107,13 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
       return border;
     }
 
-    if (themeData.useMaterial3) {
-      if (decoration.filled!) {
-        return border.copyWith(
-          borderSide: MaterialStateProperty.resolveAs(defaults.activeIndicatorBorder, materialState),
-        );
-      } else {
-        return border.copyWith(
-          borderSide: MaterialStateProperty.resolveAs(defaults.outlineBorder, materialState),
-        );
-      }
-    }
-    else{
+    if (decoration.filled!) {
       return border.copyWith(
-        borderSide: BorderSide(
-          color: _getDefaultM2BorderColor(themeData),
-          width: (decoration.isCollapsed || decoration.border == InputBorder.none || !decoration.enabled)
-            ? 0.0
-            : isFocused ? 2.0 : 1.0,
-        ),
+        borderSide: MaterialStateProperty.resolveAs(defaults.activeIndicatorBorder, materialState),
+      );
+    } else {
+      return border.copyWith(
+        borderSide: MaterialStateProperty.resolveAs(defaults.outlineBorder, materialState),
       );
     }
   }
@@ -2172,8 +2121,7 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    final InputDecorationTheme defaults =
-      Theme.of(context).useMaterial3 ? _InputDecoratorDefaultsM3(context) :  _InputDecoratorDefaultsM2(context);
+    final InputDecorationTheme defaults = _InputDecoratorDefaultsM3(context);
 
     final TextStyle labelStyle = _getInlineLabelStyle(themeData, defaults);
     final TextBaseline textBaseline = labelStyle.textBaseline!;
@@ -4400,130 +4348,6 @@ class InputDecorationTheme with Diagnosticable {
   }
 }
 
-class _InputDecoratorDefaultsM2 extends InputDecorationTheme {
-  const _InputDecoratorDefaultsM2(this.context)
-      : super();
-
-  final BuildContext context;
-
-  @override
-  TextStyle? get hintStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return TextStyle(color: Theme.of(context).disabledColor);
-    }
-    return TextStyle(color: Theme.of(context).hintColor);
-  });
-
-  @override
-  TextStyle? get labelStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return TextStyle(color: Theme.of(context).disabledColor);
-    }
-    return TextStyle(color: Theme.of(context).hintColor);
-  });
-
-  @override
-  TextStyle? get floatingLabelStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return TextStyle(color: Theme.of(context).disabledColor);
-    }
-    if (states.contains(MaterialState.error)) {
-      return TextStyle(color: Theme.of(context).colorScheme.error);
-    }
-    if (states.contains(MaterialState.focused)) {
-      return TextStyle(color: Theme.of(context).colorScheme.primary);
-    }
-    return TextStyle(color: Theme.of(context).hintColor);
-  });
-
-  @override
-  TextStyle? get helperStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    final ThemeData themeData= Theme.of(context);
-    if (states.contains(MaterialState.disabled)) {
-      return themeData.textTheme.bodySmall!.copyWith(color: Colors.transparent);
-    }
-
-    return themeData.textTheme.bodySmall!.copyWith(color: themeData.hintColor);
-  });
-
-  @override
-  TextStyle? get errorStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    final ThemeData themeData= Theme.of(context);
-    if (states.contains(MaterialState.disabled)) {
-      return themeData.textTheme.bodySmall!.copyWith(color: Colors.transparent);
-    }
-    return themeData.textTheme.bodySmall!.copyWith(color: themeData.colorScheme.error);
-  });
-
-  @override
-  Color? get fillColor => MaterialStateColor.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      // dark theme: 5% white
-      // light theme: 2% black
-      switch (Theme.of(context).brightness) {
-        case Brightness.dark:
-          return const Color(0x0DFFFFFF);
-        case Brightness.light:
-          return const Color(0x05000000) ;
-      }
-    }
-    // dark theme: 10% white
-    // light theme: 4% black
-    switch (Theme.of(context).brightness) {
-      case Brightness.dark: return const Color(0x1AFFFFFF);
-      case Brightness.light:return const Color(0x0A000000) ;
-    }
-  });
-
-  @override
-  Color? get iconColor => MaterialStateColor.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) && !states.contains(MaterialState.focused)) {
-      return Theme.of(context).disabledColor;
-    }
-    if (states.contains(MaterialState.focused)) {
-      return Theme.of(context).colorScheme.primary;
-    }
-    switch (Theme.of(context).brightness) {
-      case Brightness.dark:
-        return Colors.white70;
-      case Brightness.light:
-        return Colors.black45;
-    }
-  });
-
-  @override
-  Color? get prefixIconColor => MaterialStateColor.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) && !states.contains(MaterialState.focused)) {
-      return Theme.of(context).disabledColor;
-    }
-    if (states.contains(MaterialState.focused)) {
-      return Theme.of(context).colorScheme.primary;
-    }
-    switch (Theme.of(context).brightness) {
-      case Brightness.dark:
-        return Colors.white70;
-      case Brightness.light:
-        return Colors.black45;
-    }
-  });
-
-  @override
-  Color? get suffixIconColor => MaterialStateColor.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) && !states.contains(MaterialState.focused)) {
-      return Theme.of(context).disabledColor;
-    }
-    if (states.contains(MaterialState.focused)) {
-      return Theme.of(context).colorScheme.primary;
-    }
-    switch (Theme.of(context).brightness) {
-      case Brightness.dark:
-        return Colors.white70;
-      case Brightness.light:
-        return Colors.black45;
-    }
-  });
-}
-
 // BEGIN GENERATED TOKEN PROPERTIES - InputDecorator
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -4545,9 +4369,10 @@ class _InputDecoratorDefaultsM3 extends InputDecorationTheme {
   @override
   TextStyle? get hintStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return TextStyle(color: Theme.of(context).disabledColor);
+      // FIXME
+      return TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant);
     }
-    return TextStyle(color: Theme.of(context).hintColor);
+    return TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant);
   });
 
   @override
@@ -4631,7 +4456,7 @@ class _InputDecoratorDefaultsM3 extends InputDecorationTheme {
 
   @override
   TextStyle? get labelStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    final TextStyle textStyle = _textTheme.bodyLarge ?? const TextStyle();
+    final TextStyle textStyle = _textTheme.bodyLarge;
     if(states.contains(MaterialState.error)) {
       if (states.contains(MaterialState.focused)) {
         return textStyle.copyWith(color: _colors.error);
@@ -4655,7 +4480,7 @@ class _InputDecoratorDefaultsM3 extends InputDecorationTheme {
 
   @override
   TextStyle? get floatingLabelStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    final TextStyle textStyle = _textTheme.bodyLarge ?? const TextStyle();
+    final TextStyle textStyle = _textTheme.bodyLarge;
     if(states.contains(MaterialState.error)) {
       if (states.contains(MaterialState.focused)) {
         return textStyle.copyWith(color: _colors.error);
@@ -4679,7 +4504,7 @@ class _InputDecoratorDefaultsM3 extends InputDecorationTheme {
 
   @override
   TextStyle? get helperStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    final TextStyle textStyle = _textTheme.bodySmall ?? const TextStyle();
+    final TextStyle textStyle = _textTheme.bodySmall;
     if (states.contains(MaterialState.disabled)) {
       return textStyle.copyWith(color: _colors.onSurface.withOpacity(0.38));
     }
@@ -4688,7 +4513,7 @@ class _InputDecoratorDefaultsM3 extends InputDecorationTheme {
 
   @override
   TextStyle? get errorStyle => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-    final TextStyle textStyle = _textTheme.bodySmall ?? const TextStyle();
+    final TextStyle textStyle = _textTheme.bodySmall;
     return textStyle.copyWith(color: _colors.error);
   });
 }

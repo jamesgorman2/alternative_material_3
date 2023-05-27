@@ -25,8 +25,7 @@ Future<void> pumpTestWidget(
   await tester.pumpWidget(
     MaterialApp(
       theme: ThemeData(
-        primaryColor: primaryColor,
-        colorScheme: const ColorScheme.light().copyWith(primary: colorSchemePrimary),
+        colorScheme: ColorScheme.m3DefaultLight.copyWith(primary: colorSchemePrimary),
       ),
       home: MediaQuery(
         data: const MediaQueryData(

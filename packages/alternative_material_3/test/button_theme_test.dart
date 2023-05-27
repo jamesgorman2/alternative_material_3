@@ -54,7 +54,7 @@ void main() {
       padding: EdgeInsets.zero,
       shape: const StadiumBorder(),
       alignedDropdown: true,
-      colorScheme: const ColorScheme.dark(),
+      colorScheme: ColorScheme.m3DefaultDark,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
     expect(theme.textTheme, ButtonTextTheme.primary);
@@ -63,7 +63,7 @@ void main() {
     expect(theme.padding, EdgeInsets.zero);
     expect(theme.shape, const StadiumBorder());
     expect(theme.alignedDropdown, true);
-    expect(theme.colorScheme, const ColorScheme.dark());
+    expect(theme.colorScheme, ColorScheme.m3DefaultDark);
   });
 
   testWidgets('ButtonTheme alignedDropdown', (WidgetTester tester) async {

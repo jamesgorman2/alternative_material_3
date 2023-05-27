@@ -336,7 +336,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       // Custom theme disabled color
-      expect(theme.disabledColor, isNot(disabledColor));
+      expect(theme.colorScheme.disabledColor, isNot(disabledColor));
       expect(buttonTextStyle('First child').color, disabledColor);
       expect(iconTheme(Icons.check).data.color, disabledColor);
     },

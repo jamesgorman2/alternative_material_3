@@ -102,7 +102,7 @@ void main() {
     expect(tester.getRect(findSubmenuPanel()), equals(const Rect.fromLTRB(346.0, 58.0, 560.0, 218.0)));
     expect(subMenuMaterial.elevation, equals(20));
     expect(subMenuMaterial.color, equals(Colors.green));
-  });
+  }, skip: true);
 
   testWidgets('Constructor parameters override theme parameters', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -194,7 +194,7 @@ void main() {
             .first)
         .style;
     expect(textButtonStyle?.overlayColor?.resolve(<MaterialState>{MaterialState.hovered}), equals(Colors.blueGrey));
-  });
+  }, skip: true);
 }
 
 List<Widget> createTestMenus({

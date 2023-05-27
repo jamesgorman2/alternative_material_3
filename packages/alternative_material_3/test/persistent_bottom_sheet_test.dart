@@ -521,8 +521,8 @@ void main() {
     );
 
     expect(find.text('showModalBottomSheet'), findsOneWidget);
-    expect(tester.getSize(find.byKey(bottomSheetKey)), const Size(800.0, 200.0));
-    expect(tester.getTopLeft(find.byKey(bottomSheetKey)), const Offset(0.0, 400.0));
+    expect(tester.getSize(find.byKey(bottomSheetKey)), const Size(640.0, 200.0));
+    expect(tester.getTopLeft(find.byKey(bottomSheetKey)), const Offset(80.0, 400.0));
 
     // Show the modal bottomSheet
     await tester.tap(find.text('showModalBottomSheet'));

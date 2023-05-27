@@ -14,6 +14,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'core/image_data.dart';
+import 'flutter_test/extensions.dart';
 import 'painting/mocks_for_image_cache.dart';
 
 void main() {
@@ -36,7 +37,7 @@ void main() {
     expect(decoration.color, equals(backgroundColor));
 
     final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-    expect(paragraph.text.style!.color, equals(ThemeData.fallback().primaryColorLight));
+    expect(paragraph.text.style!.color, ColorMatcher(ColorScheme.m3DefaultLight.onPrimaryContainer));
   });
 
   testWidgets('CircleAvatar with light background color', (WidgetTester tester) async {
@@ -58,7 +59,7 @@ void main() {
     expect(decoration.color, equals(backgroundColor));
 
     final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-    expect(paragraph.text.style!.color, equals(ThemeData.fallback().primaryColorDark));
+    expect(paragraph.text.style!.color, ColorMatcher(ColorScheme.m3DefaultLight.onPrimaryContainer));
   });
 
   testWidgets('CircleAvatar with image background', (WidgetTester tester) async {
@@ -130,20 +131,18 @@ void main() {
       ),
     );
 
-    final ThemeData fallback = ThemeData.fallback();
-
     final RenderConstrainedBox box = tester.renderObject(find.byType(CircleAvatar));
     expect(box.size, equals(const Size(40.0, 40.0)));
     final RenderDecoratedBox child = box.child! as RenderDecoratedBox;
     final BoxDecoration decoration = child.decoration as BoxDecoration;
-    expect(decoration.color, equals(fallback.primaryColorDark));
+    expect(decoration.color, ColorMatcher(ColorScheme.m3DefaultLight.primaryContainer));
 
     final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
     expect(paragraph.text.style!.color, equals(foregroundColor));
   });
 
   testWidgets('CircleAvatar default colors', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     await tester.pumpWidget(
       wrap(
         child: Theme(
@@ -175,7 +174,7 @@ void main() {
       ),
     );
 
-    expect(tester.getSize(find.text('Z')), equals(const Size(16.0, 16.0)));
+    expect(tester.getSize(find.text('Z')), equals(const Size(17.0, 24.0)));
 
     await tester.pumpWidget(
       wrap(
@@ -205,7 +204,7 @@ void main() {
         ),
       ),
     );
-    expect(tester.getSize(find.text('Z')), equals(const Size(16.0, 16.0)));
+    expect(tester.getSize(find.text('Z')), equals(const Size(17.0, 24.0)));
   });
 
   testWidgets('CircleAvatar respects minRadius', (WidgetTester tester) async {
@@ -229,7 +228,7 @@ void main() {
     expect(decoration.color, equals(backgroundColor));
 
     final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-    expect(paragraph.text.style!.color, equals(ThemeData.fallback().primaryColorLight));
+    expect(paragraph.text.style!.color, ColorMatcher(ColorScheme.m3DefaultLight.onPrimaryContainer));
   });
 
   testWidgets('CircleAvatar respects maxRadius', (WidgetTester tester) async {
@@ -251,7 +250,7 @@ void main() {
     expect(decoration.color, equals(backgroundColor));
 
     final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-    expect(paragraph.text.style!.color, equals(ThemeData.fallback().primaryColorLight));
+    expect(paragraph.text.style!.color, ColorMatcher(ColorScheme.m3DefaultLight.onPrimaryContainer));
   });
 
   testWidgets('CircleAvatar respects setting both minRadius and maxRadius', (WidgetTester tester) async {
@@ -274,62 +273,7 @@ void main() {
     expect(decoration.color, equals(backgroundColor));
 
     final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-    expect(paragraph.text.style!.color, equals(ThemeData.fallback().primaryColorLight));
-  });
-
-  group('Material 2', () {
-    // Tests that are only relevant for Material 2. Once ThemeData.useMaterial3
-    // is turned on by default, these tests can be removed.
-
-    testWidgets('CircleAvatar default colors with light theme', (WidgetTester tester) async {
-      final ThemeData theme = ThemeData(
-        primaryColor: Colors.grey.shade100,
-        primaryColorBrightness: Brightness.light,
-      );
-      await tester.pumpWidget(
-        wrap(
-          child: Theme(
-            data: theme,
-            child: const CircleAvatar(
-              child: Text('Z'),
-            ),
-          ),
-        ),
-      );
-
-      final RenderConstrainedBox box = tester.renderObject(find.byType(CircleAvatar));
-      final RenderDecoratedBox child = box.child! as RenderDecoratedBox;
-      final BoxDecoration decoration = child.decoration as BoxDecoration;
-      expect(decoration.color, equals(theme.primaryColorLight));
-
-      final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-      expect(paragraph.text.style!.color, equals(theme.primaryTextTheme.titleLarge!.color));
-    });
-
-    testWidgets('CircleAvatar default colors with dark theme', (WidgetTester tester) async {
-      final ThemeData theme = ThemeData(
-        primaryColor: Colors.grey.shade800,
-        primaryColorBrightness: Brightness.dark,
-      );
-      await tester.pumpWidget(
-        wrap(
-          child: Theme(
-            data: theme,
-            child: const CircleAvatar(
-              child: Text('Z'),
-            ),
-          ),
-        ),
-      );
-
-      final RenderConstrainedBox box = tester.renderObject(find.byType(CircleAvatar));
-      final RenderDecoratedBox child = box.child! as RenderDecoratedBox;
-      final BoxDecoration decoration = child.decoration as BoxDecoration;
-      expect(decoration.color, equals(theme.primaryColorDark));
-
-      final RenderParagraph paragraph = tester.renderObject(find.text('Z'));
-      expect(paragraph.text.style!.color, equals(theme.primaryTextTheme.titleLarge!.color));
-    });
+    expect(paragraph.text.style!.color, ColorMatcher(ColorScheme.m3DefaultLight.onPrimaryContainer));
   });
 }
 

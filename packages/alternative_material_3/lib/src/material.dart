@@ -439,9 +439,9 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     if (color == null) {
       switch (widget.type) {
         case MaterialType.canvas:
-          color = theme.canvasColor;
+          color = theme.colorScheme.surface;
         case MaterialType.card:
-          color = theme.cardColor;
+          color = theme.colorScheme.surfaceContainerLow;
         case MaterialType.button:
         case MaterialType.circle:
         case MaterialType.transparency:
@@ -455,7 +455,7 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Color? backgroundColor = _getBackgroundColor(context);
-    final Color modelShadowColor = widget.shadowColor ?? (theme.useMaterial3 ? theme.colorScheme.shadow : theme.shadowColor);
+    final Color modelShadowColor = widget.shadowColor ?? theme.colorScheme.shadow;
     // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
     final double modelElevation = widget.elevation;
     assert(
@@ -468,7 +468,7 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     Widget? contents = widget.child;
     if (contents != null) {
       contents = AnimatedDefaultTextStyle(
-        style: widget.textStyle ?? Theme.of(context).textTheme.bodyMedium!,
+        style: widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
         duration: widget.animationDuration,
         child: contents,
       );
@@ -498,9 +498,7 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     // we choose not to as we want the change from the fast-path to the
     // slow-path to be noticeable in the construction site of Material.
     if (widget.type == MaterialType.canvas && widget.shape == null && widget.borderRadius == null) {
-      final Color color = Theme.of(context).useMaterial3
-        ? ElevationOverlay.applySurfaceTint(backgroundColor!, widget.surfaceTintColor, widget.elevation)
-        : ElevationOverlay.applyOverlay(context, backgroundColor!, widget.elevation);
+      final Color color = ElevationOverlay.applySurfaceTint(backgroundColor!, widget.surfaceTintColor, widget.elevation);
 
       return AnimatedPhysicalModel(
         curve: Curves.fastOutSlowIn,
@@ -945,9 +943,7 @@ class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> 
   Widget build(BuildContext context) {
     final ShapeBorder shape = _border!.evaluate(animation)!;
     final double elevation = _elevation!.evaluate(animation);
-    final Color color = Theme.of(context).useMaterial3
-      ? ElevationOverlay.applySurfaceTint(widget.color, _surfaceTintColor?.evaluate(animation), elevation)
-      : ElevationOverlay.applyOverlay(context, widget.color, elevation);
+    final Color color = ElevationOverlay.applySurfaceTint(widget.color, _surfaceTintColor?.evaluate(animation), elevation);
     // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
     final double modelElevation = widget.shadowColor != null ? elevation : 0;
     final Color shadowColor = _shadowColor?.evaluate(animation) ?? const Color(0x00000000);

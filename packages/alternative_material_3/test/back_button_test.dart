@@ -136,7 +136,7 @@ void main() {
   testWidgets('BackButton color with ButtonStyle', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(),
         home: const Material(
           child: BackButton(
             style: ButtonStyle(
@@ -157,7 +157,7 @@ void main() {
   testWidgets('BackButton.style.iconColor parameter overrides BackButton.color', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(),
         home: const Material(
           child: BackButton(
             color: Colors.green,
@@ -284,7 +284,7 @@ void main() {
   testWidgets('CloseButton color with ButtonStyle', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(),
         home: const Material(
           child: CloseButton(
             style: ButtonStyle(
@@ -305,7 +305,7 @@ void main() {
   testWidgets('CloseButton.style.iconColor parameter overrides CloseButton.color', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(),
         home: const Material(
           child: CloseButton(
             color: Colors.green,

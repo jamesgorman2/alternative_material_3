@@ -147,7 +147,7 @@ void main() {
       );
       return MaterialApp(
         theme: ThemeData.from(
-            colorScheme: const ColorScheme.light(), useMaterial3: true)
+            colorScheme: ColorScheme.m3DefaultLight, )
             .copyWith(
           searchViewTheme: overallTheme,
         ),

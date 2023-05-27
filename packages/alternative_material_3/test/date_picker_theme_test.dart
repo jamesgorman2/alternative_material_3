@@ -124,7 +124,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.light(useMaterial3: true),
+        theme: ThemeData.light(),
         home: Builder(
           builder: (BuildContext context) {
             m3 = DatePickerTheme.defaults(context);
@@ -183,70 +183,6 @@ void main() {
     expect(m3.rangePickerHeaderForegroundColor, colorScheme.onSurfaceVariant);
     expect(m3.rangePickerHeaderHeadlineStyle, textTheme.titleLarge);
     expect(m3.rangePickerHeaderHelpStyle, textTheme.titleSmall);
-  });
-
-
-  testWidgets('DatePickerTheme.defaults M2 defaults', (WidgetTester tester) async {
-    late final DatePickerThemeData m2; // M2 defaults
-    late final ThemeData theme;
-    late final ColorScheme colorScheme;
-    late final TextTheme textTheme;
-
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: ThemeData.light(useMaterial3: false),
-        home: Builder(
-          builder: (BuildContext context) {
-            m2 = DatePickerTheme.defaults(context);
-            theme = Theme.of(context);
-            colorScheme = theme.colorScheme;
-            textTheme = theme.textTheme;
-            return Container();
-          },
-        ),
-      ),
-    );
-
-    expect(m2.elevation, 24);
-    expect(m2.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))));
-    expect(m2.headerBackgroundColor, colorScheme.primary);
-    expect(m2.headerForegroundColor, colorScheme.onPrimary);
-    expect(m2.headerHeadlineStyle, textTheme.headlineSmall);
-    expect(m2.headerHelpStyle, textTheme.labelSmall);
-    expect(m2.weekdayStyle, textTheme.bodySmall?.apply(color: colorScheme.onSurface.withOpacity(0.60)));
-    expect(m2.dayStyle, textTheme.bodySmall);
-    expect(m2.dayForegroundColor?.resolve(<MaterialState>{}), colorScheme.onSurface);
-    expect(m2.dayForegroundColor?.resolve(<MaterialState>{MaterialState.selected}), colorScheme.onPrimary);
-    expect(m2.dayForegroundColor?.resolve(<MaterialState>{MaterialState.disabled}), colorScheme.onSurface.withOpacity(0.38));
-    expect(m2.dayBackgroundColor?.resolve(<MaterialState>{}), null);
-    expect(m2.dayBackgroundColor?.resolve(<MaterialState>{MaterialState.selected}), colorScheme.primary);
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{}), null);
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{MaterialState.selected, MaterialState.hovered}), colorScheme.onPrimary.withOpacity(0.08));
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{MaterialState.selected, MaterialState.focused}), colorScheme.onPrimary.withOpacity(0.12));
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{MaterialState.selected, MaterialState.pressed}), colorScheme.onPrimary.withOpacity(0.38));
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{MaterialState.hovered}), colorScheme.onSurfaceVariant.withOpacity(0.08));
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{MaterialState.focused}), colorScheme.onSurfaceVariant.withOpacity(0.12));
-    expect(m2.dayOverlayColor?.resolve(<MaterialState>{MaterialState.pressed}), colorScheme.onSurfaceVariant.withOpacity(0.12));
-    expect(m2.todayForegroundColor?.resolve(<MaterialState>{}), colorScheme.primary);
-    expect(m2.todayForegroundColor?.resolve(<MaterialState>{MaterialState.disabled}), colorScheme.onSurface.withOpacity(0.38));
-    expect(m2.todayBorder, BorderSide(color: colorScheme.primary));
-    expect(m2.yearStyle, textTheme.bodyLarge);
-    expect(m2.rangePickerBackgroundColor, colorScheme.surface);
-    expect(m2.rangePickerElevation, 0);
-    expect(m2.rangePickerShape, const RoundedRectangleBorder());
-    expect(m2.rangePickerShadowColor, Colors.transparent);
-    expect(m2.rangePickerSurfaceTintColor, Colors.transparent);
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{}), null);
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{MaterialState.selected, MaterialState.hovered}), colorScheme.onPrimary.withOpacity(0.08));
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{MaterialState.selected, MaterialState.focused}), colorScheme.onPrimary.withOpacity(0.12));
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{MaterialState.selected, MaterialState.pressed}), colorScheme.onPrimary.withOpacity(0.38));
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{MaterialState.hovered}), colorScheme.onSurfaceVariant.withOpacity(0.08));
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{MaterialState.focused}), colorScheme.onSurfaceVariant.withOpacity(0.12));
-    expect(m2.rangeSelectionOverlayColor?.resolve(<MaterialState>{MaterialState.pressed}), colorScheme.onSurfaceVariant.withOpacity(0.12));
-    expect(m2.rangePickerHeaderBackgroundColor, colorScheme.primary);
-    expect(m2.rangePickerHeaderForegroundColor, colorScheme.onPrimary);
-    expect(m2.rangePickerHeaderHeadlineStyle, textTheme.headlineSmall);
-    expect(m2.rangePickerHeaderHelpStyle, textTheme.labelSmall);
   });
 
   testWidgets('Default DatePickerThemeData debugFillProperties', (WidgetTester tester) async {
@@ -310,7 +246,7 @@ void main() {
   testWidgets('DatePickerDialog uses ThemeData datePicker theme', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.light(useMaterial3: true).copyWith(
+        theme: ThemeData.light().copyWith(
           datePickerTheme: datePickerTheme,
         ),
         home: Directionality(
@@ -390,7 +326,7 @@ void main() {
   testWidgets('DateRangePickerDialog uses ThemeData datePicker theme', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.light(useMaterial3: true).copyWith(
+        theme: ThemeData.light().copyWith(
           datePickerTheme: datePickerTheme,
         ),
         home: Directionality(

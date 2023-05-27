@@ -154,9 +154,7 @@ class FilterChip extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
-    final ChipThemeData? defaults = Theme.of(context).useMaterial3
-      ? _FilterChipDefaultsM3(context, isEnabled, selected)
-      : null;
+    final ChipThemeData defaults = _FilterChipDefaultsM3(context, isEnabled, selected);
     return RawChip(
       defaultProperties: defaults,
       avatar: avatar,

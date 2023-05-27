@@ -20,7 +20,7 @@ Widget boilerplate({required Widget child}) {
 void main() {
 
   testWidgets('SegmentedButton is built with Material of type MaterialType.transparency', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     await tester.pumpWidget(
       MaterialApp(
         theme: theme,

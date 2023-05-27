@@ -1000,7 +1000,7 @@ class _TextFieldState extends State<TextField> with RestorationMixin implements 
       return effectiveDecoration.copyWith(
         errorText: effectiveDecoration.errorText ?? '',
         counterStyle: effectiveDecoration.errorStyle
-          ?? (themeData.useMaterial3 ? _m3CounterErrorStyle(context): _m2CounterErrorStyle(context)),
+          ?? _m3CounterErrorStyle(context),
         counterText: counterText,
         semanticCounterText: semanticCounterText,
       );
@@ -1222,8 +1222,7 @@ class _TextFieldState extends State<TextField> with RestorationMixin implements 
   }
 
   TextStyle _getInputStyleForState(TextStyle style) {
-    final ThemeData theme = Theme.of(context);
-    final TextStyle stateStyle = MaterialStateProperty.resolveAs(theme.useMaterial3 ? _m3StateInputStyle(context)! : _m2StateInputStyle(context)!, _materialState);
+    final TextStyle stateStyle = MaterialStateProperty.resolveAs(_m3StateInputStyle(context)!, _materialState);
     final TextStyle providedStyle = MaterialStateProperty.resolveAs(style, _materialState);
     return providedStyle.merge(stateStyle);
   }
@@ -1234,14 +1233,14 @@ class _TextFieldState extends State<TextField> with RestorationMixin implements 
     assert(debugCheckHasMaterialLocalizations(context));
     assert(debugCheckHasDirectionality(context));
     assert(
-      !(widget.style != null && widget.style!.inherit == false &&
+      !(widget.style != null && !widget.style!.inherit &&
         (widget.style!.fontSize == null || widget.style!.textBaseline == null)),
       'inherit false style must supply fontSize and textBaseline',
     );
 
     final ThemeData theme = Theme.of(context);
     final DefaultSelectionStyle selectionStyle = DefaultSelectionStyle.of(context);
-    final TextStyle style = _getInputStyleForState(theme.useMaterial3 ? _m3InputStyle(context) : theme.textTheme.titleMedium!).merge(widget.style);
+    final TextStyle style = _getInputStyleForState(_m3InputStyle(context)).merge(widget.style);
     final Brightness keyboardAppearance = widget.keyboardAppearance ?? theme.brightness;
     final TextEditingController controller = _effectiveController;
     final FocusNode focusNode = _effectiveFocusNode;
@@ -1485,17 +1484,6 @@ class _TextFieldState extends State<TextField> with RestorationMixin implements 
   }
 }
 
-TextStyle? _m2StateInputStyle(BuildContext context) => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-  final ThemeData theme = Theme.of(context);
-  if (states.contains(MaterialState.disabled)) {
-    return TextStyle(color: theme.disabledColor);
-  }
-  return TextStyle(color: theme.textTheme.titleMedium?.color);
-});
-
-TextStyle _m2CounterErrorStyle(BuildContext context) =>
-  Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.error);
-
 // BEGIN GENERATED TOKEN PROPERTIES - TextField
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -1507,14 +1495,14 @@ TextStyle _m2CounterErrorStyle(BuildContext context) =>
 
 TextStyle? _m3StateInputStyle(BuildContext context) => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
   if (states.contains(MaterialState.disabled)) {
-    return TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.38));
+    return TextStyle(color: Theme.of(context).textTheme.bodyLarge.color?.withOpacity(0.38));
   }
-  return TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color);
+  return TextStyle(color: Theme.of(context).textTheme.bodyLarge.color);
 });
 
-TextStyle _m3InputStyle(BuildContext context) => Theme.of(context).textTheme.bodyLarge!;
+TextStyle _m3InputStyle(BuildContext context) => Theme.of(context).textTheme.bodyLarge;
 
 TextStyle _m3CounterErrorStyle(BuildContext context) =>
-  Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.error);
+  Theme.of(context).textTheme.bodySmall.copyWith(color: Theme.of(context).colorScheme.error);
 
 // END GENERATED TOKEN PROPERTIES - TextField

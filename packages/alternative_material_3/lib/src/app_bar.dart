@@ -814,7 +814,7 @@ class _AppBarState extends State<AppBar> {
     final ThemeData theme = Theme.of(context);
     final IconButtonThemeData iconButtonTheme = IconButtonTheme.of(context);
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
-    final AppBarTheme defaults = theme.useMaterial3 ? _AppBarDefaultsM3(context) : _AppBarDefaultsM2(context);
+    final AppBarTheme defaults = _AppBarDefaultsM3(context);
     final ScaffoldState? scaffold = Scaffold.maybeOf(context);
     final ModalRoute<dynamic>? parentRoute = ModalRoute.of(context);
 
@@ -903,49 +903,42 @@ class _AppBarState extends State<AppBar> {
       }
     }
     if (leading != null) {
-      if (theme.useMaterial3) {
-        final IconButtonThemeData effectiveIconButtonTheme;
+      final IconButtonThemeData effectiveIconButtonTheme;
 
-        // This comparison is to check if there is a custom [overallIconTheme]. If true, it means that no
-        // custom [overallIconTheme] is provided, so [iconButtonTheme] is applied. Otherwise, we generate
-        // a new [IconButtonThemeData] based on the values from [overallIconTheme]. If [iconButtonTheme] only
-        // has null values, the default [overallIconTheme] will be applied below by [IconTheme.merge]
-        if (overallIconTheme == defaults.iconTheme) {
-          effectiveIconButtonTheme = iconButtonTheme;
-        } else {
-          // The [IconButton.styleFrom] method is used to generate a correct [overlayColor] based on the [foregroundColor].
-          final ButtonStyle leadingIconButtonStyle = IconButton.styleFrom(
-            foregroundColor: overallIconTheme.color,
-            iconSize: overallIconTheme.size,
-          );
-
-          effectiveIconButtonTheme = IconButtonThemeData(
-            style: iconButtonTheme.style?.copyWith(
-              foregroundColor: leadingIconButtonStyle.foregroundColor,
-              overlayColor: leadingIconButtonStyle.overlayColor,
-              iconSize: leadingIconButtonStyle.iconSize,
-            )
-          );
-        }
-
-        leading = IconButtonTheme(
-            data: effectiveIconButtonTheme,
-            child: leading is IconButton ? Center(child: leading) : leading,
-        );
-
-        // Based on the Material Design 3 specs, the leading IconButton should have
-        // a size of 48x48, and a highlight size of 40x40. Users can also put other
-        // type of widgets on leading with the original config.
-        leading = ConstrainedBox(
-          constraints: BoxConstraints.tightFor(width: widget.leadingWidth ?? _kLeadingWidth),
-          child: leading,
-        );
+      // This comparison is to check if there is a custom [overallIconTheme]. If true, it means that no
+      // custom [overallIconTheme] is provided, so [iconButtonTheme] is applied. Otherwise, we generate
+      // a new [IconButtonThemeData] based on the values from [overallIconTheme]. If [iconButtonTheme] only
+      // has null values, the default [overallIconTheme] will be applied below by [IconTheme.merge]
+      if (overallIconTheme == defaults.iconTheme) {
+        effectiveIconButtonTheme = iconButtonTheme;
       } else {
-        leading = ConstrainedBox(
-          constraints: BoxConstraints.tightFor(width: widget.leadingWidth ?? _kLeadingWidth),
-          child: leading,
+        // The [IconButton.styleFrom] method is used to generate a correct [overlayColor] based on the [foregroundColor].
+        final ButtonStyle leadingIconButtonStyle = IconButton.styleFrom(
+          foregroundColor: overallIconTheme.color,
+          iconSize: overallIconTheme.size,
+        );
+
+        effectiveIconButtonTheme = IconButtonThemeData(
+          style: iconButtonTheme.style?.copyWith(
+            foregroundColor: leadingIconButtonStyle.foregroundColor,
+            overlayColor: leadingIconButtonStyle.overlayColor,
+            iconSize: leadingIconButtonStyle.iconSize,
+          )
         );
       }
+
+      leading = IconButtonTheme(
+          data: effectiveIconButtonTheme,
+          child: leading is IconButton ? Center(child: leading) : leading,
+      );
+
+      // Based on the Material Design 3 specs, the leading IconButton should have
+      // a size of 48x48, and a highlight size of 40x40. Users can also put other
+      // type of widgets on leading with the original config.
+      leading = ConstrainedBox(
+        constraints: BoxConstraints.tightFor(width: widget.leadingWidth ?? _kLeadingWidth),
+        child: leading,
+      );
     }
 
     Widget? title = widget.title;
@@ -999,7 +992,6 @@ class _AppBarState extends State<AppBar> {
     if (widget.actions != null && widget.actions!.isNotEmpty) {
       actions = Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: theme.useMaterial3 ? CrossAxisAlignment.center : CrossAxisAlignment.stretch,
         children: widget.actions!,
       );
     } else if (hasEndDrawer) {
@@ -1124,7 +1116,7 @@ class _AppBarState extends State<AppBar> {
         ThemeData.estimateBrightnessForColor(backgroundColor),
         // Make the status bar transparent for M3 so the elevation overlay
         // color is picked up by the statusbar.
-        theme.useMaterial3 ? const Color(0x00000000) : null,
+        const Color(0x00000000),
       );
 
     return Semantics(
@@ -1314,6 +1306,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         || bottom != oldDelegate.bottom
         || _bottomHeight != oldDelegate._bottomHeight
         || elevation != oldDelegate.elevation
+        || scrolledUnderElevation != oldDelegate.scrolledUnderElevation
         || shadowColor != oldDelegate.shadowColor
         || backgroundColor != oldDelegate.backgroundColor
         || foregroundColor != oldDelegate.foregroundColor
@@ -2227,43 +2220,6 @@ mixin _ScrollUnderFlexibleConfig {
   EdgeInsetsGeometry? get collapsedCenteredTitlePadding;
   EdgeInsetsGeometry? get expandedTitlePadding;
 }
-
-// Hand coded defaults based on Material Design 2.
-class _AppBarDefaultsM2 extends AppBarTheme {
-  _AppBarDefaultsM2(this.context)
-    : super(
-      elevation: 4.0,
-      shadowColor: const Color(0xFF000000),
-      titleSpacing: NavigationToolbar.kMiddleSpacing,
-      toolbarHeight: kToolbarHeight,
-    );
-
-  final BuildContext context;
-  late final ThemeData _theme = Theme.of(context);
-  late final ColorScheme _colors = _theme.colorScheme;
-
-  @override
-  Color? get backgroundColor => _colors.brightness == Brightness.dark ? _colors.surface : _colors.primary;
-
-  @override
-  Color? get foregroundColor => _colors.brightness == Brightness.dark ? _colors.onSurface : _colors.onPrimary;
-
-  @override
-  IconThemeData? get iconTheme => _theme.iconTheme;
-
-  @override
-  TextStyle? get toolbarTextStyle => _theme.textTheme.bodyMedium;
-
-  @override
-  TextStyle? get titleTextStyle => _theme.textTheme.titleLarge;
-}
-
-// BEGIN GENERATED TOKEN PROPERTIES - AppBar
-
-// Do not edit by hand. The code between the "BEGIN GENERATED" and
-// "END GENERATED" comments are generated from data in the Material
-// Design token database by the script:
-//   dev/tools/gen_defaults/bin/gen_defaults.dart.
 
 // Token database version: v0_162
 

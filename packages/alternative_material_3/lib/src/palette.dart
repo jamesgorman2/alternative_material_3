@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:alternative_material_3/material.dart' as flutter;
+import 'package:flutter/material.dart' as flutter;
 import 'package:material_color_utilities/material_color_utilities.dart';
 import 'package:meta/meta.dart';
 
@@ -22,16 +22,7 @@ class Palette {
 
   ///
   factory Palette.fromSeedColor(Color color) {
-    final cam = Cam16.fromInt(color.value);
-    final hue = cam.hue;
-    final chroma = cam.chroma;
-    return Palette(
-        primary: TonalPalette.of(hue, math.max(48, chroma)),
-        secondary: TonalPalette.of(hue, 16),
-        tertiary: TonalPalette.of(hue + 60, 24),
-        neutral: TonalPalette.of(hue, 4),
-        neutralVariant: TonalPalette.of(hue, 8),
-        error: _defaultErrorPalette);
+    return Palette.fromCorePalette(CorePalette.of(color.value));
   }
 
   ///
@@ -88,10 +79,11 @@ class Palette {
   factory Palette.fromCorePalette(CorePalette corePalette) {
     return Palette(
       primary: corePalette.primary,
-      secondary: corePalette.primary,
-      tertiary: corePalette.primary,
-      neutral: corePalette.primary,
-      neutralVariant: corePalette.primary,
+      secondary: corePalette.secondary,
+      tertiary: corePalette.tertiary,
+      neutral: corePalette.neutral,
+      neutralVariant: corePalette.neutralVariant,
+      error: corePalette.error,
     );
   }
 
@@ -132,7 +124,8 @@ class Palette {
     );
   }
 
-  static TonalPalette lerpTonalPalette(TonalPalette a, TonalPalette b, double t) {
+  static TonalPalette lerpTonalPalette(
+      TonalPalette a, TonalPalette b, double t) {
     // TODO - remove at material_color_util 0.5.0
     final aCam = Cam16.fromInt(a.get(40));
     final aHue = aCam.hue;
@@ -148,13 +141,12 @@ class Palette {
 
   static Palette lerp(Palette a, Palette b, double t) {
     return Palette(
-      primary: lerpTonalPalette(a.primary, b.primary, t),
-      secondary: lerpTonalPalette(a.secondary, b.secondary, t),
-      tertiary: lerpTonalPalette(a.tertiary, b.tertiary, t),
-      neutral: lerpTonalPalette(a.neutral, b.neutral, t),
-      neutralVariant: lerpTonalPalette(a.neutralVariant, b.neutralVariant, t),
-      error: lerpTonalPalette(a.error, b.error, t)
-    );
+        primary: lerpTonalPalette(a.primary, b.primary, t),
+        secondary: lerpTonalPalette(a.secondary, b.secondary, t),
+        tertiary: lerpTonalPalette(a.tertiary, b.tertiary, t),
+        neutral: lerpTonalPalette(a.neutral, b.neutral, t),
+        neutralVariant: lerpTonalPalette(a.neutralVariant, b.neutralVariant, t),
+        error: lerpTonalPalette(a.error, b.error, t));
   }
 
   @override

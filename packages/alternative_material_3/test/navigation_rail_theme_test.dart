@@ -16,7 +16,7 @@ void main() {
     // Material 3 defaults
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.light().copyWith(useMaterial3: true),
+        theme: ThemeData.light().copyWith(),
         home: Scaffold(
           body: NavigationRail(
             selectedIndex: 0,
@@ -33,7 +33,7 @@ void main() {
     expect(_selectedIconTheme(tester).color, ThemeData().colorScheme.onSecondaryContainer);
     expect(_selectedIconTheme(tester).opacity, null);
     expect(_unselectedIconTheme(tester).size, 24.0);
-    expect(_unselectedIconTheme(tester).color, ThemeData().colorScheme.onSurface);
+    expect(_unselectedIconTheme(tester).color, ThemeData().colorScheme.onSurfaceVariant);
     expect(_unselectedIconTheme(tester).opacity, null);
     expect(_selectedLabelStyle(tester).fontSize, 14.0);
     expect(_unselectedLabelStyle(tester).fontSize, 14.0);
@@ -44,36 +44,6 @@ void main() {
     expect(_indicatorDecoration(tester)?.shape, const StadiumBorder());
     final InkResponse inkResponse = tester.allWidgets.firstWhere((Widget object) => object.runtimeType.toString() == '_IndicatorInkWell') as InkResponse;
     expect(inkResponse.customBorder, const StadiumBorder());
-  });
-
-  testWidgets('Default values are used when no NavigationRail or NavigationRailThemeData properties are specified (Material 2)', (WidgetTester tester) async {
-    // This test can be removed when `useMaterial3` is deprecated.
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: ThemeData.light().copyWith(useMaterial3: false),
-        home: Scaffold(
-          body: NavigationRail(
-            selectedIndex: 0,
-            destinations: _destinations(),
-          ),
-        ),
-      ),
-    );
-
-    expect(_railMaterial(tester).color, ThemeData().colorScheme.surface);
-    expect(_railMaterial(tester).elevation, 0);
-    expect(_destinationSize(tester).width, 72.0);
-    expect(_selectedIconTheme(tester).size, 24.0);
-    expect(_selectedIconTheme(tester).color, ThemeData().colorScheme.primary);
-    expect(_selectedIconTheme(tester).opacity, 1.0);
-    expect(_unselectedIconTheme(tester).size, 24.0);
-    expect(_unselectedIconTheme(tester).color, ThemeData().colorScheme.onSurface);
-    expect(_unselectedIconTheme(tester).opacity, 0.64);
-    expect(_selectedLabelStyle(tester).fontSize, 14.0);
-    expect(_unselectedLabelStyle(tester).fontSize, 14.0);
-    expect(_destinationsAlign(tester).alignment, Alignment.topCenter);
-    expect(_labelType(tester), NavigationRailLabelType.none);
-    expect(find.byType(NavigationIndicator), findsNothing);
   });
 
   testWidgets('NavigationRailThemeData values are used when no NavigationRail properties are specified', (WidgetTester tester) async {

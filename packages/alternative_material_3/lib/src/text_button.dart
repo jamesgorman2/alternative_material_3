@@ -13,7 +13,6 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'ink_ripple.dart';
 import 'ink_well.dart';
 import 'material_state.dart';
 import 'text_button_theme.dart';
@@ -344,32 +343,7 @@ class TextButton extends ButtonStyleButton {
   /// {@endtemplate}
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
-    return Theme.of(context).useMaterial3
-      ? _TextButtonDefaultsM3(context)
-      : styleFrom(
-          foregroundColor: colorScheme.primary,
-          disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
-          backgroundColor: Colors.transparent,
-          disabledBackgroundColor: Colors.transparent,
-          shadowColor: theme.shadowColor,
-          elevation: 0,
-          textStyle: theme.textTheme.labelLarge,
-          padding: _scaledPadding(context),
-          minimumSize: const Size(64, 36),
-          maximumSize: Size.infinite,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-          enabledMouseCursor: SystemMouseCursors.click,
-          disabledMouseCursor: SystemMouseCursors.basic,
-          visualDensity: theme.visualDensity,
-          tapTargetSize: theme.materialTapTargetSize,
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-          splashFactory: InkRipple.splashFactory,
-        );
+    return _TextButtonDefaultsM3(context);
   }
 
   /// Returns the [TextButtonThemeData.style] of the closest
@@ -381,9 +355,8 @@ class TextButton extends ButtonStyleButton {
 }
 
 EdgeInsetsGeometry _scaledPadding(BuildContext context) {
-  final bool useMaterial3 = Theme.of(context).useMaterial3;
   return ButtonStyleButton.scaledPadding(
-    useMaterial3 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8) :  const EdgeInsets.all(8),
+    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     const EdgeInsets.symmetric(horizontal: 8),
     const EdgeInsets.symmetric(horizontal: 4),
     MediaQuery.textScaleFactorOf(context),
@@ -493,9 +466,8 @@ class _TextButtonWithIcon extends TextButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final bool useMaterial3 = Theme.of(context).useMaterial3;
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      useMaterial3 ? const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 8) : const EdgeInsets.all(8),
+      const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 8),
       const EdgeInsets.symmetric(horizontal: 4),
       const EdgeInsets.symmetric(horizontal: 4),
       MediaQuery.textScaleFactorOf(context),

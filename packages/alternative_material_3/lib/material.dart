@@ -135,6 +135,7 @@ export 'src/outlined_button_theme.dart';
 export 'src/page.dart';
 export 'src/page_transitions_theme.dart';
 export 'src/paginated_data_table.dart';
+export 'src/palette.dart';
 export 'src/popup_menu.dart';
 export 'src/popup_menu_theme.dart';
 export 'src/progress_indicator.dart';

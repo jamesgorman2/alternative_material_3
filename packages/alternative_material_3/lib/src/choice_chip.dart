@@ -146,9 +146,7 @@ class ChoiceChip extends StatelessWidget
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
     final ChipThemeData chipTheme = ChipTheme.of(context);
-    final ChipThemeData? defaults = Theme.of(context).useMaterial3
-      ? _ChoiceChipDefaultsM3(context, isEnabled, selected)
-      : null;
+    final ChipThemeData defaults = _ChoiceChipDefaultsM3(context, isEnabled, selected);
     return RawChip(
       defaultProperties: defaults,
       avatar: avatar,
@@ -158,7 +156,6 @@ class ChoiceChip extends StatelessWidget
       onSelected: onSelected,
       pressElevation: pressElevation,
       selected: selected,
-      showCheckmark: Theme.of(context).useMaterial3,
       tooltip: tooltip,
       side: side,
       shape: shape,

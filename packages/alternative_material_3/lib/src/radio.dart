@@ -431,7 +431,7 @@ class _RadioState<T> extends State<Radio<T>> with TickerProviderStateMixin, Togg
     }
 
     final RadioThemeData radioTheme = RadioTheme.of(context);
-    final RadioThemeData defaults = Theme.of(context).useMaterial3 ? _RadioDefaultsM3(context) : _RadioDefaultsM2(context);
+    final RadioThemeData defaults = _RadioDefaultsM3(context);
     final MaterialTapTargetSize effectiveMaterialTapTargetSize = widget.materialTapTargetSize
       ?? radioTheme.materialTapTargetSize
       ?? defaults.materialTapTargetSize!;
@@ -547,50 +547,6 @@ class _RadioPainter extends ToggleablePainter {
       canvas.drawCircle(center, _kInnerRadius * position.value, paint);
     }
   }
-}
-
-// Hand coded defaults based on Material Design 2.
-class _RadioDefaultsM2 extends RadioThemeData {
-  _RadioDefaultsM2(this.context);
-
-  final BuildContext context;
-  late final ThemeData _theme = Theme.of(context);
-  late final ColorScheme _colors = _theme.colorScheme;
-
-  @override
-  MaterialStateProperty<Color> get fillColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return _theme.disabledColor;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return _colors.secondary;
-      }
-      return _theme.unselectedWidgetColor;
-    });
-  }
-
-  @override
-  MaterialStateProperty<Color> get overlayColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.pressed)) {
-        return fillColor.resolve(states).withAlpha(kRadialReactionAlpha);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _theme.focusColor;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _theme.hoverColor;
-      }
-      return Colors.transparent;
-    });
-  }
-
-  @override
-  MaterialTapTargetSize get materialTapTargetSize => _theme.materialTapTargetSize;
-
-  @override
-  VisualDensity get visualDensity => _theme.visualDensity;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Radio<T>

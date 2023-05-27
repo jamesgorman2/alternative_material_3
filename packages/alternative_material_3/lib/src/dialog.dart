@@ -214,12 +214,9 @@ class Dialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final DialogTheme dialogTheme = DialogTheme.of(context);
     final EdgeInsets effectivePadding = MediaQuery.viewInsetsOf(context) + (insetPadding ?? EdgeInsets.zero);
-    final DialogTheme defaults = theme.useMaterial3
-      ? (_fullscreen ? _DialogFullscreenDefaultsM3(context) : _DialogDefaultsM3(context))
-      : _DialogDefaultsM2(context);
+    final DialogTheme defaults = _fullscreen ? _DialogFullscreenDefaultsM3(context) : _DialogDefaultsM3(context);
 
     Widget dialogChild;
 
@@ -234,7 +231,7 @@ class Dialog extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 280.0),
           child: Material(
-            color: backgroundColor ?? dialogTheme.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+            color: backgroundColor ?? dialogTheme.backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHigh,
             elevation: elevation ?? dialogTheme.elevation ?? defaults.elevation!,
             shadowColor: shadowColor ?? dialogTheme.shadowColor ?? defaults.shadowColor,
             surfaceTintColor: surfaceTintColor ?? dialogTheme.surfaceTintColor ?? defaults.surfaceTintColor,
@@ -639,7 +636,7 @@ class AlertDialog extends StatelessWidget {
     assert(debugCheckHasMaterialLocalizations(context));
     final ThemeData theme = Theme.of(context);
     final DialogTheme dialogTheme = DialogTheme.of(context);
-    final DialogTheme defaults = theme.useMaterial3 ? _DialogDefaultsM3(context) : _DialogDefaultsM2(context);
+    final DialogTheme defaults = _DialogDefaultsM3(context);
 
     String? label = semanticLabel;
     switch (theme.platform) {
@@ -719,9 +716,9 @@ class AlertDialog extends StatelessWidget {
     }
 
     if (content != null) {
-      final EdgeInsets defaultContentPadding = EdgeInsets.only(
+      const EdgeInsets defaultContentPadding = EdgeInsets.only(
         left: 24.0,
-        top: theme.useMaterial3 ? 16.0 : 20.0,
+        top: 16.0,
         right: 24.0,
         bottom: 24.0,
       );
@@ -748,9 +745,7 @@ class AlertDialog extends StatelessWidget {
     if (actions != null) {
       final double spacing = (buttonPadding?.horizontal ?? 16) / 2;
       actionsWidget = Padding(
-        padding: actionsPadding ?? dialogTheme.actionsPadding ?? (
-          theme.useMaterial3 ? defaults.actionsPadding! : defaults.actionsPadding!.add(EdgeInsets.all(spacing))
-        ),
+        padding: actionsPadding ?? dialogTheme.actionsPadding ?? defaults.actionsPadding!,
         child: OverflowBar(
           alignment: actionsAlignment ?? MainAxisAlignment.end,
           spacing: spacing,
@@ -1101,7 +1096,7 @@ class SimpleDialog extends StatelessWidget {
           bottom: children == null ? effectiveTitlePadding.bottom * paddingScaleFactor : effectiveTitlePadding.bottom,
         ),
         child: DefaultTextStyle(
-          style: titleTextStyle ?? DialogTheme.of(context).titleTextStyle ?? theme.textTheme.titleLarge!,
+          style: titleTextStyle ?? DialogTheme.of(context).titleTextStyle ?? theme.textTheme.titleLarge,
           child: Semantics(
             // For iOS platform, the focus always lands on the title.
             // Set nameRoute to false to avoid title being announce twice.
@@ -1404,40 +1399,6 @@ double _paddingScaleFactor(double textScaleFactor) {
   // The final padding scale factor is clamped between 1/3 and 1. For example,
   // a non-scaled padding of 24 will produce a padding between 24 and 8.
   return lerpDouble(1.0, 1.0 / 3.0, clampedTextScaleFactor - 1.0)!;
-}
-
-// Hand coded defaults based on Material Design 2.
-class _DialogDefaultsM2 extends DialogTheme {
-  _DialogDefaultsM2(this.context)
-    : _textTheme = Theme.of(context).textTheme,
-      _iconTheme = Theme.of(context).iconTheme,
-      super(
-        alignment: Alignment.center,
-        elevation: 24.0,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
-      );
-
-  final BuildContext context;
-  final TextTheme _textTheme;
-  final IconThemeData _iconTheme;
-
-  @override
-  Color? get iconColor => _iconTheme.color;
-
-  @override
-  Color? get backgroundColor => Theme.of(context).dialogBackgroundColor;
-
-  @override
-  Color? get shadowColor => Theme.of(context).shadowColor;
-
-  @override
-  TextStyle? get titleTextStyle => _textTheme.titleLarge;
-
-  @override
-  TextStyle? get contentTextStyle => _textTheme.titleMedium;
-
-  @override
-  EdgeInsetsGeometry? get actionsPadding => EdgeInsets.zero;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Dialog

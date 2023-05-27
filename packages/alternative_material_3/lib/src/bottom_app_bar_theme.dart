@@ -52,11 +52,11 @@ class BottomAppBarTheme with Diagnosticable {
   /// Overrides the default value for [BottomAppBar.height].
   final double? height;
 
-  /// Overrides the default value for [BottomAppBar.surfaceTintColor].
+  /// Overrides the default value for [BottomAppBar.surfaceTint].
   ///
   /// If null, [BottomAppBar] will not display an overlay color.
   ///
-  /// See [Material.surfaceTintColor] for more details.
+  /// See [Material.surfaceTint] for more details.
   final Color? surfaceTintColor;
 
   /// Overrides the default value for [BottomAppBar.shadowColor].

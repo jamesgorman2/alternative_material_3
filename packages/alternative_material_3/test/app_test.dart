@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 
 class StateMarker extends StatefulWidget {
@@ -528,11 +529,9 @@ void main() {
     late ThemeData appliedTheme;
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark
         ),
         themeMode: ThemeMode.light,
         home: Builder(
@@ -549,11 +548,9 @@ void main() {
     tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         themeMode: ThemeMode.light,
         home: Builder(
@@ -576,11 +573,9 @@ void main() {
     late ThemeData appliedTheme;
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         themeMode: ThemeMode.dark,
         home: Builder(
@@ -597,11 +592,9 @@ void main() {
     tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         themeMode: ThemeMode.dark,
         home: Builder(
@@ -625,11 +618,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -652,11 +643,9 @@ void main() {
     late ThemeData appliedTheme;
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -679,9 +668,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         home: Builder(
           builder: (BuildContext context) {
             appliedTheme = Theme.of(context);
@@ -727,7 +714,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -751,11 +738,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -779,11 +764,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.lightBlue,
-        ),
+        theme: ThemeData(),
         highContrastTheme: ThemeData(
-          primaryColor: Colors.blue,
+          colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.blue),
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -794,7 +777,7 @@ void main() {
       ),
     );
 
-    expect(appliedTheme.primaryColor, Colors.blue);
+    expect(appliedTheme.colorScheme.primary, Colors.blue);
   });
 
   testWidgets('MaterialApp uses high contrast dark theme when appropriate', (WidgetTester tester) async {
@@ -807,17 +790,15 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.lightBlue,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          primaryColor: Colors.lightGreen,
+          colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.lightGreen),
         ),
         highContrastTheme: ThemeData(
-          primaryColor: Colors.blue,
+          colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.blue),
         ),
         highContrastDarkTheme: ThemeData(
-          primaryColor: Colors.green,
+          colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.green),
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -828,7 +809,7 @@ void main() {
       ),
     );
 
-    expect(appliedTheme.primaryColor, Colors.green);
+    expect(appliedTheme.colorScheme.primary, Colors.green);
   });
 
   testWidgets('MaterialApp uses dark theme when no high contrast dark theme is provided', (WidgetTester tester) async {
@@ -841,11 +822,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.lightBlue,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          primaryColor: Colors.lightGreen,
+          colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.lightGreen),
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -856,7 +835,7 @@ void main() {
       ),
     );
 
-    expect(appliedTheme.primaryColor, Colors.lightGreen);
+    expect(appliedTheme.colorScheme.primary, Colors.lightGreen);
   });
 
   testWidgets('MaterialApp animates theme changes', (WidgetTester tester) async {
@@ -874,7 +853,7 @@ void main() {
         ),
       ),
     );
-    expect(tester.widget<Material>(find.byType(Material)).color, lightTheme.scaffoldBackgroundColor);
+    expect(tester.widget<Material>(find.byType(Material)).color, lightTheme.colorScheme.surface);
 
     // Change to dark theme
     await tester.pumpWidget(
@@ -895,8 +874,8 @@ void main() {
 
     // Default curve is linear so background should be half way between
     // the two colors.
-    final Color halfBGColor = Color.lerp(lightTheme.scaffoldBackgroundColor, darkTheme.scaffoldBackgroundColor, 0.5)!;
-    expect(tester.widget<Material>(find.byType(Material)).color, halfBGColor);
+    final Color halfBGColor = Color.lerp(lightTheme.colorScheme.surface, darkTheme.colorScheme.surface, 0.5)!;
+    expect(tester.widget<Material>(find.byType(Material)).color, ColorMatcher(halfBGColor));
   });
 
   testWidgets('MaterialApp theme animation can be turned off', (WidgetTester tester) async {
@@ -908,7 +887,7 @@ void main() {
       builder: (BuildContext context) {
         scaffoldRebuilds++;
         // Use Theme.of() to ensure we are building when the theme changes.
-        return Scaffold(backgroundColor: Theme.of(context).scaffoldBackgroundColor);
+        return Scaffold(backgroundColor: Theme.of(context).colorScheme.surface);
       },
     );
 
@@ -921,7 +900,7 @@ void main() {
         home: scaffold,
       ),
     );
-    expect(tester.widget<Material>(find.byType(Material)).color, lightTheme.scaffoldBackgroundColor);
+    expect(tester.widget<Material>(find.byType(Material)).color, lightTheme.colorScheme.surface);
     expect(scaffoldRebuilds, 1);
 
     // Change to dark theme
@@ -937,7 +916,7 @@ void main() {
 
     // Wait for any animation to finish.
     await tester.pumpAndSettle();
-    expect(tester.widget<Material>(find.byType(Material)).color, darkTheme.scaffoldBackgroundColor);
+    expect(tester.widget<Material>(find.byType(Material)).color, darkTheme.colorScheme.surface);
     expect(scaffoldRebuilds, 2);
   });
 
@@ -952,11 +931,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-        ),
+        theme: ThemeData(),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.m3DefaultDark,
         ),
         home: Builder(
           builder: (BuildContext context) {
@@ -978,37 +955,6 @@ void main() {
 
     expect(themeBeforeBrightnessChange!.brightness, Brightness.light);
     expect(themeAfterBrightnessChange!.brightness, Brightness.dark);
-  });
-
-  testWidgets('MaterialApp provides default overscroll color', (WidgetTester tester) async {
-    Future<void> slowDrag(WidgetTester tester, Offset start, Offset offset) async {
-      final TestGesture gesture = await tester.startGesture(start);
-      for (int index = 0; index < 10; index += 1) {
-        await gesture.moveBy(offset);
-        await tester.pump(const Duration(milliseconds: 20));
-      }
-      await gesture.up();
-    }
-
-    // The overscroll color should be a transparent version of the colorScheme's
-    // secondary color.
-    const Color secondaryColor = Color(0xff008800);
-    final Color glowSecondaryColor = secondaryColor.withOpacity(0.05);
-    final ThemeData theme = ThemeData.from(
-      colorScheme: const ColorScheme.light().copyWith(secondary: secondaryColor),
-    );
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: theme,
-        home: const SingleChildScrollView(
-          child: SizedBox(height: 2000.0),
-        ),
-      ),
-    );
-
-    final RenderObject painter = tester.renderObject(find.byType(CustomPaint).first);
-    await slowDrag(tester, const Offset(200.0, 200.0), const Offset(0.0, 5.0));
-    expect(painter, paints..circle(color: glowSecondaryColor));
   });
 
   testWidgets('MaterialApp can customize initial routes', (WidgetTester tester) async {
@@ -1262,24 +1208,6 @@ void main() {
     expect(scrollBehavior.getScrollPhysics(capturedContext).runtimeType, NeverScrollableScrollPhysics);
   });
 
-  testWidgets('ScrollBehavior default android overscroll indicator', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      scrollBehavior: const MaterialScrollBehavior(),
-      home: ListView(
-        children: const <Widget>[
-          SizedBox(
-            height: 1000.0,
-            width: 1000.0,
-            child: Text('Test'),
-          ),
-        ],
-      ),
-    ));
-
-    expect(find.byType(StretchingOverscrollIndicator), findsNothing);
-    expect(find.byType(GlowingOverscrollIndicator), findsOneWidget);
-  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
-
   testWidgets('ScrollBehavior stretch android overscroll indicator', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       scrollBehavior: const MaterialScrollBehavior(androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
@@ -1300,46 +1228,7 @@ void main() {
 
   testWidgets('ScrollBehavior stretch android overscroll indicator via useMaterial3 flag', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: ListView(
-        children: const <Widget>[
-          SizedBox(
-            height: 1000.0,
-            width: 1000.0,
-            child: Text('Test'),
-          ),
-        ],
-      ),
-    ));
-
-    expect(find.byType(StretchingOverscrollIndicator), findsOneWidget);
-    expect(find.byType(GlowingOverscrollIndicator), findsNothing);
-  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
-
-  testWidgets('Overscroll indicator can be set by theme', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      // The current default is glowing, setting via the theme should override.
-      theme: ThemeData().copyWith(androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
-      home: ListView(
-        children: const <Widget>[
-          SizedBox(
-            height: 1000.0,
-            width: 1000.0,
-            child: Text('Test'),
-          ),
-        ],
-      ),
-    ));
-
-    expect(find.byType(StretchingOverscrollIndicator), findsOneWidget);
-    expect(find.byType(GlowingOverscrollIndicator), findsNothing);
-  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
-
-  testWidgets('Overscroll indicator in MaterialScrollBehavior takes precedence over theme', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      // MaterialScrollBehavior.androidOverscrollIndicator takes precedence over theme.
-      scrollBehavior: const MaterialScrollBehavior(androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
-      theme: ThemeData().copyWith(androidOverscrollIndicator: AndroidOverscrollIndicator.glow),
+      theme: ThemeData(),
       home: ListView(
         children: const <Widget>[
           SizedBox(
@@ -1359,7 +1248,7 @@ void main() {
     'ListView clip behavior updates overscroll indicator clip behavior', (WidgetTester tester) async {
       Widget buildFrame(Clip clipBehavior) {
         return MaterialApp(
-          theme: ThemeData(useMaterial3: true),
+          theme: ThemeData(),
           home: Column(
             children: <Widget>[
               SizedBox(

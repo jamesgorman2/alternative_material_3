@@ -32,16 +32,14 @@ class WidgetCatalogue extends StatelessWidget {
         final textDirection = context.watch<TextDirectionNotifier>();
         final colorScheme = seedColor.hasColor
             ? ColorScheme.fromSeed(seedColor: seedColor.color!)
-            : ColorScheme.light();//m3DefaultLight;
+            : ColorScheme.m3DefaultLight;
 
         final ThemeData theme = ThemeData(
-          useMaterial3: true,
           colorScheme: colorScheme,
           typography: Typography.material2021(),
         );
         final ThemeData darkTheme = ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.dark(),// colorScheme.asDark(),
+          colorScheme: colorScheme.asDark(),
           typography: Typography.material2021(),
         );
         return Directionality(

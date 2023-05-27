@@ -13,7 +13,7 @@ Widget wrapForChip({
   Brightness brightness = Brightness.light,
 }) {
   return MaterialApp(
-    theme: ThemeData(brightness: brightness),
+    theme: ThemeData.from(colorScheme: ColorScheme.fromBightness(brightness)),
     home: Directionality(
       textDirection: textDirection,
       child: MediaQuery(

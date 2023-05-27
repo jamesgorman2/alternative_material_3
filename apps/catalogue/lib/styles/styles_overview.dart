@@ -16,7 +16,7 @@ class StylesOverview extends StatelessWidget {
   static Map<String, WidgetBuilder> routes = {
     StylesOverview.route: (context) => const StylesOverview(),
     TypographyPage.route: (context) => const TypographyPage(),
-    // ColorPage.route: (context) => const ColorPage(),
+    ColorPage.route: (context) => const ColorPage(),
     // ElevationPage.route: (context) => const ElevationPage(),
   };
 

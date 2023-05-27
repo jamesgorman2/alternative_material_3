@@ -959,11 +959,14 @@ class _InkResponseState extends State<_InkResponseStateWidget>
           final ThemeData theme = Theme.of(context);
           switch (type) {
             case _HighlightType.pressed:
-              resolvedOverlayColor = widget.highlightColor ?? theme.highlightColor;
+              resolvedOverlayColor = widget.highlightColor
+                  ?? theme.colorScheme.highlightColor;
             case _HighlightType.focus:
-              resolvedOverlayColor = widget.focusColor ?? theme.focusColor;
+              resolvedOverlayColor = widget.focusColor
+                  ?? theme.colorScheme.focusColor;
             case _HighlightType.hover:
-              resolvedOverlayColor = widget.hoverColor ?? theme.hoverColor;
+              resolvedOverlayColor = widget.hoverColor
+                  ?? theme.colorScheme.hoverColor;
           }
         }
         final RenderBox referenceBox = context.findRenderObject()! as RenderBox;
@@ -1021,7 +1024,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
     final MaterialInkController inkController = Material.of(context);
     final RenderBox referenceBox = context.findRenderObject()! as RenderBox;
     final Offset position = referenceBox.globalToLocal(globalPosition);
-    final Color color =  widget.overlayColor?.resolve(statesController.value) ?? widget.splashColor ?? Theme.of(context).splashColor;
+    final Color color =  widget.overlayColor?.resolve(statesController.value) ?? widget.splashColor ?? Theme.of(context).colorScheme.splashColor;
     final RectCallback? rectCallback = widget.containedInkWell ? widget.getRectCallback!(referenceBox) : null;
     final BorderRadius? borderRadius = widget.borderRadius;
     final ShapeBorder? customBorder = widget.customBorder;
@@ -1270,18 +1273,18 @@ class _InkResponseState extends State<_InkResponseStateWidget>
         // Material Design spec. A separate highlight is no longer used.
         // See https://material.io/design/interaction/states.html#pressed
         case _HighlightType.pressed:
-          return widget.overlayColor?.resolve(pressed) ?? widget.highlightColor ?? theme.highlightColor;
+          return widget.overlayColor?.resolve(pressed) ?? widget.highlightColor ?? theme.colorScheme.highlightColor;
         case _HighlightType.focus:
-          return widget.overlayColor?.resolve(focused) ?? widget.focusColor ?? theme.focusColor;
+          return widget.overlayColor?.resolve(focused) ?? widget.focusColor ?? theme.colorScheme.focusColor;
         case _HighlightType.hover:
-          return widget.overlayColor?.resolve(hovered) ?? widget.hoverColor ?? theme.hoverColor;
+          return widget.overlayColor?.resolve(hovered) ?? widget.hoverColor ?? theme.colorScheme.hoverColor;
       }
     }
     for (final _HighlightType type in _highlights.keys) {
       _highlights[type]?.color = getHighlightColorForType(type);
     }
 
-    _currentSplash?.color = widget.overlayColor?.resolve(statesController.value) ?? widget.splashColor ?? Theme.of(context).splashColor;
+    _currentSplash?.color = widget.overlayColor?.resolve(statesController.value) ?? widget.splashColor ?? Theme.of(context).colorScheme.splashColor;
 
     final MouseCursor effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor>(
       widget.mouseCursor ?? MaterialStateMouseCursor.clickable,

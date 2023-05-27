@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -18,13 +18,13 @@ void main() {
     final ThemeData dawn = ThemeData.lerp(dark, light, 0.25);
 
     expect(dawn.brightness, Brightness.dark);
-    expect(dawn.primaryColor, Color.lerp(dark.primaryColor, light.primaryColor, 0.25));
+    expect(dawn.colorScheme.primary, Color.lerp(dark.colorScheme.primary, light.colorScheme.primary, 0.25));
   });
 
   test('Defaults to the default typography for the platform', () {
     for (final TargetPlatform platform in TargetPlatform.values) {
       final ThemeData theme = ThemeData(platform: platform);
-      final Typography typography = Typography.material2018(platform: platform);
+      final Typography typography = Typography.material2021(platform: platform);
       expect(
         theme.textTheme,
         typography.black.apply(decoration: TextDecoration.none),
@@ -34,52 +34,52 @@ void main() {
   });
 
   test('Default text theme contrasts with brightness', () {
-    final ThemeData lightTheme = ThemeData(brightness: Brightness.light);
-    final ThemeData darkTheme = ThemeData(brightness: Brightness.dark);
-    final Typography typography = Typography.material2018(platform: lightTheme.platform);
+    final ThemeData lightTheme = ThemeData.light();
+    final ThemeData darkTheme = ThemeData.dark();
+    final Typography typography = Typography.material2021(platform: lightTheme.platform);
 
-    expect(lightTheme.textTheme.titleLarge!.color, typography.black.titleLarge!.color);
-    expect(darkTheme.textTheme.titleLarge!.color, typography.white.titleLarge!.color);
+    expect(lightTheme.textTheme.titleLarge.color, typography.black.titleLarge.color);
+    expect(darkTheme.textTheme.titleLarge.color, typography.white.titleLarge.color);
   });
 
   test('Default primary text theme contrasts with primary brightness', () {
-    final ThemeData lightTheme = ThemeData(primaryColor: Colors.white);
-    final ThemeData darkTheme = ThemeData(primaryColor: Colors.black);
-    final Typography typography = Typography.material2018(platform: lightTheme.platform);
+    final ThemeData lightTheme = ThemeData.light();
+    final ThemeData darkTheme = ThemeData.dark();
+    final Typography typography = Typography.material2021(platform: lightTheme.platform);
 
-    expect(lightTheme.primaryTextTheme.titleLarge!.color, typography.black.titleLarge!.color);
-    expect(darkTheme.primaryTextTheme.titleLarge!.color, typography.white.titleLarge!.color);
+    expect(lightTheme.textTheme.titleLarge.color, typography.black.titleLarge.color);
+    expect(darkTheme.textTheme.titleLarge.color, typography.white.titleLarge.color);
   });
 
   test('Default icon theme contrasts with brightness', () {
-    final ThemeData lightTheme = ThemeData(brightness: Brightness.light);
-    final ThemeData darkTheme = ThemeData(brightness: Brightness.dark);
-    final Typography typography = Typography.material2018(platform: lightTheme.platform);
+    final ThemeData lightTheme = ThemeData.light();
+    final ThemeData darkTheme = ThemeData.dark();
+    final Typography typography = Typography.material2021(platform: lightTheme.platform);
 
-    expect(lightTheme.textTheme.titleLarge!.color, typography.black.titleLarge!.color);
-    expect(darkTheme.textTheme.titleLarge!.color, typography.white.titleLarge!.color);
+    expect(lightTheme.textTheme.titleLarge.color, typography.black.titleLarge.color);
+    expect(darkTheme.textTheme.titleLarge.color, typography.white.titleLarge.color);
   });
 
   test('Default primary icon theme contrasts with primary brightness', () {
-    final ThemeData lightTheme = ThemeData(primaryColor: Colors.white);
-    final ThemeData darkTheme = ThemeData(primaryColor: Colors.black);
-    final Typography typography = Typography.material2018(platform: lightTheme.platform);
+    final ThemeData lightTheme = ThemeData(colorScheme: ColorScheme.m3DefaultLight.copyWith(primary: Colors.white));
+    final ThemeData darkTheme = ThemeData(colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.black));
+    final Typography typography = Typography.material2021(platform: lightTheme.platform);
 
-    expect(lightTheme.primaryTextTheme.titleLarge!.color, typography.black.titleLarge!.color);
-    expect(darkTheme.primaryTextTheme.titleLarge!.color, typography.white.titleLarge!.color);
+    expect(lightTheme.textTheme.titleLarge.color, typography.black.titleLarge.color);
+    expect(darkTheme.textTheme.titleLarge.color, typography.white.titleLarge.color);
   });
 
   test('light, dark and fallback constructors support useMaterial3', () {
-    final ThemeData lightTheme = ThemeData.light(useMaterial3: true);
-    expect(lightTheme.useMaterial3, true);
+    final ThemeData lightTheme = ThemeData.light();
+    
     expect(lightTheme.typography, Typography.material2021(colorScheme: lightTheme.colorScheme));
 
-    final ThemeData darkTheme = ThemeData.dark(useMaterial3: true);
-    expect(darkTheme.useMaterial3, true);
+    final ThemeData darkTheme = ThemeData.dark();
+    
     expect(darkTheme.typography, Typography.material2021(colorScheme: darkTheme.colorScheme));
 
-    final ThemeData fallbackTheme = ThemeData.light(useMaterial3: true);
-    expect(fallbackTheme.useMaterial3, true);
+    final ThemeData fallbackTheme = ThemeData.light();
+    
     expect(fallbackTheme.typography, Typography.material2021(colorScheme: fallbackTheme.colorScheme));
   });
 
@@ -97,21 +97,6 @@ void main() {
     }
   }, variant: TargetPlatformVariant.all());
 
-  test('Can control fontFamily default', () {
-    final ThemeData themeData = ThemeData(
-      fontFamily: 'FlutterTest',
-      textTheme: const TextTheme(
-        titleLarge: TextStyle(fontFamily: 'Roboto'),
-      ),
-    );
-
-    expect(themeData.textTheme.bodyLarge!.fontFamily, equals('FlutterTest'));
-    expect(themeData.primaryTextTheme.displaySmall!.fontFamily, equals('FlutterTest'));
-
-    // Shouldn't override the specified style's family
-    expect(themeData.textTheme.titleLarge!.fontFamily, equals('Roboto'));
-  });
-
   test('Can estimate brightness - directly', () {
     expect(ThemeData.estimateBrightnessForColor(Colors.white), equals(Brightness.light));
     expect(ThemeData.estimateBrightnessForColor(Colors.black), equals(Brightness.dark));
@@ -125,305 +110,26 @@ void main() {
     expect(ThemeData.estimateBrightnessForColor(Colors.indigo), equals(Brightness.dark));
   });
 
-  test('Can estimate brightness - indirectly', () {
-    expect(ThemeData(primaryColor: Colors.white).primaryColorBrightness, equals(Brightness.light));
-    expect(ThemeData(primaryColor: Colors.black).primaryColorBrightness, equals(Brightness.dark));
-    expect(ThemeData(primaryColor: Colors.blue).primaryColorBrightness, equals(Brightness.dark));
-    expect(ThemeData(primaryColor: Colors.yellow).primaryColorBrightness, equals(Brightness.light));
-    expect(ThemeData(primaryColor: Colors.deepOrange).primaryColorBrightness, equals(Brightness.dark));
-    expect(ThemeData(primaryColor: Colors.orange).primaryColorBrightness, equals(Brightness.light));
-    expect(ThemeData(primaryColor: Colors.lime).primaryColorBrightness, equals(Brightness.light));
-    expect(ThemeData(primaryColor: Colors.grey).primaryColorBrightness, equals(Brightness.light));
-    expect(ThemeData(primaryColor: Colors.teal).primaryColorBrightness, equals(Brightness.dark));
-    expect(ThemeData(primaryColor: Colors.indigo).primaryColorBrightness, equals(Brightness.dark));
-  });
-
   test('cursorColor', () {
     expect(const TextSelectionThemeData(cursorColor: Colors.red).cursorColor, Colors.red);
   });
 
-  test('If colorSchemeSeed is used colorScheme, primaryColor and primarySwatch should not be.', () {
-    expect(() => ThemeData(colorSchemeSeed: Colors.blue, colorScheme: const ColorScheme.light()), throwsAssertionError);
-    expect(() => ThemeData(colorSchemeSeed: Colors.blue, primaryColor: Colors.green), throwsAssertionError);
-    expect(() => ThemeData(colorSchemeSeed: Colors.blue, primarySwatch: Colors.green), throwsAssertionError);
-  });
-
-  test('ThemeData can generate a light colorScheme from colorSchemeSeed', () {
-    final ThemeData theme = ThemeData(colorSchemeSeed: Colors.blue);
-
-    expect(theme.colorScheme.primary, const Color(0xff0061a4));
-    expect(theme.colorScheme.onPrimary, const Color(0xffffffff));
-    expect(theme.colorScheme.primaryContainer, const Color(0xffd1e4ff));
-    expect(theme.colorScheme.onPrimaryContainer, const Color(0xff001d36));
-    expect(theme.colorScheme.secondary, const Color(0xff535f70));
-    expect(theme.colorScheme.onSecondary, const Color(0xffffffff));
-    expect(theme.colorScheme.secondaryContainer, const Color(0xffd7e3f7));
-    expect(theme.colorScheme.onSecondaryContainer, const Color(0xff101c2b));
-    expect(theme.colorScheme.tertiary, const Color(0xff6b5778));
-    expect(theme.colorScheme.onTertiary, const Color(0xffffffff));
-    expect(theme.colorScheme.tertiaryContainer, const Color(0xfff2daff));
-    expect(theme.colorScheme.onTertiaryContainer, const Color(0xff251431));
-    expect(theme.colorScheme.error, const Color(0xffba1a1a));
-    expect(theme.colorScheme.onError, const Color(0xffffffff));
-    expect(theme.colorScheme.errorContainer, const Color(0xffffdad6));
-    expect(theme.colorScheme.onErrorContainer, const Color(0xff410002));
-    expect(theme.colorScheme.outline, const Color(0xff73777f));
-    expect(theme.colorScheme.background, const Color(0xfffdfcff));
-    expect(theme.colorScheme.onBackground, const Color(0xff1a1c1e));
-    expect(theme.colorScheme.surface, const Color(0xfffdfcff));
-    expect(theme.colorScheme.onSurface, const Color(0xff1a1c1e));
-    expect(theme.colorScheme.surfaceVariant, const Color(0xffdfe2eb));
-    expect(theme.colorScheme.onSurfaceVariant, const Color(0xff43474e));
-    expect(theme.colorScheme.inverseSurface, const Color(0xff2f3033));
-    expect(theme.colorScheme.onInverseSurface, const Color(0xfff1f0f4));
-    expect(theme.colorScheme.inversePrimary, const Color(0xff9ecaff));
-    expect(theme.colorScheme.shadow, const Color(0xff000000));
-    expect(theme.colorScheme.surfaceTint, const Color(0xff0061a4));
-    expect(theme.colorScheme.brightness, Brightness.light);
-
-    expect(theme.primaryColor, theme.colorScheme.primary);
-    expect(theme.primaryColorBrightness, Brightness.dark);
-    expect(theme.canvasColor, theme.colorScheme.background);
-    expect(theme.scaffoldBackgroundColor, theme.colorScheme.background);
-    expect(theme.bottomAppBarColor, theme.colorScheme.surface);
-    expect(theme.cardColor, theme.colorScheme.surface);
-    expect(theme.dividerColor, theme.colorScheme.outline);
-    expect(theme.backgroundColor, theme.colorScheme.background);
-    expect(theme.dialogBackgroundColor, theme.colorScheme.background);
-    expect(theme.indicatorColor, theme.colorScheme.onPrimary);
-    expect(theme.errorColor, theme.colorScheme.error);
-    expect(theme.applyElevationOverlayColor, false);
-  });
-
-  test('ThemeData can generate a dark colorScheme from colorSchemeSeed', () {
-    final ThemeData theme = ThemeData(
-      colorSchemeSeed: Colors.blue,
-      brightness: Brightness.dark,
-    );
-
-    expect(theme.colorScheme.primary, const Color(0xff9ecaff));
-    expect(theme.colorScheme.onPrimary, const Color(0xff003258));
-    expect(theme.colorScheme.primaryContainer, const Color(0xff00497d));
-    expect(theme.colorScheme.onPrimaryContainer, const Color(0xffd1e4ff));
-    expect(theme.colorScheme.secondary, const Color(0xffbbc7db));
-    expect(theme.colorScheme.onSecondary, const Color(0xff253140));
-    expect(theme.colorScheme.secondaryContainer, const Color(0xff3b4858));
-    expect(theme.colorScheme.onSecondaryContainer, const Color(0xffd7e3f7));
-    expect(theme.colorScheme.tertiary, const Color(0xffd6bee4));
-    expect(theme.colorScheme.onTertiary, const Color(0xff3b2948));
-    expect(theme.colorScheme.tertiaryContainer, const Color(0xff523f5f));
-    expect(theme.colorScheme.onTertiaryContainer, const Color(0xfff2daff));
-    expect(theme.colorScheme.error, const Color(0xffffb4ab));
-    expect(theme.colorScheme.onError, const Color(0xff690005));
-    expect(theme.colorScheme.errorContainer, const Color(0xff93000a));
-    expect(theme.colorScheme.onErrorContainer, const Color(0xffffb4ab));
-    expect(theme.colorScheme.outline, const Color(0xff8d9199));
-    expect(theme.colorScheme.background, const Color(0xff1a1c1e));
-    expect(theme.colorScheme.onBackground, const Color(0xffe2e2e6));
-    expect(theme.colorScheme.surface, const Color(0xff1a1c1e));
-    expect(theme.colorScheme.onSurface, const Color(0xffe2e2e6));
-    expect(theme.colorScheme.surfaceVariant, const Color(0xff43474e));
-    expect(theme.colorScheme.onSurfaceVariant, const Color(0xffc3c7cf));
-    expect(theme.colorScheme.inverseSurface, const Color(0xffe2e2e6));
-    expect(theme.colorScheme.onInverseSurface, const Color(0xff2f3033));
-    expect(theme.colorScheme.inversePrimary, const Color(0xff0061a4));
-    expect(theme.colorScheme.shadow, const Color(0xff000000));
-    expect(theme.colorScheme.surfaceTint, const Color(0xff9ecaff));
-    expect(theme.colorScheme.brightness, Brightness.dark);
-
-    expect(theme.primaryColor, theme.colorScheme.surface);
-    expect(theme.primaryColorBrightness, Brightness.dark);
-    expect(theme.canvasColor, theme.colorScheme.background);
-    expect(theme.scaffoldBackgroundColor, theme.colorScheme.background);
-    expect(theme.bottomAppBarColor, theme.colorScheme.surface);
-    expect(theme.cardColor, theme.colorScheme.surface);
-    expect(theme.dividerColor, theme.colorScheme.outline);
-    expect(theme.backgroundColor, theme.colorScheme.background);
-    expect(theme.dialogBackgroundColor, theme.colorScheme.background);
-    expect(theme.indicatorColor, theme.colorScheme.onSurface);
-    expect(theme.errorColor, theme.colorScheme.error);
-    expect(theme.applyElevationOverlayColor, true);
-  });
-
-  test('ThemeData can generate a default M3 light colorScheme when useMaterial3 is true', () {
-    final ThemeData theme = ThemeData(useMaterial3: true);
-
-    expect(theme.colorScheme.primary, const Color(0xFF6750A4));
-    expect(theme.colorScheme.onPrimary, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.primaryContainer, const Color(0xFFEADDFF));
-    expect(theme.colorScheme.onPrimaryContainer, const Color(0xFF21005D));
-    expect(theme.colorScheme.secondary, const Color(0xFF625B71));
-    expect(theme.colorScheme.onSecondary, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.secondaryContainer, const Color(0xFFE8DEF8));
-    expect(theme.colorScheme.onSecondaryContainer, const Color(0xFF1D192B));
-    expect(theme.colorScheme.tertiary, const Color(0xFF7D5260));
-    expect(theme.colorScheme.onTertiary, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.tertiaryContainer, const Color(0xFFFFD8E4));
-    expect(theme.colorScheme.onTertiaryContainer, const Color(0xFF31111D));
-    expect(theme.colorScheme.error, const Color(0xFFB3261E));
-    expect(theme.colorScheme.onError, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.errorContainer, const Color(0xFFF9DEDC));
-    expect(theme.colorScheme.onErrorContainer, const Color(0xFF410E0B));
-    expect(theme.colorScheme.outline, const Color(0xFF79747E));
-    expect(theme.colorScheme.background, const Color(0xFFFFFBFE));
-    expect(theme.colorScheme.onBackground, const Color(0xFF1C1B1F));
-    expect(theme.colorScheme.surface, const Color(0xFFFFFBFE));
-    expect(theme.colorScheme.onSurface, const Color(0xFF1C1B1F));
-    expect(theme.colorScheme.surfaceVariant, const Color(0xFFE7E0EC));
-    expect(theme.colorScheme.onSurfaceVariant, const Color(0xFF49454F));
-    expect(theme.colorScheme.inverseSurface, const Color(0xFF313033));
-    expect(theme.colorScheme.onInverseSurface, const Color(0xFFF4EFF4));
-    expect(theme.colorScheme.inversePrimary, const Color(0xFFD0BCFF));
-    expect(theme.colorScheme.shadow, const Color(0xFF000000));
-    expect(theme.colorScheme.surfaceTint, const Color(0xFF6750A4));
-    expect(theme.colorScheme.brightness, Brightness.light);
-
-    expect(theme.primaryColor, theme.colorScheme.primary);
-    expect(theme.primaryColorBrightness, Brightness.dark);
-    expect(theme.canvasColor, theme.colorScheme.background);
-    expect(theme.scaffoldBackgroundColor, theme.colorScheme.background);
-    expect(theme.bottomAppBarColor, theme.colorScheme.surface);
-    expect(theme.cardColor, theme.colorScheme.surface);
-    expect(theme.dividerColor, theme.colorScheme.outline);
-    expect(theme.backgroundColor, theme.colorScheme.background);
-    expect(theme.dialogBackgroundColor, theme.colorScheme.background);
-    expect(theme.indicatorColor, theme.colorScheme.onPrimary);
-    expect(theme.errorColor, theme.colorScheme.error);
-    expect(theme.applyElevationOverlayColor, false);
-  });
-
-
   test('ThemeData.light() can generate a default M3 light colorScheme when useMaterial3 is true', () {
-    final ThemeData theme = ThemeData.light(useMaterial3: true);
-
-    expect(theme.colorScheme.primary, const Color(0xFF6750A4));
-    expect(theme.colorScheme.onPrimary, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.primaryContainer, const Color(0xFFEADDFF));
-    expect(theme.colorScheme.onPrimaryContainer, const Color(0xFF21005D));
-    expect(theme.colorScheme.secondary, const Color(0xFF625B71));
-    expect(theme.colorScheme.onSecondary, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.secondaryContainer, const Color(0xFFE8DEF8));
-    expect(theme.colorScheme.onSecondaryContainer, const Color(0xFF1D192B));
-    expect(theme.colorScheme.tertiary, const Color(0xFF7D5260));
-    expect(theme.colorScheme.onTertiary, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.tertiaryContainer, const Color(0xFFFFD8E4));
-    expect(theme.colorScheme.onTertiaryContainer, const Color(0xFF31111D));
-    expect(theme.colorScheme.error, const Color(0xFFB3261E));
-    expect(theme.colorScheme.onError, const Color(0xFFFFFFFF));
-    expect(theme.colorScheme.errorContainer, const Color(0xFFF9DEDC));
-    expect(theme.colorScheme.onErrorContainer, const Color(0xFF410E0B));
-    expect(theme.colorScheme.outline, const Color(0xFF79747E));
-    expect(theme.colorScheme.background, const Color(0xFFFFFBFE));
-    expect(theme.colorScheme.onBackground, const Color(0xFF1C1B1F));
-    expect(theme.colorScheme.surface, const Color(0xFFFFFBFE));
-    expect(theme.colorScheme.onSurface, const Color(0xFF1C1B1F));
-    expect(theme.colorScheme.surfaceVariant, const Color(0xFFE7E0EC));
-    expect(theme.colorScheme.onSurfaceVariant, const Color(0xFF49454F));
-    expect(theme.colorScheme.inverseSurface, const Color(0xFF313033));
-    expect(theme.colorScheme.onInverseSurface, const Color(0xFFF4EFF4));
-    expect(theme.colorScheme.inversePrimary, const Color(0xFFD0BCFF));
-    expect(theme.colorScheme.shadow, const Color(0xFF000000));
-    expect(theme.colorScheme.surfaceTint, const Color(0xFF6750A4));
-    expect(theme.colorScheme.brightness, Brightness.light);
-
-    expect(theme.primaryColor, theme.colorScheme.primary);
-    expect(theme.primaryColorBrightness, Brightness.dark);
-    expect(theme.canvasColor, theme.colorScheme.background);
-    expect(theme.scaffoldBackgroundColor, theme.colorScheme.background);
-    expect(theme.bottomAppBarColor, theme.colorScheme.surface);
-    expect(theme.cardColor, theme.colorScheme.surface);
-    expect(theme.dividerColor, theme.colorScheme.outline);
-    expect(theme.backgroundColor, theme.colorScheme.background);
-    expect(theme.dialogBackgroundColor, theme.colorScheme.background);
-    expect(theme.indicatorColor, theme.colorScheme.onPrimary);
-    expect(theme.errorColor, theme.colorScheme.error);
-    expect(theme.applyElevationOverlayColor, false);
+    final ThemeData theme = ThemeData.light();
+    expect(theme.colorScheme, ColorScheme.m3DefaultLight);
   });
 
 
   test('ThemeData.dark() can generate a default M3 dark colorScheme when useMaterial3 is true', () {
-    final ThemeData theme = ThemeData.dark(useMaterial3: true);
-
-    expect(theme.colorScheme.primary, const Color(0xFFD0BCFF));
-    expect(theme.colorScheme.onPrimary, const Color(0xFF381E72));
-    expect(theme.colorScheme.primaryContainer, const Color(0xFF4F378B));
-    expect(theme.colorScheme.onPrimaryContainer, const Color(0xFFEADDFF));
-    expect(theme.colorScheme.secondary, const Color(0xFFCCC2DC));
-    expect(theme.colorScheme.onSecondary, const Color(0xFF332D41));
-    expect(theme.colorScheme.secondaryContainer, const Color(0xFF4A4458));
-    expect(theme.colorScheme.onSecondaryContainer, const Color(0xFFE8DEF8));
-    expect(theme.colorScheme.tertiary, const Color(0xFFEFB8C8));
-    expect(theme.colorScheme.onTertiary, const Color(0xFF492532));
-    expect(theme.colorScheme.tertiaryContainer, const Color(0xFF633B48));
-    expect(theme.colorScheme.onTertiaryContainer, const Color(0xFFFFD8E4));
-    expect(theme.colorScheme.error, const Color(0xFFF2B8B5));
-    expect(theme.colorScheme.onError, const Color(0xFF601410));
-    expect(theme.colorScheme.errorContainer, const Color(0xFF8C1D18));
-    expect(theme.colorScheme.onErrorContainer, const Color(0xFFF9DEDC));
-    expect(theme.colorScheme.outline, const Color(0xFF938F99));
-    expect(theme.colorScheme.background, const Color(0xFF1C1B1F));
-    expect(theme.colorScheme.onBackground, const Color(0xFFE6E1E5));
-    expect(theme.colorScheme.surface, const Color(0xFF1C1B1F));
-    expect(theme.colorScheme.onSurface, const Color(0xFFE6E1E5));
-    expect(theme.colorScheme.surfaceVariant, const Color(0xFF49454F));
-    expect(theme.colorScheme.onSurfaceVariant, const Color(0xFFCAC4D0));
-    expect(theme.colorScheme.inverseSurface, const Color(0xFFE6E1E5));
-    expect(theme.colorScheme.onInverseSurface, const Color(0xFF313033));
-    expect(theme.colorScheme.inversePrimary, const Color(0xFF6750A4));
-    expect(theme.colorScheme.shadow, const Color(0xFF000000));
-    expect(theme.colorScheme.surfaceTint, const Color(0xFFD0BCFF));
-    expect(theme.colorScheme.brightness, Brightness.dark);
-
-    expect(theme.primaryColor, theme.colorScheme.surface);
-    expect(theme.primaryColorBrightness, Brightness.dark);
-    expect(theme.canvasColor, theme.colorScheme.background);
-    expect(theme.scaffoldBackgroundColor, theme.colorScheme.background);
-    expect(theme.bottomAppBarColor, theme.colorScheme.surface);
-    expect(theme.cardColor, theme.colorScheme.surface);
-    expect(theme.dividerColor, theme.colorScheme.outline);
-    expect(theme.backgroundColor, theme.colorScheme.background);
-    expect(theme.dialogBackgroundColor, theme.colorScheme.background);
-    expect(theme.indicatorColor, theme.colorScheme.onSurface);
-    expect(theme.errorColor, theme.colorScheme.error);
-    expect(theme.applyElevationOverlayColor, true);
-  });
-
-  testWidgets('ThemeData.from a light color scheme sets appropriate values', (WidgetTester tester) async {
-    const ColorScheme lightColors = ColorScheme.light();
-    final ThemeData theme = ThemeData.from(colorScheme: lightColors);
-
-    expect(theme.brightness, equals(Brightness.light));
-    expect(theme.primaryColor, equals(lightColors.primary));
-    expect(theme.cardColor, equals(lightColors.surface));
-    expect(theme.backgroundColor, equals(lightColors.background));
-    expect(theme.canvasColor, equals(lightColors.background));
-    expect(theme.scaffoldBackgroundColor, equals(lightColors.background));
-    expect(theme.dialogBackgroundColor, equals(lightColors.background));
-    expect(theme.errorColor, equals(lightColors.error));
-    expect(theme.applyElevationOverlayColor, isFalse);
-  });
-
-  testWidgets('ThemeData.from a dark color scheme sets appropriate values', (WidgetTester tester) async {
-    const ColorScheme darkColors = ColorScheme.dark();
-    final ThemeData theme = ThemeData.from(colorScheme: darkColors);
-
-    expect(theme.brightness, equals(Brightness.dark));
-    // in dark theme's the color used for main components is surface instead of primary
-    expect(theme.primaryColor, equals(darkColors.surface));
-    expect(theme.cardColor, equals(darkColors.surface));
-    expect(theme.backgroundColor, equals(darkColors.background));
-    expect(theme.canvasColor, equals(darkColors.background));
-    expect(theme.scaffoldBackgroundColor, equals(darkColors.background));
-    expect(theme.dialogBackgroundColor, equals(darkColors.background));
-    expect(theme.errorColor, equals(darkColors.error));
-    expect(theme.applyElevationOverlayColor, isTrue);
+    final ThemeData theme = ThemeData.dark();
+    expect(theme.colorScheme, ColorScheme.m3DefaultDark);
   });
 
   testWidgets('splashFactory is InkSparkle only for Android non-web when useMaterial3 is true', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
 
     // Basic check that this theme is in fact using material 3.
-    expect(theme.useMaterial3, true);
+    
 
     switch (debugDefaultTargetPlatformOverride!) {
       case TargetPlatform.android:
@@ -439,20 +145,6 @@ void main() {
       case TargetPlatform.windows:
         expect(theme.splashFactory, equals(InkRipple.splashFactory));
      }
-  }, variant: TargetPlatformVariant.all());
-
-  testWidgets('splashFactory is InkSplash for every platform scenario, including Android non-web, when useMaterial3 is false', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: false);
-
-    switch (debugDefaultTargetPlatformOverride!) {
-      case TargetPlatform.android:
-      case TargetPlatform.iOS:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.macOS:
-      case TargetPlatform.windows:
-        expect(theme.splashFactory, equals(InkSplash.splashFactory));
-    }
   }, variant: TargetPlatformVariant.all());
 
   testWidgets('VisualDensity.adaptivePlatformDensity returns adaptive values', (WidgetTester tester) async {
@@ -695,24 +387,6 @@ void main() {
     expect(ThemeData().hashCode, ThemeData().copyWith().hashCode);
   });
 
-  test('== and hashCode include focusColor and hoverColor', () {
-    // regression test for https://github.com/flutter/flutter/issues/91587
-
-    // Focus color and hover color are used in the default button theme, so
-    // use an empty one to ensure that just focus and hover colors are tested.
-    const ButtonThemeData buttonTheme = ButtonThemeData();
-
-    final ThemeData focusColorBlack = ThemeData(focusColor: Colors.black, buttonTheme: buttonTheme);
-    final ThemeData focusColorWhite = ThemeData(focusColor: Colors.white, buttonTheme: buttonTheme);
-    expect(focusColorBlack != focusColorWhite, true);
-    expect(focusColorBlack.hashCode != focusColorWhite.hashCode, true);
-
-    final ThemeData hoverColorBlack = ThemeData(hoverColor: Colors.black, buttonTheme: buttonTheme);
-    final ThemeData hoverColorWhite = ThemeData(hoverColor: Colors.white, buttonTheme: buttonTheme);
-    expect(hoverColorBlack != hoverColorWhite, true);
-    expect(hoverColorBlack.hashCode != hoverColorWhite.hashCode, true);
-  });
-
   testWidgets('ThemeData.copyWith correctly creates new ThemeData with all copied arguments', (WidgetTester tester) async {
     final SliderThemeData sliderTheme = SliderThemeData.fromPrimaryColors(
       primaryColor: Colors.black,
@@ -741,7 +415,6 @@ void main() {
       // alphabetical by symbol name.
 
       // GENERAL CONFIGURATION
-      applyElevationOverlayColor: false,
       cupertinoOverrideTheme: null,
       extensions: const <Object, ThemeExtension<dynamic>>{},
       inputDecorationTheme: ThemeData.dark().inputDecorationTheme.copyWith(border: const OutlineInputBorder()),
@@ -750,34 +423,13 @@ void main() {
       platform: TargetPlatform.iOS,
       scrollbarTheme: const ScrollbarThemeData(radius: Radius.circular(10.0)),
       splashFactory: InkRipple.splashFactory,
-      useMaterial3: false,
       visualDensity: VisualDensity.standard,
       // COLOR
-      canvasColor: Colors.black,
-      cardColor: Colors.black,
-      colorScheme: const ColorScheme.light(),
-      dialogBackgroundColor: Colors.black,
-      disabledColor: Colors.black,
-      dividerColor: Colors.black,
-      focusColor: Colors.black,
-      highlightColor: Colors.black,
-      hintColor: Colors.black,
-      hoverColor: Colors.black,
-      indicatorColor: Colors.black,
-      primaryColor: Colors.black,
-      primaryColorDark: Colors.black,
-      primaryColorLight: Colors.black,
-      scaffoldBackgroundColor: Colors.black,
-      secondaryHeaderColor: Colors.black,
-      shadowColor: Colors.black,
-      splashColor: Colors.black,
-      unselectedWidgetColor: Colors.black,
+      colorScheme: ColorScheme.m3DefaultLight,
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: ThemeData.dark().iconTheme,
-      primaryIconTheme: ThemeData.dark().iconTheme,
-      primaryTextTheme: ThemeData.dark().textTheme,
       textTheme: ThemeData.dark().textTheme,
-      typography: Typography.material2018(),
+      typography: Typography.material2021(),
       // COMPONENT THEMES
       actionIconTheme: const ActionIconThemeData(),
       appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
@@ -787,7 +439,6 @@ void main() {
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(type: BottomNavigationBarType.fixed),
       bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.black),
       buttonBarTheme: const ButtonBarThemeData(alignment: MainAxisAlignment.start),
-      buttonTheme: const ButtonThemeData(colorScheme: ColorScheme.dark()),
       cardTheme: const CardTheme(color: Colors.black),
       checkboxTheme: const CheckboxThemeData(),
       chipTheme: chipTheme,
@@ -825,15 +476,6 @@ void main() {
       timePickerTheme: const TimePickerThemeData(backgroundColor: Colors.black),
       toggleButtonsTheme: const ToggleButtonsThemeData(textStyle: TextStyle(color: Colors.black)),
       tooltipTheme: const TooltipThemeData(height: 100),
-      // DEPRECATED (newest deprecations at the bottom)
-      fixTextFieldOutlineLabel: false,
-      primaryColorBrightness: Brightness.dark,
-      androidOverscrollIndicator: AndroidOverscrollIndicator.glow,
-      toggleableActiveColor: Colors.black,
-      selectedRowColor: Colors.black,
-      errorColor: Colors.black,
-      backgroundColor: Colors.black,
-      bottomAppBarColor: Colors.black,
     );
 
     final SliderThemeData otherSliderTheme = SliderThemeData.fromPrimaryColors(
@@ -856,7 +498,6 @@ void main() {
       // alphabetical by symbol name.
 
       // GENERAL CONFIGURATION
-      applyElevationOverlayColor: true,
       cupertinoOverrideTheme: ThemeData.light().cupertinoOverrideTheme,
       extensions: const <Object, ThemeExtension<dynamic>>{
         MyThemeExtensionB: MyThemeExtensionB(textStyle: TextStyle()),
@@ -867,36 +508,15 @@ void main() {
       platform: TargetPlatform.android,
       scrollbarTheme: const ScrollbarThemeData(radius: Radius.circular(10.0)),
       splashFactory: InkRipple.splashFactory,
-      useMaterial3: true,
+      
       visualDensity: VisualDensity.standard,
 
       // COLOR
-      canvasColor: Colors.white,
-      cardColor: Colors.white,
-      colorScheme: const ColorScheme.light(),
-      dialogBackgroundColor: Colors.white,
-      disabledColor: Colors.white,
-      dividerColor: Colors.white,
-      focusColor: Colors.white,
-      highlightColor: Colors.white,
-      hintColor: Colors.white,
-      hoverColor: Colors.white,
-      indicatorColor: Colors.white,
-      primaryColor: Colors.white,
-      primaryColorDark: Colors.white,
-      primaryColorLight: Colors.white,
-      scaffoldBackgroundColor: Colors.white,
-      secondaryHeaderColor: Colors.white,
-      shadowColor: Colors.white,
-      splashColor: Colors.white,
-      unselectedWidgetColor: Colors.white,
-
+      colorScheme: ColorScheme.m3DefaultLight,
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: ThemeData.light().iconTheme,
-      primaryIconTheme: ThemeData.light().iconTheme,
-      primaryTextTheme: ThemeData.light().textTheme,
       textTheme: ThemeData.light().textTheme,
-      typography: Typography.material2018(platform: TargetPlatform.iOS),
+      typography: Typography.material2021(platform: TargetPlatform.iOS),
 
       // COMPONENT THEMES
       actionIconTheme: const ActionIconThemeData(),
@@ -907,7 +527,6 @@ void main() {
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(type: BottomNavigationBarType.shifting),
       bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
       buttonBarTheme: const ButtonBarThemeData(alignment: MainAxisAlignment.end),
-      buttonTheme: const ButtonThemeData(colorScheme: ColorScheme.light()),
       cardTheme: const CardTheme(color: Colors.white),
       checkboxTheme: const CheckboxThemeData(),
       chipTheme: otherChipTheme,
@@ -945,16 +564,6 @@ void main() {
       timePickerTheme: const TimePickerThemeData(backgroundColor: Colors.white),
       toggleButtonsTheme: const ToggleButtonsThemeData(textStyle: TextStyle(color: Colors.white)),
       tooltipTheme: const TooltipThemeData(height: 100),
-
-      // DEPRECATED (newest deprecations at the bottom)
-      fixTextFieldOutlineLabel: true,
-      primaryColorBrightness: Brightness.light,
-      androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-      toggleableActiveColor: Colors.white,
-      selectedRowColor: Colors.white,
-      errorColor: Colors.white,
-      backgroundColor: Colors.white,
-      bottomAppBarColor: Colors.white,
     );
 
     final ThemeData themeDataCopy = theme.copyWith(
@@ -964,7 +573,6 @@ void main() {
       // alphabetical by symbol name.
 
       // GENERAL CONFIGURATION
-      applyElevationOverlayColor: otherTheme.applyElevationOverlayColor,
       cupertinoOverrideTheme: otherTheme.cupertinoOverrideTheme,
       extensions: otherTheme.extensions.values,
       inputDecorationTheme: otherTheme.inputDecorationTheme,
@@ -973,34 +581,12 @@ void main() {
       platform: otherTheme.platform,
       scrollbarTheme: otherTheme.scrollbarTheme,
       splashFactory: otherTheme.splashFactory,
-      useMaterial3: otherTheme.useMaterial3,
       visualDensity: otherTheme.visualDensity,
 
       // COLOR
-      canvasColor: otherTheme.canvasColor,
-      cardColor: otherTheme.cardColor,
       colorScheme: otherTheme.colorScheme,
-      dialogBackgroundColor: otherTheme.dialogBackgroundColor,
-      disabledColor: otherTheme.disabledColor,
-      dividerColor: otherTheme.dividerColor,
-      focusColor: otherTheme.focusColor,
-      highlightColor: otherTheme.highlightColor,
-      hintColor: otherTheme.hintColor,
-      hoverColor: otherTheme.hoverColor,
-      indicatorColor: otherTheme.indicatorColor,
-      primaryColor: otherTheme.primaryColor,
-      primaryColorDark: otherTheme.primaryColorDark,
-      primaryColorLight: otherTheme.primaryColorLight,
-      scaffoldBackgroundColor: otherTheme.scaffoldBackgroundColor,
-      secondaryHeaderColor: otherTheme.secondaryHeaderColor,
-      shadowColor: otherTheme.shadowColor,
-      splashColor: otherTheme.splashColor,
-      unselectedWidgetColor: otherTheme.unselectedWidgetColor,
-
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: otherTheme.iconTheme,
-      primaryIconTheme: otherTheme.primaryIconTheme,
-      primaryTextTheme: otherTheme.primaryTextTheme,
       textTheme: otherTheme.textTheme,
       typography: otherTheme.typography,
 
@@ -1013,7 +599,6 @@ void main() {
       bottomNavigationBarTheme: otherTheme.bottomNavigationBarTheme,
       bottomSheetTheme: otherTheme.bottomSheetTheme,
       buttonBarTheme: otherTheme.buttonBarTheme,
-      buttonTheme: otherTheme.buttonTheme,
       cardTheme: otherTheme.cardTheme,
       checkboxTheme: otherTheme.checkboxTheme,
       chipTheme: otherTheme.chipTheme,
@@ -1049,16 +634,6 @@ void main() {
       timePickerTheme: otherTheme.timePickerTheme,
       toggleButtonsTheme: otherTheme.toggleButtonsTheme,
       tooltipTheme: otherTheme.tooltipTheme,
-
-      // DEPRECATED (newest deprecations at the bottom)
-      fixTextFieldOutlineLabel: otherTheme.fixTextFieldOutlineLabel,
-      primaryColorBrightness: otherTheme.primaryColorBrightness,
-      androidOverscrollIndicator: otherTheme.androidOverscrollIndicator,
-      toggleableActiveColor: otherTheme.toggleableActiveColor,
-      selectedRowColor: otherTheme.selectedRowColor,
-      errorColor: otherTheme.errorColor,
-      backgroundColor: otherTheme.backgroundColor,
-      bottomAppBarColor: otherTheme.bottomAppBarColor,
     );
 
     // For the sanity of the reader, make sure these properties are in the same
@@ -1067,7 +642,6 @@ void main() {
     // alphabetical by symbol name.
 
     // GENERAL CONFIGURATION
-    expect(themeDataCopy.applyElevationOverlayColor, equals(otherTheme.applyElevationOverlayColor));
     expect(themeDataCopy.cupertinoOverrideTheme, equals(otherTheme.cupertinoOverrideTheme));
     expect(themeDataCopy.extensions, equals(otherTheme.extensions));
     expect(themeDataCopy.inputDecorationTheme, equals(otherTheme.inputDecorationTheme));
@@ -1076,34 +650,12 @@ void main() {
     expect(themeDataCopy.platform, equals(otherTheme.platform));
     expect(themeDataCopy.scrollbarTheme, equals(otherTheme.scrollbarTheme));
     expect(themeDataCopy.splashFactory, equals(otherTheme.splashFactory));
-    expect(themeDataCopy.useMaterial3, equals(otherTheme.useMaterial3));
     expect(themeDataCopy.visualDensity, equals(otherTheme.visualDensity));
 
     // COLOR
-    expect(themeDataCopy.canvasColor, equals(otherTheme.canvasColor));
-    expect(themeDataCopy.cardColor, equals(otherTheme.cardColor));
     expect(themeDataCopy.colorScheme, equals(otherTheme.colorScheme));
-    expect(themeDataCopy.dialogBackgroundColor, equals(otherTheme.dialogBackgroundColor));
-    expect(themeDataCopy.disabledColor, equals(otherTheme.disabledColor));
-    expect(themeDataCopy.dividerColor, equals(otherTheme.dividerColor));
-    expect(themeDataCopy.focusColor, equals(otherTheme.focusColor));
-    expect(themeDataCopy.highlightColor, equals(otherTheme.highlightColor));
-    expect(themeDataCopy.hintColor, equals(otherTheme.hintColor));
-    expect(themeDataCopy.hoverColor, equals(otherTheme.hoverColor));
-    expect(themeDataCopy.indicatorColor, equals(otherTheme.indicatorColor));
-    expect(themeDataCopy.primaryColor, equals(otherTheme.primaryColor));
-    expect(themeDataCopy.primaryColorDark, equals(otherTheme.primaryColorDark));
-    expect(themeDataCopy.primaryColorLight, equals(otherTheme.primaryColorLight));
-    expect(themeDataCopy.scaffoldBackgroundColor, equals(otherTheme.scaffoldBackgroundColor));
-    expect(themeDataCopy.secondaryHeaderColor, equals(otherTheme.secondaryHeaderColor));
-    expect(themeDataCopy.shadowColor, equals(otherTheme.shadowColor));
-    expect(themeDataCopy.splashColor, equals(otherTheme.splashColor));
-    expect(themeDataCopy.unselectedWidgetColor, equals(otherTheme.unselectedWidgetColor));
-
     // TYPOGRAPHY & ICONOGRAPHY
     expect(themeDataCopy.iconTheme, equals(otherTheme.iconTheme));
-    expect(themeDataCopy.primaryIconTheme, equals(otherTheme.primaryIconTheme));
-    expect(themeDataCopy.primaryTextTheme, equals(otherTheme.primaryTextTheme));
     expect(themeDataCopy.textTheme, equals(otherTheme.textTheme));
     expect(themeDataCopy.typography, equals(otherTheme.typography));
 
@@ -1116,7 +668,6 @@ void main() {
     expect(themeDataCopy.bottomNavigationBarTheme, equals(otherTheme.bottomNavigationBarTheme));
     expect(themeDataCopy.bottomSheetTheme, equals(otherTheme.bottomSheetTheme));
     expect(themeDataCopy.buttonBarTheme, equals(otherTheme.buttonBarTheme));
-    expect(themeDataCopy.buttonTheme, equals(otherTheme.buttonTheme));
     expect(themeDataCopy.cardTheme, equals(otherTheme.cardTheme));
     expect(themeDataCopy.checkboxTheme, equals(otherTheme.checkboxTheme));
     expect(themeDataCopy.chipTheme, equals(otherTheme.chipTheme));
@@ -1154,60 +705,27 @@ void main() {
     expect(themeDataCopy.timePickerTheme, equals(otherTheme.timePickerTheme));
     expect(themeDataCopy.toggleButtonsTheme, equals(otherTheme.toggleButtonsTheme));
     expect(themeDataCopy.tooltipTheme, equals(otherTheme.tooltipTheme));
-
-    // DEPRECATED (newest deprecations at the bottom)
-    expect(themeDataCopy.fixTextFieldOutlineLabel, equals(otherTheme.fixTextFieldOutlineLabel));
-    expect(themeDataCopy.primaryColorBrightness, equals(otherTheme.primaryColorBrightness));
-    expect(themeDataCopy.androidOverscrollIndicator, equals(otherTheme.androidOverscrollIndicator));
-    expect(themeDataCopy.toggleableActiveColor, equals(otherTheme.toggleableActiveColor));
-    expect(themeDataCopy.selectedRowColor, equals(otherTheme.selectedRowColor));
-    expect(themeDataCopy.errorColor, equals(otherTheme.errorColor));
-    expect(themeDataCopy.backgroundColor, equals(otherTheme.backgroundColor));
-    expect(themeDataCopy.bottomAppBarColor, equals(otherTheme.bottomAppBarColor));
   });
 
   testWidgets('ThemeData.toString has less than 200 characters output', (WidgetTester tester) async {
     // This test makes sure that the ThemeData debug output doesn't get too
     // verbose, which has been a problem in the past.
 
-    const ColorScheme darkColors = ColorScheme.dark();
+    final ColorScheme darkColors = ColorScheme.m3DefaultDark;
     final ThemeData darkTheme = ThemeData.from(colorScheme: darkColors);
 
     expect(darkTheme.toString().length, lessThan(200));
 
-    const ColorScheme lightColors = ColorScheme.light();
+    final ColorScheme lightColors = ColorScheme.m3DefaultLight;
     final ThemeData lightTheme = ThemeData.from(colorScheme: lightColors);
 
     expect(lightTheme.toString().length, lessThan(200));
-  });
-
-  testWidgets('ThemeData brightness parameter overrides ColorScheme brightness', (WidgetTester tester) async {
-    const ColorScheme lightColors = ColorScheme.light();
-    expect(() => ThemeData(colorScheme: lightColors, brightness: Brightness.dark), throwsAssertionError);
-  });
-
-  testWidgets('ThemeData.copyWith brightness parameter overrides ColorScheme brightness', (WidgetTester tester) async {
-    const ColorScheme lightColors = ColorScheme.light();
-    final ThemeData theme = ThemeData.from(colorScheme: lightColors).copyWith(brightness: Brightness.dark);
-
-    // The brightness parameter only overrides ColorScheme.brightness.
-    expect(theme.brightness, equals(Brightness.dark));
-    expect(theme.colorScheme.brightness, equals(Brightness.dark));
-    expect(theme.primaryColor, equals(lightColors.primary));
-    expect(theme.cardColor, equals(lightColors.surface));
-    expect(theme.backgroundColor, equals(lightColors.background));
-    expect(theme.canvasColor, equals(lightColors.background));
-    expect(theme.scaffoldBackgroundColor, equals(lightColors.background));
-    expect(theme.dialogBackgroundColor, equals(lightColors.background));
-    expect(theme.errorColor, equals(lightColors.error));
-    expect(theme.applyElevationOverlayColor, isFalse);
   });
 
   test('ThemeData diagnostics include all properties', () {
     // List of properties must match the properties in ThemeData.hashCode()
     final Set<String> expectedPropertyNames = <String>{
       // GENERAL CONFIGURATION
-      'applyElevationOverlayColor',
       'cupertinoOverrideTheme',
       'extensions',
       'inputDecorationTheme',
@@ -1217,33 +735,12 @@ void main() {
       'scrollbarTheme',
       'splashFactory',
       'visualDensity',
-      'useMaterial3',
       // COLOR
       'colorScheme',
-      'primaryColor',
-      'primaryColorLight',
-      'primaryColorDark',
-      'focusColor',
-      'hoverColor',
-      'shadowColor',
-      'canvasColor',
-      'scaffoldBackgroundColor',
-      'cardColor',
-      'dividerColor',
-      'highlightColor',
-      'splashColor',
-      'unselectedWidgetColor',
-      'disabledColor',
-      'secondaryHeaderColor',
-      'dialogBackgroundColor',
-      'indicatorColor',
-      'hintColor',
       // TYPOGRAPHY & ICONOGRAPHY
       'typography',
       'textTheme',
-      'primaryTextTheme',
       'iconTheme',
-      'primaryIconTheme',
       // COMPONENT THEMES
       'actionIconTheme',
       'appBarTheme',
@@ -1253,7 +750,6 @@ void main() {
       'bottomNavigationBarTheme',
       'bottomSheetTheme',
       'buttonBarTheme',
-      'buttonTheme',
       'cardTheme',
       'checkboxTheme',
       'chipTheme',
@@ -1291,15 +787,6 @@ void main() {
       'timePickerTheme',
       'toggleButtonsTheme',
       'tooltipTheme',
-      // DEPRECATED (newest deprecations at the bottom)
-      'fixTextFieldOutlineLabel',
-      'primaryColorBrightness',
-      'androidOverscrollIndicator',
-      'toggleableActiveColor',
-      'selectedRowColor',
-      'errorColor',
-      'backgroundColor',
-      'bottomAppBarColor',
     };
 
     final DiagnosticPropertiesBuilder properties = DiagnosticPropertiesBuilder();

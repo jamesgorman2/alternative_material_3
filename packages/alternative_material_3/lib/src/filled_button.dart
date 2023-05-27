@@ -408,13 +408,12 @@ class FilledButton extends ButtonStyleButton {
 }
 
 EdgeInsetsGeometry _scaledPadding(BuildContext context) {
-  final bool useMaterial3 = Theme.of(context).useMaterial3;
-  final double padding1x = useMaterial3 ? 24.0 : 16.0;
+  const double padding1x = 24.0;
   return ButtonStyleButton.scaledPadding(
-     EdgeInsets.symmetric(horizontal: padding1x),
-     EdgeInsets.symmetric(horizontal: padding1x / 2),
-     EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
-    MediaQuery.textScaleFactorOf(context),
+    const EdgeInsets.symmetric(horizontal: padding1x),
+    const EdgeInsets.symmetric(horizontal: padding1x / 2),
+    const EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
+MediaQuery.textScaleFactorOf(context),
   );
 }
 
@@ -509,16 +508,10 @@ class _FilledButtonWithIcon extends FilledButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final EdgeInsetsGeometry scaledPadding = useMaterial3 ?  ButtonStyleButton.scaledPadding(
+    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsetsDirectional.fromSTEB(16, 0, 24, 0),
       const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),
       const EdgeInsetsDirectional.fromSTEB(4, 0, 6, 0),
-      MediaQuery.textScaleFactorOf(context),
-    ) : ButtonStyleButton.scaledPadding(
-      const EdgeInsetsDirectional.fromSTEB(12, 0, 16, 0),
-      const EdgeInsets.symmetric(horizontal: 8),
-      const EdgeInsetsDirectional.fromSTEB(8, 0, 4, 0),
       MediaQuery.textScaleFactorOf(context),
     );
     return super.defaultStyleOf(context).copyWith(

@@ -11,7 +11,7 @@ import 'rendering/mock_canvas.dart';
 
 void main() {
   testWidgets('SearchBar defaults', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     final ColorScheme colorScheme = theme.colorScheme;
 
     await tester.pumpWidget(
@@ -725,7 +725,7 @@ void main() {
   });
 
   testWidgets('The search view defaults', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     final ColorScheme colorScheme = theme.colorScheme;
     await tester.pumpWidget(
       MaterialApp(

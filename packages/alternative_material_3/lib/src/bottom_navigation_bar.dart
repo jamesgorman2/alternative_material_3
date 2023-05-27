@@ -957,7 +957,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> with TickerPr
         ?? bottomTheme.unselectedIconTheme,
         widget.unselectedItemColor
         ?? bottomTheme.unselectedItemColor
-        ?? themeData.unselectedWidgetColor
+        ?? themeData.colorScheme.onSurfaceVariant
       );
 
 
@@ -967,7 +967,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> with TickerPr
         colorTween = ColorTween(
           begin: widget.unselectedItemColor
             ?? bottomTheme.unselectedItemColor
-            ?? themeData.unselectedWidgetColor,
+            ?? themeData.colorScheme.onSurfaceVariant,
           end: widget.selectedItemColor
             ?? bottomTheme.selectedItemColor
             ?? widget.fixedColor
@@ -991,7 +991,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> with TickerPr
           begin: effectiveUnselectedLabelStyle.color
             ?? widget.unselectedItemColor
             ?? bottomTheme.unselectedItemColor
-            ?? themeData.unselectedWidgetColor,
+            ?? themeData.colorScheme.onSurfaceVariant,
           end: effectiveSelectedLabelStyle.color
             ?? widget.selectedItemColor
             ?? bottomTheme.selectedItemColor
@@ -1018,7 +1018,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> with TickerPr
           begin: effectiveSelectedIconTheme.color
             ?? widget.unselectedItemColor
             ?? bottomTheme.unselectedItemColor
-            ?? themeData.unselectedWidgetColor,
+            ?? themeData.colorScheme.onSurfaceVariant,
           end: effectiveUnselectedIconTheme.color
             ?? widget.selectedItemColor
             ?? bottomTheme.selectedItemColor

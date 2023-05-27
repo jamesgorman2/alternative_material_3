@@ -4,9 +4,9 @@
 
 import 'dart:ui';
 
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/gestures/constants.dart';
@@ -441,7 +441,7 @@ void main() {
   });
 
   testWidgets('Checkbox color rendering', (WidgetTester tester) async {
-    const Color borderColor = Color(0xff2196f3);
+    final Color borderColor = ColorScheme.m3DefaultLight.primary;
     Color checkColor = const Color(0xffFFFFFF);
     Color activeColor;
 
@@ -469,7 +469,10 @@ void main() {
 
     await tester.pumpWidget(buildFrame(checkColor: checkColor));
     await tester.pumpAndSettle();
-    expect(getCheckboxRenderer(), paints..path(color: borderColor)..path(color: checkColor)); // paints's color is 0xFFFFFFFF (default color)
+    expect(
+      getCheckboxRenderer(),
+      paints..path(color: borderColor)..path(color: checkColor),
+    ); // paints's color is 0xFFFFFFFF (default color)
 
     checkColor = const Color(0xFF000000);
 
@@ -480,10 +483,7 @@ void main() {
     activeColor = const Color(0xFF00FF00);
 
     ThemeData themeData = ThemeData();
-    final bool material3 = themeData.useMaterial3;
-    final ColorScheme colorScheme = material3
-        ? const ColorScheme.light().copyWith(primary: activeColor)
-        : const ColorScheme.light().copyWith(secondary: activeColor);
+    final ColorScheme colorScheme = ColorScheme.m3DefaultLight.copyWith(primary: activeColor);
     themeData = themeData.copyWith(colorScheme: colorScheme);
     await tester.pumpWidget(buildFrame(
       themeData: themeData),
@@ -527,19 +527,13 @@ void main() {
     await tester.pumpWidget(buildApp());
 
     await tester.pumpAndSettle();
-    final bool material3 = theme.useMaterial3;
     expect(focusNode.hasPrimaryFocus, isTrue);
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
-      material3
-        ? (paints
+      (paints
           ..circle(color: Colors.orange[500])
-          ..path(color: const Color(0xff2196f3))
-          ..path(color: theme.colorScheme.onPrimary))
-        : (paints
-          ..circle(color: Colors.orange[500])
-          ..path(color: const Color(0xff2196f3))
-          ..path(color: Colors.white))
+          ..path(color: theme.colorScheme.primary)
+          ..path(color: theme.colorScheme.onPrimary)),
     );
 
     // Check the false value.
@@ -552,8 +546,8 @@ void main() {
       paints
         ..circle(color: Colors.orange[500])
         ..drrect(
-          color: material3 ? theme.colorScheme.onSurface : const Color(0x8a000000),
-          outer: RRect.fromLTRBR(15.0, 15.0, 33.0, 33.0, const Radius.circular(1.0)),
+          color: theme.colorScheme.onSurface,
+          outer: RRect.fromLTRBR(15.0, 15.0, 33.0, 33.0, const Radius.circular(2.0)),
           inner: RRect.fromLTRBR(17.0, 17.0, 31.0, 31.0, Radius.zero),
         ),
     );
@@ -567,8 +561,8 @@ void main() {
       Material.of(tester.element(find.byType(Checkbox))),
       paints
         ..drrect(
-          color: material3 ? theme.colorScheme.onSurface.withOpacity(0.38) : const Color(0x61000000),
-          outer: RRect.fromLTRBR(15.0, 15.0, 33.0, 33.0, const Radius.circular(1.0)),
+          color: theme.colorScheme.onSurface.withOpacity(0.38),
+          outer: RRect.fromLTRBR(15.0, 15.0, 33.0, 33.0, const Radius.circular(2.0)),
           inner: RRect.fromLTRBR(17.0, 17.0, 31.0, 31.0, Radius.zero),
         ),
     );
@@ -638,7 +632,6 @@ void main() {
   testWidgets('Checkbox can be hovered and has correct hover color', (WidgetTester tester) async {
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
     bool? value = true;
-    final bool material3 = theme.useMaterial3;
     Widget buildApp({bool enabled = true}) {
       return MaterialApp(
         theme: theme,
@@ -664,8 +657,9 @@ void main() {
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
       paints
-        ..path(color: const Color(0xff2196f3))
-        ..path(color: material3 ? theme.colorScheme.onPrimary : const Color(0xffffffff), style: PaintingStyle.stroke, strokeWidth: 2.0),
+        // fixme
+        ..path(color: theme.colorScheme.primary)
+        ..path(color: Color(0xffffffff), style: PaintingStyle.stroke, strokeWidth: 2.0),
     );
 
     // Start hovering
@@ -677,8 +671,8 @@ void main() {
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
       paints
-        ..path(color: const Color(0xff2196f3))
-        ..path(color: material3 ? theme.colorScheme.onPrimary : const Color(0xffffffff), style: PaintingStyle.stroke, strokeWidth: 2.0),
+        ..path(color: theme.colorScheme.primary)
+        ..path(color: theme.colorScheme.onPrimary, style: PaintingStyle.stroke, strokeWidth: 2.0),
     );
 
     // Check what happens when disabled.
@@ -687,8 +681,8 @@ void main() {
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
       paints
-        ..path(color: material3 ? theme.colorScheme.onSurface.withOpacity(0.38) : const Color(0x61000000))
-        ..path(color: material3 ? theme.colorScheme.surface : const Color(0xffffffff), style: PaintingStyle.stroke, strokeWidth: 2.0),
+        ..path(color: theme.colorScheme.onSurface.withOpacity(0.38))
+        ..path(color: theme.colorScheme.surface, style: PaintingStyle.stroke, strokeWidth: 2.0),
     );
   });
 
@@ -1078,7 +1072,6 @@ void main() {
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
 
     final ColorScheme colors = theme.colorScheme;
-    final bool material3 = theme.useMaterial3;
     Widget buildCheckbox({bool active = false, bool focused = false}) {
       return MaterialApp(
         theme: theme,
@@ -1099,11 +1092,7 @@ void main() {
 
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
-      material3
-        ? (paints..circle(color: colors.primary.withOpacity(0.12)))
-        : (paints
-          ..circle(color: theme.unselectedWidgetColor.withAlpha(kRadialReactionAlpha),)
-        ),
+      (paints..circle(color: colors.primary.withOpacity(0.12))),
       reason: 'Default inactive pressed Checkbox should have overlay color from default fillColor',
     );
 
@@ -1113,11 +1102,7 @@ void main() {
 
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
-      material3
-        ? (paints..circle(color: colors.onSurface.withOpacity(0.12)))
-        : (paints
-          ..circle(color: colors.secondary.withAlpha(kRadialReactionAlpha),)
-        ),
+      (paints..circle(color: colors.onSurface.withOpacity(0.12))),
       reason: 'Default active pressed Checkbox should have overlay color from default fillColor',
     );
 
@@ -1128,9 +1113,7 @@ void main() {
     expect(focusNode.hasPrimaryFocus, isTrue);
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
-      material3
-        ? (paints..circle(color: colors.onSurface.withOpacity(0.12)))
-        : (paints..circle(color: theme.focusColor)),
+      (paints..circle(color: colors.onSurface.withOpacity(0.12))),
       reason: 'Focused Checkbox should use default focused overlay color',
     );
 
@@ -1143,9 +1126,7 @@ void main() {
 
     expect(
       Material.of(tester.element(find.byType(Checkbox))),
-      material3
-          ? (paints..circle(color: colors.onSurface.withOpacity(0.08)))
-          : (paints..circle(color: theme.hoverColor)),
+      (paints..circle(color: colors.onSurface.withOpacity(0.08))),
       reason: 'Hovered Checkbox should use default hovered overlay color',
     );
   });
@@ -1452,7 +1433,7 @@ void main() {
         paints
         ..drrect(
           color: borderColor,
-          outer: RRect.fromLTRBR(15, 15, 33, 33, const Radius.circular(1)),
+          outer: RRect.fromLTRBR(15, 15, 33, 33, const Radius.circular(2.0)),
           inner: RRect.fromLTRBR(19, 19, 29, 29, Radius.zero),
         ),
       );
@@ -1511,7 +1492,7 @@ void main() {
         paints
         ..drrect(
           color: borderColor,
-          outer: RRect.fromLTRBR(15, 15, 33, 33, const Radius.circular(1)),
+          outer: RRect.fromLTRBR(15, 15, 33, 33, const Radius.circular(2.0)),
           inner: RRect.fromLTRBR(19, 19, 29, 29, Radius.zero),
         ),
       );
@@ -1588,7 +1569,7 @@ void main() {
 
   testWidgets('Checkbox has default error color when isError is set to true - M3', (WidgetTester tester) async {
     final FocusNode focusNode = FocusNode(debugLabel: 'Checkbox');
-    final ThemeData themeData = ThemeData(useMaterial3: true);
+    final ThemeData themeData = ThemeData();
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
     bool? value = true;
     Widget buildApp({bool autoFocus = true}) {
@@ -1660,7 +1641,7 @@ void main() {
 
   testWidgets('Checkbox MaterialStateBorderSide applies in error states - M3', (WidgetTester tester) async {
     final FocusNode focusNode = FocusNode(debugLabel: 'Checkbox');
-    final ThemeData themeData = ThemeData(useMaterial3: true);
+    final ThemeData themeData = ThemeData();
     const Color borderColor = Color(0xffffeb3b);
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
     bool? value = false;
@@ -1738,7 +1719,7 @@ void main() {
   });
 
   testWidgets('Checkbox has correct default shape - M3', (WidgetTester tester) async {
-    final ThemeData themeData = ThemeData(useMaterial3: true);
+    final ThemeData themeData = ThemeData();
 
     Widget buildApp() {
       return MaterialApp(

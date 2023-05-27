@@ -51,7 +51,7 @@ void main() {
     Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
   }) {
     return MaterialApp(
-      theme: theme ?? ThemeData.from(colorScheme: const ColorScheme.light()),
+      theme: theme ?? ThemeData.from(colorScheme: ColorScheme.m3DefaultLight),
       localizationsDelegates: localizationsDelegates,
       home: Material(
         child: Form(
@@ -292,7 +292,7 @@ void main() {
     testWidgets('InputDecorationTheme is honored', (WidgetTester tester) async {
       const InputBorder border = InputBorder.none;
       await tester.pumpWidget(inputDatePickerField(
-        theme: ThemeData.from(colorScheme: const ColorScheme.light()).copyWith(
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight).copyWith(
           inputDecorationTheme: const InputDecorationTheme(
             border: border,
           ),

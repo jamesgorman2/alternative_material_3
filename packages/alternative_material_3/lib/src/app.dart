@@ -842,14 +842,7 @@ class MaterialScrollBehavior extends ScrollBehavior {
   Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
     // When modifying this function, consider modifying the implementation in
     // the base class ScrollBehavior as well.
-    late final AndroidOverscrollIndicator indicator;
-    if (Theme.of(context).useMaterial3) {
-      indicator = AndroidOverscrollIndicator.stretch;
-    } else {
-      indicator = _androidOverscrollIndicator
-        ?? Theme.of(context).androidOverscrollIndicator
-        ?? androidOverscrollIndicator;
-    }
+    const AndroidOverscrollIndicator indicator = AndroidOverscrollIndicator.stretch;
     switch (getPlatform(context)) {
       case TargetPlatform.iOS:
       case TargetPlatform.linux:
@@ -975,7 +968,9 @@ class _MaterialAppState extends State<MaterialApp> {
     // Android's switcher UI.
     //
     // blue is the primary color of the default theme.
-    final Color materialColor = widget.color ?? widget.theme?.primaryColor ?? Colors.blue;
+    final Color materialColor = widget.color
+        ?? widget.theme?.colorScheme.primary
+        ?? Colors.blue;
     if (_usesRouter) {
       return WidgetsApp.router(
         key: GlobalObjectKey(this),

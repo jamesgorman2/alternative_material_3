@@ -162,7 +162,7 @@ class Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CardTheme cardTheme = CardTheme.of(context);
-    final CardTheme defaults = Theme.of(context).useMaterial3 ? _CardDefaultsM3(context) : _CardDefaultsM2(context);
+    final CardTheme defaults = _CardDefaultsM3(context);
 
     return Semantics(
       container: semanticContainer,
@@ -187,27 +187,6 @@ class Card extends StatelessWidget {
   }
 }
 
-// Hand coded defaults based on Material Design 2.
-class _CardDefaultsM2 extends CardTheme {
-  const _CardDefaultsM2(this.context)
-    : super(
-        clipBehavior: Clip.none,
-        elevation: 1.0,
-        margin: const EdgeInsets.all(4.0),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        )
-    );
-
-  final BuildContext context;
-
-  @override
-  Color? get color => Theme.of(context).cardColor;
-
-  @override
-  Color? get shadowColor => Theme.of(context).shadowColor;
-}
-
 // BEGIN GENERATED TOKEN PROPERTIES - Card
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -230,7 +209,7 @@ class _CardDefaultsM3 extends CardTheme {
   late final ColorScheme _colors = Theme.of(context).colorScheme;
 
   @override
-  Color? get color => _colors.surface;
+  Color? get color => _colors.surfaceContainerLow;
 
   @override
   Color? get shadowColor => _colors.shadow;

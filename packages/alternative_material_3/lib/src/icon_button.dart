@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
@@ -13,7 +12,6 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'debug.dart';
 import 'icon_button_theme.dart';
 import 'icons.dart';
 import 'ink_well.dart';
@@ -25,10 +23,6 @@ import 'tooltip.dart';
 
 // Examples can assume:
 // late BuildContext context;
-
-// Minimum logical pixel size of the IconButton.
-// See: <https://material.io/design/usability/accessibility.html#layout-typography>.
-const double _kMinButtonSize = kMinInteractiveDimension;
 
 enum _IconButtonVariant { standard, filled, filledTonal, outlined }
 
@@ -668,130 +662,54 @@ class IconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final Size? minSize = constraints == null
+        ? null
+        : Size(constraints!.minWidth, constraints!.minHeight);
+    final Size? maxSize = constraints == null
+        ? null
+        : Size(constraints!.maxWidth, constraints!.maxHeight);
 
-    if (theme.useMaterial3) {
-      final Size? minSize = constraints == null
-          ? null
-          : Size(constraints!.minWidth, constraints!.minHeight);
-      final Size? maxSize = constraints == null
-          ? null
-          : Size(constraints!.maxWidth, constraints!.maxHeight);
-
-      ButtonStyle adjustedStyle = styleFrom(
-        visualDensity: visualDensity,
-        foregroundColor: color,
-        disabledForegroundColor: disabledColor,
-        focusColor: focusColor,
-        hoverColor: hoverColor,
-        highlightColor: highlightColor,
-        padding: padding,
-        minimumSize: minSize,
-        maximumSize: maxSize,
-        iconSize: iconSize,
-        alignment: alignment,
-        enabledMouseCursor: mouseCursor,
-        disabledMouseCursor: mouseCursor,
-        enableFeedback: enableFeedback,
-      );
-      if (style != null) {
-        adjustedStyle = style!.merge(adjustedStyle);
-      }
-
-      Widget effectiveIcon = icon;
-      if ((isSelected ?? false) && selectedIcon != null) {
-        effectiveIcon = selectedIcon!;
-      }
-
-      Widget iconButton = effectiveIcon;
-      if (tooltip != null) {
-        iconButton = Tooltip(
-          message: tooltip,
-          child: effectiveIcon,
-        );
-      }
-
-      return _SelectableIconButton(
-        style: adjustedStyle,
-        onPressed: onPressed,
-        autofocus: autofocus,
-        focusNode: focusNode,
-        isSelected: isSelected,
-        variant: _variant,
-        child: iconButton,
-      );
+    ButtonStyle adjustedStyle = styleFrom(
+      visualDensity: visualDensity,
+      foregroundColor: color,
+      disabledForegroundColor: disabledColor,
+      focusColor: focusColor,
+      hoverColor: hoverColor,
+      highlightColor: highlightColor,
+      padding: padding,
+      minimumSize: minSize,
+      maximumSize: maxSize,
+      iconSize: iconSize,
+      alignment: alignment,
+      enabledMouseCursor: mouseCursor,
+      disabledMouseCursor: mouseCursor,
+      enableFeedback: enableFeedback,
+    );
+    if (style != null) {
+      adjustedStyle = style!.merge(adjustedStyle);
     }
 
-    assert(debugCheckHasMaterial(context));
-
-    Color? currentColor;
-    if (onPressed != null) {
-      currentColor = color;
-    } else {
-      currentColor = disabledColor ?? theme.disabledColor;
+    Widget effectiveIcon = icon;
+    if ((isSelected ?? false) && selectedIcon != null) {
+      effectiveIcon = selectedIcon!;
     }
 
-    final VisualDensity effectiveVisualDensity = visualDensity ?? theme.visualDensity;
-
-    final BoxConstraints unadjustedConstraints = constraints ?? const BoxConstraints(
-      minWidth: _kMinButtonSize,
-      minHeight: _kMinButtonSize,
-    );
-    final BoxConstraints adjustedConstraints = effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
-    final double effectiveIconSize = iconSize ?? IconTheme.of(context).size ?? 24.0;
-    final EdgeInsetsGeometry effectivePadding = padding ?? const EdgeInsets.all(8.0);
-    final AlignmentGeometry effectiveAlignment = alignment ?? Alignment.center;
-    final bool effectiveEnableFeedback = enableFeedback ?? true;
-
-    Widget result = ConstrainedBox(
-      constraints: adjustedConstraints,
-      child: Padding(
-        padding: effectivePadding,
-        child: SizedBox(
-          height: effectiveIconSize,
-          width: effectiveIconSize,
-          child: Align(
-            alignment: effectiveAlignment,
-            child: IconTheme.merge(
-              data: IconThemeData(
-                size: effectiveIconSize,
-                color: currentColor,
-              ),
-              child: icon,
-            ),
-          ),
-        ),
-      ),
-    );
-
+    Widget iconButton = effectiveIcon;
     if (tooltip != null) {
-      result = Tooltip(
+      iconButton = Tooltip(
         message: tooltip,
-        child: result,
+        child: effectiveIcon,
       );
     }
 
-    return Semantics(
-      button: true,
-      enabled: onPressed != null,
-      child: InkResponse(
-        focusNode: focusNode,
-        autofocus: autofocus,
-        canRequestFocus: onPressed != null,
-        onTap: onPressed,
-        mouseCursor: mouseCursor ?? (onPressed == null ? SystemMouseCursors.basic : SystemMouseCursors.click),
-        enableFeedback: effectiveEnableFeedback,
-        focusColor: focusColor ?? theme.focusColor,
-        hoverColor: hoverColor ?? theme.hoverColor,
-        highlightColor: highlightColor ?? theme.highlightColor,
-        splashColor: splashColor ?? theme.splashColor,
-        radius: splashRadius ?? math.max(
-          Material.defaultSplashRadius,
-          (effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7,
-          // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
-        ),
-        child: result,
-      ),
+    return _SelectableIconButton(
+      style: adjustedStyle,
+      onPressed: onPressed,
+      autofocus: autofocus,
+      focusNode: focusNode,
+      isSelected: isSelected,
+      variant: _variant,
+      child: iconButton,
     );
   }
 
@@ -867,7 +785,6 @@ class _SelectableIconButtonState extends State<_SelectableIconButton> {
   @override
   Widget build(BuildContext context) {
     final bool toggleable = widget.isSelected != null;
-
     return _IconButtonM3(
       statesController: statesController,
       style: widget.style,
@@ -960,6 +877,7 @@ class _IconButtonM3 extends ButtonStyleButton {
     final IconThemeData iconTheme = IconTheme.of(context);
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
+    // FIXME, if the user sets the default color it might change
     bool isIconThemeDefault(Color? color) {
       if (isDark) {
         return color == kDefaultIconLightColor;
@@ -1540,7 +1458,7 @@ class _OutlinedIconButtonDefaultsM3 extends ButtonStyle {
         return _colors.onSurface.withOpacity(0.38);
       }
       if (states.contains(MaterialState.selected)) {
-        return _colors.onInverseSurface;
+        return _colors.inverseOnSurface;
       }
       return _colors.onSurfaceVariant;
     });
@@ -1549,13 +1467,13 @@ class _OutlinedIconButtonDefaultsM3 extends ButtonStyle {
   MaterialStateProperty<Color?>? get overlayColor =>    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.selected)) {
         if (states.contains(MaterialState.hovered)) {
-          return _colors.onInverseSurface.withOpacity(0.08);
+          return _colors.inverseOnSurface.withOpacity(0.08);
         }
         if (states.contains(MaterialState.focused)) {
-          return _colors.onInverseSurface.withOpacity(0.08);
+          return _colors.inverseOnSurface.withOpacity(0.08);
         }
         if (states.contains(MaterialState.pressed)) {
-          return _colors.onInverseSurface.withOpacity(0.12);
+          return _colors.inverseOnSurface.withOpacity(0.12);
         }
       }
       if (states.contains(MaterialState.hovered)) {

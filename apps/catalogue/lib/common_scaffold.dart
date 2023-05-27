@@ -77,7 +77,7 @@ class AppDrawer extends StatelessWidget {
             const Divider(),
             navTile(StylesOverview.label, StylesOverview.route),
             navTile(TypographyPage.label, TypographyPage.route, isChildPage: true),
-            // navTile(ColorPage.label, ColorPage.route, isChildPage: true),
+            navTile(ColorPage.label, ColorPage.route, isChildPage: true),
             // navTile(ElevationPage.label, ElevationPage.route, isChildPage: true),
           ],
         ),

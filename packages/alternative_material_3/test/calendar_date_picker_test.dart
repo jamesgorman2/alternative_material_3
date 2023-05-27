@@ -325,7 +325,7 @@ void main() {
       await tester.pumpWidget(calendarDatePicker(
         currentDate: DateTime(2016, 1, 2),
       ));
-      const Color todayColor = Color(0xff2196f3); // default primary color
+      final Color todayColor = ColorScheme.m3DefaultLight.primary; // default primary color
       expect(
         Material.of(tester.element(find.text('2'))),
         // The current day should be painted with a circle outline.
@@ -344,7 +344,8 @@ void main() {
         currentDate: DateTime(2016, 1, 2), // not between first and last
         initialDate: DateTime(2016, 1, 5),
       ));
-      const Color disabledColor = Color(0x61000000); // default disabled color
+      // FIXME
+      const Color disabledColor = Color(0x616750a4); // default disabled color
       expect(
         Material.of(tester.element(find.text('2'))),
         // The current day should be painted with a circle outline.
@@ -377,7 +378,7 @@ void main() {
       final DateTime updatedDate = DateTime(1976, 2, 23);
       final DateTime firstDate = DateTime(1970);
       final DateTime lastDate = DateTime(2099, 31, 12);
-      const Color selectedColor = Color(0xff2196f3); // default primary color
+      final Color selectedColor = ColorScheme.m3DefaultLight.primary; // default primary color
 
       await tester.pumpWidget(calendarDatePicker(
         key: pickerKey,

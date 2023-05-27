@@ -2957,7 +2957,7 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
       geometryNotifier: _geometryNotifier,
       child: ScrollNotificationObserver(
         child: Material(
-          color: widget.backgroundColor ?? themeData.scaffoldBackgroundColor,
+          color: widget.backgroundColor ?? themeData.colorScheme.surface,
           child: AnimatedBuilder(animation: _floatingActionButtonMoveController, builder: (BuildContext context, Widget? child) {
             return Actions(
               actions: <Type, Action<Intent>>{

@@ -83,7 +83,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.light(useMaterial3: true).copyWith(
+        theme: ThemeData.light().copyWith(
           actionIconTheme: actionIconTheme,
         ),
         home: const Material(

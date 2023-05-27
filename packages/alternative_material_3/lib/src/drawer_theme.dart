@@ -57,7 +57,7 @@ class DrawerThemeData with Diagnosticable {
   /// Overrides the default value for [Drawer.shadowColor].
   final Color? shadowColor;
 
-  /// Overrides the default value for [Drawer.surfaceTintColor].
+  /// Overrides the default value for [Drawer.surfaceTint].
   final Color? surfaceTintColor;
 
   /// Overrides the default value of [Drawer.shape].

@@ -114,7 +114,7 @@ void main() {
   testWidgets('DrawerButton color', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(),
         home: const Material(
           child: DrawerButton(
             style: ButtonStyle(
@@ -229,7 +229,7 @@ void main() {
   testWidgets('EndDrawerButton color', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(),
         home: const Material(
           child: EndDrawerButton(
             style: ButtonStyle(

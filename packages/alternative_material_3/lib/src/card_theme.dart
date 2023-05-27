@@ -57,11 +57,11 @@ class CardTheme with Diagnosticable {
   /// If null, [Card] defaults to fully opaque black.
   final Color? shadowColor;
 
-  /// Overrides the default value for [Card.surfaceTintColor].
+  /// Overrides the default value for [Card.surfaceTint].
   ///
   /// If null, [Card] will not display an overlay color.
   ///
-  /// See [Material.surfaceTintColor] for more details.
+  /// See [Material.surfaceTint] for more details.
   final Color? surfaceTintColor;
 
   /// Overrides the default value for [Card.elevation].

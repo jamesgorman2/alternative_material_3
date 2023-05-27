@@ -47,7 +47,7 @@ void main() {
     const EdgeInsets customPadding = EdgeInsets.all(10);
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.light()),
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight),
         home: Builder(
           builder: (BuildContext context) {
             return const Scaffold(
@@ -79,7 +79,7 @@ void main() {
     const EdgeInsets customPadding = EdgeInsets.all(10);
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.light(), useMaterial3: true),
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight, ),
         home: Builder(
           builder: (BuildContext context) {
             return const Scaffold(
@@ -113,7 +113,11 @@ void main() {
         home: Builder(
           builder: (BuildContext context) {
             return Theme(
-              data: Theme.of(context).copyWith(bottomAppBarColor: const Color(0xffffff00)),
+              data: Theme.of(context)
+                  .copyWith(colorScheme:
+                      Theme.of(context).colorScheme
+                          .copyWith(surfaceContainer: const Color(0xffffff00)),
+                  ),
               child: const Scaffold(
                 floatingActionButton: FloatingActionButton(
                   onPressed: null,
@@ -138,7 +142,11 @@ void main() {
         home: Builder(
           builder: (BuildContext context) {
             return Theme(
-              data: Theme.of(context).copyWith(bottomAppBarColor: const Color(0xffffff00)),
+              data: Theme.of(context)
+                  .copyWith(colorScheme:
+              Theme.of(context).colorScheme
+                  .copyWith(surfaceContainer: const Color(0xffffff00)),
+              ),
               child: const Scaffold(
                 floatingActionButton: FloatingActionButton(
                   onPressed: null,
@@ -158,15 +166,16 @@ void main() {
     final Material material = tester.widget(find.byType(Material).at(1));
 
     expect(physicalShape.color, const Color(0xff0000ff));
-    expect(material.color, null); /* no value in Material 2. */
   });
 
 
   testWidgets('color overrides theme color with Material 3', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.light(useMaterial3: true).copyWith(
-          bottomAppBarColor: const Color(0xffffff00)),
+        theme: ThemeData(
+          colorScheme: ColorScheme.m3DefaultLight
+              .copyWith(surfaceContainer: const Color(0xffffff00)),
+        ),
         home: Builder(
           builder: (BuildContext context) {
             return const Scaffold(
@@ -193,7 +202,7 @@ void main() {
   testWidgets('Shadow color is transparent in Material 3', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(useMaterial3: true,
+        theme: ThemeData(
         ),
         home: const Scaffold(
           floatingActionButton: FloatingActionButton(
@@ -209,24 +218,6 @@ void main() {
     final Material material = tester.widget(find.byType(Material).at(1));
 
     expect(material.shadowColor, Colors.transparent);
-  });
-
-  testWidgets('dark theme applies an elevation overlay color', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.dark()),
-        home: Scaffold(
-          bottomNavigationBar: BottomAppBar(
-            color: const ColorScheme.dark().surface,
-          ),
-        ),
-      ),
-    );
-
-    final PhysicalShape physicalShape = tester.widget(find.byType(PhysicalShape).at(0));
-
-    // For the default dark theme the overlay color for elevation 8 is 0xFF2D2D2D
-    expect(physicalShape.color, const Color(0xFF2D2D2D));
   });
 
   // This is a regression test for a bug we had where toggling the notch on/off
@@ -416,7 +407,7 @@ void main() {
 
     expect(
       tester.getBottomLeft(find.widgetWithText(Center, 'safe')),
-      const Offset(50.0, 550.0),
+      const Offset(66.0, 538.0),
     );
   });
 
@@ -485,7 +476,7 @@ void main() {
     );
 
     expect(tester.getRect(find.byType(FloatingActionButton)), const Rect.fromLTRB(372, 528, 428, 584));
-    expect(tester.getSize(find.byType(BottomAppBar)), const Size(800, 50));
+    expect(tester.getSize(find.byType(BottomAppBar)), const Size(800, 80));
   });
 
   testWidgets('notch with margin and top padding, home safe area', (WidgetTester tester) async {
@@ -584,7 +575,7 @@ void main() {
           viewPadding: EdgeInsets.only(bottom: bottomPadding),
         ),
         child: MaterialApp(
-          theme: ThemeData(useMaterial3: true),
+          theme: ThemeData(),
           home: Scaffold(
             floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
             floatingActionButton: FloatingActionButton(onPressed: () { }),

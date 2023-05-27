@@ -140,9 +140,7 @@ class ActionChip extends StatelessWidget implements ChipAttributes, TappableChip
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
-    final ChipThemeData? defaults = Theme.of(context).useMaterial3
-      ? _ActionChipDefaultsM3(context, isEnabled)
-      : null;
+    final ChipThemeData defaults = _ActionChipDefaultsM3(context, isEnabled);
     return RawChip(
       defaultProperties: defaults,
       avatar: avatar,

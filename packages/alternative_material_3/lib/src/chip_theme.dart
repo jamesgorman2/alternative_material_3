@@ -307,7 +307,7 @@ class ChipThemeData with Diagnosticable {
   /// [FilterChip], [InputChip], [RawChip].
   final Color? shadowColor;
 
-  /// Overrides the default for [ChipAttributes.surfaceTintColor], the
+  /// Overrides the default for [ChipAttributes.surfaceTint], the
   /// Color of the chip's surface tint overlay when its elevation is
   /// greater than 0.
   ///

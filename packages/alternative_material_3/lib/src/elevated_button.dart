@@ -13,7 +13,6 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'constants.dart';
 import 'elevated_button_theme.dart';
-import 'ink_ripple.dart';
 import 'ink_well.dart';
 import 'material_state.dart';
 import 'theme.dart';
@@ -357,32 +356,7 @@ class ElevatedButton extends ButtonStyleButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
-    return Theme.of(context).useMaterial3
-      ? _ElevatedButtonDefaultsM3(context)
-      : styleFrom(
-          backgroundColor: colorScheme.primary,
-          foregroundColor: colorScheme.onPrimary,
-          disabledBackgroundColor: colorScheme.onSurface.withOpacity(0.12),
-          disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
-          shadowColor: theme.shadowColor,
-          elevation: 2,
-          textStyle: theme.textTheme.labelLarge,
-          padding: _scaledPadding(context),
-          minimumSize: const Size(64, 36),
-          maximumSize: Size.infinite,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-          enabledMouseCursor: SystemMouseCursors.click,
-          disabledMouseCursor: SystemMouseCursors.basic,
-          visualDensity: theme.visualDensity,
-          tapTargetSize: theme.materialTapTargetSize,
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-          splashFactory: InkRipple.splashFactory,
-        );
+    return _ElevatedButtonDefaultsM3(context);
   }
 
   /// Returns the [ElevatedButtonThemeData.style] of the closest
@@ -394,12 +368,11 @@ class ElevatedButton extends ButtonStyleButton {
 }
 
 EdgeInsetsGeometry _scaledPadding(BuildContext context) {
-  final bool useMaterial3 = Theme.of(context).useMaterial3;
-  final double padding1x = useMaterial3 ? 24.0 : 16.0;
+  const double padding1x = 24.0;
   return ButtonStyleButton.scaledPadding(
-     EdgeInsets.symmetric(horizontal: padding1x),
-     EdgeInsets.symmetric(horizontal: padding1x / 2),
-     EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
+    const EdgeInsets.symmetric(horizontal: padding1x),
+    const EdgeInsets.symmetric(horizontal: padding1x / 2),
+    const EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
     MediaQuery.textScaleFactorOf(context),
   );
 }
@@ -500,16 +473,10 @@ class _ElevatedButtonWithIcon extends ElevatedButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final EdgeInsetsGeometry scaledPadding = useMaterial3 ?  ButtonStyleButton.scaledPadding(
+    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsetsDirectional.fromSTEB(16, 0, 24, 0),
       const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),
       const EdgeInsetsDirectional.fromSTEB(4, 0, 6, 0),
-      MediaQuery.textScaleFactorOf(context),
-    ) : ButtonStyleButton.scaledPadding(
-      const EdgeInsetsDirectional.fromSTEB(12, 0, 16, 0),
-      const EdgeInsets.symmetric(horizontal: 8),
-      const EdgeInsetsDirectional.fromSTEB(8, 0, 4, 0),
       MediaQuery.textScaleFactorOf(context),
     );
     return super.defaultStyleOf(context).copyWith(

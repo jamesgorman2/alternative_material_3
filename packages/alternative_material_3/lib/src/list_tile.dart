@@ -730,13 +730,7 @@ class ListTile extends StatelessWidget {
     assert(debugCheckHasMaterial(context));
     final ThemeData theme = Theme.of(context);
     final ListTileThemeData tileTheme = ListTileTheme.of(context);
-    final ListTileStyle listTileStyle = style
-      ?? tileTheme.style
-      ?? theme.listTileTheme.style
-      ?? ListTileStyle.list;
-    final ListTileThemeData defaults = theme.useMaterial3
-        ? _LisTileDefaultsM3(context)
-        : _LisTileDefaultsM2(context, listTileStyle);
+    final ListTileThemeData defaults = _LisTileDefaultsM3(context);
     final Set<MaterialState> states = <MaterialState>{
       if (!enabled) MaterialState.disabled,
       if (selected) MaterialState.selected,
@@ -754,11 +748,11 @@ class ListTile extends StatelessWidget {
     final Color? effectiveIconColor = resolveColor(iconColor, selectedColor, iconColor)
       ?? resolveColor(tileTheme.iconColor, tileTheme.selectedColor, tileTheme.iconColor)
       ?? resolveColor(theme.listTileTheme.iconColor, theme.listTileTheme.selectedColor, theme.listTileTheme.iconColor)
-      ?? resolveColor(defaults.iconColor, defaults.selectedColor, defaults.iconColor, theme.disabledColor);
+      ?? resolveColor(defaults.iconColor, defaults.selectedColor, defaults.iconColor, theme.colorScheme.disabledColor);
     final Color? effectiveColor = resolveColor(textColor, selectedColor, textColor)
       ?? resolveColor(tileTheme.textColor, tileTheme.selectedColor, tileTheme.textColor)
       ?? resolveColor(theme.listTileTheme.textColor, theme.listTileTheme.selectedColor, theme.listTileTheme.textColor)
-      ?? resolveColor(defaults.textColor, defaults.selectedColor, defaults.textColor, theme.disabledColor);
+      ?? resolveColor(defaults.textColor, defaults.selectedColor, defaults.textColor, theme.colorScheme.disabledColor);
     final IconThemeData iconThemeData = IconThemeData(color: effectiveIconColor);
     final IconButtonThemeData iconButtonThemeData = IconButtonThemeData(
       style: IconButton.styleFrom(foregroundColor: effectiveIconColor),
@@ -802,7 +796,7 @@ class ListTile extends StatelessWidget {
       subtitleStyle = subtitleTextStyle
         ?? tileTheme.subtitleTextStyle
         ?? defaults.subtitleTextStyle!;
-      final Color? subtitleColor = effectiveColor ?? theme.textTheme.bodySmall!.color;
+      final Color? subtitleColor = effectiveColor ?? theme.textTheme.bodySmall.color;
       subtitleStyle = subtitleStyle.copyWith(
         color: subtitleColor,
         fontSize: _isDenseLayout(theme, tileTheme) ? 12.0 : null,
@@ -838,7 +832,7 @@ class ListTile extends StatelessWidget {
 
     final ListTileTitleAlignment effectiveTitleAlignment = titleAlignment
       ?? tileTheme.titleAlignment
-      ?? (theme.useMaterial3 ? ListTileTitleAlignment.threeLine : ListTileTitleAlignment.titleHeight);
+      ?? ListTileTitleAlignment.threeLine;
 
     return InkWell(
       customBorder: shape ?? tileTheme.shape,
@@ -1502,55 +1496,6 @@ class _RenderListTile extends RenderBox with SlottedContainerRenderObjectMixin<_
       }
     }
     return false;
-  }
-}
-
-class _LisTileDefaultsM2 extends ListTileThemeData {
-  _LisTileDefaultsM2(this.context, ListTileStyle style)
-    : super(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        minLeadingWidth: 40,
-        minVerticalPadding: 4,
-        shape: const Border(),
-        style: style,
-      );
-
-  final BuildContext context;
-  late final ThemeData _theme = Theme.of(context);
-  late final TextTheme _textTheme = _theme.textTheme;
-
-  @override
-  Color? get tileColor =>  Colors.transparent;
-
-  @override
-  TextStyle? get titleTextStyle {
-    switch (style!) {
-      case ListTileStyle.drawer:
-        return _textTheme.bodyLarge;
-      case ListTileStyle.list:
-        return _textTheme.titleMedium;
-    }
-  }
-
-  @override
-  TextStyle? get subtitleTextStyle => _textTheme.bodyMedium;
-
-  @override
-  TextStyle? get leadingAndTrailingTextStyle => _textTheme.bodyMedium;
-
-  @override
-  Color? get selectedColor => _theme.colorScheme.primary;
-
-  @override
-  Color? get iconColor {
-    switch (_theme.brightness) {
-      case Brightness.light:
-        // For the sake of backwards compatibility, the default for unselected
-        // tiles is Colors.black45 rather than colorScheme.onSurface.withAlpha(0x73).
-        return Colors.black45;
-      case Brightness.dark:
-        return null; // null, Use current icon theme color
-    }
   }
 }
 

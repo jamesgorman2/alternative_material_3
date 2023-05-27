@@ -195,29 +195,13 @@ class CircleAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
     final ThemeData theme = Theme.of(context);
-    final Color? effectiveForegroundColor = foregroundColor
-      ?? (theme.useMaterial3 ? theme.colorScheme.onPrimaryContainer : null);
-    final TextStyle effectiveTextStyle = theme.useMaterial3
-      ? theme.textTheme.titleMedium!
-      : theme.primaryTextTheme.titleMedium!;
+    final Color effectiveForegroundColor = foregroundColor
+      ?? theme.colorScheme.onPrimaryContainer;
+    final TextStyle effectiveTextStyle = theme.textTheme.titleMedium;
     TextStyle textStyle = effectiveTextStyle.copyWith(color: effectiveForegroundColor);
     Color? effectiveBackgroundColor = backgroundColor
-      ?? (theme.useMaterial3 ? theme.colorScheme.primaryContainer : null);
-    if (effectiveBackgroundColor == null) {
-      switch (ThemeData.estimateBrightnessForColor(textStyle.color!)) {
-        case Brightness.dark:
-          effectiveBackgroundColor = theme.primaryColorLight;
-        case Brightness.light:
-          effectiveBackgroundColor = theme.primaryColorDark;
-      }
-    } else if (effectiveForegroundColor == null) {
-      switch (ThemeData.estimateBrightnessForColor(backgroundColor!)) {
-        case Brightness.dark:
-          textStyle = textStyle.copyWith(color: theme.primaryColorLight);
-        case Brightness.light:
-          textStyle = textStyle.copyWith(color: theme.primaryColorDark);
-      }
-    }
+      ?? theme.colorScheme.primaryContainer;
+
     final double minDiameter = _minDiameter;
     final double maxDiameter = _maxDiameter;
     return AnimatedContainer(

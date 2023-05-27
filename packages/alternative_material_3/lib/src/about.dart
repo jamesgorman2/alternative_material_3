@@ -343,11 +343,7 @@ class AboutDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(
-            themeData.useMaterial3
-              ? localizations.viewLicensesButtonLabel
-              : localizations.viewLicensesButtonLabel.toUpperCase()
-          ),
+          child: Text(localizations.viewLicensesButtonLabel),
           onPressed: () {
             showLicensePage(
               context: context,
@@ -359,11 +355,7 @@ class AboutDialog extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text(
-            themeData.useMaterial3
-              ? localizations.closeButtonLabel
-              : localizations.closeButtonLabel.toUpperCase()
-          ),
+          child: Text(localizations.closeButtonLabel),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -581,8 +573,9 @@ class _PackagesViewState extends State<_PackagesView> {
                   valueListenable: widget.selectedId,
                   builder: (BuildContext context, int? selectedId, Widget? _) {
                     return Center(
+                      // FIXME Card
                       child: Material(
-                        color: Theme.of(context).cardColor,
+                        color: Theme.of(context).colorScheme.surfaceContainerLow,
                         elevation: 4.0,
                         child: Container(
                           constraints: BoxConstraints.loose(const Size.fromWidth(600.0)),
@@ -595,8 +588,9 @@ class _PackagesViewState extends State<_PackagesView> {
               case ConnectionState.none:
               case ConnectionState.active:
               case ConnectionState.waiting:
+                //FIXME car
                 return Material(
-                    color: Theme.of(context).cardColor,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     child: Column(
                     children: <Widget>[
                       widget.about,
@@ -676,7 +670,10 @@ class _PackageListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Ink(
-      color: isSelected ? Theme.of(context).highlightColor : Theme.of(context).cardColor,
+      color: isSelected ?
+          // TODO check me
+        Theme.of(context).colorScheme.onSurface :
+        Theme.of(context).colorScheme.surfaceContainerLow,
       child: ListTile(
         title: Text(packageName),
         subtitle: Text(MaterialLocalizations.of(context).licensesPackageDetailText(numberLicenses)),
@@ -872,14 +869,15 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
           title: _PackageLicensePageTitle(
             title: title,
             subtitle: subtitle,
-            theme: theme.useMaterial3 ? theme.textTheme : theme.primaryTextTheme,
+            theme: theme.textTheme,
             titleTextStyle: theme.appBarTheme.titleTextStyle,
             foregroundColor: theme.appBarTheme.foregroundColor,
           ),
         ),
         body: Center(
+          // FIXME Card
           child: Material(
-            color: theme.cardColor,
+            color: theme.colorScheme.surfaceContainerLow,
             elevation: 4.0,
             child: Container(
               constraints: BoxConstraints.loose(const Size.fromWidth(600.0)),
@@ -909,7 +907,7 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
           SliverAppBar(
             automaticallyImplyLeading: false,
             pinned: true,
-            backgroundColor: theme.cardColor,
+            backgroundColor: theme.colorScheme.surfaceContainerLow,
             title: _PackageLicensePageTitle(
               title: title,
               subtitle: subtitle,
@@ -1392,7 +1390,8 @@ class _MasterDetailScaffoldState extends State<_MasterDetailScaffold>
                   ConstrainedBox(
                     constraints: BoxConstraints.tightFor(width: masterViewWidth),
                     child: IconTheme(
-                      data: Theme.of(context).primaryIconTheme,
+                      // TODO test
+                      data: Theme.of(context).iconTheme,
                       child: Container(
                         alignment: AlignmentDirectional.centerEnd,
                         padding: const EdgeInsets.all(8),
@@ -1493,7 +1492,7 @@ class _DetailView extends StatelessWidget {
         return MouseRegion(
           // TODO(TonicArtos): Remove MouseRegion workaround for pointer hover events passing through DraggableScrollableSheet once https://github.com/flutter/flutter/issues/59741 is resolved.
           child: Card(
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
             elevation: _kCardElevation,
             clipBehavior: Clip.antiAlias,
             margin: const EdgeInsets.fromLTRB(_kCardElevation, 0.0, _kCardElevation, 0.0),

@@ -58,7 +58,7 @@ class SearchBarThemeData with Diagnosticable {
   /// Overrides the default value of the [SearchBar.shadowColor].
   final MaterialStateProperty<Color?>? shadowColor;
 
-  /// Overrides the default value of the [SearchBar.surfaceTintColor].
+  /// Overrides the default value of the [SearchBar.surfaceTint].
   final MaterialStateProperty<Color?>? surfaceTintColor;
 
   /// Overrides the default value of the [SearchBar.overlayColor].

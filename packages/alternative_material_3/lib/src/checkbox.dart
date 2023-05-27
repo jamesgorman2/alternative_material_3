@@ -485,9 +485,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin, Togg
 
     assert(debugCheckHasMaterial(context));
     final CheckboxThemeData checkboxTheme = CheckboxTheme.of(context);
-    final CheckboxThemeData defaults = Theme.of(context).useMaterial3
-      ? _CheckboxDefaultsM3(context)
-      : _CheckboxDefaultsM2(context);
+    final CheckboxThemeData defaults = _CheckboxDefaultsM3(context);
     final MaterialTapTargetSize effectiveMaterialTapTargetSize = widget.materialTapTargetSize
       ?? checkboxTheme.materialTapTargetSize
       ?? defaults.materialTapTargetSize!;
@@ -775,64 +773,6 @@ class _CheckboxPainter extends ToggleablePainter {
       }
     }
   }
-}
-
-// Hand coded defaults based on Material Design 2.
-class _CheckboxDefaultsM2 extends CheckboxThemeData {
-  _CheckboxDefaultsM2(BuildContext context)
-    : _theme = Theme.of(context),
-      _colors = Theme.of(context).colorScheme;
-
-  final ThemeData _theme;
-  final ColorScheme _colors;
-
-  @override
-  MaterialStateProperty<Color> get fillColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return _theme.disabledColor;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return _colors.secondary;
-      }
-      return _theme.unselectedWidgetColor;
-    });
-  }
-
-  @override
-  MaterialStateProperty<Color> get checkColor {
-    return MaterialStateProperty.all<Color>(const Color(0xFFFFFFFF));
-  }
-
-  @override
-  MaterialStateProperty<Color?> get overlayColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.pressed)) {
-        return fillColor.resolve(states).withAlpha(kRadialReactionAlpha);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _theme.hoverColor;
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _theme.focusColor;
-      }
-      return Colors.transparent;
-    });
-  }
-
-  @override
-  double get splashRadius => kRadialReactionRadius;
-
-  @override
-  MaterialTapTargetSize get materialTapTargetSize => _theme.materialTapTargetSize;
-
-  @override
-  VisualDensity get visualDensity => _theme.visualDensity;
-
-  @override
-  OutlinedBorder get shape => const RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(1.0)),
-  );
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Checkbox

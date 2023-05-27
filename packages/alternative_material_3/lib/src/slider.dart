@@ -738,7 +738,7 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
   Widget _buildMaterialSlider(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     SliderThemeData sliderTheme = SliderTheme.of(context);
-    final SliderThemeData defaults = theme.useMaterial3 ? _SliderDefaultsM3(context) : _SliderDefaultsM2(context);
+    final SliderThemeData defaults = _SliderDefaultsM3(context);
 
     // If the widget has active or inactive colors specified, then we plug them
     // in to the slider theme as best we can. If the developer wants more
@@ -838,13 +838,11 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
         shortcutMap = _traditionalNavShortcutMap;
     }
 
-    final double textScaleFactor = theme.useMaterial3
+    final double textScaleFactor = math.min(MediaQuery.textScaleFactorOf(context), 1.3);
       // TODO(tahatesser): This is an eye-balled value.
       // This needs to be updated when accessibility
       // guidelines are available on the material specs page
       // https://m3.material.io/components/sliders/accessibility.
-      ? math.min(MediaQuery.textScaleFactorOf(context), 1.3)
-      : MediaQuery.textScaleFactorOf(context);
 
     return Semantics(
       container: true,
@@ -1800,62 +1798,6 @@ class _RenderValueIndicator extends RenderBox with RelayoutWhenSystemFontsChange
   }
 }
 
-class _SliderDefaultsM2 extends SliderThemeData {
-  _SliderDefaultsM2(this.context)
-    : _colors = Theme.of(context).colorScheme,
-      super(trackHeight: 4.0);
-
-  final BuildContext context;
-  final ColorScheme _colors;
-
-  @override
-  Color? get activeTrackColor => _colors.primary;
-
-  @override
-  Color? get inactiveTrackColor => _colors.primary.withOpacity(0.24);
-
-  @override
-  Color? get secondaryActiveTrackColor => _colors.primary.withOpacity(0.54);
-
-  @override
-  Color? get disabledActiveTrackColor => _colors.onSurface.withOpacity(0.32);
-
-  @override
-  Color? get disabledInactiveTrackColor => _colors.onSurface.withOpacity(0.12);
-
-  @override
-  Color? get disabledSecondaryActiveTrackColor => _colors.onSurface.withOpacity(0.12);
-
-  @override
-  Color? get activeTickMarkColor => _colors.onPrimary.withOpacity(0.54);
-
-  @override
-  Color? get inactiveTickMarkColor => _colors.primary.withOpacity(0.54);
-
-  @override
-  Color? get disabledActiveTickMarkColor => _colors.onPrimary.withOpacity(0.12);
-
-  @override
-  Color? get disabledInactiveTickMarkColor => _colors.onSurface.withOpacity(0.12);
-
-  @override
-  Color? get thumbColor => _colors.primary;
-
-  @override
-  Color? get disabledThumbColor => Color.alphaBlend(_colors.onSurface.withOpacity(.38), _colors.surface);
-
-  @override
-  Color? get overlayColor => _colors.primary.withOpacity(0.12);
-
-  @override
-  TextStyle? get valueIndicatorTextStyle => Theme.of(context).textTheme.bodyLarge!.copyWith(
-    color: _colors.onPrimary,
-  );
-
-  @override
-  SliderComponentShape? get valueIndicatorShape => const RectangularSliderValueIndicatorShape();
-}
-
 // BEGIN GENERATED TOKEN PROPERTIES - Slider
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -1924,7 +1866,7 @@ class _SliderDefaultsM3 extends SliderThemeData {
   });
 
   @override
-  TextStyle? get valueIndicatorTextStyle => Theme.of(context).textTheme.labelMedium!.copyWith(
+  TextStyle? get valueIndicatorTextStyle => Theme.of(context).textTheme.labelMedium.copyWith(
     color: _colors.onPrimary,
   );
 

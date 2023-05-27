@@ -49,7 +49,7 @@ class DialogTheme with Diagnosticable {
   /// Overrides the default value for [Dialog.shadowColor].
   final Color? shadowColor;
 
-  /// Overrides the default value for [Dialog.surfaceTintColor].
+  /// Overrides the default value for [Dialog.surfaceTint].
   final Color? surfaceTintColor;
 
   /// Overrides the default value for [Dialog.shape].

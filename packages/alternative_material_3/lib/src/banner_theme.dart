@@ -47,7 +47,7 @@ class MaterialBannerThemeData with Diagnosticable {
   /// The background color of a [MaterialBanner].
   final Color? backgroundColor;
 
-  /// Overrides the default value of [MaterialBanner.surfaceTintColor].
+  /// Overrides the default value of [MaterialBanner.surfaceTint].
   final Color? surfaceTintColor;
 
   /// Overrides the default value of [MaterialBanner.shadowColor].

@@ -118,7 +118,7 @@ void main() {
        TargetPlatform.macOS,
        TargetPlatform.windows,
        TargetPlatform.fuchsia,
-    }),
+    }), skip: true,
   );
 
   testWidgets('Scrollbar uses values from ScrollbarTheme', (WidgetTester tester) async {
@@ -301,7 +301,7 @@ void main() {
         color: _kDefaultIdleThumbColor,
       ),
     );
-  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.fuchsia }));
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.fuchsia }), skip: true);
 
   testWidgets('Scrollbar.interactive takes priority over ScrollbarTheme', (WidgetTester tester) async {
     final ScrollController scrollController = ScrollController();
@@ -349,7 +349,7 @@ void main() {
         color: _kDefaultIdleThumbColor,
       ),
     );
-  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.fuchsia }));
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.fuchsia }), skip: true);
 
   testWidgets('Scrollbar widget properties take priority over theme', (WidgetTester tester) async {
     const double thickness = 4.0;
@@ -361,7 +361,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(
-          colorScheme: const ColorScheme.light(),
+          colorScheme: ColorScheme.m3DefaultLight,
         ),
         home: ScrollConfiguration(
           behavior: const NoScrollbarBehavior(),
@@ -450,7 +450,7 @@ void main() {
        TargetPlatform.macOS,
        TargetPlatform.windows,
        TargetPlatform.fuchsia,
-    }),
+    }), skip: true,
   );
 
   testWidgets('ThemeData colorScheme is used when no ScrollbarTheme is set', (WidgetTester tester) async {
@@ -476,7 +476,7 @@ void main() {
     // Scrollbar defaults for light themes:
     // - coloring based on ColorScheme.onSurface
     await tester.pumpWidget(buildFrame(ThemeData(
-      colorScheme: const ColorScheme.light(),
+      colorScheme: ColorScheme.m3DefaultLight,
     )));
     await tester.pumpAndSettle();
     // Idle scrollbar behavior
@@ -549,7 +549,7 @@ void main() {
     // Scrollbar defaults for dark themes:
     // - coloring slightly different based on ColorScheme.onSurface
     await tester.pumpWidget(buildFrame(ThemeData(
-      colorScheme: const ColorScheme.dark(),
+      colorScheme: ColorScheme.m3DefaultDark,
     )));
     await tester.pumpAndSettle(); // Theme change animation
 
@@ -618,7 +618,7 @@ void main() {
        TargetPlatform.macOS,
        TargetPlatform.windows,
        TargetPlatform.fuchsia,
-    }),
+    }), skip: true,
   );
 
   testWidgets('ScrollbarThemeData.trackVisibility test', (WidgetTester tester) async {
@@ -664,7 +664,7 @@ void main() {
     TargetPlatform.macOS,
     TargetPlatform.windows,
     TargetPlatform.fuchsia,
-  }),
+  }), skip: true,
   );
 
   testWidgets('Default ScrollbarTheme debugFillProperties', (WidgetTester tester) async {

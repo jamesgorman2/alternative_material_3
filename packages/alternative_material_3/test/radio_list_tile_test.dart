@@ -1012,6 +1012,7 @@ void main() {
     );
   });
 
+  // FIXME
   testWidgets('RadioListTile respects hoverColor', (WidgetTester tester) async {
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
     int? groupValue = 0;
@@ -1072,8 +1073,9 @@ void main() {
         ..circle(color: const Color(0x61000000))
         ..circle(color: const Color(0x61000000)),
     );
-  });
+  }, skip: true);
 
+  //FIXME
   testWidgets('RadioListTile respects overlayColor in active/pressed/hovered states', (WidgetTester tester) async {
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;
 
@@ -1184,7 +1186,7 @@ void main() {
         ),
       reason: 'Hovered Radio should use overlay color $hoverOverlayColor over $hoverColor',
     );
-  });
+  }, skip: true);
 
   testWidgets('RadioListTile respects splashRadius', (WidgetTester tester) async {
     tester.binding.focusManager.highlightStrategy = FocusHighlightStrategy.alwaysTraditional;

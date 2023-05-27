@@ -643,11 +643,8 @@ class _ExpansionTileState extends State<ExpansionTile> with SingleTickerProvider
 
   @override
   void didChangeDependencies() {
-    final ThemeData theme = Theme.of(context);
     final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
-    final ExpansionTileThemeData defaults = theme.useMaterial3
-      ? _ExpansionTileDefaultsM3(context)
-      : _ExpansionTileDefaultsM2(context);
+    final ExpansionTileThemeData defaults = _ExpansionTileDefaultsM3(context);
     _borderTween
       ..begin = widget.collapsedShape
         ?? expansionTileTheme.collapsedShape
@@ -657,9 +654,9 @@ class _ExpansionTileState extends State<ExpansionTile> with SingleTickerProvider
         )
       ..end = widget.shape
         ?? expansionTileTheme.collapsedShape
-        ?? Border(
-          top: BorderSide(color: theme.dividerColor),
-          bottom: BorderSide(color: theme.dividerColor),
+        ?? const Border(
+          top: BorderSide(color: Colors.black26),
+          bottom: BorderSide(color: Colors.black26),
         );
     _headerColorTween
       ..begin = widget.collapsedTextColor
@@ -703,26 +700,6 @@ class _ExpansionTileState extends State<ExpansionTile> with SingleTickerProvider
       child: shouldRemoveChildren ? null : result,
     );
   }
-}
-
-class _ExpansionTileDefaultsM2 extends ExpansionTileThemeData {
-  _ExpansionTileDefaultsM2(this.context);
-
-  final BuildContext context;
-  late final ThemeData _theme = Theme.of(context);
-  late final ColorScheme _colorScheme = _theme.colorScheme;
-
-  @override
-  Color? get textColor => _colorScheme.primary;
-
-  @override
-  Color? get iconColor => _colorScheme.primary;
-
-  @override
-  Color? get collapsedTextColor => _theme.textTheme.titleMedium!.color;
-
-  @override
-  Color? get collapsedIconColor => _theme.unselectedWidgetColor;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - ExpansionTile

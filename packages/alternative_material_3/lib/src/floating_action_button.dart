@@ -502,9 +502,7 @@ class FloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final FloatingActionButtonThemeData floatingActionButtonTheme = theme.floatingActionButtonTheme;
-    final FloatingActionButtonThemeData defaults = theme.useMaterial3
-      ? _FABDefaultsM3(context, _floatingActionButtonType, child != null)
-      : _FABDefaultsM2(context, _floatingActionButtonType, child != null);
+    final FloatingActionButtonThemeData defaults = _FABDefaultsM3(context, _floatingActionButtonType, child != null);
 
     final Color foregroundColor = this.foregroundColor
       ?? floatingActionButtonTheme.foregroundColor
@@ -731,55 +729,6 @@ class _RenderChildOverflowBox extends RenderAligningShiftedBox {
       size = constraints.biggest;
     }
   }
-}
-
-// Hand coded defaults based on Material Design 2.
-class _FABDefaultsM2 extends FloatingActionButtonThemeData {
-  _FABDefaultsM2(BuildContext context, this.type, this.hasChild)
-      : _theme = Theme.of(context),
-        _colors = Theme.of(context).colorScheme,
-        super(
-          elevation: 6,
-          focusElevation: 6,
-          hoverElevation: 8,
-          highlightElevation: 12,
-          enableFeedback: true,
-          sizeConstraints: const BoxConstraints.tightFor(
-            width: 56.0,
-            height: 56.0,
-          ),
-          smallSizeConstraints: const BoxConstraints.tightFor(
-            width: 40.0,
-            height: 40.0,
-          ),
-          largeSizeConstraints: const BoxConstraints.tightFor(
-            width: 96.0,
-            height: 96.0,
-          ),
-          extendedSizeConstraints: const BoxConstraints.tightFor(
-            height: 48.0,
-          ),
-          extendedIconLabelSpacing: 8.0,
-        );
-
-  final _FloatingActionButtonType type;
-  final bool hasChild;
-  final ThemeData _theme;
-  final ColorScheme _colors;
-
-  bool get _isExtended => type == _FloatingActionButtonType.extended;
-  bool get _isLarge => type == _FloatingActionButtonType.large;
-
-  @override Color? get foregroundColor => _colors.onSecondary;
-  @override Color? get backgroundColor => _colors.secondary;
-  @override Color? get focusColor => _theme.focusColor;
-  @override Color? get hoverColor => _theme.hoverColor;
-  @override Color? get splashColor => _theme.splashColor;
-  @override ShapeBorder? get shape => _isExtended ? const StadiumBorder() : const CircleBorder();
-  @override double? get iconSize => _isLarge ? 36.0 : 24.0;
-
-  @override EdgeInsetsGeometry? get extendedPadding => EdgeInsetsDirectional.only(start: hasChild && _isExtended ? 16.0 : 20.0, end: 20.0);
-  @override TextStyle? get extendedTextStyle => _theme.textTheme.labelLarge!.copyWith(letterSpacing: 1.2);
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - FAB

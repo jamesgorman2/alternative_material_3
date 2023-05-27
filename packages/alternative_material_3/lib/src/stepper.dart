@@ -534,11 +534,7 @@ class _StepperState extends State<Stepper> with TickerProviderStateMixin {
                 padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
                 shape: const MaterialStatePropertyAll<OutlinedBorder>(buttonShape),
               ),
-              child: Text(
-                themeData.useMaterial3
-                  ? localizations.continueButtonLabel
-                  : localizations.continueButtonLabel.toUpperCase()
-              ),
+              child: Text(localizations.continueButtonLabel),
             ),
             Container(
               margin: const EdgeInsetsDirectional.only(start: 8.0),
@@ -549,11 +545,7 @@ class _StepperState extends State<Stepper> with TickerProviderStateMixin {
                   padding: buttonPadding,
                   shape: buttonShape,
                 ),
-                child: Text(
-                  themeData.useMaterial3
-                    ? localizations.cancelButtonLabel
-                    : localizations.cancelButtonLabel.toUpperCase()
-                ),
+                child: Text(localizations.cancelButtonLabel),
               ),
             ),
           ],
@@ -570,13 +562,13 @@ class _StepperState extends State<Stepper> with TickerProviderStateMixin {
       case StepState.indexed:
       case StepState.editing:
       case StepState.complete:
-        return textTheme.bodyLarge!;
+        return textTheme.bodyLarge;
       case StepState.disabled:
-        return textTheme.bodyLarge!.copyWith(
+        return textTheme.bodyLarge.copyWith(
           color: _isDark() ? _kDisabledDark : _kDisabledLight,
         );
       case StepState.error:
-        return textTheme.bodyLarge!.copyWith(
+        return textTheme.bodyLarge.copyWith(
           color: _isDark() ? _kErrorDark : _kErrorLight,
         );
     }
@@ -590,13 +582,13 @@ class _StepperState extends State<Stepper> with TickerProviderStateMixin {
       case StepState.indexed:
       case StepState.editing:
       case StepState.complete:
-        return textTheme.bodySmall!;
+        return textTheme.bodySmall;
       case StepState.disabled:
-        return textTheme.bodySmall!.copyWith(
+        return textTheme.bodySmall.copyWith(
           color: _isDark() ? _kDisabledDark : _kDisabledLight,
         );
       case StepState.error:
-        return textTheme.bodySmall!.copyWith(
+        return textTheme.bodySmall.copyWith(
           color: _isDark() ? _kErrorDark : _kErrorLight,
         );
     }
@@ -610,13 +602,13 @@ class _StepperState extends State<Stepper> with TickerProviderStateMixin {
       case StepState.indexed:
       case StepState.editing:
       case StepState.complete:
-        return textTheme.bodyLarge!;
+        return textTheme.bodyLarge;
       case StepState.disabled:
-        return textTheme.bodyLarge!.copyWith(
+        return textTheme.bodyLarge.copyWith(
           color: _isDark() ? _kDisabledDark : _kDisabledLight,
         );
       case StepState.error:
-        return textTheme.bodyLarge!.copyWith(
+        return textTheme.bodyLarge.copyWith(
           color: _isDark() ? _kErrorDark : _kErrorLight,
         );
     }

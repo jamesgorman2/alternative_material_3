@@ -84,10 +84,10 @@ class DatePickerThemeData with Diagnosticable {
   ///   [Material.shadowColor], which explains how the shadow is rendered.
   final Color? shadowColor;
 
-  /// Overrides the default value of [Dialog.surfaceTintColor].
+  /// Overrides the default value of [Dialog.surfaceTint].
   ///
   /// See also:
-  ///   [Material.surfaceTintColor], which explains how this color is related to
+  ///   [Material.surfaceTint], which explains how this color is related to
   ///   [elevation] and [backgroundColor].
   final Color? surfaceTintColor;
 
@@ -221,7 +221,7 @@ class DatePickerThemeData with Diagnosticable {
   /// [DateRangePickerDialog]'s to indicate elevation.
   ///
   /// See also:
-  ///   [Material.surfaceTintColor], which explains how this color is related to
+  ///   [Material.surfaceTint], which explains how this color is related to
   ///   [elevation].
   final Color? rangePickerSurfaceTintColor;
 
@@ -231,7 +231,7 @@ class DatePickerThemeData with Diagnosticable {
   /// If [elevation] is greater than zero then a shadow is shown and the shadow's
   /// shape mirrors the shape of the dialog.
   ///
-  ///   [Material.surfaceTintColor], which explains how this color is related to
+  ///   [Material.surfaceTint], which explains how this color is related to
   ///   [elevation].
   final ShapeBorder? rangePickerShape;
 
@@ -601,9 +601,7 @@ class DatePickerTheme extends InheritedTheme {
   ///  * [maybeOf], which returns null if it doesn't find a
   ///    [DatePickerTheme] ancestor.
   static DatePickerThemeData defaults(BuildContext context) {
-    return Theme.of(context).useMaterial3
-      ? _DatePickerDefaultsM3(context)
-      : _DatePickerDefaultsM2(context);
+    return _DatePickerDefaultsM3(context);
   }
 
   @override
@@ -613,161 +611,6 @@ class DatePickerTheme extends InheritedTheme {
 
   @override
   bool updateShouldNotify(DatePickerTheme oldWidget) => data != oldWidget.data;
-}
-
-// Hand coded defaults based on Material Design 2.
-class _DatePickerDefaultsM2 extends DatePickerThemeData {
-  _DatePickerDefaultsM2(this.context)
-    : super(
-        elevation: 24.0,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
-        rangePickerElevation: 0.0,
-        rangePickerShape: const RoundedRectangleBorder(),
-      );
-
-  final BuildContext context;
-  late final ThemeData _theme = Theme.of(context);
-  late final ColorScheme _colors = _theme.colorScheme;
-  late final TextTheme _textTheme = _theme.textTheme;
-  late final bool _isDark = _colors.brightness == Brightness.dark;
-
-  @override
-  Color? get headerBackgroundColor => _isDark ? _colors.surface : _colors.primary;
-
-  @override
-  Color? get headerForegroundColor => _isDark ? _colors.onSurface : _colors.onPrimary;
-
-  @override
-  TextStyle? get headerHeadlineStyle => _textTheme.headlineSmall;
-
-  @override
-  TextStyle? get headerHelpStyle => _textTheme.labelSmall;
-
-  @override
-  TextStyle? get weekdayStyle => _textTheme.bodySmall?.apply(
-    color: _colors.onSurface.withOpacity(0.60),
-  );
-
-  @override
-  TextStyle? get dayStyle => _textTheme.bodySmall;
-
-  @override
-  MaterialStateProperty<Color?>? get dayForegroundColor =>
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return _colors.onPrimary;
-      } else if (states.contains(MaterialState.disabled)) {
-        return _colors.onSurface.withOpacity(0.38);
-      }
-      return _colors.onSurface;
-    });
-
-  @override
-  MaterialStateProperty<Color?>? get dayBackgroundColor =>
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return _colors.primary;
-      }
-      return null;
-    });
-
-  @override
-  MaterialStateProperty<Color?>? get dayOverlayColor =>
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onPrimary.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onPrimary.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onPrimary.withOpacity(0.38);
-        }
-      } else {
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onSurfaceVariant.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onSurfaceVariant.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onSurfaceVariant.withOpacity(0.12);
-        }
-      }
-      return null;
-    });
-
-  @override
-  MaterialStateProperty<Color?>? get todayForegroundColor =>
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return _colors.onPrimary;
-      } else if (states.contains(MaterialState.disabled)) {
-        return _colors.onSurface.withOpacity(0.38);
-      }
-      return _colors.primary;
-    });
-
-  @override
-  MaterialStateProperty<Color?>? get todayBackgroundColor => dayBackgroundColor;
-
-  @override
-  BorderSide? get todayBorder => BorderSide(color: _colors.primary);
-
-  @override
-  TextStyle? get yearStyle => _textTheme.bodyLarge;
-
-  @override
-  Color? get rangePickerBackgroundColor => _colors.surface;
-
-  @override
-  Color? get rangePickerShadowColor => Colors.transparent;
-
-  @override
-  Color? get rangePickerSurfaceTintColor => Colors.transparent;
-
-  @override
-  Color? get rangePickerHeaderBackgroundColor => _isDark ? _colors.surface : _colors.primary;
-
-  @override
-  Color? get rangePickerHeaderForegroundColor => _isDark ? _colors.onSurface : _colors.onPrimary;
-
-  @override
-  TextStyle? get rangePickerHeaderHeadlineStyle => _textTheme.headlineSmall;
-
-  @override
-  TextStyle? get rangePickerHeaderHelpStyle => _textTheme.labelSmall;
-
-  @override
-  Color? get rangeSelectionBackgroundColor => _colors.primary.withOpacity(0.12);
-
-  @override
-  MaterialStateProperty<Color?>? get rangeSelectionOverlayColor =>
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onPrimary.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onPrimary.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onPrimary.withOpacity(0.38);
-        }
-      } else {
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onSurfaceVariant.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onSurfaceVariant.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onSurfaceVariant.withOpacity(0.12);
-        }
-      }
-      return null;
-    });
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - DatePicker

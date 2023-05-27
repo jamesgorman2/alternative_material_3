@@ -20,7 +20,7 @@ void main() {
     expect(box.size.height, 16.0);
     final Container container = tester.widget(find.byType(Container));
     final BoxDecoration decoration = container.decoration! as BoxDecoration;
-    expect(decoration.border!.bottom.width, 0.0);
+    expect(decoration.border!.bottom.width, 1.0);
   });
 
   testWidgets('Divider custom thickness', (WidgetTester tester) async {
@@ -106,7 +106,7 @@ void main() {
     final Container container = tester.widget(find.byType(Container));
     final BoxDecoration decoration = container.decoration! as BoxDecoration;
     final Border border = decoration.border! as Border;
-    expect(border.left.width, 0.0);
+    expect(border.left.width, 1.0);
   });
 
   testWidgets('Divider custom thickness', (WidgetTester tester) async {

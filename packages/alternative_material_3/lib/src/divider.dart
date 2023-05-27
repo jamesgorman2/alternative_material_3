@@ -144,7 +144,7 @@ class Divider extends StatelessWidget {
   static BorderSide createBorderSide(BuildContext? context, { Color? color, double? width }) {
     final DividerThemeData? dividerTheme = context != null ? DividerTheme.of(context) : null;
     final DividerThemeData? defaults = context != null
-      ? Theme.of(context).useMaterial3 ? _DividerDefaultsM3(context) : _DividerDefaultsM2(context)
+      ? _DividerDefaultsM3(context)
       : null;
     final Color? effectiveColor = color ?? dividerTheme?.color ?? defaults?.color;
     final double effectiveWidth =  width ?? dividerTheme?.thickness ?? defaults?.thickness ?? 0.0;
@@ -164,9 +164,8 @@ class Divider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final DividerThemeData dividerTheme = DividerTheme.of(context);
-    final DividerThemeData defaults = theme.useMaterial3 ? _DividerDefaultsM3(context) : _DividerDefaultsM2(context);
+    final DividerThemeData defaults = _DividerDefaultsM3(context);
     final double height = this.height ?? dividerTheme.space ?? defaults.space!;
     final double thickness = this.thickness ?? dividerTheme.thickness ?? defaults.thickness!;
     final double indent = this.indent ?? dividerTheme.indent ?? defaults.indent!;
@@ -283,9 +282,8 @@ class VerticalDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final DividerThemeData dividerTheme = DividerTheme.of(context);
-    final DividerThemeData defaults = theme.useMaterial3 ? _DividerDefaultsM3(context) : _DividerDefaultsM2(context);
+    final DividerThemeData defaults = _DividerDefaultsM3(context);
     final double width = this.width ?? dividerTheme.space ?? defaults.space!;
     final double thickness = this.thickness ?? dividerTheme.thickness ?? defaults.thickness!;
     final double indent = this.indent ?? dividerTheme.indent ?? defaults.indent!;
@@ -306,19 +304,6 @@ class VerticalDivider extends StatelessWidget {
       ),
     );
   }
-}
-
-class _DividerDefaultsM2 extends DividerThemeData {
-  const _DividerDefaultsM2(this.context) : super(
-    space: 16,
-    thickness: 0,
-    indent: 0,
-    endIndent: 0,
-  );
-
-  final BuildContext context;
-
-  @override Color? get color => Theme.of(context).dividerColor;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Divider

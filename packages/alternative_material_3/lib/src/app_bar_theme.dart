@@ -79,7 +79,7 @@ class AppBarTheme with Diagnosticable {
   /// descendant [AppBar] widgets.
   final Color? shadowColor;
 
-  /// Overrides the default value of [AppBar.surfaceTintColor] in all
+  /// Overrides the default value of [AppBar.surfaceTint] in all
   /// descendant [AppBar] widgets.
   final Color? surfaceTintColor;
 

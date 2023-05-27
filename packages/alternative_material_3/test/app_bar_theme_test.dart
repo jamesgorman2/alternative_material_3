@@ -44,34 +44,25 @@ void main() {
     final RichText actionIconText = _getAppBarIconRichText(tester);
     final DefaultTextStyle text = _getAppBarText(tester);
 
-    if (theme.useMaterial3) {
-      expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.light);
-      expect(widget.color, theme.colorScheme.surface);
-      expect(widget.elevation, 0);
-      expect(widget.shadowColor, null);
-      expect(widget.surfaceTintColor, theme.colorScheme.surfaceTint);
-      expect(widget.shape, null);
-      expect(iconTheme.data, IconThemeData(color: theme.colorScheme.onSurface, size: 24));
-      expect(actionsIconTheme.data, IconThemeData(color: theme.colorScheme.onSurfaceVariant, size: 24));
-      expect(actionIconText.text.style!.color, Colors.black);
-      expect(text.style, Typography.material2021().englishLike.bodyMedium!.merge(Typography.material2021().black.bodyMedium).copyWith(color: theme.colorScheme.onSurface));
-      expect(tester.getSize(find.byType(AppBar)).height, kToolbarHeight);
-      expect(tester.getSize(find.byType(AppBar)).width, 800);
-    } else {
-      expect(SystemChrome.latestStyle!.statusBarBrightness, SystemUiOverlayStyle.light.statusBarBrightness);
-      expect(widget.color, Colors.blue);
-      expect(widget.elevation, 4.0);
-      expect(widget.shadowColor, Colors.black);
-      expect(widget.surfaceTintColor, null);
-      expect(widget.shape, null);
-      expect(iconTheme.data, const IconThemeData(color: Colors.white));
-      expect(actionsIconTheme.data, const IconThemeData(color: Colors.white));
-      expect(actionIconText.text.style!.color, Colors.white);
-      expect(text.style, Typography.material2014().englishLike.bodyMedium!.merge(Typography.material2014().white.bodyMedium));
-      expect(tester.getSize(find.byType(AppBar)).height, kToolbarHeight);
-      expect(tester.getSize(find.byType(AppBar)).width, 800);
-    }
+    expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.light);
+    expect(widget.color, theme.colorScheme.surface);
+    expect(widget.elevation, 0);
+    expect(widget.shadowColor, Colors.transparent);
+    expect(widget.surfaceTintColor, theme.colorScheme.surfaceTint);
+    expect(widget.shape, null);
+    expect(iconTheme.data, IconThemeData(color: theme.colorScheme.onSurface, size: 24));
+    expect(actionsIconTheme.data, IconThemeData(color: theme.colorScheme.onSurfaceVariant, size: 24));
+    expect(actionIconText.text.style!.color, theme.colorScheme.onSurfaceVariant);
+    expect(text.style, Typography.material2021().englishLike.bodyMedium.merge(Typography.material2021().black.bodyMedium).copyWith(color: theme.colorScheme.onSurface));
+    expect(tester.getSize(find.byType(AppBar)).height, kToolbarHeight);
+    expect(tester.getSize(find.byType(AppBar)).width, 800);
   });
+
+
+  void _printTree(WidgetTester tester, Element e, {String indent = ''}) {
+    print('$indent${e.widget.runtimeType}');
+    e.visitChildren((c) => _printTree(tester, c, indent: '$indent  '));
+  }
 
   testWidgets('AppBar uses values from AppBarTheme', (WidgetTester tester) async {
     final AppBarTheme appBarTheme = _appBarTheme();
@@ -89,6 +80,7 @@ void main() {
         ),
       ),
     );
+    // _printTree(tester, WidgetsBinding.instance.rootElement!);
 
     final Material widget = _getAppBarMaterial(tester);
     final IconTheme iconTheme = _getAppBarIconTheme(tester);
@@ -125,7 +117,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.light()).copyWith(
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight).copyWith(
           appBarTheme: _appBarTheme(),
         ),
         home: Scaffold(
@@ -172,7 +164,7 @@ void main() {
     const IconThemeData actionsIconThemeData = IconThemeData(color: Colors.lightBlue);
 
     await tester.pumpWidget(MaterialApp(
-      theme: ThemeData.from(colorScheme: const ColorScheme.light()),
+      theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight),
       home: Scaffold(appBar: AppBar(
         iconTheme: iconThemeData,
         actionsIconTheme: actionsIconThemeData,
@@ -191,7 +183,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.light())
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight)
           .copyWith(appBarTheme: _appBarTheme()),
         home: Scaffold(
           appBar: AppBar(
@@ -221,8 +213,8 @@ void main() {
   });
 
   testWidgets('ThemeData colorScheme is used when no AppBarTheme is set', (WidgetTester tester) async {
-    final ThemeData lightTheme = ThemeData.from(colorScheme: const ColorScheme.light());
-    final ThemeData darkTheme = ThemeData.from(colorScheme: const ColorScheme.dark());
+    final ThemeData lightTheme = ThemeData.from(colorScheme: ColorScheme.m3DefaultLight);
+    final ThemeData darkTheme = ThemeData.from(colorScheme: ColorScheme.m3DefaultDark);
     Widget buildFrame(ThemeData appTheme) {
       return MaterialApp(
         theme: appTheme,
@@ -240,120 +232,61 @@ void main() {
       );
     }
 
-    if (lightTheme.useMaterial3) {
-      // M3 AppBar defaults for light themes:
-      // - elevation: 0
-      // - shadow color: null
-      // - surface tint color: ColorScheme.surfaceTint
-      // - background color: ColorScheme.surface
-      // - foreground color: ColorScheme.onSurface
-      // - actions text: style bodyMedium, foreground color
-      // - status bar brightness: light (based on color scheme brightness)
-      {
-        await tester.pumpWidget(buildFrame(lightTheme));
+    // M3 AppBar defaults for light themes:
+    // - elevation: 0
+    // - shadow color: null
+    // - surface tint color: ColorScheme.surfaceTint
+    // - background color: ColorScheme.surface
+    // - foreground color: ColorScheme.onSurface
+    // - actions text: style bodyMedium, foreground color
+    // - status bar brightness: light (based on color scheme brightness)
+    {
+      await tester.pumpWidget(buildFrame(lightTheme));
 
-        final Material widget = _getAppBarMaterial(tester);
-        final IconTheme iconTheme = _getAppBarIconTheme(tester);
-        final IconTheme actionsIconTheme = _getAppBarActionsIconTheme(tester);
-        final RichText actionIconText = _getAppBarIconRichText(tester);
-        final DefaultTextStyle text = _getAppBarText(tester);
+      final Material widget = _getAppBarMaterial(tester);
+      final IconTheme iconTheme = _getAppBarIconTheme(tester);
+      final IconTheme actionsIconTheme = _getAppBarActionsIconTheme(tester);
+      final RichText actionIconText = _getAppBarIconRichText(tester);
+      final DefaultTextStyle text = _getAppBarText(tester);
 
-        expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.light);
-        expect(widget.color, lightTheme.colorScheme.surface);
-        expect(widget.elevation, 0);
-        expect(widget.shadowColor, null);
-        expect(widget.surfaceTintColor, lightTheme.colorScheme.surfaceTint);
-        expect(iconTheme.data.color, lightTheme.colorScheme.onSurface);
-        expect(actionsIconTheme.data.color, lightTheme.colorScheme.onSurface);
-        expect(actionIconText.text.style!.color, lightTheme.colorScheme.onSurface);
-        expect(text.style, Typography.material2021().englishLike.bodyMedium!.merge(Typography.material2021().black.bodyMedium).copyWith(color: lightTheme.colorScheme.onSurface));
-      }
+      expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.light);
+      expect(widget.color, lightTheme.colorScheme.surface);
+      expect(widget.elevation, 0);
+      expect(widget.shadowColor, Colors.transparent);
+      expect(widget.surfaceTintColor, lightTheme.colorScheme.surfaceTint);
+      expect(iconTheme.data.color, lightTheme.colorScheme.onSurface);
+      expect(actionsIconTheme.data.color, lightTheme.colorScheme.onSurfaceVariant);
+      expect(actionIconText.text.style!.color, lightTheme.colorScheme.onSurfaceVariant);
+      expect(text.style, Typography.material2021().englishLike.bodyMedium.merge(Typography.material2021().black.bodyMedium).copyWith(color: lightTheme.colorScheme.onSurface));
+    }
 
-      // M3 AppBar defaults for dark themes:
-      // - elevation: 0
-      // - shadow color: null
-      // - surface tint color: ColorScheme.surfaceTint
-      // - background color: ColorScheme.surface
-      // - foreground color: ColorScheme.onSurface
-      // - actions text: style bodyMedium, foreground color
-      // - status bar brightness: dark (based on background color)
-      {
-        await tester.pumpWidget(buildFrame(ThemeData.from(colorScheme: const ColorScheme.dark())));
-        await tester.pumpAndSettle(); // Theme change animation
+    // M3 AppBar defaults for dark themes:
+    // - elevation: 0
+    // - shadow color: null
+    // - surface tint color: ColorScheme.surfaceTint
+    // - background color: ColorScheme.surface
+    // - foreground color: ColorScheme.onSurface
+    // - actions text: style bodyMedium, foreground color
+    // - status bar brightness: dark (based on background color)
+    {
+      await tester.pumpWidget(buildFrame(ThemeData.from(colorScheme: ColorScheme.m3DefaultDark)));
+      await tester.pumpAndSettle(); // Theme change animation
 
-        final Material widget = _getAppBarMaterial(tester);
-        final IconTheme iconTheme = _getAppBarIconTheme(tester);
-        final IconTheme actionsIconTheme = _getAppBarActionsIconTheme(tester);
-        final RichText actionIconText = _getAppBarIconRichText(tester);
-        final DefaultTextStyle text = _getAppBarText(tester);
+      final Material widget = _getAppBarMaterial(tester);
+      final IconTheme iconTheme = _getAppBarIconTheme(tester);
+      final IconTheme actionsIconTheme = _getAppBarActionsIconTheme(tester);
+      final RichText actionIconText = _getAppBarIconRichText(tester);
+      final DefaultTextStyle text = _getAppBarText(tester);
 
-        expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.dark);
-        expect(widget.color, darkTheme.colorScheme.surface);
-        expect(widget.elevation, 0);
-        expect(widget.shadowColor, null);
-        expect(widget.surfaceTintColor, darkTheme.colorScheme.surfaceTint);
-        expect(iconTheme.data.color, darkTheme.colorScheme.onSurface);
-        expect(actionsIconTheme.data.color, darkTheme.colorScheme.onSurface);
-        expect(actionIconText.text.style!.color, darkTheme.colorScheme.onSurface);
-        expect(text.style, Typography.material2021().englishLike.bodyMedium!.merge(Typography.material2021().black.bodyMedium).copyWith(color: darkTheme.colorScheme.onSurface));
-      }
-    } else {
-      // AppBar defaults for light themes:
-      // - elevation: 4
-      // - shadow color: black
-      // - surface tint color: null
-      // - background color: ColorScheme.primary
-      // - foreground color: ColorScheme.onPrimary
-      // - actions text: style bodyMedium, foreground color
-      // - status bar brightness: light (based on color scheme brightness)
-      {
-        await tester.pumpWidget(buildFrame(lightTheme));
-
-        final Material widget = _getAppBarMaterial(tester);
-        final IconTheme iconTheme = _getAppBarIconTheme(tester);
-        final IconTheme actionsIconTheme = _getAppBarActionsIconTheme(tester);
-        final RichText actionIconText = _getAppBarIconRichText(tester);
-        final DefaultTextStyle text = _getAppBarText(tester);
-
-        expect(SystemChrome.latestStyle!.statusBarBrightness, SystemUiOverlayStyle.light.statusBarBrightness);
-        expect(widget.color, lightTheme.colorScheme.primary);
-        expect(widget.elevation, 4.0);
-        expect(widget.shadowColor, Colors.black);
-        expect(widget.surfaceTintColor, null);
-        expect(iconTheme.data.color, lightTheme.colorScheme.onPrimary);
-        expect(actionsIconTheme.data.color, lightTheme.colorScheme.onPrimary);
-        expect(actionIconText.text.style!.color, lightTheme.colorScheme.onPrimary);
-        expect(text.style, Typography.material2014().englishLike.bodyMedium!.merge(Typography.material2014().black.bodyMedium).copyWith(color: lightTheme.colorScheme.onPrimary));
-      }
-
-      // AppBar defaults for dark themes:
-      // - elevation: 4
-      // - shadow color: black
-      // - surface tint color: null
-      // - background color: ColorScheme.surface
-      // - foreground color: ColorScheme.onSurface
-      // - actions text: style bodyMedium, foreground color
-      // - status bar brightness: dark (based on background color)
-      {
-        await tester.pumpWidget(buildFrame(darkTheme));
-        await tester.pumpAndSettle(); // Theme change animation
-
-        final Material widget = _getAppBarMaterial(tester);
-        final IconTheme iconTheme = _getAppBarIconTheme(tester);
-        final IconTheme actionsIconTheme = _getAppBarActionsIconTheme(tester);
-        final RichText actionIconText = _getAppBarIconRichText(tester);
-        final DefaultTextStyle text = _getAppBarText(tester);
-
-        expect(SystemChrome.latestStyle!.statusBarBrightness, SystemUiOverlayStyle.light.statusBarBrightness);
-        expect(widget.color, darkTheme.colorScheme.surface);
-        expect(widget.elevation, 4.0);
-        expect(widget.shadowColor, Colors.black);
-        expect(widget.surfaceTintColor, null);
-        expect(iconTheme.data.color, darkTheme.colorScheme.onSurface);
-        expect(actionsIconTheme.data.color, darkTheme.colorScheme.onSurface);
-        expect(actionIconText.text.style!.color, darkTheme.colorScheme.onSurface);
-        expect(text.style, Typography.material2014().englishLike.bodyMedium!.merge(Typography.material2014().black.bodyMedium).copyWith(color: darkTheme.colorScheme.onSurface));
-      }
+      expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.dark);
+      expect(widget.color, darkTheme.colorScheme.surface);
+      expect(widget.elevation, 0);
+      expect(widget.shadowColor, Colors.transparent);
+      expect(widget.surfaceTintColor, darkTheme.colorScheme.surfaceTint);
+      expect(iconTheme.data.color, darkTheme.colorScheme.onSurface);
+      expect(actionsIconTheme.data.color, darkTheme.colorScheme.onSurfaceVariant);
+      expect(actionIconText.text.style!.color, darkTheme.colorScheme.onSurfaceVariant);
+      expect(text.style, Typography.material2021().englishLike.bodyMedium.merge(Typography.material2021().white.bodyMedium).copyWith(color: darkTheme.colorScheme.onSurface));
     }
   });
 
@@ -362,7 +295,7 @@ void main() {
 
     Widget buildFrame({ Color? appIconColor, Color? appBarIconColor }) {
       return MaterialApp(
-        theme: ThemeData.from(useMaterial3: false, colorScheme: const ColorScheme.light()),
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight),
         home: IconTheme(
           data: IconThemeData(color: appIconColor),
           child: Builder(
@@ -479,7 +412,6 @@ void main() {
           style: IconButton.styleFrom(foregroundColor: Colors.red),
         ),
         appBarTheme: const AppBarTheme(iconTheme: overallIconTheme),
-        useMaterial3: true,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -505,7 +437,6 @@ void main() {
           style: IconButton.styleFrom(iconSize: 32.0),
         ),
         appBarTheme: const AppBarTheme(iconTheme: overallIconTheme),
-        useMaterial3: true,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -534,7 +465,6 @@ void main() {
       theme: ThemeData(
         iconButtonTheme: iconButtonTheme,
         appBarTheme: const AppBarTheme(actionsIconTheme: actionsIconTheme),
-        useMaterial3: true,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -561,7 +491,6 @@ void main() {
       theme: ThemeData(
         iconButtonTheme: iconButtonTheme,
         appBarTheme: const AppBarTheme(actionsIconTheme: actionsIconTheme),
-        useMaterial3: true,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -589,7 +518,6 @@ void main() {
     final ThemeData themeData = ThemeData(
       iconButtonTheme: iconButtonTheme,
       appBarTheme: appBarTheme,
-      useMaterial3: true,
     );
 
     await tester.pumpWidget(
@@ -923,7 +851,7 @@ Material _getAppBarMaterial(WidgetTester tester) {
     find.descendant(
       of: find.byType(AppBar),
       matching: find.byType(Material),
-    ),
+    ).first,
   );
 }
 

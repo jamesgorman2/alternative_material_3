@@ -23,7 +23,7 @@ void main() {
   });
 
   testWidgets('Passing no CardTheme returns defaults', (WidgetTester tester) async {
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     await tester.pumpWidget(MaterialApp(
       theme: theme,
       home: const Scaffold(
@@ -35,7 +35,7 @@ void main() {
     final Material material = _getCardMaterial(tester);
 
     expect(material.clipBehavior, Clip.none);
-    expect(material.color, theme.colorScheme.surface);
+    expect(material.color, theme.colorScheme.surfaceContainerLow);
     expect(material.shadowColor, theme.colorScheme.shadow);
     expect(material.surfaceTintColor, theme.colorScheme.surfaceTint); // Default primary color
     expect(material.elevation, 1.0);
@@ -128,34 +128,7 @@ void main() {
     ));
 
     final Material material = _getCardMaterial(tester);
-    expect(material.color, themeData.cardColor);
-  });
-
-  group('Material 2', () {
-    // Tests that are only relevant for Material 2. Once ThemeData.useMaterial3
-    // is turned on by default, these tests can be removed.
-
-    testWidgets('Passing no CardTheme returns defaults - M2', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: false),
-        home: const Scaffold(
-          body: Card(),
-        ),
-      ));
-
-      final Container container = _getCardContainer(tester);
-      final Material material = _getCardMaterial(tester);
-
-      expect(material.clipBehavior, Clip.none);
-      expect(material.color, Colors.white);
-      expect(material.shadowColor, Colors.black);
-      expect(material.surfaceTintColor, null);
-      expect(material.elevation, 1.0);
-      expect(container.margin, const EdgeInsets.all(4.0));
-      expect(material.shape, const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-      ));
-    });
+    expect(material.color, _altSurfaceLow);
   });
 }
 
@@ -173,9 +146,10 @@ CardTheme _cardTheme() {
   );
 }
 
+const Color _altSurfaceLow = Colors.pink;
 ThemeData _themeData() {
   return ThemeData(
-    cardColor: Colors.pink,
+    colorScheme: ColorScheme.m3DefaultLight.copyWith(surfaceContainerLow: _altSurfaceLow),
   );
 }
 

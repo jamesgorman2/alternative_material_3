@@ -13,10 +13,10 @@ void main() {
   });
 
   testWidgets('Passing no IconButtonTheme returns defaults', (WidgetTester tester) async {
-    const ColorScheme colorScheme = ColorScheme.light();
+    final ColorScheme colorScheme = ColorScheme.m3DefaultLight;
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.from(colorScheme: colorScheme, useMaterial3: true),
+        theme: ThemeData.from(colorScheme: colorScheme, ),
         home: Scaffold(
           body: Center(
             child: IconButton(
@@ -93,7 +93,7 @@ void main() {
         },
       );
       return MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.light(), useMaterial3: true).copyWith(
+        theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight, ).copyWith(
           iconButtonTheme: IconButtonThemeData(style: overallStyle),
         ),
         home: Scaffold(
@@ -186,14 +186,16 @@ void main() {
   });
 
   testWidgets('Theme shadowColor', (WidgetTester tester) async {
-    const ColorScheme colorScheme = ColorScheme.light();
+    final ColorScheme colorScheme = ColorScheme.m3DefaultLight;
     const Color shadowColor = Color(0xff000001);
     const Color overriddenColor = Color(0xff000002);
 
     Widget buildFrame({ Color? overallShadowColor, Color? themeShadowColor, Color? shadowColor }) {
       return MaterialApp(
-        theme: ThemeData.from(colorScheme: colorScheme, useMaterial3: true).copyWith(
-          shadowColor: overallShadowColor,
+        theme: ThemeData.from(
+          colorScheme: colorScheme.copyWith(
+            shadow: overallShadowColor,
+          ),
         ),
         home: Scaffold(
           body: Center(

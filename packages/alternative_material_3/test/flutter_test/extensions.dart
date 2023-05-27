@@ -48,3 +48,46 @@ extension WidgetTesterM3 on WidgetTester {
     });
   }
 }
+
+
+/// Colors can be out by one due to the HSV processing in
+/// material_color_utilities
+class ColorMatcher extends Matcher {
+  ColorMatcher(this.expected, {this.exact = false});
+
+  final Color expected;
+  final bool exact;
+
+  @override
+  Description describe(Description description) {
+    if (exact) {
+      return description.addDescriptionOf(expected);
+    }
+    return description.addDescriptionOf(expected);
+  }
+  @override
+  bool matches(dynamic item, Map<dynamic, dynamic> matchState) {
+    if (item == expected) {
+      return true;
+    } else if (item is Color && !exact) {
+      int diffA = (item.alpha - expected.alpha).abs();
+      int diffR = (item.red - expected.red).abs();
+      int diffB = (item.blue - expected.blue).abs();
+      int diffG = (item.green - expected.green).abs();
+
+      return diffA + diffR + diffB + diffG <= 2;
+    }
+    return false;
+  }
+}
+
+class RootFinder extends MatchFinder {
+  @override
+  String get description => 'the root';
+
+  @override
+  bool matches(Element candidate) {
+    return candidate == WidgetsBinding.instance.rootElement!;
+  }
+
+}

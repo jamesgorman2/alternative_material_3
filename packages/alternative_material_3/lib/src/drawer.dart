@@ -261,9 +261,8 @@ class Drawer extends StatelessWidget {
       case TargetPlatform.windows:
         label = semanticLabel ?? MaterialLocalizations.of(context).drawerLabel;
     }
-    final bool useMaterial3 = Theme.of(context).useMaterial3;
     final bool isDrawerStart = DrawerController.maybeOf(context)?.alignment != DrawerAlignment.end;
-    final DrawerThemeData defaults= useMaterial3 ? _DrawerDefaultsM3(context): _DrawerDefaultsM2(context);
+    final DrawerThemeData defaults= _DrawerDefaultsM3(context);
     final ShapeBorder? effectiveShape = shape ?? (isDrawerStart
       ? (drawerTheme.shape ?? defaults.shape)
       : (drawerTheme.endShape ?? defaults.endShape));
@@ -797,17 +796,6 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
       child: _buildDrawer(context),
     );
   }
-}
-
-class _DrawerDefaultsM2 extends DrawerThemeData {
-  const _DrawerDefaultsM2(this.context)
-      : super(elevation: 16.0);
-
-  final BuildContext context;
-
-  @override
-  Color? get shadowColor => Theme.of(context).shadowColor;
-
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Drawer

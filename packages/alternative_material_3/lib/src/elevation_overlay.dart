@@ -92,7 +92,7 @@ abstract final class ElevationOverlay {
   static Color applyOverlay(BuildContext context, Color color, double elevation) {
     final ThemeData theme = Theme.of(context);
     if (elevation > 0.0 &&
-        theme.applyElevationOverlayColor &&
+        false &&
         theme.brightness == Brightness.dark &&
         color.withOpacity(1.0) == theme.colorScheme.surface.withOpacity(1.0)) {
       return colorWithOverlay(color, theme.colorScheme.onSurface, elevation);

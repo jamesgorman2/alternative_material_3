@@ -521,7 +521,7 @@ class Switch extends StatelessWidget {
   Size _getSwitchSize(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final SwitchThemeData switchTheme = SwitchTheme.of(context);
-    final _SwitchConfig switchConfig = theme.useMaterial3 ? _SwitchConfigM3(context) : _SwitchConfigM2();
+    final _SwitchConfig switchConfig = _SwitchConfigM3(context);
 
     final MaterialTapTargetSize effectiveMaterialTapTargetSize = materialTapTargetSize
       ?? switchTheme.materialTapTargetSize
@@ -686,15 +686,9 @@ class _MaterialSwitchState extends State<_MaterialSwitch> with TickerProviderSta
       // During a drag we may have modified the curve, reset it if its possible
       // to do without visual discontinuation.
       if (position.value == 0.0 || position.value == 1.0) {
-        if (Theme.of(context).useMaterial3) {
-          position
-            ..curve = Curves.easeOutBack
-            ..reverseCurve = Curves.easeOutBack.flipped;
-        } else {
-          position
-            ..curve = Curves.easeIn
-            ..reverseCurve = Curves.easeOut;
-        }
+        position
+          ..curve = Curves.easeOutBack
+          ..reverseCurve = Curves.easeOutBack.flipped;
       }
       animateToValue();
     }
@@ -793,8 +787,8 @@ class _MaterialSwitchState extends State<_MaterialSwitch> with TickerProviderSta
 
     final ThemeData theme = Theme.of(context);
     final SwitchThemeData switchTheme = SwitchTheme.of(context);
-    final _SwitchConfig switchConfig = theme.useMaterial3 ? _SwitchConfigM3(context) : _SwitchConfigM2();
-    final SwitchThemeData defaults = theme.useMaterial3 ? _SwitchDefaultsM3(context) : _SwitchDefaultsM2(context);
+    final _SwitchConfig switchConfig = _SwitchConfigM3(context);
+    final SwitchThemeData defaults = _SwitchDefaultsM3(context);
 
     positionController.duration = Duration(milliseconds: switchConfig.toggleDuration);
 
@@ -1565,123 +1559,6 @@ mixin _SwitchConfig {
   double? get thumbOffset;
   Size get transitionalThumbSize;
   int get toggleDuration;
-}
-
-// Hand coded defaults based on Material Design 2.
-class _SwitchConfigM2 with _SwitchConfig {
-    _SwitchConfigM2();
-
-  @override
-  double get activeThumbRadius => 10.0;
-
-  @override
-  MaterialStateProperty<Color> get iconColor => MaterialStateProperty.all<Color>(Colors.transparent);
-
-  @override
-  double get inactiveThumbRadius => 10.0;
-
-  @override
-  double get pressedThumbRadius => 10.0;
-
-  @override
-  double get switchHeight => _kSwitchMinSize + 8.0;
-
-  @override
-  double get switchHeightCollapsed => _kSwitchMinSize;
-
-  @override
-  double get switchWidth => trackWidth - 2 * (trackHeight / 2.0) + _kSwitchMinSize;
-
-  @override
-  double get thumbRadiusWithIcon => 10.0;
-
-  @override
-  List<BoxShadow>? get thumbShadow => kElevationToShadow[1];
-
-  @override
-  double get trackHeight => 14.0;
-
-  @override
-  double get trackWidth => 33.0;
-
-  @override
-  double get thumbOffset => 0.5;
-
-  @override
-  Size get transitionalThumbSize => const Size(20, 20);
-
-  @override
-  int get toggleDuration => 200;
-}
-
-class _SwitchDefaultsM2 extends SwitchThemeData {
-  _SwitchDefaultsM2(BuildContext context)
-      : _theme = Theme.of(context),
-        _colors = Theme.of(context).colorScheme;
-
-  final ThemeData _theme;
-  final ColorScheme _colors;
-
-  @override
-  MaterialStateProperty<Color> get thumbColor {
-    final bool isDark = _theme.brightness == Brightness.dark;
-
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return isDark ? Colors.grey.shade800 : Colors.grey.shade400;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return _colors.secondary;
-      }
-      return isDark ? Colors.grey.shade400 : Colors.grey.shade50;
-    });
-  }
-
-  @override
-  MaterialStateProperty<Color> get trackColor {
-    final bool isDark = _theme.brightness == Brightness.dark;
-    const Color black32 = Color(0x52000000); // Black with 32% opacity
-
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return isDark ? Colors.white10 : Colors.black12;
-      }
-      if (states.contains(MaterialState.selected)) {
-        final Color activeColor = _colors.secondary;
-        return activeColor.withAlpha(0x80);
-      }
-      return isDark ? Colors.white30 : black32;
-    });
-  }
-
-  @override
-  MaterialStateProperty<Color?>? get trackOutlineColor => null;
-
-  @override
-  MaterialTapTargetSize get materialTapTargetSize => _theme.materialTapTargetSize;
-
-  @override
-  MaterialStateProperty<MouseCursor> get mouseCursor =>
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) => MaterialStateMouseCursor.clickable.resolve(states));
-
-  @override
-  MaterialStateProperty<Color?> get overlayColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.pressed)) {
-        return thumbColor.resolve(states).withAlpha(kRadialReactionAlpha);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _theme.focusColor;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _theme.hoverColor;
-      }
-      return null;
-    });
-  }
-
-  @override
-  double get splashRadius => kRadialReactionRadius;
 }
 
 // BEGIN GENERATED TOKEN PROPERTIES - Switch

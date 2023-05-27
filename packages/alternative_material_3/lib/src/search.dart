@@ -236,7 +236,7 @@ abstract class SearchDelegate<T> {
           ? SystemUiOverlayStyle.light
           : SystemUiOverlayStyle.dark,
         backgroundColor: colorScheme.brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
-        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
+        iconTheme: theme.iconTheme.copyWith(color: Colors.grey),
         titleTextStyle: theme.textTheme.titleLarge,
         toolbarTextStyle: theme.textTheme.bodyMedium,
       ),

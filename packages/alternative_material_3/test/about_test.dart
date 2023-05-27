@@ -5,9 +5,9 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:alternative_material_3/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,7 +20,7 @@ void main() {
 
   testWidgets('Material3 has sentence case labels', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           // Display has a vertical hinge down the middle
@@ -125,7 +125,7 @@ void main() {
       ]);
     });
 
-    await tester.tap(find.text('VIEW LICENSES'));
+    await tester.tap(find.text('View licenses'));
     await tester.pumpAndSettle();
 
     expect(find.text('Pirate app'), findsOneWidget);
@@ -298,7 +298,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(
-          primaryTextTheme: const TextTheme(
+          textTheme: Typography.material2021().black.copyWith(
             titleLarge: titleTextStyle,
             titleSmall: subtitleTextStyle,
           ),
@@ -340,12 +340,12 @@ void main() {
       MaterialApp(
         theme: ThemeData(
           // Not used because appBarTheme is prioritized.
-          primaryTextTheme: const TextTheme(
-            titleLarge: TextStyle(
+          textTheme: Typography.material2021().black.copyWith(
+            titleLarge: const TextStyle(
               fontSize: 12,
               color: Colors.grey,
             ),
-            titleSmall: TextStyle(
+            titleSmall: const TextStyle(
               fontSize: 10,
               color: Colors.grey,
             ),
@@ -400,7 +400,7 @@ void main() {
     // the safe area is sufficiently respected.
     expect(
       tester.getTopLeft(find.text('Licenses')),
-      const Offset(16.0 + safeareaPadding, 18.0 + safeareaPadding),
+      const Offset(16.0 + safeareaPadding, 14.0 + safeareaPadding),
     );
   });
 
@@ -830,10 +830,10 @@ void main() {
     const Color cardColor = Color(0xFF654321);
 
     await tester.pumpWidget(MaterialApp(
-      theme: ThemeData.light().copyWith(
-        scaffoldBackgroundColor: scaffoldColor,
-        cardColor: cardColor,
-      ),
+      theme: ThemeData.from(colorScheme: ColorScheme.m3DefaultLight.copyWith(
+        surface: scaffoldColor,
+        surfaceContainerLow: cardColor,
+      ),),
       home: Scaffold(
         body: Center(
           child: Builder(
@@ -858,7 +858,7 @@ void main() {
 
     // Check color when loading.
     final List<Material> materialLoadings = tester.widgetList<Material>(find.byType(Material)).toList();
-    expect(materialLoadings.length, equals(4));
+    expect(materialLoadings.length, equals(5));
     expect(materialLoadings[1].color, scaffoldColor);
     expect(materialLoadings[2].color, cardColor);
 
@@ -867,7 +867,7 @@ void main() {
     // Check color when done.
     expect(find.byKey(const ValueKey<ConnectionState>(ConnectionState.done)), findsOneWidget);
     final List<Material> materialDones = tester.widgetList<Material>(find.byType(Material)).toList();
-    expect(materialDones.length, equals(3));
+    expect(materialDones.length, equals(4));
     expect(materialDones[0].color, scaffoldColor);
     expect(materialDones[1].color, cardColor);
   });
@@ -1055,7 +1055,7 @@ void main() {
     await tester.tap(find.byType(ListTile));
     await tester.pump();
     await tester.pump(const Duration(seconds: 2));
-    await tester.tap(find.text('VIEW LICENSES'));
+    await tester.tap(find.text('View licenses'));
     await tester.pump();
     await tester.pump(const Duration(seconds: 2));
     final Finder finder = find.byWidgetPredicate((Widget widget) => widget.runtimeType.toString() == '_PackagesView');
@@ -1098,7 +1098,7 @@ void main() {
     // If the layout width is less than 840.0 pixels, nested layout is
     // used which positions license page title at the top center.
     Offset titleOffset = tester.getCenter(find.text(title));
-    expect(titleOffset, Offset(defaultSize.width / 2, 92.0));
+    expect(titleOffset, Offset(defaultSize.width / 2, 96.0));
     expect(tester.getCenter(find.byType(ListView)), Offset(defaultSize.width / 2, 328.0));
 
     // Configure a wide window to show the lateral UI.
@@ -1161,7 +1161,7 @@ void main() {
     // If the layout width is less than 840.0 pixels, nested layout is
     // used which positions license page title at the top center.
     Offset titleOffset = tester.getCenter(find.text(title));
-    expect(titleOffset, Offset(defaultSize.width / 2, 92.0));
+    expect(titleOffset, Offset(defaultSize.width / 2, 96.0));
     expect(tester.getCenter(find.byType(ListView)), Offset(defaultSize.width / 2, 328.0));
 
     // Configure a wide window to show the lateral UI.
@@ -1197,7 +1197,6 @@ void main() {
     // This is a regression test for https://github.com/flutter/flutter/issues/108991
     final ThemeData theme = ThemeData(
       appBarTheme: const AppBarTheme(foregroundColor: Color(0xFFFFFFFF)),
-      useMaterial3: true,
     );
     const String title = 'License ABC';
     LicenseRegistry.addLicense(() {
@@ -1227,7 +1226,7 @@ void main() {
     expect(renderParagraph.text.style!.color, isNot(theme.appBarTheme.foregroundColor));
 
     // License page title in the lateral UI uses default text style color.
-    expect(renderParagraph.text.style!.color, theme.textTheme.titleLarge!.color);
+    expect(renderParagraph.text.style!.color, theme.textTheme.titleLarge.color);
 
     // Configure to show the default layout.
     await tester.binding.setSurfaceSize(const Size(800.0, 600.0));
@@ -1235,7 +1234,7 @@ void main() {
 
   testWidgets('License page default title text color in the nested UI', (WidgetTester tester) async {
     // This is a regression test for https://github.com/flutter/flutter/issues/108991
-    final ThemeData theme = ThemeData(useMaterial3: true);
+    final ThemeData theme = ThemeData();
     const String title = 'License ABC';
     LicenseRegistry.addLicense(() {
       return Stream<LicenseEntry>.fromIterable(<LicenseEntry>[
@@ -1266,48 +1265,7 @@ void main() {
     expect(find.text('License ABC'), findsNothing);
 
     final RenderParagraph renderParagraph = tester.renderObject(find.text('ABC').first) as RenderParagraph;
-    expect(renderParagraph.text.style!.color, theme.textTheme.titleLarge!.color);
-  });
-
-  group('Material 2', () {
-    // Tests that are only relevant for Material 2. Once ThemeData.useMaterial3
-    // is turned on by default, these tests can be removed.
-
-    testWidgets('License page default title text color in the nested UI', (WidgetTester tester) async {
-      // This is a regression test for https://github.com/flutter/flutter/issues/108991
-      final ThemeData theme = ThemeData(useMaterial3: false);
-      const String title = 'License ABC';
-      LicenseRegistry.addLicense(() {
-        return Stream<LicenseEntry>.fromIterable(<LicenseEntry>[
-          const LicenseEntryWithLineBreaks(<String>['ABC'], 'DEF'),
-        ]);
-      });
-
-      await tester.pumpWidget(
-        MaterialApp(
-          title: title,
-          theme: theme,
-          home: const Scaffold(
-            body: LicensePage(),
-          ),
-        ),
-      );
-
-      await tester.pumpAndSettle(); // Finish rendering the page.
-
-      // Currently in the master view.
-      expect(find.text('License ABC'), findsOneWidget);
-
-      // Navigate to the license page.
-      await tester.tap(find.text('ABC'));
-      await tester.pumpAndSettle();
-
-      // Master view is no longer visible.
-      expect(find.text('License ABC'), findsNothing);
-
-      final RenderParagraph renderParagraph = tester.renderObject(find.text('ABC').first) as RenderParagraph;
-      expect(renderParagraph.text.style!.color, theme.primaryTextTheme.titleLarge!.color);
-    });
+    expect(renderParagraph.text.style!.color, theme.textTheme.titleLarge.color);
   });
 }
 

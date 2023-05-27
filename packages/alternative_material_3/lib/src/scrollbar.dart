@@ -310,13 +310,13 @@ class _MaterialScrollbarState extends RawScrollbarState<_MaterialScrollbar> {
         dragColor = onSurface.withOpacity(0.6);
         hoverColor = onSurface.withOpacity(0.5);
         idleColor = _useAndroidScrollbar
-          ? Theme.of(context).highlightColor.withOpacity(1.0)
+          ? Theme.of(context).colorScheme.highlightColor.withOpacity(1.0)
           : onSurface.withOpacity(0.1);
       case Brightness.dark:
         dragColor = onSurface.withOpacity(0.75);
         hoverColor = onSurface.withOpacity(0.65);
         idleColor = _useAndroidScrollbar
-          ? Theme.of(context).highlightColor.withOpacity(1.0)
+          ? Theme.of(context).colorScheme.highlightColor.withOpacity(1.0)
           : onSurface.withOpacity(0.3);
     }
 

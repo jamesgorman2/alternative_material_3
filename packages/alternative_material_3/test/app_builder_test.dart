@@ -10,12 +10,12 @@ void main() {
     final List<String> log = <String>[];
     final Widget app = MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.green),
       ),
       home: const Placeholder(),
       builder: (BuildContext context, Widget? child) {
         log.add('build');
-        expect(Theme.of(context).primaryColor, Colors.green);
+        expect(Theme.of(context).colorScheme.primary, Colors.green);
         expect(Directionality.of(context), TextDirection.ltr);
         expect(child, isA<FocusScope>());
         return const Placeholder();
@@ -42,12 +42,12 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(
-          primarySwatch: Colors.yellow,
+          colorScheme: ColorScheme.m3DefaultDark.copyWith(primary: Colors.yellow),
         ),
         home: Builder(
           builder: (BuildContext context) {
             log.add('build');
-            expect(Theme.of(context).primaryColor, Colors.yellow);
+            expect(Theme.of(context).colorScheme.primary, Colors.yellow);
             expect(Directionality.of(context), TextDirection.rtl);
             return const Placeholder();
           },

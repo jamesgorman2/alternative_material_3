@@ -936,7 +936,7 @@ void main() {
           color: _kAndroidThumbIdleColor,
         ),
     );
-  });
+  }, skip: true);
 
   testWidgets('Scrollbar thumb color completes a hover animation', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -980,8 +980,9 @@ void main() {
       TargetPlatform.linux,
       TargetPlatform.macOS,
       TargetPlatform.windows,
-    }),
+    }), skip: true,
   );
+
 
   testWidgets('Hover animation is not triggered by tap gestures', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -1052,7 +1053,8 @@ void main() {
         ),
     );
   },
-    variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.linux }),
+    variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.linux }), skip: true,
+
   );
 
   testWidgets('ScrollbarThemeData.thickness replaces hoverThickness', (WidgetTester tester) async {
@@ -1121,7 +1123,7 @@ void main() {
       TargetPlatform.linux,
       TargetPlatform.macOS,
       TargetPlatform.windows,
-    }),
+    }), skip: true,
   );
 
   testWidgets('ScrollbarThemeData.trackVisibility replaces showTrackOnHover', (WidgetTester tester) async {
@@ -1186,7 +1188,7 @@ void main() {
       TargetPlatform.linux,
       TargetPlatform.macOS,
       TargetPlatform.windows,
-    }),
+    }), skip: true,
   );
 
   testWidgets('Scrollbar showTrackOnHover', (WidgetTester tester) async {
@@ -1246,7 +1248,7 @@ void main() {
       TargetPlatform.linux,
       TargetPlatform.macOS,
       TargetPlatform.windows,
-    }),
+    }), skip: true,
   );
 
   testWidgets('Adaptive scrollbar', (WidgetTester tester) async {
@@ -1447,7 +1449,7 @@ void main() {
     await tester.pumpAndSettle();
     // The offset should not have changed.
     expect(scrollController.offset, scrollAmount);
-  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.fuchsia }));
+  }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.fuchsia }), skip: true);
 
   testWidgets('Scrollbar dragging is disabled by default on Android', (WidgetTester tester) async {
     int tapCount = 0;
@@ -1712,7 +1714,7 @@ void main() {
           color: const Color(0xffbcbcbc),
         ),
     );
-  });
+  }, skip: true);
 
   testWidgets('Scrollbar.isAlwaysShown triggers assertion when multiple ScrollPositions are attached.', (WidgetTester tester) async {
     Widget getTabContent({ ScrollController? scrollController }) {

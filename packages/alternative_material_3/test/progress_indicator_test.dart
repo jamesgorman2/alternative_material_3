@@ -291,7 +291,7 @@ void main() {
     const Color primaryColor = Color(0xff008800);
     await tester.pumpWidget(
       Theme(
-        data: theme.copyWith(colorScheme: ColorScheme.fromSwatch().copyWith(primary: primaryColor)),
+        data: theme.copyWith(colorScheme: ColorScheme.m3DefaultLight.copyWith(primary: primaryColor)),
         child: const Directionality(
           textDirection: TextDirection.ltr,
           child: Center(
@@ -471,7 +471,7 @@ void main() {
 
     // With no color provided
     await tester.pumpWidget(Theme(
-      data: theme.copyWith(colorScheme: ColorScheme.fromSwatch().copyWith(primary: green)),
+      data: theme.copyWith(colorScheme: ColorScheme.m3DefaultLight.copyWith(primary: green)),
       child: const CircularProgressIndicator(),
     ));
     expect(find.byType(CircularProgressIndicator), paintsExactlyCountTimes(#drawArc, 1));
@@ -528,7 +528,7 @@ void main() {
 
     // With no color provided
     await tester.pumpWidget(Theme(
-      data: theme.copyWith(colorScheme: ColorScheme.fromSwatch().copyWith(primary: green)),
+      data: theme.copyWith(colorScheme: ColorScheme.m3DefaultLight.copyWith(primary: green)),
       child: const RefreshProgressIndicator(),
     ));
     expect(find.byType(RefreshProgressIndicator), paintsExactlyCountTimes(#drawArc, 1));
@@ -972,7 +972,7 @@ void main() {
   testWidgets('default size of CircularProgressIndicator is 36x36 - M3', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme.copyWith(useMaterial3: true),
+        theme: theme.copyWith(),
         home: const Scaffold(
           body: Material(
             child: CircularProgressIndicator(),

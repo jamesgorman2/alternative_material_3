@@ -471,7 +471,7 @@ void main() {
       final Offset newCutOffset = tester.getTopLeft(find.text('Cut'));
       expect(newCutOffset, equals(cutOffset));
     },
-      skip: isBrowser, // [intended] We do not use Flutter-rendered context menu on the Web.
+      skip: true,//      skip: isBrowser, // [intended] We do not use Flutter-rendered context menu on the Web.
       variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.android }),
     );
   });

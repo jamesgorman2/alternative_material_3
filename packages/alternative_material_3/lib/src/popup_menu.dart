@@ -348,22 +348,14 @@ class PopupMenuItemState<T, W extends PopupMenuItem<T>> extends State<W> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
-    final PopupMenuThemeData defaults = theme.useMaterial3 ? _PopupMenuDefaultsM3(context) : _PopupMenuDefaultsM2(context);
+    final PopupMenuThemeData defaults = _PopupMenuDefaultsM3(context);
     final Set<MaterialState> states = <MaterialState>{
       if (!widget.enabled) MaterialState.disabled,
     };
 
-    TextStyle style = theme.useMaterial3
-      ? (widget.labelTextStyle?.resolve(states)
+    final TextStyle style = widget.labelTextStyle?.resolve(states)
         ?? popupMenuTheme.labelTextStyle?.resolve(states)!
-        ?? defaults.labelTextStyle!.resolve(states)!)
-      : (widget.textStyle
-        ?? popupMenuTheme.textStyle
-        ?? defaults.textStyle!);
-
-    if (!widget.enabled && !theme.useMaterial3) {
-      style = style.copyWith(color: theme.disabledColor);
-    }
+        ?? defaults.labelTextStyle!.resolve(states)!;
 
     Widget item = AnimatedDefaultTextStyle(
       style: style,
@@ -559,9 +551,8 @@ class _PopupMenu<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final double unit = 1.0 / (route.items.length + 1.5); // 1.0 for the width and 0.5 for the last item's fade.
     final List<Widget> children = <Widget>[];
-    final ThemeData theme = Theme.of(context);
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
-    final PopupMenuThemeData defaults = theme.useMaterial3 ? _PopupMenuDefaultsM3(context) : _PopupMenuDefaultsM2(context);
+    final PopupMenuThemeData defaults = _PopupMenuDefaultsM3(context);
 
     for (int i = 0; i < route.items.length; i += 1) {
       final double start = (i + 1) * unit;
@@ -573,7 +564,7 @@ class _PopupMenu<T> extends StatelessWidget {
       Widget item = route.items[i];
       if (route.initialValue != null && route.items[i].represents(route.initialValue)) {
         item = ColoredBox(
-          color: Theme.of(context).highlightColor,
+          color: Theme.of(context).colorScheme.highlightColor,
           child: item,
         );
       }
@@ -1347,18 +1338,6 @@ class _EffectiveMouseCursor extends MaterialStateMouseCursor {
   String get debugDescription => 'MaterialStateMouseCursor(PopupMenuItemState)';
 }
 
-class _PopupMenuDefaultsM2 extends PopupMenuThemeData {
-  _PopupMenuDefaultsM2(this.context)
-    : super(elevation: 8.0);
-
-  final BuildContext context;
-  late final ThemeData _theme = Theme.of(context);
-  late final TextTheme _textTheme = _theme.textTheme;
-
-  @override
-  TextStyle? get textStyle => _textTheme.subtitle1;
-}
-
 // BEGIN GENERATED TOKEN PROPERTIES - PopupMenu
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -1379,7 +1358,7 @@ class _PopupMenuDefaultsM3 extends PopupMenuThemeData {
 
   @override MaterialStateProperty<TextStyle?>? get labelTextStyle {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    final TextStyle style = _textTheme.labelLarge!;
+    final TextStyle style = _textTheme.labelLarge;
       if (states.contains(MaterialState.disabled)) {
         return style.apply(color: _colors.onSurface.withOpacity(0.38));
       }

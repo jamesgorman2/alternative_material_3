@@ -172,10 +172,8 @@ class _BottomAppBarState extends State<BottomAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isMaterial3 = theme.useMaterial3;
     final BottomAppBarTheme babTheme = BottomAppBarTheme.of(context);
-    final BottomAppBarTheme defaults = isMaterial3 ? _BottomAppBarDefaultsM3(context) : _BottomAppBarDefaultsM2(context);
+    final BottomAppBarTheme defaults =  _BottomAppBarDefaultsM3(context);
 
     final bool hasFab = Scaffold.of(context).hasFloatingActionButton;
     final NotchedShape? notchedShape = widget.shape ?? babTheme.shape ?? defaults.shape;
@@ -191,22 +189,22 @@ class _BottomAppBarState extends State<BottomAppBar> {
     final double? height = widget.height ?? babTheme.height ?? defaults.height;
     final Color color = widget.color ?? babTheme.color ?? defaults.color!;
     final Color surfaceTintColor = widget.surfaceTintColor ?? babTheme.surfaceTintColor ?? defaults.surfaceTintColor!;
-    final Color effectiveColor = isMaterial3 ? color : ElevationOverlay.applyOverlay(context, color, elevation);
+    final Color effectiveColor = color;
     final Color shadowColor = widget.shadowColor ?? babTheme.shadowColor ?? defaults.shadowColor!;
 
     final Widget child = SizedBox(
       height: height,
       child: Padding(
-        padding: widget.padding ?? babTheme.padding ?? (isMaterial3 ? const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0) : EdgeInsets.zero),
+        padding: widget.padding ?? babTheme.padding
+            ?? const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
         child: widget.child,
       ),
     );
 
     final Material material = Material(
       key: materialKey,
-      type: isMaterial3 ? MaterialType.canvas : MaterialType.transparency,
       elevation: elevation,
-      color: isMaterial3 ? effectiveColor : null,
+      color: effectiveColor,
       surfaceTintColor: surfaceTintColor,
       shadowColor: shadowColor,
       child: SafeArea(child: child),
@@ -267,24 +265,6 @@ class _BottomAppBarClipper extends CustomClipper<Path> {
   }
 }
 
-class _BottomAppBarDefaultsM2 extends BottomAppBarTheme {
-  const _BottomAppBarDefaultsM2(this.context)
-    : super(
-      elevation: 8.0,
-    );
-
-  final BuildContext context;
-
-  @override
-  Color? get color => Theme.of(context).bottomAppBarColor;
-
-  @override
-  Color? get surfaceTintColor => Theme.of(context).colorScheme.surfaceTint;
-
-  @override
-  Color get shadowColor => const Color(0xFF000000);
-}
-
 // BEGIN GENERATED TOKEN PROPERTIES - BottomAppBar
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -306,7 +286,7 @@ class _BottomAppBarDefaultsM3 extends BottomAppBarTheme {
   late final ColorScheme _colors = Theme.of(context).colorScheme;
 
   @override
-  Color? get color => _colors.surface;
+  Color? get color => _colors.surfaceContainer;
 
   @override
   Color? get surfaceTintColor => _colors.surfaceTint;
