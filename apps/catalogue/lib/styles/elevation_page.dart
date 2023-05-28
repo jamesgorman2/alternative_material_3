@@ -72,102 +72,82 @@ class ElevationCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final font = Theme.of(context).textTheme.labelMedium.copyWith(
+    final outerTheme = Theme.of(context);
+    final font = outerTheme.textTheme.labelLarge.copyWith(
           color: colorScheme.onSurface,
         );
     const shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12.0)),
     );
     return SizedBox(
-      height: 32 + 16 + 16 + 128,
-      width: 32 + 128 * 5 + 16 * 4,
-      child: Material(
-        type: MaterialType.card,
-        color: colorScheme.surface,
-        shape: shape,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Level 0', style: font),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  SizedBox(
-                    height: 128,
-                    width: 128,
-                    child: Material(
-                      type: MaterialType.card,
-                      // color: colorScheme.surfaceContainerLowest,
-                      shape: shape,
-                      shadowColor:
-                          hasShadow ? colorScheme.shadow : Colors.transparent,
-                      elevation: Elevation.level1,
-                      child: Center(child: Text('Level 1', style: font)),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    height: 128,
-                    width: 128,
-                    child: Material(
-                      type: MaterialType.card,
-                      // color: colorScheme.surfaceContainerLow,
-                      shape: shape,
-                      shadowColor:
-                          hasShadow ? colorScheme.shadow : Colors.transparent,
-                      elevation: Elevation.level2,
-                      child: Center(child: Text('Level 2', style: font)),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    height: 128,
-                    width: 128,
-                    child: Material(
-                      type: MaterialType.card,
-                      // color: colorScheme.surfaceContainer,
-                      shape: shape,
-                      shadowColor:
-                          hasShadow ? colorScheme.shadow : Colors.transparent,
-                      elevation: Elevation.level3,
-                      child: Center(child: Text('Level 3', style: font)),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    height: 128,
-                    width: 128,
-                    child: Material(
-                      type: MaterialType.card,
-                      // color: colorScheme.surfaceContainerHigh,
-                      shape: shape,
-                      shadowColor:
-                          hasShadow ? colorScheme.shadow : Colors.transparent,
-                      elevation: Elevation.level4,
-                      child: Center(child: Text('Level 4', style: font)),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    height: 128,
-                    width: 128,
-                    child: Material(
-                      type: MaterialType.card,
-                      // color: colorScheme.surfaceContainerHighest,
-                      shape: shape,
-                      shadowColor:
-                          hasShadow ? colorScheme.shadow : Colors.transparent,
-                      elevation: Elevation.level5,
-                      child: Center(child: Text('Level 5', style: font)),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      height: 48 + 20 + 16 + 128,
+      width: 48 + 128 * 6 + 16 * 5,
+      child: Theme(
+        data: outerTheme.copyWith(colorScheme: colorScheme),
+        child: Material(
+          type: MaterialType.card,
+          shape: shape,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Surface', style: font),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    ElevationCard(elevation: Elevation.level0, hasShadow: hasShadow),
+                    const SizedBox(width: 16),
+                    ElevationCard(elevation: Elevation.level1, hasShadow: hasShadow),
+                    const SizedBox(width: 16),
+                    ElevationCard(elevation: Elevation.level2, hasShadow: hasShadow),
+                    const SizedBox(width: 16),
+                    ElevationCard(elevation: Elevation.level3, hasShadow: hasShadow),
+                    const SizedBox(width: 16),
+                    ElevationCard(elevation: Elevation.level4, hasShadow: hasShadow),
+                    const SizedBox(width: 16),
+                    ElevationCard(elevation: Elevation.level5, hasShadow: hasShadow),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ElevationCard extends StatelessWidget {
+  const ElevationCard({
+    super.key,
+    required this.elevation,
+    required this.hasShadow,
+  });
+
+  final Elevation elevation;
+  final bool hasShadow;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    const shape = RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+    );
+    final font = Theme.of(context).textTheme.labelLarge.copyWith(
+      color: colorScheme.onSurface,
+    );
+    return SizedBox(
+      height: 128,
+      width: 128,
+      child: Material(
+        type: MaterialType.card,
+        // color: colorScheme.surfaceContainerHighest,
+        shape: shape,
+        shadowColor:
+        hasShadow ? colorScheme.shadow : Colors.transparent,
+        elevation: elevation,
+        child: Center(child: Text(elevation.label, style: font)),
       ),
     );
   }

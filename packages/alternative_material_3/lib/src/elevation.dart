@@ -149,6 +149,21 @@ class Elevation {
     return Elevation.atLevel(level);
   }
 
+  String get label {
+    if (height < level1.height) {
+      return 'Level 0';
+    } else if (height < level2.height) {
+      return 'Level 1';
+    } else if (height < level3.height) {
+      return 'Level 2';
+    } else if (height < level4.height) {
+      return 'Level 3';
+    } else if (height < level5.height) {
+      return 'Level 4';
+    }
+    return 'Level 5';
+  }
+
   Elevation addLevel(Elevation other) {
     return Elevation.atLevel(level + other.level);
   }

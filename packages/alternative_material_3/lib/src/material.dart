@@ -439,9 +439,22 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     if (color == null) {
       switch (widget.type) {
         case MaterialType.canvas:
-          color = theme.colorScheme.surface;
+          return theme.colorScheme.surface;
         case MaterialType.card:
-          color = theme.colorScheme.surfaceContainerLow;
+          switch (widget.elevation) {
+            case Elevation.level0:
+              return theme.colorScheme.surfaceContainerLowest;
+            case Elevation.level1:
+              return theme.colorScheme.surfaceContainerLow;
+            case Elevation.level2:
+              return theme.colorScheme.surfaceContainer;
+            case Elevation.level3:
+              return theme.colorScheme.surfaceContainerHigh;
+            case Elevation.level4:
+              return theme.colorScheme.surfaceContainerHigh;
+            case Elevation.level5:
+              return theme.colorScheme.surfaceContainerHighest;
+          }
         case MaterialType.button:
         case MaterialType.circle:
         case MaterialType.transparency:
