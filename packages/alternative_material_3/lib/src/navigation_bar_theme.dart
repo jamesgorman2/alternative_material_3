@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'material_state.dart';
 import 'navigation_bar.dart';
 import 'theme.dart';
@@ -61,7 +62,7 @@ class NavigationBarThemeData with Diagnosticable {
   final Color? backgroundColor;
 
   /// Overrides the default value of [NavigationBar.elevation].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value of [NavigationBar.shadowColor].
   final Color? shadowColor;
@@ -96,7 +97,7 @@ class NavigationBarThemeData with Diagnosticable {
   NavigationBarThemeData copyWith({
     double? height,
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     Color? indicatorColor,
@@ -131,7 +132,7 @@ class NavigationBarThemeData with Diagnosticable {
     return NavigationBarThemeData(
       height: lerpDouble(a?.height, b?.height, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       indicatorColor: Color.lerp(a?.indicatorColor, b?.indicatorColor, t),
@@ -182,7 +183,7 @@ class NavigationBarThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('height', height, defaultValue: null));
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
     properties.add(ColorProperty('indicatorColor', indicatorColor, defaultValue: null));

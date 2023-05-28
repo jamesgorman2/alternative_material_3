@@ -5,6 +5,7 @@
 import 'dart:ui';
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -321,7 +322,7 @@ void main() {
           // FIXME
           borderRadius: BorderRadius.all(Radius.circular(28.0)),
         ),
-        elevation: 24,
+        elevation: Elevation.level5,
       );
       await tester.pumpWidget(
         MaterialApp(
@@ -351,14 +352,14 @@ void main() {
 
       //FIXME
       //expect(defaultDialogMaterial.elevation, datePickerDefaultDialogTheme.elevation);
-      expect(defaultDialogMaterial.elevation, 6);
+      expect(defaultDialogMaterial.elevation, Elevation.level3);
 
       // Test that it honors ThemeData.dialogTheme settings
       const DialogTheme customDialogTheme = DialogTheme(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(40.0)),
         ),
-        elevation: 50,
+        elevation: Elevation.level4,
       );
       await tester.pumpWidget(
         MaterialApp(
@@ -388,7 +389,7 @@ void main() {
       // FIXME
       //expect(themeDialogMaterial.shape, customDialogTheme.shape);
       // expect(themeDialogMaterial.elevation, customDialogTheme.elevation);
-      expect(themeDialogMaterial.elevation, 6);
+      expect(themeDialogMaterial.elevation, Elevation.level3);
     });
 
     testWidgets('OK Cancel button layout', (WidgetTester tester) async {

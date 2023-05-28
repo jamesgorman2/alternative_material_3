@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -60,7 +61,7 @@ void main() {
     const Color backgroundColor = Color(0xff000002);
     const Color disabledColor = Color(0xff000003);
     const Color shadowColor = Color(0xff000004);
-    const double elevation = 3;
+    const Elevation elevation = Elevation.level2;
     const TextStyle textStyle = TextStyle(fontSize: 12.0);
     const EdgeInsets padding = EdgeInsets.all(3);
     const Size minimumSize = Size(200, 200);

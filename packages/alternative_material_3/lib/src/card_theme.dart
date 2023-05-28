@@ -7,6 +7,7 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 /// Defines default property values for descendant [Card] widgets.
@@ -40,7 +41,7 @@ class CardTheme with Diagnosticable {
     this.elevation,
     this.margin,
     this.shape,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   /// Overrides the default value for [Card.clipBehavior].
   ///
@@ -67,7 +68,7 @@ class CardTheme with Diagnosticable {
   /// Overrides the default value for [Card.elevation].
   ///
   /// If null, [Card] uses a default of 1.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value for [Card.margin].
   ///
@@ -88,7 +89,7 @@ class CardTheme with Diagnosticable {
     Color? color,
     Color? shadowColor,
     Color? surfaceTintColor,
-    double? elevation,
+    Elevation? elevation,
     EdgeInsetsGeometry? margin,
     ShapeBorder? shape,
   }) {
@@ -122,7 +123,7 @@ class CardTheme with Diagnosticable {
       color: Color.lerp(a?.color, b?.color, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerpNullable(a?.elevation, b?.elevation, t, defaultHeight: Elevation.level1),
       margin: EdgeInsetsGeometry.lerp(a?.margin, b?.margin, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
     );
@@ -164,7 +165,7 @@ class CardTheme with Diagnosticable {
     properties.add(ColorProperty('color', color, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<double>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('margin', margin, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
   }

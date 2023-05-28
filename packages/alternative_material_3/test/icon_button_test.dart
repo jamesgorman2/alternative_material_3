@@ -825,7 +825,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -849,7 +849,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -874,7 +874,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -910,7 +910,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.primary);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -934,7 +934,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.primary);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -959,7 +959,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.onSurface.withOpacity(0.12));
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -997,7 +997,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.primary);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1021,7 +1021,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.primary);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1047,7 +1047,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.surfaceVariant);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1074,7 +1074,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.onSurface.withOpacity(0.12));
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1111,7 +1111,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.secondaryContainer);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1135,7 +1135,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.secondaryContainer);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1160,7 +1160,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.onSurface.withOpacity(0.12));
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1198,7 +1198,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.secondaryContainer);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1222,7 +1222,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.secondaryContainer);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1248,7 +1248,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.surfaceVariant);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1275,7 +1275,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.onSurface.withOpacity(0.12));
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1312,7 +1312,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, StadiumBorder(side: BorderSide(color: colorScheme.outline)));
     expect(material.textStyle, null);
@@ -1336,7 +1336,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, StadiumBorder(side: BorderSide(color: colorScheme.outline)));
     expect(material.textStyle, null);
@@ -1361,7 +1361,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, StadiumBorder(side: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))));
     expect(material.textStyle, null);
@@ -1399,7 +1399,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.inverseSurface);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1423,7 +1423,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.inverseSurface);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -1449,7 +1449,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, StadiumBorder(side: BorderSide(color: colorScheme.outline)));
     expect(material.textStyle, null);
@@ -1476,7 +1476,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.onSurface.withOpacity(0.12));
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);

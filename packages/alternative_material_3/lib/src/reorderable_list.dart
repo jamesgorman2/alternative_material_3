@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'debug.dart';
+import 'elevation.dart';
 import 'icons.dart';
 import 'material.dart';
 import 'material_localizations.dart';
@@ -410,7 +411,7 @@ class _ReorderableListViewState extends State<ReorderableListView> {
       animation: animation,
       builder: (BuildContext context, Widget? child) {
         final double animValue = Curves.easeInOut.transform(animation.value);
-        final double elevation = lerpDouble(0, 6, animValue)!;
+        final Elevation elevation = Elevation.lerp(Elevation.level0, Elevation.level3, animValue)!;
         return Material(
           elevation: elevation,
           child: child,

@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -424,7 +425,7 @@ void main() {
           child: RawMaterialButton(
             key: key,
             hoverColor: hoverColor,
-            hoverElevation: 10.5,
+            hoverElevation: const Elevation(10.5),
             onPressed: () {},
             child: Container(width: 100, height: 100, color: const Color(0xffff0000)),
           ),

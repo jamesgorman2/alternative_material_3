@@ -13,6 +13,7 @@ import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'material.dart';
@@ -178,7 +179,7 @@ abstract interface class ChipAttributes {
   /// This controls the size of the shadow below the chip.
   ///
   /// Defaults to 0. The value is always non-negative.
-  double? get elevation;
+  Elevation? get elevation;
 
   /// Color of the chip's shadow when the elevation is greater than 0.
   ///
@@ -371,7 +372,7 @@ abstract interface class SelectableChipAttributes {
   /// This controls the size of the shadow below the chip.
   ///
   /// Defaults to 8. The value is always non-negative.
-  double? get pressElevation;
+  Elevation? get pressElevation;
 
   /// Color to be used for the chip's background, indicating that it is
   /// selected.
@@ -492,7 +493,7 @@ abstract interface class TappableChipAttributes {
   /// This controls the size of the shadow below the chip.
   ///
   /// Defaults to 8. The value is always non-negative.
-  double? get pressElevation;
+  Elevation? get pressElevation;
 
   /// Tooltip string to be used for the body area (where the label and avatar
   /// are) of the chip.
@@ -571,7 +572,7 @@ class Chip extends StatelessWidget implements ChipAttributes, DeletableChipAttri
       'This feature was deprecated after v2.10.0-0.3.pre.'
     )
     this.useDeleteButtonTooltip = true,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   @override
   final Widget? avatar;
@@ -608,7 +609,7 @@ class Chip extends StatelessWidget implements ChipAttributes, DeletableChipAttri
   @override
   final MaterialTapTargetSize? materialTapTargetSize;
   @override
-  final double? elevation;
+  final Elevation? elevation;
   @override
   final Color? shadowColor;
   @override
@@ -741,9 +742,7 @@ class RawChip extends StatefulWidget
       'This feature was deprecated after v2.10.0-0.3.pre.'
     )
     this.useDeleteButtonTooltip = true,
-  }) : assert(pressElevation == null || pressElevation >= 0.0),
-       assert(elevation == null || elevation >= 0.0),
-       deleteIcon = deleteIcon ?? _kDefaultDeleteIcon;
+  }) : deleteIcon = deleteIcon ?? _kDefaultDeleteIcon;
 
   /// Defines the defaults for the chip properties if
   /// they are not specified elsewhere.
@@ -773,7 +772,7 @@ class RawChip extends StatefulWidget
   @override
   final VoidCallback? onPressed;
   @override
-  final double? pressElevation;
+  final Elevation? pressElevation;
   @override
   final bool selected;
   @override
@@ -803,7 +802,7 @@ class RawChip extends StatefulWidget
   @override
   final MaterialTapTargetSize? materialTapTargetSize;
   @override
-  final double? elevation;
+  final Elevation? elevation;
   @override
   final Color? shadowColor;
   @override
@@ -1119,14 +1118,14 @@ class _RawChipState extends State<RawChip> with MaterialStateMixin, TickerProvid
     final TextDirection? textDirection = Directionality.maybeOf(context);
     final OutlinedBorder resolvedShape = _getShape(theme, chipTheme, chipDefaults);
 
-    final double elevation = widget.elevation
+    final Elevation elevation = widget.elevation
       ?? chipTheme.elevation
       ?? chipDefaults.elevation
-      ?? 0;
-    final double pressElevation = widget.pressElevation
+      ?? Elevation.level0;
+    final Elevation pressElevation = widget.pressElevation
       ?? chipTheme.pressElevation
       ?? chipDefaults.pressElevation
-      ?? 0;
+      ?? Elevation.level0;
     final Color? shadowColor = widget.shadowColor
       ?? chipTheme.shadowColor
       ?? chipDefaults.shadowColor;
@@ -2134,7 +2133,7 @@ bool _hitIsOnDeleteIcon({
 class _ChipDefaultsM3 extends ChipThemeData {
   _ChipDefaultsM3(this.context, this.isEnabled)
     : super(
-        elevation: 0.0,
+        elevation: Elevation.level0,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
         showCheckmark: true,
       );

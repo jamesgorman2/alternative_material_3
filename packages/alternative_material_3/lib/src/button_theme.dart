@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'material_button.dart';
 import 'material_state.dart';
 import 'theme.dart';
@@ -600,25 +601,25 @@ class ButtonThemeData with Diagnosticable {
   ///
   /// Returns the button's [MaterialButton.elevation] if it is non-null,
   /// otherwise it is 2.0.
-  double getElevation(MaterialButton button) => button.elevation ?? 2.0;
+  Elevation getElevation(MaterialButton button) => button.elevation ?? Elevation.level1;
 
   /// The [button]'s elevation when it is enabled and has focus.
   ///
   /// Returns the button's [MaterialButton.focusElevation] if it is non-null,
   /// otherwise the highlight elevation is 4.0.
-  double getFocusElevation(MaterialButton button) => button.focusElevation ?? 4.0;
+  Elevation getFocusElevation(MaterialButton button) => button.focusElevation ?? Elevation.level1;
 
   /// The [button]'s elevation when it is enabled and has focus.
   ///
   /// Returns the button's [MaterialButton.hoverElevation] if it is non-null,
   /// otherwise the highlight elevation is 4.0.
-  double getHoverElevation(MaterialButton button) => button.hoverElevation ?? 4.0;
+  Elevation getHoverElevation(MaterialButton button) => button.hoverElevation ?? Elevation.level2;
 
   /// The [button]'s elevation when it is enabled and has been pressed.
   ///
   /// Returns the button's [MaterialButton.highlightElevation] if it is non-null,
   /// otherwise the highlight elevation is 8.0.
-  double getHighlightElevation(MaterialButton button) => button.highlightElevation ?? 8.0;
+  Elevation getHighlightElevation(MaterialButton button) => button.highlightElevation ?? Elevation.level1;
 
   /// The [button]'s elevation when [MaterialButton.onPressed] is null (when
   /// MaterialButton.enabled is false).
@@ -626,7 +627,7 @@ class ButtonThemeData with Diagnosticable {
   /// Returns the button's [MaterialButton.elevation] if it is non-null.
   ///
   /// Otherwise the disabled elevation is 0.0.
-  double getDisabledElevation(MaterialButton button) => button.disabledElevation ?? 0.0;
+  Elevation getDisabledElevation(MaterialButton button) => button.disabledElevation ?? Elevation.level0;
 
   /// Padding for the [button]'s child (typically the button's label).
   ///

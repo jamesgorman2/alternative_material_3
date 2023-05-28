@@ -16,6 +16,7 @@ import 'constants.dart';
 import 'debug.dart';
 import 'dialog.dart';
 import 'divider.dart';
+import 'elevation.dart';
 import 'floating_action_button_location.dart';
 import 'ink_decoration.dart';
 import 'list_tile.dart';
@@ -576,7 +577,7 @@ class _PackagesViewState extends State<_PackagesView> {
                       // FIXME Card
                       child: Material(
                         color: Theme.of(context).colorScheme.surfaceContainerLow,
-                        elevation: 4.0,
+                        elevation: Elevation.level2,
                         child: Container(
                           constraints: BoxConstraints.loose(const Size.fromWidth(600.0)),
                           child: _packagesList(context, selectedId, snapshot.data!, widget.isLateral),
@@ -878,7 +879,7 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
           // FIXME Card
           child: Material(
             color: theme.colorScheme.surfaceContainerLow,
-            elevation: 4.0,
+            elevation: Elevation.level2,
             child: Container(
               constraints: BoxConstraints.loose(const Size.fromWidth(600.0)),
               child: Localizations.override(
@@ -932,7 +933,7 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
       );
     }
     return DefaultTextStyle(
-      style: theme.textTheme.bodySmall!,
+      style: theme.textTheme.bodySmall,
       child: page,
     );
   }
@@ -955,13 +956,13 @@ class _PackageLicensePageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? effectiveTitleTextStyle = titleTextStyle ?? theme.titleLarge;
+    final TextStyle effectiveTitleTextStyle = titleTextStyle ?? theme.titleLarge;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(title, style: effectiveTitleTextStyle?.copyWith(color: foregroundColor)),
-        Text(subtitle, style: theme.titleSmall?.copyWith(color: foregroundColor)),
+        Text(title, style: effectiveTitleTextStyle.copyWith(color: foregroundColor)),
+        Text(subtitle, style: theme.titleSmall.copyWith(color: foregroundColor)),
       ],
     );
   }
@@ -1493,7 +1494,6 @@ class _DetailView extends StatelessWidget {
           // TODO(TonicArtos): Remove MouseRegion workaround for pointer hover events passing through DraggableScrollableSheet once https://github.com/flutter/flutter/issues/59741 is resolved.
           child: Card(
             color: Theme.of(context).colorScheme.surfaceContainerLow,
-            elevation: _kCardElevation,
             clipBehavior: Clip.antiAlias,
             margin: const EdgeInsets.fromLTRB(_kCardElevation, 0.0, _kCardElevation, 0.0),
             shape: const RoundedRectangleBorder(

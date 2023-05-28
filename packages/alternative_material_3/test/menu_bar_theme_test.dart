@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -61,14 +62,14 @@ void main() {
               data: const MenuThemeData(
                 style: MenuStyle(
                   backgroundColor: MaterialStatePropertyAll<Color?>(Colors.green),
-                  elevation: MaterialStatePropertyAll<double?>(20.0),
+                  elevation: MaterialStatePropertyAll<Elevation?>(Elevation(20.0)),
                 ),
               ),
               child: MenuBarTheme(
                 data: const MenuBarThemeData(
                   style: MenuStyle(
                     backgroundColor: MaterialStatePropertyAll<Color?>(Colors.red),
-                    elevation: MaterialStatePropertyAll<double?>(15.0),
+                    elevation: MaterialStatePropertyAll<Elevation?>(Elevation(15.0)),
                     shape: MaterialStatePropertyAll<OutlinedBorder?>(StadiumBorder()),
                     padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
                       EdgeInsetsDirectional.all(10.0),
@@ -114,14 +115,14 @@ void main() {
                 data: const MenuThemeData(
                   style: MenuStyle(
                     backgroundColor: MaterialStatePropertyAll<Color?>(Colors.green),
-                    elevation: MaterialStatePropertyAll<double?>(20.0),
+                    elevation: MaterialStatePropertyAll<Elevation?>(Elevation(20.0)),
                   ),
                 ),
                 child: MenuBarTheme(
                   data: const MenuBarThemeData(
                     style: MenuStyle(
                       backgroundColor: MaterialStatePropertyAll<Color?>(Colors.red),
-                      elevation: MaterialStatePropertyAll<double?>(15.0),
+                      elevation: MaterialStatePropertyAll<Elevation?>(Elevation(15.0)),
                       shape: MaterialStatePropertyAll<OutlinedBorder?>(StadiumBorder()),
                       padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
                         EdgeInsetsDirectional.all(10.0),
@@ -133,7 +134,7 @@ void main() {
                       MenuBar(
                         style: const MenuStyle(
                           backgroundColor: MaterialStatePropertyAll<Color?>(Colors.blue),
-                          elevation: MaterialStatePropertyAll<double?>(10.0),
+                          elevation: MaterialStatePropertyAll<Elevation?>(Elevation(10.0)),
                           padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
                             EdgeInsetsDirectional.all(12.0),
                           ),
@@ -141,7 +142,7 @@ void main() {
                         children: createTestMenus(
                           onPressed: onPressed,
                           menuBackground: Colors.cyan,
-                          menuElevation: 18.0,
+                          menuElevation: const Elevation(18.0),
                           menuPadding: const EdgeInsetsDirectional.all(14.0),
                           menuShape: const BeveledRectangleBorder(),
                           itemBackground: Colors.amber,
@@ -210,13 +211,13 @@ List<Widget> createTestMenus({
   Color? menuBackground,
   EdgeInsetsDirectional? menuPadding,
   OutlinedBorder? menuShape,
-  double? menuElevation,
+  Elevation? menuElevation,
   OutlinedBorder? itemShape,
 }) {
   final MenuStyle menuStyle = MenuStyle(
     padding: menuPadding != null ? MaterialStatePropertyAll<EdgeInsetsGeometry>(menuPadding) : null,
     backgroundColor: menuBackground != null ? MaterialStatePropertyAll<Color>(menuBackground) : null,
-    elevation: menuElevation != null ? MaterialStatePropertyAll<double>(menuElevation) : null,
+    elevation: menuElevation != null ? MaterialStatePropertyAll<Elevation>(menuElevation) : null,
     shape: menuShape != null ? MaterialStatePropertyAll<OutlinedBorder>(menuShape) : null,
   );
   final ButtonStyle itemStyle = ButtonStyle(

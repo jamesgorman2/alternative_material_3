@@ -16,6 +16,7 @@ import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'flexible_space_bar.dart';
 import 'icon_button.dart';
 import 'icon_button_theme.dart';
@@ -205,8 +206,7 @@ class AppBar extends StatefulWidget implements PreferredSizeWidget {
     this.systemOverlayStyle,
     this.forceMaterialTransparency = false,
     this.clipBehavior,
-  }) : assert(elevation == null || elevation >= 0.0),
-       preferredSize = _PreferredAppBarSize(toolbarHeight, bottom?.preferredSize.height);
+  }) : preferredSize = _PreferredAppBarSize(toolbarHeight, bottom?.preferredSize.height);
 
   /// Used by [Scaffold] to compute its [AppBar]'s overall height. The returned value is
   /// the same `preferredSize.height` unless [AppBar.toolbarHeight] was null and
@@ -406,7 +406,7 @@ class AppBar extends StatefulWidget implements PreferredSizeWidget {
   ///    be applied to the background of the app bar.
   ///  * [shape], which defines the shape of the app bar's [Material] and its
   ///    shadow.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// {@template flutter.material.appbar.scrolledUnderElevation}
   /// The elevation that will be used if this app bar has something
@@ -428,7 +428,7 @@ class AppBar extends StatefulWidget implements PreferredSizeWidget {
   ///    be applied to the background of the app bar.
   ///  * [shape], which defines the shape of the app bar's [Material] and its
   ///    shadow.
-  final double? scrolledUnderElevation;
+  final Elevation? scrolledUnderElevation;
 
   /// A check that specifies which child's [ScrollNotification]s should be
   /// listened to.
@@ -841,11 +841,11 @@ class _AppBarState extends State<AppBar> {
       ?? appBarTheme.foregroundColor
       ?? defaults.foregroundColor!;
 
-    final double elevation = widget.elevation
+    final Elevation elevation = widget.elevation
       ?? appBarTheme.elevation
       ?? defaults.elevation!;
 
-    final double effectiveElevation = states.contains(MaterialState.scrolledUnder)
+    final Elevation effectiveElevation = states.contains(MaterialState.scrolledUnder)
       ? widget.scrolledUnderElevation
         ?? appBarTheme.scrolledUnderElevation
         ?? defaults.scrolledUnderElevation
@@ -1193,8 +1193,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final List<Widget>? actions;
   final Widget? flexibleSpace;
   final PreferredSizeWidget? bottom;
-  final double? elevation;
-  final double? scrolledUnderElevation;
+  final Elevation? elevation;
+  final Elevation? scrolledUnderElevation;
   final Color? shadowColor;
   final Color? surfaceTintColor;
   final bool forceElevated;
@@ -1270,7 +1270,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             )
           : flexibleSpace,
         bottom: bottom,
-        elevation: isScrolledUnder ? elevation : 0.0,
+        elevation: isScrolledUnder ? elevation : Elevation.level0,
         scrolledUnderElevation: scrolledUnderElevation,
         shadowColor: shadowColor,
         surfaceTintColor: surfaceTintColor,
@@ -1500,8 +1500,8 @@ class SliverAppBar extends StatefulWidget {
     List<Widget>? actions,
     Widget? flexibleSpace,
     PreferredSizeWidget? bottom,
-    double? elevation,
-    double? scrolledUnderElevation,
+    Elevation? elevation,
+    Elevation? scrolledUnderElevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     bool forceElevated = false,
@@ -1605,8 +1605,8 @@ class SliverAppBar extends StatefulWidget {
     List<Widget>? actions,
     Widget? flexibleSpace,
     PreferredSizeWidget? bottom,
-    double? elevation,
-    double? scrolledUnderElevation,
+    Elevation? elevation,
+    Elevation? scrolledUnderElevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     bool forceElevated = false,
@@ -1712,12 +1712,12 @@ class SliverAppBar extends StatefulWidget {
   /// {@macro flutter.material.appbar.elevation}
   ///
   /// This property is used to configure an [AppBar].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// {@macro flutter.material.appbar.scrolledUnderElevation}
   ///
   /// This property is used to configure an [AppBar].
-  final double? scrolledUnderElevation;
+  final Elevation? scrolledUnderElevation;
 
   /// {@macro flutter.material.appbar.shadowColor}
   ///
@@ -2226,8 +2226,8 @@ mixin _ScrollUnderFlexibleConfig {
 class _AppBarDefaultsM3 extends AppBarTheme {
   _AppBarDefaultsM3(this.context)
     : super(
-      elevation: 0.0,
-      scrolledUnderElevation: 3.0,
+      elevation: Elevation.level0,
+      scrolledUnderElevation: Elevation.level2,
       titleSpacing: NavigationToolbar.kMiddleSpacing,
       toolbarHeight: 64.0,
     );
@@ -2282,11 +2282,11 @@ class _MediumScrollUnderFlexibleConfig with _ScrollUnderFlexibleConfig {
 
   @override
   TextStyle? get collapsedTextStyle =>
-    _textTheme.titleLarge?.apply(color: _colors.onSurface);
+    _textTheme.titleLarge.apply(color: _colors.onSurface);
 
   @override
   TextStyle? get expandedTextStyle =>
-    _textTheme.headlineSmall?.apply(color: _colors.onSurface);
+    _textTheme.headlineSmall.apply(color: _colors.onSurface);
 
   @override
   EdgeInsetsGeometry? get collapsedTitlePadding => const EdgeInsetsDirectional.only(start: 40);
@@ -2311,11 +2311,11 @@ class _LargeScrollUnderFlexibleConfig with _ScrollUnderFlexibleConfig {
 
   @override
   TextStyle? get collapsedTextStyle =>
-    _textTheme.titleLarge?.apply(color: _colors.onSurface);
+    _textTheme.titleLarge.apply(color: _colors.onSurface);
 
   @override
   TextStyle? get expandedTextStyle =>
-    _textTheme.headlineMedium?.apply(color: _colors.onSurface);
+    _textTheme.headlineMedium.apply(color: _colors.onSurface);
 
   @override
   EdgeInsetsGeometry? get collapsedTitlePadding => const EdgeInsetsDirectional.only(start: 40);

@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/gestures.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,8 +36,8 @@ void main() {
     expect(_getRichText(tester).text.style!.color, ThemeData().colorScheme.onPrimaryContainer);
 
     // These defaults come directly from the [FloatingActionButton].
-    expect(_getRawMaterialButton(tester).elevation, 6);
-    expect(_getRawMaterialButton(tester).highlightElevation, 6);
+    expect(_getRawMaterialButton(tester).elevation, Elevation.level3);
+    expect(_getRawMaterialButton(tester).highlightElevation, Elevation.level3);
     //FIXME
     //expect(_getRawMaterialButton(tester).shape, const CircleBorder());
     //expect(_getRawMaterialButton(tester).splashColor, ThemeData().colorScheme.splashColor);
@@ -49,9 +50,9 @@ void main() {
     const Color backgroundColor = Color(0xBEEFBEEF);
     const Color foregroundColor = Color(0xFACEFACE);
     const Color splashColor = Color(0xCAFEFEED);
-    const double elevation = 7;
-    const double disabledElevation = 1;
-    const double highlightElevation = 13;
+    const Elevation elevation = Elevation.level3;
+    const Elevation disabledElevation = Elevation.level1;
+    const Elevation highlightElevation = Elevation.level5;
     const ShapeBorder shape = StadiumBorder();
     const BoxConstraints constraints = BoxConstraints.tightFor(width: 100.0, height: 100.0);
 
@@ -90,9 +91,9 @@ void main() {
     const Color backgroundColor = Color(0x00000001);
     const Color foregroundColor = Color(0x00000002);
     const Color splashColor = Color(0x00000003);
-    const double elevation = 7;
-    const double disabledElevation = 1;
-    const double highlightElevation = 13;
+    const Elevation elevation = Elevation.level3;
+    const Elevation disabledElevation = Elevation.level1;
+    const Elevation highlightElevation = Elevation.level5;
     const ShapeBorder shape = StadiumBorder();
 
     await tester.pumpWidget(MaterialApp(
@@ -101,9 +102,9 @@ void main() {
           backgroundColor: Color(0x00000004),
           foregroundColor: Color(0x00000005),
           splashColor: Color(0x00000006),
-          elevation: 23,
-          disabledElevation: 11,
-          highlightElevation: 43,
+          elevation: Elevation(23),
+          disabledElevation: Elevation(11),
+          highlightElevation: Elevation(43),
           shape: BeveledRectangleBorder(),
         ),
       ),
@@ -279,11 +280,11 @@ void main() {
       focusColor: Color(0xFEEDFEE1),
       hoverColor: Color(0xFEEDFEE2),
       splashColor: Color(0xFEEDFEE3),
-      elevation: 23,
-      focusElevation: 9,
-      hoverElevation: 10,
-      disabledElevation: 11,
-      highlightElevation: 43,
+      elevation: Elevation(23),
+      focusElevation: Elevation(9),
+      hoverElevation: Elevation(10),
+      disabledElevation: Elevation(11),
+      highlightElevation: Elevation(43),
       shape: BeveledRectangleBorder(),
       enableFeedback: true,
       iconSize: 42,
@@ -308,11 +309,11 @@ void main() {
       'focusColor: Color(0xfeedfee1)',
       'hoverColor: Color(0xfeedfee2)',
       'splashColor: Color(0xfeedfee3)',
-      'elevation: 23.0',
-      'focusElevation: 9.0',
-      'hoverElevation: 10.0',
-      'disabledElevation: 11.0',
-      'highlightElevation: 43.0',
+      'elevation: Elevation(height: 23.0, level: level5)',
+      'focusElevation: Elevation(height: 9.0, level: level4)',
+      'hoverElevation: Elevation(height: 10.0, level: level4)',
+      'disabledElevation: Elevation(height: 11.0, level: level4)',
+      'highlightElevation: Elevation(height: 43.0, level: level5)',
       'shape: BeveledRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.zero)',
       'enableFeedback: true',
       'iconSize: 42.0',

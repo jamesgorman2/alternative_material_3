@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 
 import 'color_scheme.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'material_localizations.dart';
@@ -114,7 +115,6 @@ class NavigationRail extends StatefulWidget {
     this.indicatorShape,
   }) :  assert(destinations.length >= 2),
         assert(selectedIndex == null || (0 <= selectedIndex && selectedIndex < destinations.length)),
-        assert(elevation == null || elevation > 0),
         assert(minWidth == null || minWidth > 0),
         assert(minExtendedWidth == null || minExtendedWidth > 0),
         assert((minWidth == null || minExtendedWidth == null) || minExtendedWidth >= minWidth),
@@ -189,7 +189,7 @@ class NavigationRail extends StatefulWidget {
   /// the left side.
   ///
   /// The default value is 0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The vertical alignment for the group of [destinations] within the rail.
   ///
@@ -396,7 +396,7 @@ class _NavigationRailState extends State<NavigationRail> with TickerProviderStat
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
 
     final Color backgroundColor = widget.backgroundColor ?? navigationRailTheme.backgroundColor ?? defaults.backgroundColor!;
-    final double elevation = widget.elevation ?? navigationRailTheme.elevation ?? defaults.elevation!;
+    final Elevation elevation = widget.elevation ?? navigationRailTheme.elevation ?? defaults.elevation!;
     final double minWidth = widget.minWidth ?? navigationRailTheme.minWidth ?? defaults.minWidth!;
     final double minExtendedWidth = widget.minExtendedWidth ?? navigationRailTheme.minExtendedWidth ?? defaults.minExtendedWidth!;
     final TextStyle unselectedLabelTextStyle = widget.unselectedLabelTextStyle ?? navigationRailTheme.unselectedLabelTextStyle ?? defaults.unselectedLabelTextStyle!;
@@ -966,7 +966,7 @@ const double _horizontalDestinationSpacingM3 = 12.0;
 class _NavigationRailDefaultsM3 extends NavigationRailThemeData {
   _NavigationRailDefaultsM3(this.context)
     : super(
-        elevation: 0.0,
+        elevation: Elevation.level0,
         groupAlignment: -1,
         labelType: NavigationRailLabelType.none,
         useIndicator: true,

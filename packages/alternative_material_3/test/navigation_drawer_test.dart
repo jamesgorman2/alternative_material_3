@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -84,7 +85,7 @@ void main() {
 
   testWidgets('NavigationDrawer can update elevation',
       (WidgetTester tester) async {
-    const double elevation = 42.0;
+    const Elevation elevation = Elevation(42.0);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final ThemeData theme= ThemeData.from(colorScheme: ColorScheme.m3DefaultLight);
     final NavigationDrawer drawer = NavigationDrawer(

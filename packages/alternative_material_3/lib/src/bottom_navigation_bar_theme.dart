@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import 'bottom_navigation_bar.dart';
+import 'elevation.dart';
 import 'material_state.dart';
 import 'theme.dart';
 
@@ -60,7 +61,7 @@ class BottomNavigationBarThemeData with Diagnosticable {
   /// The z-coordinate of the [BottomNavigationBar].
   ///
   /// See [BottomNavigationBar.elevation].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The size, opacity, and color of the icon in the currently selected
   /// [BottomNavigationBarItem.icon].
@@ -136,7 +137,7 @@ class BottomNavigationBarThemeData with Diagnosticable {
   /// new values.
   BottomNavigationBarThemeData copyWith({
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     IconThemeData? selectedIconTheme,
     IconThemeData? unselectedIconTheme,
     Color? selectedItemColor,
@@ -179,7 +180,7 @@ class BottomNavigationBarThemeData with Diagnosticable {
     }
     return BottomNavigationBarThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       selectedIconTheme: IconThemeData.lerp(a?.selectedIconTheme, b?.selectedIconTheme, t),
       unselectedIconTheme: IconThemeData.lerp(a?.unselectedIconTheme, b?.unselectedIconTheme, t),
       selectedItemColor: Color.lerp(a?.selectedItemColor, b?.selectedItemColor, t),
@@ -242,7 +243,7 @@ class BottomNavigationBarThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<IconThemeData>('selectedIconTheme', selectedIconTheme, defaultValue: null));
     properties.add(DiagnosticsProperty<IconThemeData>('unselectedIconTheme', unselectedIconTheme, defaultValue: null));
     properties.add(ColorProperty('selectedItemColor', selectedItemColor, defaultValue: null));

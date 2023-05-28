@@ -7,6 +7,7 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'material_state.dart';
 import 'theme.dart';
 
@@ -64,7 +65,7 @@ class PopupMenuThemeData with Diagnosticable {
   final ShapeBorder? shape;
 
   /// The elevation of the popup menu.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The color used to paint shadow below the popup menu.
   final Color? shadowColor;
@@ -100,7 +101,7 @@ class PopupMenuThemeData with Diagnosticable {
   PopupMenuThemeData copyWith({
     Color? color,
     ShapeBorder? shape,
-    double? elevation,
+    Elevation? elevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     TextStyle? textStyle,
@@ -135,7 +136,7 @@ class PopupMenuThemeData with Diagnosticable {
     return PopupMenuThemeData(
       color: Color.lerp(a?.color, b?.color, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
@@ -186,7 +187,7 @@ class PopupMenuThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('color', color, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
     properties.add(DiagnosticsProperty<TextStyle>('text style', textStyle, defaultValue: null));

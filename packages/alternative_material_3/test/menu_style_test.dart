@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -183,7 +184,7 @@ void main() {
                       shadowColor: MaterialStatePropertyAll<Color>(Colors.green),
                       surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.blue),
                       padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(10)),
-                      elevation: MaterialStatePropertyAll<double>(10),
+                      elevation: MaterialStatePropertyAll<Elevation>(Elevation(10)),
                       side: MaterialStatePropertyAll<BorderSide>(BorderSide(color: Colors.redAccent)),
                       shape: MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder()),
                     ),
@@ -195,7 +196,7 @@ void main() {
                         shadowColor: MaterialStatePropertyAll<Color>(Colors.purple),
                         surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.yellow),
                         padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(20)),
-                        elevation: MaterialStatePropertyAll<double>(20),
+                        elevation: MaterialStatePropertyAll<Elevation>(Elevation(20)),
                         side: MaterialStatePropertyAll<BorderSide>(BorderSide(color: Colors.cyanAccent)),
                         shape: MaterialStatePropertyAll<OutlinedBorder>(StarBorder()),
                       ),

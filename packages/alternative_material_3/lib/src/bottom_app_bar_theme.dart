@@ -7,6 +7,7 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 /// Defines default property values for descendant [BottomAppBar] widgets.
@@ -44,7 +45,7 @@ class BottomAppBarTheme with Diagnosticable {
   final Color? color;
 
   /// Overrides the default value for [BottomAppBar.elevation].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value for [BottomAppBar.shape].
   final NotchedShape? shape;
@@ -69,7 +70,7 @@ class BottomAppBarTheme with Diagnosticable {
   /// new values.
   BottomAppBarTheme copyWith({
     Color? color,
-    double? elevation,
+    Elevation? elevation,
     NotchedShape? shape,
     double? height,
     Color? surfaceTintColor,
@@ -103,7 +104,7 @@ class BottomAppBarTheme with Diagnosticable {
     }
     return BottomAppBarTheme(
       color: Color.lerp(a?.color, b?.color, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerpNullable(a?.elevation, b?.elevation, t, defaultHeight: Elevation.level2),
       shape: t < 0.5 ? a?.shape : b?.shape,
       height: lerpDouble(a?.height, b?.height, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
@@ -145,7 +146,7 @@ class BottomAppBarTheme with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(DiagnosticsProperty<double>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<NotchedShape>('shape', shape, defaultValue: null));
     properties.add(DiagnosticsProperty<double>('height', height, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));

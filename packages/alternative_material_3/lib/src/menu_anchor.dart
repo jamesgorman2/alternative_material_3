@@ -16,6 +16,7 @@ import 'checkbox.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'material.dart';
@@ -950,7 +951,7 @@ class MenuItemButton extends StatefulWidget {
     Color? surfaceTintColor,
     Color? iconColor,
     TextStyle? textStyle,
-    double? elevation,
+    Elevation? elevation,
     EdgeInsetsGeometry? padding,
     Size? minimumSize,
     Size? fixedSize,
@@ -1692,7 +1693,7 @@ class SubmenuButton extends StatefulWidget {
     Color? surfaceTintColor,
     Color? iconColor,
     TextStyle? textStyle,
-    double? elevation,
+    Elevation? elevation,
     EdgeInsetsGeometry? padding,
     Size? minimumSize,
     Size? fixedSize,
@@ -3285,7 +3286,7 @@ class _MenuPanelState extends State<_MenuPanel> {
     final Color? backgroundColor = resolve<Color?>((MenuStyle? style) => style?.backgroundColor);
     final Color? shadowColor = resolve<Color?>((MenuStyle? style) => style?.shadowColor);
     final Color? surfaceTintColor = resolve<Color?>((MenuStyle? style) => style?.surfaceTintColor);
-    final double elevation = resolve<double?>((MenuStyle? style) => style?.elevation) ?? 0;
+    final Elevation elevation = resolve<Elevation?>((MenuStyle? style) => style?.elevation) ?? Elevation.level0;
     final Size? minimumSize = resolve<Size?>((MenuStyle? style) => style?.minimumSize);
     final Size? fixedSize = resolve<Size?>((MenuStyle? style) => style?.fixedSize);
     final Size? maximumSize = resolve<Size?>((MenuStyle? style) => style?.maximumSize);
@@ -3576,7 +3577,7 @@ bool _platformSupportsAccelerators() {
 class _MenuBarDefaultsM3 extends MenuStyle {
   _MenuBarDefaultsM3(this.context)
     : super(
-      elevation: const MaterialStatePropertyAll<double?>(3.0),
+      elevation: const MaterialStatePropertyAll<Elevation?>(Elevation.level2),
       shape: const MaterialStatePropertyAll<OutlinedBorder>(_defaultMenuBorder),
       alignment: AlignmentDirectional.bottomStart,
     );
@@ -3638,8 +3639,8 @@ class _MenuButtonDefaultsM3 extends ButtonStyle {
   // No default surface tint color
 
   @override
-  MaterialStateProperty<double>? get elevation {
-    return ButtonStyleButton.allOrNull<double>(0.0);
+  MaterialStateProperty<Elevation>? get elevation {
+    return ButtonStyleButton.allOrNull<Elevation>(Elevation.level0);
   }
 
   @override
@@ -3777,7 +3778,7 @@ class _MenuButtonDefaultsM3 extends ButtonStyle {
 class _MenuDefaultsM3 extends MenuStyle {
   _MenuDefaultsM3(this.context)
     : super(
-      elevation: const MaterialStatePropertyAll<double?>(3.0),
+      elevation: const MaterialStatePropertyAll<Elevation?>(Elevation.level2),
       shape: const MaterialStatePropertyAll<OutlinedBorder>(_defaultMenuBorder),
       alignment: AlignmentDirectional.topEnd,
     );

@@ -19,6 +19,7 @@ import 'date_picker_theme.dart';
 import 'debug.dart';
 import 'dialog.dart';
 import 'divider.dart';
+import 'elevation.dart';
 import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
@@ -1330,7 +1331,7 @@ class _DateRangePickerDialogState extends State<DateRangePickerDialog> with Rest
 
     final Widget contents;
     final Size size;
-    final double? elevation;
+    final Elevation? elevation;
     final Color? shadowColor;
     final Color? surfaceTintColor;
     final ShapeBorder? shape;
@@ -1522,8 +1523,8 @@ class _CalendarRangePickerDialog extends StatelessWidget {
         appBar: AppBar(
           iconTheme: iconTheme,
           actionsIconTheme: iconTheme,
-          elevation: 0,
-          scrolledUnderElevation: 0,
+          elevation: Elevation.level0,
+          scrolledUnderElevation: Elevation.level0,
           backgroundColor: Colors.transparent,
           leading: CloseButton(
             onPressed: onCancel,

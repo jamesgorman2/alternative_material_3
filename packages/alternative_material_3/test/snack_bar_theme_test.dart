@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -65,7 +66,7 @@ void main() {
       actionTextColor: Color(0xFF0000AA),
       disabledActionTextColor: Color(0xFF00AA00),
       contentTextStyle: TextStyle(color: Color(0xFF123456)),
-      elevation: 2.0,
+      elevation: Elevation(2.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))),
       behavior: SnackBarBehavior.floating,
       width: 400.0,
@@ -85,7 +86,7 @@ void main() {
       'actionTextColor: Color(0xff0000aa)',
       'disabledActionTextColor: Color(0xff00aa00)',
       'contentTextStyle: TextStyle(inherit: true, color: Color(0xff123456))',
-      'elevation: 2.0',
+      'elevation: Elevation(height: 2.0, level: level1)',
       'shape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.circular(2.0))',
       'behavior: SnackBarBehavior.floating',
       'width: 400.0',
@@ -174,7 +175,7 @@ void main() {
   testWidgets('SnackBar widget properties take priority over theme', (WidgetTester tester) async {
     const Color backgroundColor = Colors.purple;
     const Color textColor = Colors.pink;
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation(7.0);
     const String action = 'ACTION';
     const ShapeBorder shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(9.0)),
@@ -567,7 +568,7 @@ SnackBarThemeData _snackBarTheme({bool? showCloseIcon}) {
     backgroundColor: Colors.orange,
     actionTextColor: Colors.green,
     contentTextStyle: const TextStyle(color: Colors.blue),
-    elevation: 12.0,
+    elevation: Elevation.level3,
     showCloseIcon: showCloseIcon,
     shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
   );
@@ -578,7 +579,7 @@ SnackBarThemeData _createSnackBarTheme({
   Color? actionTextColor,
   Color? disabledActionTextColor,
   TextStyle? contentTextStyle,
-  double? elevation,
+  Elevation? elevation,
   ShapeBorder? shape,
   SnackBarBehavior? behavior,
   Color? actionBackgroundColor,

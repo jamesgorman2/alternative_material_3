@@ -8,6 +8,7 @@
 library;
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -59,7 +60,7 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const DialogTheme(
       backgroundColor: Color(0xff123456),
-      elevation: 8.0,
+      elevation: Elevation.level4,
       shadowColor: Color(0xff000001),
       surfaceTintColor: Color(0xff000002),
       alignment: Alignment.bottomLeft,
@@ -73,7 +74,7 @@ void main() {
         .map((DiagnosticsNode n) => n.toString()).toList();
     expect(description, <String>[
       'backgroundColor: Color(0xff123456)',
-      'elevation: 8.0',
+      'elevation: Elevation(height: 8.0, level: level4)',
       'shadowColor: Color(0xff000001)',
       'surfaceTintColor: Color(0xff000002)',
       'alignment: Alignment.bottomLeft',
@@ -101,7 +102,7 @@ void main() {
   });
 
   testWidgets('Custom dialog elevation', (WidgetTester tester) async {
-    const double customElevation = 12.0;
+    const Elevation customElevation = Elevation.level5;
     const Color shadowColor = Color(0xFF000001);
     const Color surfaceTintColor = Color(0xFF000002);
     const AlertDialog dialog = AlertDialog(

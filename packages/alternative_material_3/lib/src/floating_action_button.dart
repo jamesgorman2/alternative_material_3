@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 
 import 'button.dart';
 import 'color_scheme.dart';
+import 'elevation.dart';
 import 'floating_action_button_theme.dart';
 import 'material_state.dart';
 import 'scaffold.dart';
@@ -122,12 +123,7 @@ class FloatingActionButton extends StatelessWidget {
     this.materialTapTargetSize,
     this.isExtended = false,
     this.enableFeedback,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(focusElevation == null || focusElevation >= 0.0),
-       assert(hoverElevation == null || hoverElevation >= 0.0),
-       assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(disabledElevation == null || disabledElevation >= 0.0),
-       _floatingActionButtonType = mini ? _FloatingActionButtonType.small : _FloatingActionButtonType.regular,
+  }) : _floatingActionButtonType = mini ? _FloatingActionButtonType.small : _FloatingActionButtonType.regular,
        _extendedLabel = null,
        extendedIconLabelSpacing = null,
        extendedPadding = null,
@@ -165,12 +161,7 @@ class FloatingActionButton extends StatelessWidget {
     this.autofocus = false,
     this.materialTapTargetSize,
     this.enableFeedback,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(focusElevation == null || focusElevation >= 0.0),
-       assert(hoverElevation == null || hoverElevation >= 0.0),
-       assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(disabledElevation == null || disabledElevation >= 0.0),
-       _floatingActionButtonType = _FloatingActionButtonType.small,
+  }) : _floatingActionButtonType = _FloatingActionButtonType.small,
        mini = true,
        isExtended = false,
        _extendedLabel = null,
@@ -210,12 +201,7 @@ class FloatingActionButton extends StatelessWidget {
     this.autofocus = false,
     this.materialTapTargetSize,
     this.enableFeedback,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(focusElevation == null || focusElevation >= 0.0),
-       assert(hoverElevation == null || hoverElevation >= 0.0),
-       assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(disabledElevation == null || disabledElevation >= 0.0),
-       _floatingActionButtonType = _FloatingActionButtonType.large,
+  }) : _floatingActionButtonType = _FloatingActionButtonType.large,
        mini = false,
        isExtended = false,
        _extendedLabel = null,
@@ -260,12 +246,7 @@ class FloatingActionButton extends StatelessWidget {
     Widget? icon,
     required Widget label,
     this.enableFeedback,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(focusElevation == null || focusElevation >= 0.0),
-       assert(hoverElevation == null || hoverElevation >= 0.0),
-       assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(disabledElevation == null || disabledElevation >= 0.0),
-       mini = false,
+  }) : mini = false,
        _floatingActionButtonType = _FloatingActionButtonType.extended,
        child = icon,
        _extendedLabel = label;
@@ -350,7 +331,7 @@ class FloatingActionButton extends StatelessWidget {
   ///
   ///  * [highlightElevation], the elevation when the button is pressed.
   ///  * [disabledElevation], the elevation when the button is disabled.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The z-coordinate at which to place this button relative to its parent when
   /// the button has the input focus.
@@ -365,7 +346,7 @@ class FloatingActionButton extends StatelessWidget {
   ///  * [elevation], the default elevation.
   ///  * [highlightElevation], the elevation when the button is pressed.
   ///  * [disabledElevation], the elevation when the button is disabled.
-  final double? focusElevation;
+  final Elevation? focusElevation;
 
   /// The z-coordinate at which to place this button relative to its parent when
   /// the button is enabled and has a pointer hovering over it.
@@ -380,7 +361,7 @@ class FloatingActionButton extends StatelessWidget {
   ///  * [elevation], the default elevation.
   ///  * [highlightElevation], the elevation when the button is pressed.
   ///  * [disabledElevation], the elevation when the button is disabled.
-  final double? hoverElevation;
+  final Elevation? hoverElevation;
 
   /// The z-coordinate at which to place this button relative to its parent when
   /// the user is touching the button.
@@ -393,7 +374,7 @@ class FloatingActionButton extends StatelessWidget {
   /// See also:
   ///
   ///  * [elevation], the default elevation.
-  final double? highlightElevation;
+  final Elevation? highlightElevation;
 
   /// The z-coordinate at which to place this button when the button is disabled
   /// ([onPressed] is null).
@@ -408,7 +389,7 @@ class FloatingActionButton extends StatelessWidget {
   ///
   ///  * [elevation], the default elevation.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double? disabledElevation;
+  final Elevation? disabledElevation;
 
   /// Controls the size of this button.
   ///
@@ -519,20 +500,20 @@ class FloatingActionButton extends StatelessWidget {
     final Color splashColor = this.splashColor
       ?? floatingActionButtonTheme.splashColor
       ?? defaults.splashColor!;
-    final double elevation = this.elevation
+    final Elevation elevation = this.elevation
       ?? floatingActionButtonTheme.elevation
       ?? defaults.elevation!;
-    final double focusElevation = this.focusElevation
+    final Elevation focusElevation = this.focusElevation
       ?? floatingActionButtonTheme.focusElevation
       ?? defaults.focusElevation!;
-    final double hoverElevation = this.hoverElevation
+    final Elevation hoverElevation = this.hoverElevation
       ?? floatingActionButtonTheme.hoverElevation
       ?? defaults.hoverElevation!;
-    final double disabledElevation = this.disabledElevation
+    final Elevation disabledElevation = this.disabledElevation
       ?? floatingActionButtonTheme.disabledElevation
       ?? defaults.disabledElevation
       ?? elevation;
-    final double highlightElevation = this.highlightElevation
+    final Elevation highlightElevation = this.highlightElevation
       ?? floatingActionButtonTheme.highlightElevation
       ?? defaults.highlightElevation!;
     final MaterialTapTargetSize materialTapTargetSize = this.materialTapTargetSize
@@ -636,11 +617,11 @@ class FloatingActionButton extends StatelessWidget {
     properties.add(ColorProperty('hoverColor', hoverColor, defaultValue: null));
     properties.add(ColorProperty('splashColor', splashColor, defaultValue: null));
     properties.add(ObjectFlagProperty<Object>('heroTag', heroTag, ifPresent: 'hero'));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
-    properties.add(DoubleProperty('focusElevation', focusElevation, defaultValue: null));
-    properties.add(DoubleProperty('hoverElevation', hoverElevation, defaultValue: null));
-    properties.add(DoubleProperty('highlightElevation', highlightElevation, defaultValue: null));
-    properties.add(DoubleProperty('disabledElevation', disabledElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('focusElevation', focusElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('hoverElevation', hoverElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('highlightElevation', highlightElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('disabledElevation', disabledElevation, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
     properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
     properties.add(FlagProperty('isExtended', value: isExtended, ifTrue: 'extended'));
@@ -743,10 +724,10 @@ class _RenderChildOverflowBox extends RenderAligningShiftedBox {
 class _FABDefaultsM3 extends FloatingActionButtonThemeData {
   _FABDefaultsM3(this.context, this.type, this.hasChild)
     : super(
-        elevation: 6.0,
-        focusElevation: 6.0,
-        hoverElevation: 8.0,
-        highlightElevation: 6.0,
+        elevation: Elevation.level3,
+        focusElevation: Elevation.level3,
+        hoverElevation: Elevation.level4,
+        highlightElevation: Elevation.level3,
         enableFeedback: true,
         sizeConstraints: const BoxConstraints.tightFor(
           width: 56.0,

@@ -10,6 +10,7 @@ import 'chip_theme.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'text_theme.dart';
 import 'theme.dart';
 import 'theme_data.dart';
@@ -88,8 +89,7 @@ class ActionChip extends StatelessWidget implements ChipAttributes, TappableChip
     this.shadowColor,
     this.surfaceTintColor,
     this.iconTheme,
-  }) : assert(pressElevation == null || pressElevation >= 0.0),
-       assert(elevation == null || elevation >= 0.0);
+  });
 
   @override
   final Widget? avatar;
@@ -102,7 +102,7 @@ class ActionChip extends StatelessWidget implements ChipAttributes, TappableChip
   @override
   final VoidCallback? onPressed;
   @override
-  final double? pressElevation;
+  final Elevation? pressElevation;
   @override
   final String? tooltip;
   @override
@@ -126,7 +126,7 @@ class ActionChip extends StatelessWidget implements ChipAttributes, TappableChip
   @override
   final MaterialTapTargetSize? materialTapTargetSize;
   @override
-  final double? elevation;
+  final Elevation? elevation;
   @override
   final Color? shadowColor;
   @override
@@ -180,7 +180,7 @@ class ActionChip extends StatelessWidget implements ChipAttributes, TappableChip
 class _ActionChipDefaultsM3 extends ChipThemeData {
   _ActionChipDefaultsM3(this.context, this.isEnabled)
     : super(
-        elevation: 0.0,
+        elevation: Elevation.level0,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
         showCheckmark: true,
       );

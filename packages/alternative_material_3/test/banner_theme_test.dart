@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -44,7 +45,7 @@ void main() {
       shadowColor: Color(0xfffffff2),
       dividerColor: Color(0xfffffff3),
       contentTextStyle: TextStyle(color: Color(0xfffffff4)),
-      elevation: 4.0,
+      elevation: Elevation.level2,
       padding: EdgeInsets.all(20.0),
       leadingPadding: EdgeInsets.only(left: 8.0),
     ).debugFillProperties(builder);
@@ -60,7 +61,7 @@ void main() {
       'shadowColor: Color(0xfffffff2)',
       'dividerColor: Color(0xfffffff3)',
       'contentTextStyle: TextStyle(inherit: true, color: Color(0xfffffff4))',
-      'elevation: 4.0',
+      'elevation: Elevation(height: 3.0, level: level2)',
       'padding: EdgeInsets.all(20.0)',
       'leadingPadding: EdgeInsets(8.0, 0.0, 0.0, 0.0)',
     ]);
@@ -95,7 +96,7 @@ void main() {
     expect(material.color, theme.colorScheme.surface);
     expect(material.surfaceTintColor, theme.colorScheme.surfaceTint);
     expect(material.shadowColor, null);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
 
     final RenderParagraph content = _getTextRenderObjectFromDialog(tester, contentText);
     expect(
@@ -158,7 +159,7 @@ void main() {
     expect(material.color, theme.colorScheme.surface);
     expect(material.surfaceTintColor, theme.colorScheme.surfaceTint);
     expect(material.shadowColor, null);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
 
     final RenderParagraph content = _getTextRenderObjectFromDialog(tester, contentText);
     expect(
@@ -288,7 +289,7 @@ void main() {
           backgroundColor: backgroundColor,
           surfaceTintColor: surfaceTintColor,
           shadowColor: shadowColor,
-          elevation: 6.0,
+          elevation: Elevation.level3,
           leading: const Icon(Icons.ac_unit),
           contentTextStyle: textStyle,
           content: const Text(contentText),
@@ -308,7 +309,7 @@ void main() {
     expect(material.color, backgroundColor);
     expect(material.surfaceTintColor, surfaceTintColor);
     expect(material.shadowColor, shadowColor);
-    expect(material.elevation, 6.0);
+    expect(material.elevation, Elevation.level3);
 
     final RenderParagraph content = _getTextRenderObjectFromDialog(tester, contentText);
     expect(content.text.style, textStyle);
@@ -326,7 +327,7 @@ void main() {
 
   testWidgets('MaterialBanner widget properties take priority over theme when presented by ScaffoldMessenger', (WidgetTester tester) async {
     const Color backgroundColor = Colors.purple;
-    const double elevation = 6.0;
+    const Elevation elevation = Elevation.level3;
     const TextStyle textStyle = TextStyle(color: Colors.green);
     final MaterialBannerThemeData bannerTheme = _bannerTheme();
     const String contentText = 'Content';
@@ -456,7 +457,7 @@ MaterialBannerThemeData _bannerTheme() {
     shadowColor: Colors.red,
     dividerColor: Colors.green,
     contentTextStyle: TextStyle(color: Colors.pink),
-    elevation: 4.0,
+    elevation: Elevation.level2,
     padding: EdgeInsets.all(5),
     leadingPadding: EdgeInsets.all(6),
   );

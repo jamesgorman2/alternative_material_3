@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'button_style.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
+import 'elevation.dart';
 import 'icon_button.dart';
 import 'icons.dart';
 import 'material.dart';
@@ -282,8 +283,7 @@ class SnackBar extends StatefulWidget {
     this.onVisible,
     this.dismissDirection = DismissDirection.down,
     this.clipBehavior = Clip.hardEdge,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(width == null || margin == null,
+  }) : assert(width == null || margin == null,
          'Width and margin can not be used together',
        ),
        assert(actionOverflowThreshold == null || (actionOverflowThreshold >= 0 && actionOverflowThreshold <= 1),
@@ -310,7 +310,7 @@ class SnackBar extends StatefulWidget {
   /// If this property is null, then [SnackBarThemeData.elevation] of
   /// [ThemeData.snackBarTheme] is used, if that is also null, the default value
   /// is 6.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Empty space to surround the snack bar.
   ///
@@ -686,7 +686,7 @@ class _SnackBarState extends State<SnackBar> {
       );
     }
 
-    final double elevation = widget.elevation ?? snackBarTheme.elevation ?? defaults.elevation!;
+    final Elevation elevation = widget.elevation ?? snackBarTheme.elevation ?? defaults.elevation!;
     final Color backgroundColor = widget.backgroundColor ?? snackBarTheme.backgroundColor ?? defaults.backgroundColor!;
     final ShapeBorder? shape = widget.shape ?? snackBarTheme.shape ?? (isFloatingSnackBar ? defaults.shape : null);
 
@@ -829,7 +829,7 @@ class _SnackbarDefaultsM3 extends SnackBarThemeData {
     );
 
   @override
-  double get elevation => 6.0;
+  Elevation get elevation => Elevation.level3;
 
   @override
   ShapeBorder get shape => const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));

@@ -13,6 +13,7 @@ import 'colors.dart';
 import 'constants.dart';
 import 'divider.dart';
 import 'divider_theme.dart';
+import 'elevation.dart';
 import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
@@ -129,7 +130,7 @@ class SearchAnchor extends StatefulWidget {
     Iterable<Widget>? barTrailing,
     String? barHintText,
     GestureTapCallback? onTap,
-    MaterialStateProperty<double?>? barElevation,
+    MaterialStateProperty<Elevation?>? barElevation,
     MaterialStateProperty<Color?>? barBackgroundColor,
     MaterialStateProperty<Color?>? barOverlayColor,
     MaterialStateProperty<BorderSide?>? barSide,
@@ -141,7 +142,7 @@ class SearchAnchor extends StatefulWidget {
     Iterable<Widget>? viewTrailing,
     String? viewHintText,
     Color? viewBackgroundColor,
-    double? viewElevation,
+    Elevation? viewElevation,
     BorderSide? viewSide,
     OutlinedBorder? viewShape,
     TextStyle? viewHeaderTextStyle,
@@ -204,7 +205,7 @@ class SearchAnchor extends StatefulWidget {
   ///
   /// If null, the value of [SearchViewThemeData.elevation] will be used. If this
   /// is also null, then default value is 6.0.
-  final double? viewElevation;
+  final Elevation? viewElevation;
 
   /// The surface tint color of the search view's [Material].
   ///
@@ -418,7 +419,7 @@ class _SearchViewRoute extends PopupRoute<_SearchViewRoute> {
   final Iterable<Widget>? viewTrailing;
   final String? viewHintText;
   final Color? viewBackgroundColor;
-  final double? viewElevation;
+  final Elevation? viewElevation;
   final Color? viewSurfaceTintColor;
   final BorderSide? viewSide;
   final OutlinedBorder? viewShape;
@@ -616,7 +617,7 @@ class _ViewContent extends StatefulWidget {
   final Iterable<Widget>? viewTrailing;
   final String? viewHintText;
   final Color? viewBackgroundColor;
-  final double? viewElevation;
+  final Elevation? viewElevation;
   final Color? viewSurfaceTintColor;
   final BorderSide? viewSide;
   final OutlinedBorder? viewShape;
@@ -757,7 +758,7 @@ class _ViewContentState extends State<_ViewContent> {
     final Color effectiveSurfaceTint = widget.viewSurfaceTintColor
       ?? widget.viewTheme.surfaceTintColor
       ?? widget.viewDefaults.surfaceTintColor!;
-    final double effectiveElevation = widget.viewElevation
+    final Elevation effectiveElevation = widget.viewElevation
       ?? widget.viewTheme.elevation
       ?? widget.viewDefaults.elevation!;
     final BorderSide? effectiveSide = widget.viewSide
@@ -821,7 +822,7 @@ class _ViewContentState extends State<_ViewContent> {
                         hintText: widget.viewHintText,
                         backgroundColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
                         overlayColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
-                        elevation: const MaterialStatePropertyAll<double>(0.0),
+                        elevation: const MaterialStatePropertyAll<Elevation>(Elevation.level0),
                         textStyle: MaterialStatePropertyAll<TextStyle?>(effectiveTextStyle),
                         hintStyle: MaterialStatePropertyAll<TextStyle?>(effectiveHintStyle),
                         controller: _controller,
@@ -864,7 +865,7 @@ class _SearchAnchorWithSearchBar extends SearchAnchor {
     Iterable<Widget>? barTrailing,
     String? barHintText,
     GestureTapCallback? onTap,
-    MaterialStateProperty<double?>? barElevation,
+    MaterialStateProperty<Elevation?>? barElevation,
     MaterialStateProperty<Color?>? barBackgroundColor,
     MaterialStateProperty<Color?>? barOverlayColor,
     MaterialStateProperty<BorderSide?>? barSide,
@@ -1054,7 +1055,7 @@ class SearchBar extends StatefulWidget {
   ///
   /// If null, the value of [SearchBarThemeData.elevation] will be used. If this
   /// is also null, then default value is 6.0.
-  final MaterialStateProperty<double?>? elevation;
+  final MaterialStateProperty<Elevation?>? elevation;
 
   /// The search bar's background fill color.
   ///
@@ -1160,7 +1161,7 @@ class _SearchBarState extends State<SearchBar> {
     }
 
     final TextStyle? effectiveTextStyle = resolve<TextStyle?>(widget.textStyle, searchBarTheme.textStyle, defaults.textStyle);
-    final double? effectiveElevation = resolve<double?>(widget.elevation, searchBarTheme.elevation, defaults.elevation);
+    final Elevation? effectiveElevation = resolve<Elevation?>(widget.elevation, searchBarTheme.elevation, defaults.elevation);
     final Color? effectiveShadowColor = resolve<Color?>(widget.shadowColor, searchBarTheme.shadowColor, defaults.shadowColor);
     final Color? effectiveBackgroundColor = resolve<Color?>(widget.backgroundColor, searchBarTheme.backgroundColor, defaults.backgroundColor);
     final Color? effectiveSurfaceTintColor = resolve<Color?>(widget.surfaceTintColor, searchBarTheme.surfaceTintColor, defaults.surfaceTintColor);
@@ -1275,8 +1276,8 @@ class _SearchBarDefaultsM3 extends SearchBarThemeData {
     MaterialStatePropertyAll<Color>(_colors.surface);
 
   @override
-  MaterialStateProperty<double>? get elevation =>
-    const MaterialStatePropertyAll<double>(6.0);
+  MaterialStateProperty<Elevation>? get elevation =>
+    const MaterialStatePropertyAll<Elevation>(Elevation.level3);
 
   @override
   MaterialStateProperty<Color>? get shadowColor =>
@@ -1313,11 +1314,11 @@ class _SearchBarDefaultsM3 extends SearchBarThemeData {
 
   @override
   MaterialStateProperty<TextStyle?> get textStyle =>
-    MaterialStatePropertyAll<TextStyle?>(_textTheme.bodyLarge?.copyWith(color: _colors.onSurface));
+    MaterialStatePropertyAll<TextStyle?>(_textTheme.bodyLarge.copyWith(color: _colors.onSurface));
 
   @override
   MaterialStateProperty<TextStyle?> get hintStyle =>
-    MaterialStatePropertyAll<TextStyle?>(_textTheme.bodyLarge?.copyWith(color: _colors.onSurfaceVariant));
+    MaterialStatePropertyAll<TextStyle?>(_textTheme.bodyLarge.copyWith(color: _colors.onSurfaceVariant));
 
   @override
   BoxConstraints get constraints =>
@@ -1349,7 +1350,7 @@ class _SearchViewDefaultsM3 extends SearchViewThemeData {
   Color? get backgroundColor => _colors.surface;
 
   @override
-  double? get elevation => 6.0;
+  Elevation? get elevation => Elevation.level3;
 
   @override
   Color? get surfaceTintColor => _colors.surfaceTint;
@@ -1362,10 +1363,10 @@ class _SearchViewDefaultsM3 extends SearchViewThemeData {
     : const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28.0)));
 
   @override
-  TextStyle? get headerTextStyle => _textTheme.bodyLarge?.copyWith(color: _colors.onSurface);
+  TextStyle? get headerTextStyle => _textTheme.bodyLarge.copyWith(color: _colors.onSurface);
 
   @override
-  TextStyle? get headerHintStyle => _textTheme.bodyLarge?.copyWith(color: _colors.onSurfaceVariant);
+  TextStyle? get headerHintStyle => _textTheme.bodyLarge.copyWith(color: _colors.onSurfaceVariant);
 
   @override
   BoxConstraints get constraints => const BoxConstraints(minWidth: 360.0, minHeight: 240.0);

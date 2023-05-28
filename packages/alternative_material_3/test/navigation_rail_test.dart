@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
@@ -107,7 +108,7 @@ void main() {
       ),
     );
 
-    expect(_railMaterial(tester).elevation, equals(0));
+    expect(_railMaterial(tester).elevation, Elevation.level0);
 
     await _pumpNavigationRail(
       tester,
@@ -115,11 +116,11 @@ void main() {
         selectedIndex: 0,
         destinations: _destinations(),
         labelType: NavigationRailLabelType.all,
-        elevation: 7,
+        elevation: Elevation.level3,
       ),
     );
 
-    expect(_railMaterial(tester).elevation, equals(7));
+    expect(_railMaterial(tester).elevation, Elevation.level3);
   });
 
   testWidgets('Renders at the correct default width - [labelType]=none (default)', (WidgetTester tester) async {

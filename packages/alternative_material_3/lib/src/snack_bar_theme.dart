@@ -7,6 +7,7 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'material_state.dart';
 import 'theme.dart';
 
@@ -68,8 +69,7 @@ class SnackBarThemeData with Diagnosticable {
     this.actionOverflowThreshold,
     this.actionBackgroundColor,
     this.disabledActionBackgroundColor
-  })  : assert(elevation == null || elevation >= 0.0),
-        assert(width == null || identical(behavior, SnackBarBehavior.floating),
+  })  : assert(width == null || identical(behavior, SnackBarBehavior.floating),
           'Width can only be set if behaviour is SnackBarBehavior.floating'),
         assert(actionOverflowThreshold == null || (actionOverflowThreshold >= 0 && actionOverflowThreshold <= 1),
           'Action overflow threshold must be between 0 and 1 inclusive'),
@@ -103,7 +103,7 @@ class SnackBarThemeData with Diagnosticable {
   /// Overrides the default value for [SnackBar.elevation].
   ///
   /// If null, [SnackBar] uses a default of 6.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value for [SnackBar.shape].
   ///
@@ -162,7 +162,7 @@ class SnackBarThemeData with Diagnosticable {
     Color? actionTextColor,
     Color? disabledActionTextColor,
     TextStyle? contentTextStyle,
-    double? elevation,
+    Elevation? elevation,
     ShapeBorder? shape,
     SnackBarBehavior? behavior,
     double? width,
@@ -205,7 +205,7 @@ class SnackBarThemeData with Diagnosticable {
       actionTextColor: Color.lerp(a?.actionTextColor, b?.actionTextColor, t),
       disabledActionTextColor: Color.lerp(a?.disabledActionTextColor, b?.disabledActionTextColor, t),
       contentTextStyle: TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerpNullable(a?.elevation, b?.elevation, t, defaultHeight: Elevation.level3),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
       behavior: t < 0.5 ? a?.behavior : b?.behavior,
       width: lerpDouble(a?.width, b?.width, t),
@@ -267,7 +267,7 @@ class SnackBarThemeData with Diagnosticable {
     properties.add(ColorProperty('actionTextColor', actionTextColor, defaultValue: null));
     properties.add(ColorProperty('disabledActionTextColor', disabledActionTextColor, defaultValue: null));
     properties.add(DiagnosticsProperty<TextStyle>('contentTextStyle', contentTextStyle, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
     properties.add(DiagnosticsProperty<SnackBarBehavior>('behavior', behavior, defaultValue: null));
     properties.add(DoubleProperty('width', width, defaultValue: null));

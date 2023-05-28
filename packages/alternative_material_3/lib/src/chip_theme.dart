@@ -2,13 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui' show lerpDouble;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'colors.dart';
+import 'elevation.dart';
 import 'theme.dart';
 
 /// Applies a chip theme to descendant [RawChip]-based widgets, like [Chip],
@@ -263,8 +262,8 @@ class ChipThemeData with Diagnosticable {
       labelStyle: labelStyle,
       secondaryLabelStyle: secondaryLabelStyle,
       brightness: brightness,
-      elevation: 0.0,
-      pressElevation: 8.0,
+      elevation: Elevation.level0,
+      pressElevation: Elevation.level1,
     );
   }
 
@@ -415,13 +414,13 @@ class ChipThemeData with Diagnosticable {
   ///
   /// This property applies to [ActionChip], [Chip], [ChoiceChip],
   /// [FilterChip], [InputChip], [RawChip].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default for [TappableChipAttributes.pressElevation],
   /// the elevation of the chip's [Material] during a "press" or tap down.
   ///
   /// This property applies to [ActionChip], [InputChip], [RawChip].
-  final double? pressElevation;
+  final Elevation? pressElevation;
 
   /// Overrides the default for [ChipAttributes.iconTheme],
   /// the theme used for all icons in the chip.
@@ -450,8 +449,8 @@ class ChipThemeData with Diagnosticable {
     TextStyle? labelStyle,
     TextStyle? secondaryLabelStyle,
     Brightness? brightness,
-    double? elevation,
-    double? pressElevation,
+    Elevation? elevation,
+    Elevation? pressElevation,
     IconThemeData? iconTheme,
   }) {
     return ChipThemeData(
@@ -505,8 +504,8 @@ class ChipThemeData with Diagnosticable {
       labelStyle: TextStyle.lerp(a?.labelStyle, b?.labelStyle, t),
       secondaryLabelStyle: TextStyle.lerp(a?.secondaryLabelStyle, b?.secondaryLabelStyle, t),
       brightness: t < 0.5 ? a?.brightness ?? Brightness.light : b?.brightness ?? Brightness.light,
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
-      pressElevation: lerpDouble(a?.pressElevation, b?.pressElevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
+      pressElevation: Elevation.lerp(a?.pressElevation, b?.pressElevation, t),
       iconTheme: a?.iconTheme != null || b?.iconTheme != null
         ? IconThemeData.lerp(a?.iconTheme, b?.iconTheme, t)
         : null,
@@ -610,8 +609,8 @@ class ChipThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<TextStyle>('labelStyle', labelStyle, defaultValue: null));
     properties.add(DiagnosticsProperty<TextStyle>('secondaryLabelStyle', secondaryLabelStyle, defaultValue: null));
     properties.add(EnumProperty<Brightness>('brightness', brightness, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
-    properties.add(DoubleProperty('pressElevation', pressElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('pressElevation', pressElevation, defaultValue: null));
     properties.add(DiagnosticsProperty<IconThemeData>('iconTheme', iconTheme, defaultValue: null));
   }
 }

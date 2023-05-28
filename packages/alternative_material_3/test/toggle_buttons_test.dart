@@ -7,8 +7,9 @@
 @Tags(<String>['reduced-test-set'])
 library;
 
-import 'package:flutter/gestures.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -224,15 +225,15 @@ void main() {
         of: find.widgetWithText(TextButton, 'First child'),
         matching: find.byType(DefaultTextStyle),
     )).style;
-    expect(textStyle.fontFamily, theme.textTheme.bodyMedium!.fontFamily);
-    expect(textStyle.decoration, theme.textTheme.bodyMedium!.decoration);
+    expect(textStyle.fontFamily, theme.textTheme.bodyMedium.fontFamily);
+    expect(textStyle.decoration, theme.textTheme.bodyMedium.decoration);
 
     textStyle = tester.widget<DefaultTextStyle>(find.descendant(
         of: find.widgetWithText(TextButton, 'Second child'),
         matching: find.byType(DefaultTextStyle),
     )).style;
-    expect(textStyle.fontFamily, theme.textTheme.bodyMedium!.fontFamily);
-    expect(textStyle.decoration, theme.textTheme.bodyMedium!.decoration);
+    expect(textStyle.fontFamily, theme.textTheme.bodyMedium.fontFamily);
+    expect(textStyle.decoration, theme.textTheme.bodyMedium.decoration);
   });
 
   testWidgets('Custom text style except color is applied', (WidgetTester tester) async {
@@ -1876,35 +1877,35 @@ void main() {
       ),
     );
 
-    double toggleButtonElevation(String text) {
+    Elevation toggleButtonElevation(String text) {
       return tester.widget<Material>(find.widgetWithText(Material, text).first).elevation;
     }
 
     // Default toggle button elevation
-    expect(toggleButtonElevation('one'), 0); // highlighted
-    expect(toggleButtonElevation('two'), 0); // not highlighted
+    expect(toggleButtonElevation('one'), Elevation.level0); // highlighted
+    expect(toggleButtonElevation('two'), Elevation.level0); // not highlighted
 
     // Hovered button elevation
     final TestGesture hoverGesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
     await hoverGesture.addPointer();
     await hoverGesture.moveTo(tester.getCenter(find.text('one')));
     await tester.pumpAndSettle();
-    expect(toggleButtonElevation('one'), 0);
+    expect(toggleButtonElevation('one'), Elevation.level0);
     await hoverGesture.moveTo(tester.getCenter(find.text('two')));
     await tester.pumpAndSettle();
-    expect(toggleButtonElevation('two'), 0);
+    expect(toggleButtonElevation('two'), Elevation.level0);
 
     // Focused button elevation
     focusNodes[0].requestFocus();
     await tester.pumpAndSettle();
     expect(focusNodes[0].hasFocus, isTrue);
     expect(focusNodes[1].hasFocus, isFalse);
-    expect(toggleButtonElevation('one'), 0);
+    expect(toggleButtonElevation('one'), Elevation.level0);
     focusNodes[1].requestFocus();
     await tester.pumpAndSettle();
     expect(focusNodes[0].hasFocus, isFalse);
     expect(focusNodes[1].hasFocus, isTrue);
-    expect(toggleButtonElevation('two'), 0);
+    expect(toggleButtonElevation('two'), Elevation.level0);
 
     await hoverGesture.removePointer();
   });

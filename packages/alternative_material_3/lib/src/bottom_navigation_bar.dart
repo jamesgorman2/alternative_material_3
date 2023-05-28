@@ -11,6 +11,7 @@ import 'package:vector_math/vector_math_64.dart' show Vector3;
 import 'bottom_navigation_bar_theme.dart';
 import 'constants.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'material_localizations.dart';
@@ -205,7 +206,6 @@ class BottomNavigationBar extends StatefulWidget {
         'Every item must have a non-null label',
        ),
        assert(0 <= currentIndex && currentIndex < items.length),
-       assert(elevation == null || elevation >= 0.0),
        assert(iconSize >= 0.0),
        assert(
          selectedItemColor == null || fixedColor == null,
@@ -234,7 +234,7 @@ class BottomNavigationBar extends StatefulWidget {
   /// If null, defaults to `8.0`.
   ///
   /// {@macro flutter.material.material.elevation}
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Defines the layout and behavior of a [BottomNavigationBar].
   ///
@@ -1100,7 +1100,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> with TickerPr
       explicitChildNodes: true,
       child: _Bar(
         layout: layout,
-        elevation: widget.elevation ?? bottomTheme.elevation ?? 8.0,
+        elevation: widget.elevation ?? bottomTheme.elevation ?? Elevation.level2,
         color: backgroundColor,
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: kBottomNavigationBarHeight + additionalBottomPadding),
@@ -1145,7 +1145,7 @@ class _Bar extends StatelessWidget {
 
   final Widget child;
   final BottomNavigationBarLandscapeLayout layout;
-  final double elevation;
+  final Elevation elevation;
   final Color? color;
 
   @override

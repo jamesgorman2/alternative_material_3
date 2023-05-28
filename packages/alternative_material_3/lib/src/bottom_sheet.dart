@@ -15,6 +15,7 @@ import 'colors.dart';
 import 'constants.dart';
 import 'curves.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'material.dart';
 import 'material_localizations.dart';
 import 'material_state.dart';
@@ -93,7 +94,7 @@ class BottomSheet extends StatefulWidget {
     this.constraints,
     required this.onClosing,
     required this.builder,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   /// The animation controller that controls the bottom sheet's entrance and
   /// exit animations.
@@ -185,7 +186,7 @@ class BottomSheet extends StatefulWidget {
   /// This controls the size of the shadow below the material.
   ///
   /// Defaults to 0. The value is non-negative.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The shape of the bottom sheet.
   ///
@@ -343,7 +344,7 @@ class _BottomSheetState extends State<BottomSheet> {
     final Color? color = widget.backgroundColor ?? bottomSheetTheme.backgroundColor ?? defaults.backgroundColor;
     final Color? surfaceTintColor = bottomSheetTheme.surfaceTintColor ?? defaults.surfaceTintColor;
     final Color? shadowColor = widget.shadowColor ?? bottomSheetTheme.shadowColor ?? defaults.shadowColor;
-    final double elevation = widget.elevation ?? bottomSheetTheme.elevation ?? defaults.elevation ?? 0;
+    final Elevation elevation = widget.elevation ?? bottomSheetTheme.elevation ?? defaults.elevation ?? Elevation.level0;
     final ShapeBorder? shape = widget.shape ?? bottomSheetTheme.shape ?? defaults.shape;
     final Clip clipBehavior = widget.clipBehavior ?? bottomSheetTheme.clipBehavior ?? Clip.none;
     final bool showDragHandle = widget.showDragHandle ?? (widget.enableDrag && (bottomSheetTheme.showDragHandle ?? false));
@@ -643,7 +644,7 @@ class _ModalBottomSheet<T> extends StatefulWidget {
   final ModalBottomSheetRoute<T> route;
   final bool isScrollControlled;
   final Color? backgroundColor;
-  final double? elevation;
+  final Elevation? elevation;
   final ShapeBorder? shape;
   final Clip? clipBehavior;
   final BoxConstraints? constraints;
@@ -856,7 +857,7 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
   /// This controls the size of the shadow below the material.
   ///
   /// Defaults to 0, must not be negative.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The shape of the bottom sheet.
   ///
@@ -1185,7 +1186,7 @@ Future<T?> showModalBottomSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   Color? backgroundColor,
-  double? elevation,
+  Elevation? elevation,
   ShapeBorder? shape,
   Clip? clipBehavior,
   BoxConstraints? constraints,
@@ -1276,7 +1277,7 @@ PersistentBottomSheetController<T> showBottomSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   Color? backgroundColor,
-  double? elevation,
+  Elevation? elevation,
   ShapeBorder? shape,
   Clip? clipBehavior,
   BoxConstraints? constraints,
@@ -1311,8 +1312,8 @@ PersistentBottomSheetController<T> showBottomSheet<T>({
 class _BottomSheetDefaultsM3 extends BottomSheetThemeData {
   _BottomSheetDefaultsM3(this.context)
     : super(
-      elevation: 1.0,
-      modalElevation: 1.0,
+      elevation: Elevation.level1,
+      modalElevation: Elevation.level1,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28.0))),
       constraints: const BoxConstraints(maxWidth: 640),
     );

@@ -8,6 +8,7 @@ import 'button_style.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'material.dart';
@@ -306,7 +307,7 @@ class Stepper extends StatefulWidget {
   final ControlsWidgetBuilder? controlsBuilder;
 
   /// The elevation of this stepper's [Material] when [type] is [StepperType.horizontal].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Custom margin on vertical stepper.
   final EdgeInsetsGeometry? margin;
@@ -803,7 +804,7 @@ class _StepperState extends State<Stepper> with TickerProviderStateMixin {
     return Column(
       children: <Widget>[
         Material(
-          elevation: widget.elevation ?? 2,
+          elevation: widget.elevation ?? Elevation.level1,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Row(

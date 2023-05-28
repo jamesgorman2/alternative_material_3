@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -27,7 +28,7 @@ void main() {
     );
 
     expect(_railMaterial(tester).color, ThemeData().colorScheme.surface);
-    expect(_railMaterial(tester).elevation, 0);
+    expect(_railMaterial(tester).elevation, Elevation.level0);
     expect(_destinationSize(tester).width, 80.0);
     expect(_selectedIconTheme(tester).size, 24.0);
     expect(_selectedIconTheme(tester).color, ThemeData().colorScheme.onSecondaryContainer);
@@ -48,7 +49,7 @@ void main() {
 
   testWidgets('NavigationRailThemeData values are used when no NavigationRail properties are specified', (WidgetTester tester) async {
     const Color backgroundColor = Color(0x00000001);
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const double selectedIconSize = 25.0;
     const double unselectedIconSize = 23.0;
     const Color selectedIconColor = Color(0x00000002);
@@ -116,7 +117,7 @@ void main() {
 
   testWidgets('NavigationRail values take priority over NavigationRailThemeData values when both properties are specified', (WidgetTester tester) async {
     const Color backgroundColor = Color(0x00000001);
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level4;
     const double selectedIconSize = 25.0;
     const double unselectedIconSize = 23.0;
     const Color selectedIconColor = Color(0x00000002);
@@ -136,7 +137,7 @@ void main() {
           body: NavigationRailTheme(
             data: const NavigationRailThemeData(
               backgroundColor: Color(0x00000099),
-              elevation: 5,
+              elevation: Elevation.level3,
               selectedIconTheme: IconThemeData(
                 size: 31.0,
                 color: Color(0x00000098),
@@ -221,7 +222,7 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const NavigationRailThemeData(
       backgroundColor: Color(0x00000099),
-      elevation: 5,
+      elevation: Elevation.level3,
       selectedIconTheme: IconThemeData(color: Color(0x00000098)),
       unselectedIconTheme: IconThemeData(color: Color(0x00000097)),
       selectedLabelTextStyle: TextStyle(fontSize: 9.0),
@@ -239,7 +240,7 @@ void main() {
         .toList();
 
     expect(description[0], 'backgroundColor: Color(0x00000099)');
-    expect(description[1], 'elevation: 5.0');
+    expect(description[1], 'elevation: Elevation(height: 6.0, level: level3)');
     expect(description[2], 'unselectedLabelTextStyle: TextStyle(inherit: true, size: 7.0)');
     expect(description[3], 'selectedLabelTextStyle: TextStyle(inherit: true, size: 9.0)');
 

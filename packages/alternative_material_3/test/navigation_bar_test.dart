@@ -9,9 +9,10 @@ library;
 
 import 'dart:math';
 
+import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:alternative_material_3/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'flutter_test/extensions.dart';
@@ -76,7 +77,7 @@ void main() {
   });
 
   testWidgets('NavigationBar can update elevation', (WidgetTester tester) async {
-    const double elevation = 42.0;
+    const Elevation elevation = Elevation(42.0);
 
     await tester.pumpWidget(
       _buildWidget(

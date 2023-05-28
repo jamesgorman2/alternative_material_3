@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'rendering/mock_canvas.dart';
@@ -83,7 +84,7 @@ void main() {
     // expect(getMaterialBox(tester), paints..rrect(color: const Color(0x3d000000)));
     expect(tester.getSize(find.byType(ChoiceChip)), const Size(139.0, 48.0));
     expect(getMaterial(tester).color, null);
-    expect(getMaterial(tester).elevation, 0);
+    expect(getMaterial(tester).elevation, Elevation.level0);
     // expect(getMaterial(tester).shape, const StadiumBorder());
     // expect(getLabelStyle(tester, 'Chip A').style.color?.value, 0xde000000);
 
@@ -93,7 +94,7 @@ void main() {
     // expect(getMaterialBox(tester), paints..rrect(color: const Color(0x3dffffff)));
     expect(tester.getSize(find.byType(ChoiceChip)), const Size(139.0, 48.0));
     expect(getMaterial(tester).color, null);
-    expect(getMaterial(tester).elevation, 0);
+    expect(getMaterial(tester).elevation, Elevation.level0);
     // expect(getMaterial(tester).shape, const StadiumBorder());
     // expect(getLabelStyle(tester, 'Chip A').style.color?.value, 0xdeffffff);
   });

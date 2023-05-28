@@ -3,6 +3,10 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,7 +41,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, null);
-    expect(material.elevation, 2.0);
+    expect(material.elevation, Elevation.level1);
     expect(material.shadowColor, Colors.black);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))));
     expect(material.textStyle!.color, const Color(0xdd000000));
@@ -57,7 +61,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, null);
-    expect(material.elevation, 8.0);
+    expect(material.elevation, Elevation.level1);
     expect(material.shadowColor, Colors.black);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))));
     expect(material.textStyle!.color, const Color(0xdd000000));
@@ -82,7 +86,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, null);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.black);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))));
     // fixme
@@ -141,10 +145,10 @@ void main() {
   });
 
   testWidgets('MaterialButton elevation and colors have proper precedence', (WidgetTester tester) async {
-    const double elevation = 10.0;
-    const double focusElevation = 11.0;
-    const double hoverElevation = 12.0;
-    const double highlightElevation = 13.0;
+    const Elevation elevation = Elevation(10.0);
+    const Elevation focusElevation = Elevation(11.0);
+    const Elevation hoverElevation = Elevation(12.0);
+    const Elevation highlightElevation = Elevation(13.0);
     const Color focusColor = Color(0xff001122);
     const Color hoverColor = Color(0xff112233);
     const Color highlightColor = Color(0xff223344);
@@ -833,7 +837,7 @@ void main() {
   }, skip: true);
 
   testWidgets('disabledElevation is passed to RawMaterialButton', (WidgetTester tester) async {
-    const double disabledElevation = 16;
+    const Elevation disabledElevation = Elevation(16);
 
     final Finder rawMaterialButtonFinder = find.descendant(
       of: find.byType(MaterialButton),
@@ -872,6 +876,6 @@ void main() {
     );
 
     final RawMaterialButton rawMaterialButton = tester.widget(rawMaterialButtonFinder);
-    expect(rawMaterialButton.disabledElevation, equals(0.0));
+    expect(rawMaterialButton.disabledElevation, Elevation.level0);
   });
 }

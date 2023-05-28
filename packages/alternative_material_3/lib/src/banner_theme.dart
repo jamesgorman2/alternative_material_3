@@ -2,11 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui' show lerpDouble;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 // Examples can assume:
@@ -63,7 +62,7 @@ class MaterialBannerThemeData with Diagnosticable {
   /// Default value for [MaterialBanner.elevation].
   //
   // If null, MaterialBanner uses a default of 0.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The amount of space by which to inset [MaterialBanner.content].
   final EdgeInsetsGeometry? padding;
@@ -79,7 +78,7 @@ class MaterialBannerThemeData with Diagnosticable {
     Color? shadowColor,
     Color? dividerColor,
     TextStyle? contentTextStyle,
-    double? elevation,
+    Elevation? elevation,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? leadingPadding,
   }) {
@@ -107,7 +106,7 @@ class MaterialBannerThemeData with Diagnosticable {
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       dividerColor: Color.lerp(a?.dividerColor, b?.dividerColor, t),
       contentTextStyle: TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       leadingPadding: EdgeInsetsGeometry.lerp(a?.leadingPadding, b?.leadingPadding, t),
     );
@@ -152,7 +151,7 @@ class MaterialBannerThemeData with Diagnosticable {
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('dividerColor', dividerColor, defaultValue: null));
     properties.add(DiagnosticsProperty<TextStyle>('contentTextStyle', contentTextStyle, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('leadingPadding', leadingPadding, defaultValue: null));
   }

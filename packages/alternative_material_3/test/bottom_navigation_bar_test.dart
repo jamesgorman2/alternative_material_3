@@ -10,13 +10,13 @@ library;
 import 'dart:ui';
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 import 'feedback_tester.dart';
 import 'flutter_test/extensions.dart';
-import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
 
 void main() {
@@ -140,7 +140,7 @@ void main() {
     );
     expect(findOpacity, findsNothing);
     expect(findFadeTransition, findsNothing);
-    expect(_getMaterial(tester).elevation, equals(8.0));
+    expect(_getMaterial(tester).elevation, Elevation.level2);
   });
 
   testWidgets('Custom selected and unselected font styles', (WidgetTester tester) async {
@@ -442,12 +442,11 @@ void main() {
     //   ColorMatcher(ColorScheme.m3DefaultLight.onSurface),
     // );
     expect(_getOpacity(tester, 'Alarm'), equals(0.0));
-    expect(_getMaterial(tester).elevation, equals(8.0));
+    expect(_getMaterial(tester).elevation, Elevation.level2);
   });
 
   testWidgets('Fixed BottomNavigationBar custom font size, color', (WidgetTester tester) async {
     const Color primaryColor = Color(0xFF000000);
-    const Color unselectedWidgetColor = Color(0xFFD501FF);
     const Color selectedColor = Color(0xFF0004FF);
     const Color unselectedColor = Color(0xFFE5FF00);
     const double selectedFontSize = 18.0;
@@ -515,7 +514,6 @@ void main() {
 
   testWidgets('Shifting BottomNavigationBar custom font size, color', (WidgetTester tester) async {
     const Color primaryColor = Color(0xFF000000);
-    const Color unselectedWidgetColor = Color(0xFFD501FF);
     const Color selectedColor = Color(0xFF0004FF);
     const Color unselectedColor = Color(0xFFE5FF00);
     const double selectedFontSize = 18.0;
@@ -565,7 +563,6 @@ void main() {
 
   testWidgets('label style color should override itemColor only for the label for BottomNavigationBarType.fixed', (WidgetTester tester) async {
     const Color primaryColor = Color(0xFF000000);
-    const Color unselectedWidgetColor = Color(0xFFD501FF);
     const Color selectedColor = Color(0xFF0004FF);
     const Color unselectedColor = Color(0xFFE5FF00);
     const Color selectedLabelColor = Color(0xFFFF9900);
@@ -614,7 +611,6 @@ void main() {
 
   testWidgets('label style color should override itemColor only for the label for BottomNavigationBarType.shifting', (WidgetTester tester) async {
     const Color primaryColor = Color(0xFF000000);
-    const Color unselectedWidgetColor = Color(0xFFD501FF);
     const Color selectedColor = Color(0xFF0004FF);
     const Color unselectedColor = Color(0xFFE5FF00);
     const Color selectedLabelColor = Color(0xFFFF9900);
@@ -663,7 +659,6 @@ void main() {
 
   testWidgets('iconTheme color should override itemColor for BottomNavigationBarType.fixed', (WidgetTester tester) async {
     const Color primaryColor = Color(0xFF000000);
-    const Color unselectedWidgetColor = Color(0xFFD501FF);
     const Color selectedColor = Color(0xFF0004FF);
     const Color unselectedColor = Color(0xFFE5FF00);
     const Color selectedLabelColor = Color(0xFFFF9900);
@@ -718,7 +713,6 @@ void main() {
 
   testWidgets('iconTheme color should override itemColor for BottomNavigationBarType.shifted', (WidgetTester tester) async {
     const Color primaryColor = Color(0xFF000000);
-    const Color unselectedWidgetColor = Color(0xFFD501FF);
     const Color selectedLabelColor = Color(0xFFFF9900);
     const Color unselectedLabelColor = Color(0xFF92F74E);
     const Color selectedIconThemeColor = Color(0xFF1E7723);
@@ -993,7 +987,7 @@ void main() {
   });
 
   testWidgets('setting selectedFontSize to zero hides all labels', (WidgetTester tester) async {
-    const double customElevation = 3.0;
+    const Elevation customElevation = Elevation.level2;
 
     await tester.pumpWidget(
       MaterialApp(

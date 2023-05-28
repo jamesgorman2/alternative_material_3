@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,7 +36,7 @@ void main() {
     );
 
     final Material material = _getMaterialFromBanner(tester);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.color, backgroundColor);
     expect(material.surfaceTintColor, surfaceTintColor);
     expect(material.shadowColor, shadowColor);
@@ -92,7 +93,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final Material material = _getMaterialFromText(tester, contentText);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.color, backgroundColor);
     expect(material.surfaceTintColor, surfaceTintColor);
     expect(material.shadowColor, shadowColor);
@@ -237,7 +238,7 @@ void main() {
   });
 
   group('MaterialBanner elevation', () {
-    Widget buildBanner(Key tapTarget, {double? elevation, double? themeElevation}) {
+    Widget buildBanner(Key tapTarget, {Elevation? elevation, Elevation? themeElevation}) {
       return MaterialApp(
         theme: ThemeData(bannerTheme: MaterialBannerThemeData(elevation: themeElevation)),
         home: Scaffold(
@@ -275,21 +276,21 @@ void main() {
       await tester.pumpWidget(buildBanner(tapTarget));
       await tester.tap(find.byKey(tapTarget));
       await tester.pumpAndSettle();
-      expect(_getMaterialFromBanner(tester).elevation, 0.0);
+      expect(_getMaterialFromBanner(tester).elevation, Elevation.level0);
       await tester.tap(find.text('DISMISS'));
       await tester.pumpAndSettle();
 
-      await tester.pumpWidget(buildBanner(tapTarget, themeElevation: 6.0));
+      await tester.pumpWidget(buildBanner(tapTarget, themeElevation: Elevation.level3));
       await tester.tap(find.byKey(tapTarget));
       await tester.pumpAndSettle();
-      expect(_getMaterialFromBanner(tester).elevation, 6.0);
+      expect(_getMaterialFromBanner(tester).elevation, Elevation.level3);
       await tester.tap(find.text('DISMISS'));
       await tester.pumpAndSettle();
 
-      await tester.pumpWidget(buildBanner(tapTarget, elevation: 3.0, themeElevation: 6.0));
+      await tester.pumpWidget(buildBanner(tapTarget, elevation: Elevation.level2, themeElevation: Elevation.level3));
       await tester.tap(find.byKey(tapTarget));
       await tester.pumpAndSettle();
-      expect(_getMaterialFromBanner(tester).elevation, 3.0);
+      expect(_getMaterialFromBanner(tester).elevation, Elevation.level2);
       await tester.tap(find.text('DISMISS'));
       await tester.pumpAndSettle();
     });
@@ -297,17 +298,17 @@ void main() {
     testWidgets('Uses elevation of MaterialBannerTheme by default', (WidgetTester tester) async {
       const Key tapTarget = Key('tap-target');
 
-      await tester.pumpWidget(buildBanner(tapTarget, themeElevation: 6.0));
+      await tester.pumpWidget(buildBanner(tapTarget, themeElevation: Elevation.level3));
       await tester.tap(find.byKey(tapTarget));
       await tester.pumpAndSettle();
-      expect(_getMaterialFromBanner(tester).elevation, 6.0);
+      expect(_getMaterialFromBanner(tester).elevation, Elevation.level3);
       await tester.tap(find.text('DISMISS'));
       await tester.pumpAndSettle();
 
-      await tester.pumpWidget(buildBanner(tapTarget, elevation: 3.0, themeElevation: 6.0));
+      await tester.pumpWidget(buildBanner(tapTarget, elevation: Elevation.level2, themeElevation:Elevation.level3));
       await tester.tap(find.byKey(tapTarget));
       await tester.pumpAndSettle();
-      expect(_getMaterialFromBanner(tester).elevation, 3.0);
+      expect(_getMaterialFromBanner(tester).elevation, Elevation.level2);
       await tester.tap(find.text('DISMISS'));
       await tester.pumpAndSettle();
     });
@@ -315,7 +316,7 @@ void main() {
     testWidgets('Scaffold body is pushed down if elevation is 0', (WidgetTester tester) async {
       const Key tapTarget = Key('tap-target');
 
-      await tester.pumpWidget(buildBanner(tapTarget, elevation: 0.0));
+      await tester.pumpWidget(buildBanner(tapTarget, elevation: Elevation.level0));
       await tester.tap(find.byKey(tapTarget));
       await tester.pumpAndSettle();
 

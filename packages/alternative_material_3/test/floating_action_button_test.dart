@@ -11,13 +11,14 @@ library;
 import 'dart:ui';
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'feedback_tester.dart';
 import 'flutter_test/extensions.dart';
 import 'rendering/mock_canvas.dart';
 import 'widgets/semantics_tester.dart';
-import 'feedback_tester.dart';
 
 void main() {
 
@@ -195,20 +196,20 @@ void main() {
         home: Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () { },
-            highlightElevation: 20.0,
+            highlightElevation: const Elevation(20.0),
           ),
         ),
       ),
     );
     await tester.pump();
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level3.height);
     await tester.pump(const Duration(seconds: 1));
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 20.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, const Elevation(20.0).height);
     await gesture.up();
     await tester.pump();
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 20.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, const Elevation(20.0).height);
     await tester.pump(const Duration(seconds: 1));
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level3.height);
   });
 
   testWidgets('Floating Action Button elevation when disabled - defaults', (WidgetTester tester) async {
@@ -223,7 +224,7 @@ void main() {
     );
 
     // Disabled elevation defaults to regular default elevation.
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level3.height);
   });
 
   testWidgets('Floating Action Button elevation when disabled - override', (WidgetTester tester) async {
@@ -232,13 +233,13 @@ void main() {
         home: Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: null,
-            disabledElevation: 0,
+            disabledElevation: Elevation.level0,
           ),
         ),
       ),
     );
 
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 0.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level0.height);
   });
 
   testWidgets('Floating Action Button elevation when disabled - effect', (WidgetTester tester) async {
@@ -251,33 +252,33 @@ void main() {
         ),
       ),
     );
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level3.height);
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: null,
-            disabledElevation: 3.0,
+            disabledElevation: Elevation.level2,
           ),
         ),
       ),
     );
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level3.height);
     await tester.pump(const Duration(seconds: 1));
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 3.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level2.height);
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () { },
-            disabledElevation: 3.0,
+            disabledElevation: Elevation.level2,
           ),
         ),
       ),
     );
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 3.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level2.height);
     await tester.pump(const Duration(seconds: 1));
-    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, 6.0);
+    expect(tester.widget<PhysicalShape>(find.byType(PhysicalShape)).elevation, Elevation.level3.height);
   });
 
   testWidgets('Floating Action Button elevation when disabled while highlighted - effect', (WidgetTester tester) async {

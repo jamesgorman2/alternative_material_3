@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'button_style.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
+import 'elevation.dart';
 import 'icons.dart';
 import 'material.dart';
 import 'material_state.dart';
@@ -356,7 +357,7 @@ class SegmentedButton<T> extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       shape: enabledBorder.copyWith(side: BorderSide.none),
-      elevation: resolve<double?>((ButtonStyle? style) => style?.elevation)!,
+      elevation: resolve<Elevation?>((ButtonStyle? style) => style?.elevation)!,
       shadowColor: resolve<Color?>((ButtonStyle? style) => style?.shadowColor),
       surfaceTintColor: resolve<Color?>((ButtonStyle? style) => style?.surfaceTintColor),
       child: TextButtonTheme(
@@ -786,7 +787,7 @@ class _SegmentedButtonDefaultsM3 extends SegmentedButtonThemeData {
         return null;
       }),
       surfaceTintColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
-      elevation: const MaterialStatePropertyAll<double>(0),
+      elevation: const MaterialStatePropertyAll<Elevation>(Elevation.level0),
       iconSize: const MaterialStatePropertyAll<double?>(18.0),
       side: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         if (states.contains(MaterialState.disabled)) {

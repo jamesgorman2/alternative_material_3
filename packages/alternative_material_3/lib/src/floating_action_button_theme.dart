@@ -7,6 +7,7 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
+import 'elevation.dart';
 import 'material_state.dart';
 
 /// Defines default property values for descendant [FloatingActionButton]
@@ -76,27 +77,27 @@ class FloatingActionButtonThemeData with Diagnosticable {
 
   /// The z-coordinate to be used for the unselected, enabled
   /// [FloatingActionButton]'s elevation foreground.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The z-coordinate at which to place this button relative to its parent when
   /// the button has the input focus.
   ///
   /// This controls the size of the shadow below the floating action button.
-  final double? focusElevation;
+  final Elevation? focusElevation;
 
   /// The z-coordinate at which to place this button relative to its parent when
   /// the button is enabled and has a pointer hovering over it.
   ///
   /// This controls the size of the shadow below the floating action button.
-  final double? hoverElevation;
+  final Elevation? hoverElevation;
 
   /// The z-coordinate to be used for the disabled [FloatingActionButton]'s
   /// elevation foreground.
-  final double? disabledElevation;
+  final Elevation? disabledElevation;
 
   /// The z-coordinate to be used for the selected, enabled
   /// [FloatingActionButton]'s elevation foreground.
-  final double? highlightElevation;
+  final Elevation? highlightElevation;
 
   /// The shape to be used for the floating action button's [Material].
   final ShapeBorder? shape;
@@ -145,11 +146,11 @@ class FloatingActionButtonThemeData with Diagnosticable {
     Color? focusColor,
     Color? hoverColor,
     Color? splashColor,
-    double? elevation,
-    double? focusElevation,
-    double? hoverElevation,
-    double? disabledElevation,
-    double? highlightElevation,
+    Elevation? elevation,
+    Elevation? focusElevation,
+    Elevation? hoverElevation,
+    Elevation? disabledElevation,
+    Elevation? highlightElevation,
     ShapeBorder? shape,
     bool? enableFeedback,
     double? iconSize,
@@ -202,11 +203,11 @@ class FloatingActionButtonThemeData with Diagnosticable {
       focusColor: Color.lerp(a?.focusColor, b?.focusColor, t),
       hoverColor: Color.lerp(a?.hoverColor, b?.hoverColor, t),
       splashColor: Color.lerp(a?.splashColor, b?.splashColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
-      focusElevation: lerpDouble(a?.focusElevation, b?.focusElevation, t),
-      hoverElevation: lerpDouble(a?.hoverElevation, b?.hoverElevation, t),
-      disabledElevation: lerpDouble(a?.disabledElevation, b?.disabledElevation, t),
-      highlightElevation: lerpDouble(a?.highlightElevation, b?.highlightElevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
+      focusElevation: Elevation.lerp(a?.focusElevation, b?.focusElevation, t),
+      hoverElevation: Elevation.lerp(a?.hoverElevation, b?.hoverElevation, t),
+      disabledElevation: Elevation.lerp(a?.disabledElevation, b?.disabledElevation, t),
+      highlightElevation: Elevation.lerp(a?.highlightElevation, b?.highlightElevation, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
       enableFeedback: t < 0.5 ? a?.enableFeedback : b?.enableFeedback,
       iconSize: lerpDouble(a?.iconSize, b?.iconSize, t),
@@ -289,11 +290,11 @@ class FloatingActionButtonThemeData with Diagnosticable {
     properties.add(ColorProperty('focusColor', focusColor, defaultValue: null));
     properties.add(ColorProperty('hoverColor', hoverColor, defaultValue: null));
     properties.add(ColorProperty('splashColor', splashColor, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
-    properties.add(DoubleProperty('focusElevation', focusElevation, defaultValue: null));
-    properties.add(DoubleProperty('hoverElevation', hoverElevation, defaultValue: null));
-    properties.add(DoubleProperty('disabledElevation', disabledElevation, defaultValue: null));
-    properties.add(DoubleProperty('highlightElevation', highlightElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('focusElevation', focusElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('hoverElevation', hoverElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('disabledElevation', disabledElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('highlightElevation', highlightElevation, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
     properties.add(DiagnosticsProperty<bool>('enableFeedback', enableFeedback, defaultValue: null));
     properties.add(DoubleProperty('iconSize', iconSize, defaultValue: null));

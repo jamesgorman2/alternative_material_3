@@ -8,6 +8,7 @@ import 'package:flutter/services.dart' show SelectionChangedCause, SuggestionSpa
 
 import 'adaptive_text_selection_toolbar.dart';
 import 'colors.dart';
+import 'elevation.dart';
 import 'material.dart';
 import 'spell_check_suggestions_toolbar_layout_delegate.dart';
 import 'text_selection_toolbar_text_button.dart';
@@ -238,7 +239,7 @@ class _SpellCheckSuggestionsToolbarContainer extends StatelessWidget {
     return Material(
       // This elevation was eyeballed on a Pixel 4 emulator running Android
       // API 31 for the SpellCheckSuggestionsToolbar.
-      elevation: 2.0,
+      elevation: Elevation.level1, //2dp
       type: MaterialType.card,
       child: SizedBox(
         // This width was eyeballed on a Pixel 4 emulator running Android

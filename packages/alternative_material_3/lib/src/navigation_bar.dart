@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 
 import 'color_scheme.dart';
 import 'colors.dart';
+import 'elevation.dart';
 import 'elevation_overlay.dart';
 import 'ink_well.dart';
 import 'material.dart';
@@ -142,7 +143,7 @@ class NavigationBar extends StatelessWidget {
   /// If null, [NavigationBarThemeData.elevation] is used. If that
   /// is also null, then if [ThemeData.useMaterial3] is true then it will
   /// be 3.0 otherwise 0.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The color used for the drop shadow to indicate elevation.
   ///
@@ -1324,7 +1325,7 @@ class _NavigationBarDefaultsM3 extends NavigationBarThemeData {
   _NavigationBarDefaultsM3(this.context)
       : super(
           height: 80.0,
-          elevation: 3.0,
+          elevation: Elevation.level2,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         );
 

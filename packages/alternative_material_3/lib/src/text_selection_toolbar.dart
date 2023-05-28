@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/rendering.dart';
 
 import 'debug.dart';
+import 'elevation.dart';
 import 'icon_button.dart';
 import 'icons.dart';
 import 'material.dart';
@@ -657,7 +658,7 @@ class _TextSelectionToolbarContainer extends StatelessWidget {
       // a Pixel 2 running Android 10.
       borderRadius: const BorderRadius.all(Radius.circular(7.0)),
       clipBehavior: Clip.antiAlias,
-      elevation: 1.0,
+      elevation: Elevation.level1,
       type: MaterialType.card,
       child: child,
     );

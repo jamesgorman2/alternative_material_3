@@ -16,6 +16,7 @@ import 'colors.dart';
 import 'curves.dart';
 import 'debug.dart';
 import 'dialog.dart';
+import 'elevation.dart';
 import 'feedback.dart';
 import 'icon_button.dart';
 import 'icons.dart';
@@ -2313,11 +2314,6 @@ class _TimePickerDialogState extends State<TimePickerDialog> with RestorationMix
       children: <Widget>[
         if (_entryMode.value == TimePickerEntryMode.dial || _entryMode.value == TimePickerEntryMode.input)
           IconButton(
-            // In material3 mode, we want to use the color as part of the
-            // button style which applies its own opacity. In material2 mode,
-            // we want to use the color as the color, which already includes
-            // the opacity.
-            color: null,
             style: IconButton.styleFrom(foregroundColor: entryModeIconColor),
             onPressed: _toggleEntryMode,
             icon: Icon(_entryMode.value == TimePickerEntryMode.dial ? Icons.keyboard_outlined : Icons.access_time),
@@ -2981,7 +2977,7 @@ abstract class _TimePickerDefaults extends TimePickerThemeData {
   TextStyle get dialTextStyle;
 
   @override
-  double get elevation;
+  Elevation get elevation;
 
   @override
   Color get entryModeIconColor;
@@ -3183,8 +3179,8 @@ class _TimePickerDefaultsM3 extends _TimePickerDefaults {
   }
 
   @override
-  double get elevation {
-    return 6.0;
+  Elevation get elevation {
+    return Elevation.level3;
   }
 
   @override

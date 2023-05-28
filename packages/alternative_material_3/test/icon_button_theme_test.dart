@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -37,7 +38,7 @@ void main() {
     expect(material.animationDuration, const Duration(milliseconds: 200));
     expect(material.borderRadius, null);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shadowColor, Colors.transparent);
     expect(material.shape, const StadiumBorder());
     expect(material.textStyle, null);
@@ -52,7 +53,7 @@ void main() {
     const Color disabledForegroundColor = Color(0xff000002);
     const Color backgroundColor = Color(0xff000003);
     const Color shadowColor = Color(0xff000004);
-    const double elevation = 3;
+    const Elevation elevation = Elevation.level2;
     const EdgeInsets padding = EdgeInsets.all(3);
     const Size minimumSize = Size(200, 200);
     const BorderSide side = BorderSide(color: Colors.green, width: 2);

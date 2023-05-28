@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -1005,7 +1006,7 @@ testWidgets('Stepper custom indexed controls test', (WidgetTester tester) async 
   });
 
   testWidgets('Stepper custom elevation', (WidgetTester tester) async {
-     const double elevation = 4.0;
+     const Elevation elevation = Elevation.level2;
 
      await tester.pumpWidget(
        MaterialApp(
@@ -1067,7 +1068,7 @@ testWidgets('Stepper custom indexed controls test', (WidgetTester tester) async 
        ),
      );
 
-     expect(material.elevation, 2.0);
+     expect(material.elevation, Elevation.level1);
    });
 
   testWidgets('Stepper horizontal preserves state', (WidgetTester tester) async {

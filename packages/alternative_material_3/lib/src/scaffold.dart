@@ -20,6 +20,7 @@ import 'curves.dart';
 import 'debug.dart';
 import 'divider.dart';
 import 'drawer.dart';
+import 'elevation.dart';
 import 'flexible_space_bar.dart';
 import 'floating_action_button.dart';
 import 'floating_action_button_location.dart';
@@ -2253,7 +2254,7 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
     required bool isPersistent,
     required AnimationController animationController,
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     ShapeBorder? shape,
     Clip? clipBehavior,
     BoxConstraints? constraints,
@@ -2426,7 +2427,7 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
   PersistentBottomSheetController<T> showBottomSheet<T>(
     WidgetBuilder builder, {
     Color? backgroundColor,
-    double? elevation,
+        Elevation? elevation,
     ShapeBorder? shape,
     Clip? clipBehavior,
     BoxConstraints? constraints,
@@ -2829,8 +2830,8 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
     // MaterialBanner set by ScaffoldMessenger
     if (_messengerMaterialBanner != null) {
       final MaterialBannerThemeData bannerTheme = MaterialBannerTheme.of(context);
-      final double elevation = _messengerMaterialBanner?._widget.elevation ?? bannerTheme.elevation ?? 0.0;
-      extendBodyBehindMaterialBanner = elevation != 0.0;
+      final Elevation elevation = _messengerMaterialBanner?._widget.elevation ?? bannerTheme.elevation ?? Elevation.level0;
+      extendBodyBehindMaterialBanner = elevation > Elevation.level0;
 
       _addIfNonNull(
         children,
@@ -3107,7 +3108,7 @@ class _StandardBottomSheet extends StatefulWidget {
   final WidgetBuilder builder;
   final bool isPersistent;
   final Color? backgroundColor;
-  final double? elevation;
+  final Elevation? elevation;
   final ShapeBorder? shape;
   final Clip? clipBehavior;
   final BoxConstraints? constraints;

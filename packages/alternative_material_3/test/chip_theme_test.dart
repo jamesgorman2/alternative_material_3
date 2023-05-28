@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/gestures.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -103,8 +104,8 @@ void main() {
       labelStyle: TextStyle(fontSize: 10),
       secondaryLabelStyle: TextStyle(fontSize: 20),
       brightness: Brightness.dark,
-      elevation: 5,
-      pressElevation: 6,
+      elevation: Elevation.level2,
+      pressElevation: Elevation.level3,
     ).debugFillProperties(builder);
 
     final List<String> description = builder.properties
@@ -130,15 +131,15 @@ void main() {
       'labelStyle: TextStyle(inherit: true, size: 10.0)',
       'secondaryLabelStyle: TextStyle(inherit: true, size: 20.0)',
       'brightness: dark',
-      'elevation: 5.0',
-      'pressElevation: 6.0',
+      'elevation: Elevation(height: 3.0, level: level2)',
+      'pressElevation: Elevation(height: 6.0, level: level3)',
     ]);
   });
 
   testWidgets('Chip uses ThemeData chip theme', (WidgetTester tester) async {
     const ChipThemeData chipTheme = ChipThemeData(
       backgroundColor: Color(0xff112233),
-      elevation: 4,
+      elevation: Elevation.level2,
       padding: EdgeInsets.all(50),
       labelPadding: EdgeInsets.all(25),
       shape: RoundedRectangleBorder(),
@@ -176,7 +177,7 @@ void main() {
   testWidgets('Chip uses ChipTheme', (WidgetTester tester) async {
     const ChipThemeData chipTheme = ChipThemeData(
       backgroundColor: Color(0xff112233),
-      elevation: 4,
+      elevation: Elevation.level2,
       padding: EdgeInsets.all(50),
       labelPadding: EdgeInsets.all(25),
       labelStyle: TextStyle(fontSize: 32),
@@ -185,7 +186,7 @@ void main() {
 
     const ChipThemeData shadowedChipTheme = ChipThemeData(
       backgroundColor: Color(0xff332211),
-      elevation: 3,
+      elevation: Elevation.level2,
       padding: EdgeInsets.all(5),
       labelPadding: EdgeInsets.all(10),
       labelStyle: TextStyle(fontSize: 64),
@@ -230,7 +231,7 @@ void main() {
   testWidgets('Chip uses constructor parameters', (WidgetTester tester) async {
     const ChipThemeData shadowedChipTheme = ChipThemeData(
       backgroundColor: Color(0xff112233),
-      elevation: 4,
+      elevation: Elevation.level3,
       padding: EdgeInsets.all(5),
       labelPadding: EdgeInsets.all(2),
       labelStyle: TextStyle(),
@@ -238,7 +239,7 @@ void main() {
     );
 
     const Color backgroundColor = Color(0xff332211);
-    const double elevation = 3;
+    const Elevation elevation = Elevation.level2;
     const double fontSize = 32;
     const OutlinedBorder shape = CircleBorder();
 
@@ -304,8 +305,8 @@ void main() {
     expect(chipTheme.labelStyle, labelStyle.copyWith(color: Colors.black.withAlpha(0xde)));
     expect(chipTheme.secondaryLabelStyle, labelStyle.copyWith(color: Colors.red.withAlpha(0xde)));
     expect(chipTheme.brightness, Brightness.light);
-    expect(chipTheme.elevation, 0.0);
-    expect(chipTheme.pressElevation, 8.0);
+    expect(chipTheme.elevation, Elevation.level0);
+    expect(chipTheme.pressElevation, Elevation.level1);
 
     chipTheme = ChipThemeData.fromDefaults(
       brightness: Brightness.dark,
@@ -328,15 +329,15 @@ void main() {
     expect(chipTheme.labelStyle, labelStyle.copyWith(color: Colors.white.withAlpha(0xde)));
     expect(chipTheme.secondaryLabelStyle, labelStyle.copyWith(color: Colors.tealAccent[200]!.withAlpha(0xde)));
     expect(chipTheme.brightness, Brightness.dark);
-    expect(chipTheme.elevation, 0.0);
-    expect(chipTheme.pressElevation, 8.0);
+    expect(chipTheme.elevation, Elevation.level0);
+    expect(chipTheme.pressElevation, Elevation.level1);
   });
 
 
   testWidgets('ChipThemeData generates correct opacities for defaults', (WidgetTester tester) async {
     const Color customColor1 = Color(0xcafefeed);
     const Color customColor2 = Color(0xdeadbeef);
-    final TextStyle customStyle = ThemeData.fallback().textTheme.bodyLarge!.copyWith(color: customColor2);
+    final TextStyle customStyle = ThemeData.fallback().textTheme.bodyLarge.copyWith(color: customColor2);
 
     final ChipThemeData lightTheme = ChipThemeData.fromDefaults(
       secondaryColor: customColor1,
@@ -400,13 +401,13 @@ void main() {
     final ChipThemeData chipThemeBlack = ChipThemeData.fromDefaults(
       secondaryColor: Colors.black,
       brightness: Brightness.dark,
-      labelStyle: ThemeData.fallback().textTheme.bodyLarge!.copyWith(color: Colors.black),
+      labelStyle: ThemeData.fallback().textTheme.bodyLarge.copyWith(color: Colors.black),
     ).copyWith(
-      elevation: 1.0,
+      elevation: Elevation.level1,
       labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
       shape: const StadiumBorder(),
       side: const BorderSide(),
-      pressElevation: 4.0,
+      pressElevation: Elevation.level3,
       shadowColor: Colors.black,
       surfaceTintColor: Colors.black,
       selectedShadowColor: Colors.black,
@@ -416,14 +417,14 @@ void main() {
     final ChipThemeData chipThemeWhite = ChipThemeData.fromDefaults(
       secondaryColor: Colors.white,
       brightness: Brightness.light,
-      labelStyle: ThemeData.fallback().textTheme.bodyLarge!.copyWith(color: Colors.white),
+      labelStyle: ThemeData.fallback().textTheme.bodyLarge.copyWith(color: Colors.white),
     ).copyWith(
       padding: const EdgeInsets.all(2.0),
       labelPadding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       shape: const BeveledRectangleBorder(),
       side: const BorderSide(color: Colors.white),
-      elevation: 5.0,
-      pressElevation: 10.0,
+      elevation: Elevation.level3,
+      pressElevation: Elevation.level5,
       shadowColor: Colors.white,
       surfaceTintColor: Colors.white,
       selectedShadowColor: Colors.white,
@@ -449,8 +450,8 @@ void main() {
     expect(lerp.labelStyle?.color, equals(middleGrey.withAlpha(0xde)));
     expect(lerp.secondaryLabelStyle?.color, equals(middleGrey.withAlpha(0xde)));
     expect(lerp.brightness, equals(Brightness.light));
-    expect(lerp.elevation, 3.0);
-    expect(lerp.pressElevation, 7.0);
+    expect(lerp.elevation, const Elevation(3.5));
+    expect(lerp.pressElevation, const Elevation(9.0));
     expect(lerp.checkmarkColor, equals(middleGrey));
     expect(lerp.iconTheme, isNull);
 
@@ -473,8 +474,8 @@ void main() {
     expect(lerpANull25.labelStyle?.color, equals(Colors.black.withAlpha(0x38)));
     expect(lerpANull25.secondaryLabelStyle?.color, equals(Colors.white.withAlpha(0x38)));
     expect(lerpANull25.brightness, equals(Brightness.light));
-    expect(lerpANull25.elevation, 1.25);
-    expect(lerpANull25.pressElevation, 2.5);
+    expect(lerpANull25.elevation, const Elevation(1.5));
+    expect(lerpANull25.pressElevation, const Elevation(3.0));
     expect(lerpANull25.checkmarkColor, equals(Colors.white.withAlpha(0x40)));
     expect(lerp.iconTheme, isNull);
 
@@ -495,8 +496,8 @@ void main() {
     expect(lerpANull75.labelStyle?.color, equals(Colors.black.withAlpha(0xa7)));
     expect(lerpANull75.secondaryLabelStyle?.color, equals(Colors.white.withAlpha(0xa7)));
     expect(lerpANull75.brightness, equals(Brightness.light));
-    expect(lerpANull75.elevation, 3.75);
-    expect(lerpANull75.pressElevation, 7.5);
+    expect(lerpANull75.elevation, const Elevation(4.5));
+    expect(lerpANull75.pressElevation, const Elevation(9.0));
     expect(lerpANull75.checkmarkColor, equals(Colors.white.withAlpha(0xbf)));
 
     final ChipThemeData lerpBNull25 = ChipThemeData.lerp(chipThemeBlack, null, 0.25)!;
@@ -516,8 +517,8 @@ void main() {
     expect(lerpBNull25.labelStyle?.color, equals(Colors.white.withAlpha(0xa7)));
     expect(lerpBNull25.secondaryLabelStyle?.color, equals(Colors.black.withAlpha(0xa7)));
     expect(lerpBNull25.brightness, equals(Brightness.dark));
-    expect(lerpBNull25.elevation, 0.75);
-    expect(lerpBNull25.pressElevation, 3.0);
+    expect(lerpBNull25.elevation, const Elevation(0.75));
+    expect(lerpBNull25.pressElevation, const Elevation(4.5));
     expect(lerpBNull25.checkmarkColor, equals(Colors.black.withAlpha(0xbf)));
     expect(lerp.iconTheme, isNull);
 
@@ -538,8 +539,8 @@ void main() {
     expect(lerpBNull75.labelStyle?.color, equals(Colors.white.withAlpha(0x38)));
     expect(lerpBNull75.secondaryLabelStyle?.color, equals(Colors.black.withAlpha(0x38)));
     expect(lerpBNull75.brightness, equals(Brightness.light));
-    expect(lerpBNull75.elevation, 0.25);
-    expect(lerpBNull75.pressElevation, 1.0);
+    expect(lerpBNull75.elevation, const Elevation(0.25));
+    expect(lerpBNull75.pressElevation, const Elevation(1.5));
     expect(lerpBNull75.checkmarkColor, equals(Colors.black.withAlpha(0x40)));
     expect(lerp.iconTheme, isNull);
   });

@@ -10,6 +10,7 @@ import 'chip_theme.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'debug.dart';
+import 'elevation.dart';
 import 'text_theme.dart';
 import 'theme.dart';
 import 'theme_data.dart';
@@ -85,8 +86,7 @@ class ChoiceChip extends StatelessWidget
     this.iconTheme,
     this.selectedShadowColor,
     this.avatarBorder = const CircleBorder(),
-  }) : assert(pressElevation == null || pressElevation >= 0.0),
-       assert(elevation == null || elevation >= 0.0);
+  });
 
   @override
   final Widget? avatar;
@@ -99,7 +99,7 @@ class ChoiceChip extends StatelessWidget
   @override
   final ValueChanged<bool>? onSelected;
   @override
-  final double? pressElevation;
+  final Elevation? pressElevation;
   @override
   final bool selected;
   @override
@@ -127,7 +127,7 @@ class ChoiceChip extends StatelessWidget
   @override
   final MaterialTapTargetSize? materialTapTargetSize;
   @override
-  final double? elevation;
+  final Elevation? elevation;
   @override
   final Color? shadowColor;
   @override
@@ -191,7 +191,7 @@ class ChoiceChip extends StatelessWidget
 class _ChoiceChipDefaultsM3 extends ChipThemeData {
   _ChoiceChipDefaultsM3(this.context, this.isEnabled, this.isSelected)
     : super(
-        elevation: 0.0,
+        elevation: Elevation.level0,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
         showCheckmark: true,
       );

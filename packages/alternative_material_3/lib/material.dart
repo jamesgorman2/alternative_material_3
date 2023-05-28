@@ -80,6 +80,7 @@ export 'src/dropdown_menu.dart';
 export 'src/dropdown_menu_theme.dart';
 export 'src/elevated_button.dart';
 export 'src/elevated_button_theme.dart';
+export 'src/elevation.dart';
 export 'src/elevation_overlay.dart';
 export 'src/expand_icon.dart';
 export 'src/expansion_panel.dart';

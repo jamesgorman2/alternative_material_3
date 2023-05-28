@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'button.dart';
 import 'button_theme.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'theme.dart';
@@ -82,11 +83,7 @@ class MaterialButton extends StatelessWidget {
     this.height,
     this.enableFeedback = true,
     this.child,
-  }) : assert(elevation == null || elevation >= 0.0),
-       assert(focusElevation == null || focusElevation >= 0.0),
-       assert(hoverElevation == null || hoverElevation >= 0.0),
-       assert(highlightElevation == null || highlightElevation >= 0.0),
-       assert(disabledElevation == null || disabledElevation >= 0.0);
+  });
 
   /// The callback that is called when the button is tapped or otherwise activated.
   ///
@@ -230,7 +227,7 @@ class MaterialButton extends StatelessWidget {
   ///    button.
   ///  * [disabledElevation], the elevation when the button is disabled.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The elevation for the button's [Material] when the button
   /// is [enabled] and a pointer is hovering over it.
@@ -243,7 +240,7 @@ class MaterialButton extends StatelessWidget {
   ///  * [focusElevation], the elevation when the button is focused.
   ///  * [disabledElevation], the elevation when the button is disabled.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double? hoverElevation;
+  final Elevation? hoverElevation;
 
   /// The elevation for the button's [Material] when the button
   /// is [enabled] and has the input focus.
@@ -257,7 +254,7 @@ class MaterialButton extends StatelessWidget {
   ///    button.
   ///  * [disabledElevation], the elevation when the button is disabled.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double? focusElevation;
+  final Elevation? focusElevation;
 
   /// The elevation for the button's [Material] relative to its parent when the
   /// button is [enabled] and pressed.
@@ -275,7 +272,7 @@ class MaterialButton extends StatelessWidget {
   ///  * [hoverElevation], the elevation when a pointer is hovering over the
   ///    button.
   ///  * [disabledElevation], the elevation when the button is disabled.
-  final double? highlightElevation;
+  final Elevation? highlightElevation;
 
   /// The elevation for the button's [Material] relative to its parent when the
   /// button is not [enabled].
@@ -286,7 +283,7 @@ class MaterialButton extends StatelessWidget {
   ///
   ///  * [elevation], the default elevation.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double? disabledElevation;
+  final Elevation? disabledElevation;
 
   /// The theme brightness to use for this button.
   ///
@@ -414,7 +411,7 @@ class MaterialButton extends StatelessWidget {
       autofocus: autofocus,
       animationDuration: buttonTheme.getAnimationDuration(this),
       materialTapTargetSize: materialTapTargetSize ?? theme.materialTapTargetSize,
-      disabledElevation: disabledElevation ?? 0.0,
+      disabledElevation: disabledElevation ?? Elevation.level0,
       child: child,
     );
   }

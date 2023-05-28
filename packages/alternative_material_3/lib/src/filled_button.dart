@@ -13,6 +13,7 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'filled_button_theme.dart';
 import 'ink_well.dart';
 import 'material_state.dart';
@@ -210,7 +211,7 @@ class FilledButton extends ButtonStyleButton {
     Color? disabledBackgroundColor,
     Color? shadowColor,
     Color? surfaceTintColor,
-    double? elevation,
+    Elevation? elevation,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     Size? minimumSize,
@@ -605,21 +606,21 @@ class _FilledButtonDefaultsM3 extends ButtonStyle {
     const MaterialStatePropertyAll<Color>(Colors.transparent);
 
   @override
-  MaterialStateProperty<double>? get elevation =>
+  MaterialStateProperty<Elevation>? get elevation =>
     MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
-        return 0.0;
+        return Elevation.level0;
       }
       if (states.contains(MaterialState.hovered)) {
-        return 1.0;
+        return Elevation.level1;
       }
       if (states.contains(MaterialState.focused)) {
-        return 0.0;
+        return Elevation.level0;
       }
       if (states.contains(MaterialState.pressed)) {
-        return 0.0;
+        return Elevation.level0;
       }
-      return 0.0;
+      return Elevation.level0;
     });
 
   @override
@@ -729,21 +730,21 @@ class _FilledTonalButtonDefaultsM3 extends ButtonStyle {
     const MaterialStatePropertyAll<Color>(Colors.transparent);
 
   @override
-  MaterialStateProperty<double>? get elevation =>
+  MaterialStateProperty<Elevation>? get elevation =>
     MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
-        return 0.0;
+        return Elevation.level0;
       }
       if (states.contains(MaterialState.hovered)) {
-        return 1.0;
+        return Elevation.level1;
       }
       if (states.contains(MaterialState.focused)) {
-        return 0.0;
+        return Elevation.level0;
       }
       if (states.contains(MaterialState.pressed)) {
-        return 0.0;
+        return Elevation.level0;
       }
-      return 0.0;
+      return Elevation.level0;
     });
 
   @override

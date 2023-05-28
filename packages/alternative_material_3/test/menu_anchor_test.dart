@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -263,7 +264,7 @@ void main() {
     expect(material.color, themeData.colorScheme.surface);
     expect(material.shadowColor, themeData.colorScheme.shadow);
     expect(material.surfaceTintColor, themeData.colorScheme.surfaceTint);
-    expect(material.elevation, 3.0);
+    expect(material.elevation, Elevation.level2);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))));
 
     Finder buttonMaterial = find.descendant(
@@ -272,7 +273,7 @@ void main() {
     ).first;
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, themeData.colorScheme.onSurface);
 
@@ -290,7 +291,7 @@ void main() {
     expect(material.color, themeData.colorScheme.surface);
     expect(material.shadowColor, themeData.colorScheme.shadow);
     expect(material.surfaceTintColor, themeData.colorScheme.surfaceTint);
-    expect(material.elevation, 3.0);
+    expect(material.elevation, Elevation.level2);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))));
 
     buttonMaterial = find.descendant(
@@ -299,7 +300,7 @@ void main() {
     ).first;
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, themeData.colorScheme.onSurface);
 
@@ -341,7 +342,7 @@ void main() {
     expect(material.color, themeData.colorScheme.surface);
     expect(material.shadowColor, themeData.colorScheme.shadow);
     expect(material.surfaceTintColor, themeData.colorScheme.surfaceTint);
-    expect(material.elevation, 3.0);
+    expect(material.elevation, Elevation.level2);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))));
 
     Finder buttonMaterial = find.descendant(
@@ -350,7 +351,7 @@ void main() {
     ).first;
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, themeData.colorScheme.onSurface.withOpacity(0.38));
 
@@ -367,7 +368,7 @@ void main() {
     expect(material.color, themeData.colorScheme.surface);
     expect(material.shadowColor, themeData.colorScheme.shadow);
     expect(material.surfaceTintColor, themeData.colorScheme.surfaceTint);
-    expect(material.elevation, 3.0);
+    expect(material.elevation, Elevation.level2);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))));
 
     buttonMaterial = find.descendant(
@@ -376,7 +377,7 @@ void main() {
     ).first;
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, themeData.colorScheme.onSurface.withOpacity(0.38));
 
@@ -925,7 +926,7 @@ void main() {
                     Expanded(
                       child: MenuBar(
                         style: MenuStyle(
-                          elevation: MaterialStateProperty.all<double?>(10),
+                          elevation: MaterialStateProperty.all<Elevation?>(const Elevation(10)),
                           backgroundColor: const MaterialStatePropertyAll<Color>(Colors.red),
                         ),
                         children: createTestMenus(onPressed: onPressed),
@@ -941,7 +942,7 @@ void main() {
       );
       expect(tester.getRect(findMenuPanels()), equals(const Rect.fromLTRB(0.0, 0.0, 800.0, 48.0)));
       final Material material = getMenuBarMaterial(tester);
-      expect(material.elevation, equals(10));
+      expect(material.elevation, Elevation(10));
       expect(material.color, equals(Colors.red));
     });
 
@@ -1099,7 +1100,7 @@ void main() {
         controller: controller,
         style: const MenuStyle(
           backgroundColor: MaterialStatePropertyAll<Color>(Colors.red),
-          elevation: MaterialStatePropertyAll<double?>(10.0),
+          elevation: MaterialStatePropertyAll<Elevation?>(Elevation(10.0)),
         ),
         children: const <Widget>[item],
       );
@@ -1124,7 +1125,7 @@ void main() {
       expect(
         description.join('\n'),
         equalsIgnoringHashCodes(
-            'style: MenuStyle#00000(backgroundColor: MaterialStatePropertyAll(MaterialColor(primary value: Color(0xfff44336))), elevation: MaterialStatePropertyAll(10.0))\n'
+            'style: MenuStyle#00000(backgroundColor: MaterialStatePropertyAll(MaterialColor(primary value: Color(0xfff44336))), elevation: MaterialStatePropertyAll(Elevation(height: 10.0, level: level4)))\n'
             'clipBehavior: Clip.none'),
       );
     });
@@ -2067,12 +2068,12 @@ void main() {
     testWidgets('diagnostics', (WidgetTester tester) async {
       final ButtonStyle style = ButtonStyle(
         shape: MaterialStateProperty.all<OutlinedBorder?>(const StadiumBorder()),
-        elevation: MaterialStateProperty.all<double?>(10.0),
+        elevation: MaterialStateProperty.all<Elevation?>(const Elevation(10.0)),
         backgroundColor: const MaterialStatePropertyAll<Color>(Colors.red),
       );
       final MenuStyle menuStyle = MenuStyle(
         shape: MaterialStateProperty.all<OutlinedBorder?>(const RoundedRectangleBorder()),
-        elevation: MaterialStateProperty.all<double?>(20.0),
+        elevation: MaterialStateProperty.all<Elevation?>(const Elevation(20.0)),
         backgroundColor: const MaterialStatePropertyAll<Color>(Colors.green),
       );
       await tester.pumpWidget(
@@ -2116,7 +2117,7 @@ void main() {
           <String>[
             'child: Text("Menu 0")',
             'focusNode: null',
-            'menuStyle: MenuStyle#00000(backgroundColor: MaterialStatePropertyAll(MaterialColor(primary value: Color(0xff4caf50))), elevation: MaterialStatePropertyAll(20.0), shape: MaterialStatePropertyAll(RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.zero)))',
+            'menuStyle: MenuStyle#00000(backgroundColor: MaterialStatePropertyAll(MaterialColor(primary value: Color(0xff4caf50))), elevation: MaterialStatePropertyAll(Elevation(height: 20.0, level: level5)), shape: MaterialStatePropertyAll(RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.zero)))',
             'alignmentOffset: null',
             'clipBehavior: hardEdge',
           ],

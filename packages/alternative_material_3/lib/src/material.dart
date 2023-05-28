@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'constants.dart';
+import 'elevation.dart';
 import 'elevation_overlay.dart';
 import 'theme.dart';
 
@@ -183,7 +184,7 @@ class Material extends StatefulWidget {
   const Material({
     super.key,
     this.type = MaterialType.canvas,
-    this.elevation = 0.0,
+    this.elevation = Elevation.level0,
     this.color,
     this.shadowColor,
     this.surfaceTintColor,
@@ -194,8 +195,7 @@ class Material extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.animationDuration = kThemeChangeDuration,
     this.child,
-  }) : assert(elevation >= 0.0),
-       assert(!(shape != null && borderRadius != null)),
+  }) : assert(!(shape != null && borderRadius != null)),
        assert(!(identical(type, MaterialType.circle) && (borderRadius != null || shape != null)));
 
   /// The widget below this widget in the tree.
@@ -233,7 +233,7 @@ class Material extends StatefulWidget {
   ///  * [Material.surfaceTintColor] which will be used as the overlay tint to
   ///    show elevation.
   /// {@endtemplate}
-  final double elevation;
+  final Elevation elevation;
 
   /// The color to paint the material.
   ///
@@ -416,7 +416,7 @@ class Material extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<MaterialType>('type', type));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: 0.0));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: Elevation.level0));
     properties.add(ColorProperty('color', color, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
@@ -457,7 +457,7 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     final Color? backgroundColor = _getBackgroundColor(context);
     final Color modelShadowColor = widget.shadowColor ?? theme.colorScheme.shadow;
     // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
-    final double modelElevation = widget.elevation;
+    final Elevation modelElevation = widget.elevation;
     assert(
       backgroundColor != null || widget.type == MaterialType.transparency,
       'If Material type is not MaterialType.transparency, a color must '
@@ -498,14 +498,14 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     // we choose not to as we want the change from the fast-path to the
     // slow-path to be noticeable in the construction site of Material.
     if (widget.type == MaterialType.canvas && widget.shape == null && widget.borderRadius == null) {
-      final Color color = ElevationOverlay.applySurfaceTint(backgroundColor!, widget.surfaceTintColor, widget.elevation);
+      final Color color = ElevationOverlay.applySurfaceTint(backgroundColor!, widget.surfaceTintColor, widget.elevation.height);
 
       return AnimatedPhysicalModel(
         curve: Curves.fastOutSlowIn,
         duration: widget.animationDuration,
         shape: BoxShape.rectangle,
         clipBehavior: widget.clipBehavior,
-        elevation: modelElevation,
+        elevation: modelElevation.height,
         color: color,
         shadowColor: modelShadowColor,
         animateColor: false,
@@ -853,7 +853,7 @@ class _MaterialInterior extends ImplicitlyAnimatedWidget {
     required this.surfaceTintColor,
     super.curve,
     required super.duration,
-  }) : assert(elevation >= 0.0);
+  });
 
   /// The widget below this widget in the tree.
   ///
@@ -881,7 +881,7 @@ class _MaterialInterior extends ImplicitlyAnimatedWidget {
   /// to its parent.
   ///
   /// The value is non-negative.
-  final double elevation;
+  final Elevation elevation;
 
   /// The target background color.
   final Color color;
@@ -899,14 +899,14 @@ class _MaterialInterior extends ImplicitlyAnimatedWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder description) {
     super.debugFillProperties(description);
     description.add(DiagnosticsProperty<ShapeBorder>('shape', shape));
-    description.add(DoubleProperty('elevation', elevation));
+    description.add(DiagnosticsProperty<Elevation>('elevation', elevation));
     description.add(ColorProperty('color', color));
     description.add(ColorProperty('shadowColor', shadowColor));
   }
 }
 
 class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> {
-  Tween<double>? _elevation;
+  ElevationTween? _elevation;
   ColorTween? _surfaceTintColor;
   ColorTween? _shadowColor;
   ShapeBorderTween? _border;
@@ -916,8 +916,8 @@ class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> 
     _elevation = visitor(
       _elevation,
       widget.elevation,
-      (dynamic value) => Tween<double>(begin: value as double),
-    ) as Tween<double>?;
+      (dynamic value) => ElevationTween(begin: value as Elevation),
+    ) as ElevationTween?;
     _shadowColor =  widget.shadowColor != null
       ? visitor(
           _shadowColor,
@@ -942,10 +942,10 @@ class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> 
   @override
   Widget build(BuildContext context) {
     final ShapeBorder shape = _border!.evaluate(animation)!;
-    final double elevation = _elevation!.evaluate(animation);
-    final Color color = ElevationOverlay.applySurfaceTint(widget.color, _surfaceTintColor?.evaluate(animation), elevation);
+    final Elevation elevation = _elevation!.evaluate(animation)!;
+    final Color color = ElevationOverlay.applySurfaceTint(widget.color, _surfaceTintColor?.evaluate(animation), elevation.height);
     // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
-    final double modelElevation = widget.shadowColor != null ? elevation : 0;
+    final double modelElevation = widget.shadowColor != null ? elevation.height : 0;
     final Color shadowColor = _shadowColor?.evaluate(animation) ?? const Color(0x00000000);
     return PhysicalShape(
       clipper: ShapeBorderClipper(

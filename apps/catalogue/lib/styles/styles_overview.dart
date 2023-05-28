@@ -17,7 +17,7 @@ class StylesOverview extends StatelessWidget {
     StylesOverview.route: (context) => const StylesOverview(),
     TypographyPage.route: (context) => const TypographyPage(),
     ColorPage.route: (context) => const ColorPage(),
-    // ElevationPage.route: (context) => const ElevationPage(),
+    ElevationPage.route: (context) => const ElevationPage(),
   };
 
   @override

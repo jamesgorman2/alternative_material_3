@@ -5,6 +5,7 @@
 import 'dart:ui';
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'rendering/mock_canvas.dart';
@@ -36,7 +37,7 @@ void main() {
     expect(material.borderRadius, null);
     expect(material.clipBehavior, Clip.none);
     expect(material.color, colorScheme.surface);
-    expect(material.elevation, 6.0);
+    expect(material.elevation, Elevation.level3);
     expect(material.shadowColor, colorScheme.shadow);
     expect(material.surfaceTintColor, colorScheme.surfaceTint);
     expect(material.shape, const StadiumBorder());
@@ -311,11 +312,11 @@ void main() {
   });
 
   testWidgets('SearchBar respects elevation property', (WidgetTester tester) async {
-    const double pressedElevation = 0.0;
-    const double hoveredElevation = 1.0;
-    const double focusedElevation = 2.0;
-    const double defaultElevation = 3.0;
-    double getElevation(Set<MaterialState> states) {
+    const Elevation pressedElevation = Elevation.level0;
+    const Elevation hoveredElevation = Elevation.level1;
+    const Elevation focusedElevation = Elevation(2.0);
+    const Elevation defaultElevation = Elevation.level2;
+    Elevation getElevation(Set<MaterialState> states) {
       if (states.contains(MaterialState.pressed)) {
         return pressedElevation;
       }
@@ -332,7 +333,7 @@ void main() {
         home: Center(
           child: Material(
             child: SearchBar(
-              elevation: MaterialStateProperty.resolveWith<double>(getElevation),
+              elevation: MaterialStateProperty.resolveWith<Elevation>(getElevation),
             ),
           ),
         ),
@@ -752,7 +753,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.search));
     await tester.pumpAndSettle();
     final Material material = getSearchViewMaterial(tester);
-    expect(material.elevation, 6.0);
+    expect(material.elevation, Elevation.level3);
     expect(material.color, colorScheme.surface);
     expect(material.surfaceTintColor, colorScheme.surfaceTint);
 
@@ -1049,7 +1050,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Material(
         child: SearchAnchor(
-          viewElevation: 3.0,
+          viewElevation: Elevation.level2,
           builder: (BuildContext context, SearchController controller) {
             return IconButton(icon: const Icon(Icons.search), onPressed: () {
               controller.openView();
@@ -1064,7 +1065,7 @@ void main() {
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.search));
     await tester.pumpAndSettle();
-    expect(getSearchViewMaterial(tester).elevation, 3.0);
+    expect(getSearchViewMaterial(tester).elevation, Elevation.level2);
   });
 
   testWidgets('SearchAnchor respects viewSurfaceTint property', (WidgetTester tester) async {
@@ -1143,7 +1144,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Material(
         child: SearchAnchor(
-          headerTextStyle: theme.textTheme.bodyLarge?.copyWith(color: Colors.red),
+          headerTextStyle: theme.textTheme.bodyLarge.copyWith(color: Colors.red),
           builder: (BuildContext context, SearchController controller) {
             return IconButton(icon: const Icon(Icons.search), onPressed: () {
               controller.openView();
@@ -1170,7 +1171,7 @@ void main() {
       home: Material(
         child: SearchAnchor(
           viewHintText: 'hint text',
-          headerHintStyle: theme.textTheme.bodyLarge?.copyWith(color: Colors.orange),
+          headerHintStyle: theme.textTheme.bodyLarge.copyWith(color: Colors.orange),
           builder: (BuildContext context, SearchController controller) {
             return IconButton(icon: const Icon(Icons.search), onPressed: () {
               controller.openView();
@@ -1588,9 +1589,9 @@ Color _getColor(Set<MaterialState> states) {
 }
 
 final ThemeData theme = ThemeData();
-final TextStyle? pressedStyle = theme.textTheme.bodyLarge?.copyWith(color: pressedColor);
-final TextStyle? hoveredStyle = theme.textTheme.bodyLarge?.copyWith(color: hoveredColor);
-final TextStyle? focusedStyle = theme.textTheme.bodyLarge?.copyWith(color: focusedColor);
+final TextStyle pressedStyle = theme.textTheme.bodyLarge.copyWith(color: pressedColor);
+final TextStyle hoveredStyle = theme.textTheme.bodyLarge.copyWith(color: hoveredColor);
+final TextStyle focusedStyle = theme.textTheme.bodyLarge.copyWith(color: focusedColor);
 
 TextStyle? _getTextStyle(Set<MaterialState> states) {
   if (states.contains(MaterialState.pressed)) {

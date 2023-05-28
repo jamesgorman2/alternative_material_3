@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -1228,7 +1229,7 @@ void main() {
   });
 
   testWidgets('AppBar uses the specified elevation or defaults to 4.0', (WidgetTester tester) async {
-    Widget buildAppBar([double? elevation]) {
+    Widget buildAppBar([Elevation? elevation]) {
       return MaterialApp(
         home: Scaffold(
           appBar: AppBar(title: const Text('Title'), elevation: elevation),
@@ -1243,15 +1244,15 @@ void main() {
 
     // Default elevation should be used for the material.
     await tester.pumpWidget(buildAppBar());
-    expect(getMaterial().elevation, 0);
+    expect(getMaterial().elevation, Elevation.level0);
 
     // AppBar should use the specified elevation.
-    await tester.pumpWidget(buildAppBar(8.0));
-    expect(getMaterial().elevation, 8.0);
+    await tester.pumpWidget(buildAppBar(Elevation.level4));
+    expect(getMaterial().elevation, Elevation.level4);
   });
 
   testWidgets('scrolledUnderElevation', (WidgetTester tester) async {
-    Widget buildAppBar({double? elevation, double? scrolledUnderElevation}) {
+    Widget buildAppBar({Elevation? elevation, Elevation? scrolledUnderElevation}) {
       return MaterialApp(
         home: Scaffold(
           appBar: AppBar(
@@ -1272,19 +1273,19 @@ void main() {
       matching: find.byType(Material),
     ));
 
-    await tester.pumpWidget(buildAppBar(elevation: 2, scrolledUnderElevation: 10));
+    await tester.pumpWidget(buildAppBar(elevation: Elevation.level1, scrolledUnderElevation: Elevation.level4));
     // Starts with the base elevation.
-    expect(getMaterial().elevation, 2);
+    expect(getMaterial().elevation, Elevation.level1);
 
     await tester.fling(find.text('Item 2'), const Offset(0.0, -600.0), 2000.0);
     await tester.pumpAndSettle();
 
     // After scrolling it should be the scrolledUnderElevation.
-    expect(getMaterial().elevation, 10);
+    expect(getMaterial().elevation, Elevation.level4);
   });
 
   testWidgets('scrolledUnderElevation with nested scroll view', (WidgetTester tester) async {
-    Widget buildAppBar({double? scrolledUnderElevation}) {
+    Widget buildAppBar({Elevation? scrolledUnderElevation}) {
       return MaterialApp(
         theme: ThemeData(),
         home: Scaffold(
@@ -1319,19 +1320,19 @@ void main() {
       matching: find.byType(Material),
     ));
 
-    await tester.pumpWidget(buildAppBar(scrolledUnderElevation: 10));
+    await tester.pumpWidget(buildAppBar(scrolledUnderElevation: Elevation.level4));
     // Starts with the base elevation.
-    expect(getMaterial().elevation, 0.0);
+    expect(getMaterial().elevation, Elevation.level0);
 
     await tester.fling(find.text('Item 2'), const Offset(0.0, -600.0), 2000.0);
     await tester.pumpAndSettle();
 
     // After scrolling it should be the scrolledUnderElevation.
-    expect(getMaterial().elevation, 10);
+    expect(getMaterial().elevation, Elevation.level4);
   });
 
   group('SliverAppBar elevation', () {
-    Widget buildSliverAppBar(bool forceElevated, {double? elevation, double? themeElevation}) {
+    Widget buildSliverAppBar(bool forceElevated, {Elevation? elevation, Elevation? themeElevation}) {
       return MaterialApp(
         theme: ThemeData(appBarTheme: AppBarTheme(scrolledUnderElevation: themeElevation)),
         home: CustomScrollView(
@@ -1353,31 +1354,31 @@ void main() {
 
       // When forceElevated is off, SliverAppBar should not be elevated.
       await tester.pumpWidget(buildSliverAppBar(false));
-      expect(getMaterial().elevation, 0.0);
+      expect(getMaterial().elevation, Elevation.level0);
 
       // Default elevation should be used by the material, but
       // the AppBar's elevation should not be specified by SliverAppBar.
       await tester.pumpWidget(buildSliverAppBar(true));
-      expect(getMaterial().elevation, 3.0);
+      expect(getMaterial().elevation, Elevation.level2);
       expect(getAppBar().elevation, null);
 
       // SliverAppBar should use the specified elevation.
-      await tester.pumpWidget(buildSliverAppBar(true, elevation: 8.0));
-      expect(getMaterial().elevation, 8.0);
+      await tester.pumpWidget(buildSliverAppBar(true, elevation: Elevation.level3));
+      expect(getMaterial().elevation, Elevation.level3);
     });
 
     testWidgets('Uses elevation of AppBarTheme by default', (WidgetTester tester) async {
       // Regression test for https://github.com/flutter/flutter/issues/73525.
       Material getMaterial() => tester.widget<Material>(find.byType(Material));
 
-      await tester.pumpWidget(buildSliverAppBar(false, themeElevation: 12.0));
-      expect(getMaterial().elevation, 0.0);
+      await tester.pumpWidget(buildSliverAppBar(false, themeElevation: Elevation.level5));
+      expect(getMaterial().elevation, Elevation.level0);
 
-      await tester.pumpWidget(buildSliverAppBar(true, themeElevation: 12.0));
-      expect(getMaterial().elevation, 12.0);
+      await tester.pumpWidget(buildSliverAppBar(true, themeElevation: Elevation.level5));
+      expect(getMaterial().elevation, Elevation.level5);
 
-      await tester.pumpWidget(buildSliverAppBar(true, elevation: 8.0, themeElevation: 12.0));
-      expect(getMaterial().elevation, 8.0);
+      await tester.pumpWidget(buildSliverAppBar(true, elevation: Elevation.level4, themeElevation: Elevation.level5));
+      expect(getMaterial().elevation, Elevation.level4);
     });
   });
 
@@ -1405,7 +1406,7 @@ void main() {
                 collapsedHeight: appBarHeight,
                 expandedHeight: appBarHeight,
                 pinned: true,
-                elevation: 0,
+                elevation: Elevation.level0,
                 backgroundColor: Colors.transparent,
                 forceMaterialTransparency: forceMaterialTransparency,
                 title: const Text('AppBar'),
@@ -3331,7 +3332,7 @@ void main() {
               reverse: reverse,
               slivers: <Widget>[
                 SliverAppBar(
-                  elevation: 0,
+                  elevation: Elevation.level0,
                   backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
                     return states.contains(MaterialState.scrolledUnder)
                       ? scrolledColor
@@ -3512,7 +3513,7 @@ void main() {
         return MaterialApp(
           home: Scaffold(
             appBar: AppBar(
-              elevation: 0,
+              elevation: Elevation.level0,
               backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
                 return states.contains(MaterialState.scrolledUnder)
                   ? scrolledColor
@@ -3538,7 +3539,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               appBar: AppBar(
-                elevation: 0,
+                elevation: Elevation.level0,
                 backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
                   return states.contains(MaterialState.scrolledUnder)
                     ? scrolledColor
@@ -3732,7 +3733,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               appBar: AppBar(
-                elevation: 0,
+                elevation: Elevation.level0,
                 backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
                   return states.contains(MaterialState.scrolledUnder)
                     ? scrolledColor
@@ -4380,7 +4381,7 @@ void main() {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             forceMaterialTransparency: forceMaterialTransparency,
-            elevation: 3,
+            elevation: Elevation.level2,
             backgroundColor: Colors.red,
             title: const Text('AppBar'),
           ),

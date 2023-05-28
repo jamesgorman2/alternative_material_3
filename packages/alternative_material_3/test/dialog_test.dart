@@ -5,6 +5,7 @@
 import 'dart:ui';
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -124,7 +125,7 @@ void main() {
     //FIXME
     // expect(material3Widget.color, material3Theme.colorScheme.surfaceContainerLow);
     expect(material3Widget.shape, _defaultM3DialogShape);
-    expect(material3Widget.elevation, 6.0);
+    expect(material3Widget.elevation, Elevation.level3);
   });
 
   testWidgets('Dialog.fullscreen Defaults', (WidgetTester tester) async {
@@ -152,7 +153,7 @@ void main() {
   });
 
   testWidgets('Custom dialog elevation', (WidgetTester tester) async {
-    const double customElevation = 12.0;
+    const Elevation customElevation = Elevation.level5;
     const Color shadowColor = Color(0xFF000001);
     const Color surfaceTintColor = Color(0xFF000002);
     const AlertDialog dialog = AlertDialog(

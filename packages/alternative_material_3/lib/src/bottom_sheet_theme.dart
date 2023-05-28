@@ -7,6 +7,8 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
+import 'elevation.dart';
+
 /// Defines default property values for [BottomSheet]'s [Material].
 ///
 /// Descendant widgets obtain the current [BottomSheetThemeData] object
@@ -60,7 +62,7 @@ class BottomSheetThemeData with Diagnosticable {
   /// {@macro flutter.material.material.elevation}
   ///
   /// If null, [BottomSheet] defaults to 0.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Value for [BottomSheet.backgroundColor] when the Bottom sheet is presented
   /// as a modal bottom sheet.
@@ -75,7 +77,7 @@ class BottomSheetThemeData with Diagnosticable {
 
   /// Value for [BottomSheet.elevation] when the Bottom sheet is presented as a
   /// modal bottom sheet.
-  final double? modalElevation;
+  final Elevation? modalElevation;
 
   /// Overrides the default value for [BottomSheet.shape].
   ///
@@ -107,11 +109,11 @@ class BottomSheetThemeData with Diagnosticable {
   BottomSheetThemeData copyWith({
     Color? backgroundColor,
     Color? surfaceTintColor,
-    double? elevation,
+    Elevation? elevation,
     Color? modalBackgroundColor,
     Color? modalBarrierColor,
     Color? shadowColor,
-    double? modalElevation,
+    Elevation? modalElevation,
     ShapeBorder? shape,
     bool? showDragHandle,
     Color? dragHandleColor,
@@ -148,11 +150,11 @@ class BottomSheetThemeData with Diagnosticable {
     return BottomSheetThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       modalBackgroundColor: Color.lerp(a?.modalBackgroundColor, b?.modalBackgroundColor, t),
       modalBarrierColor: Color.lerp(a?.modalBarrierColor, b?.modalBarrierColor, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
-      modalElevation: lerpDouble(a?.modalElevation, b?.modalElevation, t),
+      modalElevation: Elevation.lerp(a?.modalElevation, b?.modalElevation, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
       showDragHandle: t < 0.5 ? a?.showDragHandle : b?.showDragHandle,
       dragHandleColor: Color.lerp(a?.dragHandleColor, b?.dragHandleColor, t),
@@ -208,11 +210,11 @@ class BottomSheetThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(ColorProperty('modalBackgroundColor', modalBackgroundColor, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('modalBarrierColor', modalBarrierColor, defaultValue: null));
-    properties.add(DoubleProperty('modalElevation', modalElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('modalElevation', modalElevation, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
     properties.add(DiagnosticsProperty<bool>('showDragHandle', showDragHandle, defaultValue: null));
     properties.add(ColorProperty('dragHandleColor', dragHandleColor, defaultValue: null));

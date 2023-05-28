@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const DatePickerThemeData datePickerTheme = DatePickerThemeData(
     backgroundColor: Color(0xfffffff0),
-    elevation: 6,
+    elevation: Elevation.level3,
     shadowColor: Color(0xfffffff1),
     surfaceTintColor: Color(0xfffffff2),
     shape: RoundedRectangleBorder(),
@@ -30,7 +31,7 @@ void main() {
     yearBackgroundColor: MaterialStatePropertyAll<Color>(Color(0xfffffffb)),
     yearOverlayColor: MaterialStatePropertyAll<Color>(Color(0xfffffffc)),
     rangePickerBackgroundColor: Color(0xfffffffd),
-    rangePickerElevation: 7,
+    rangePickerElevation: Elevation.level4,
     rangePickerShadowColor: Color(0xfffffffe),
     rangePickerSurfaceTintColor: Color(0xffffffff),
     rangePickerShape: RoundedRectangleBorder(),
@@ -138,7 +139,7 @@ void main() {
     );
 
     expect(m3.backgroundColor, colorScheme.surface);
-    expect(m3.elevation, 6);
+    expect(m3.elevation, Elevation.level3);
     expect(m3.shadowColor, const Color(0x00000000)); // Colors.transparent
     expect(m3.surfaceTintColor, colorScheme.surfaceTint);
     expect(m3.shape, RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)));
@@ -146,7 +147,7 @@ void main() {
     expect(m3.headerForegroundColor, colorScheme.onSurfaceVariant);
     expect(m3.headerHeadlineStyle, textTheme.headlineLarge);
     expect(m3.headerHelpStyle, textTheme.labelLarge);
-    expect(m3.weekdayStyle, textTheme.bodyLarge?.apply(color: colorScheme.onSurface));
+    expect(m3.weekdayStyle, textTheme.bodyLarge.apply(color: colorScheme.onSurface));
     expect(m3.dayStyle, textTheme.bodyLarge);
     expect(m3.dayForegroundColor?.resolve(<MaterialState>{}), colorScheme.onSurface);
     expect(m3.dayForegroundColor?.resolve(<MaterialState>{MaterialState.selected}), colorScheme.onPrimary);
@@ -174,7 +175,7 @@ void main() {
     expect(m3.yearOverlayColor?.resolve(<MaterialState>{MaterialState.hovered}), colorScheme.onSurfaceVariant.withOpacity(0.08));
     expect(m3.yearOverlayColor?.resolve(<MaterialState>{MaterialState.focused}), colorScheme.onSurfaceVariant.withOpacity(0.12));
     expect(m3.yearOverlayColor?.resolve(<MaterialState>{MaterialState.pressed}), colorScheme.onSurfaceVariant.withOpacity(0.12));
-    expect(m3.rangePickerElevation, 0);
+    expect(m3.rangePickerElevation, Elevation.level0);
     expect(m3.rangePickerShape, const RoundedRectangleBorder());
     expect(m3.rangePickerShadowColor, Colors.transparent);
     expect(m3.rangePickerSurfaceTintColor, Colors.transparent);
@@ -209,7 +210,7 @@ void main() {
 
     expect(description, <String>[
       'backgroundColor: Color(0xfffffff0)',
-      'elevation: 6.0',
+      'elevation: Elevation(height: 6.0, level: level3)',
       'shadowColor: Color(0xfffffff1)',
       'surfaceTintColor: Color(0xfffffff2)',
       'shape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.zero)',
@@ -230,7 +231,7 @@ void main() {
       'yearBackgroundColor: MaterialStatePropertyAll(Color(0xfffffffb))',
       'yearOverlayColor: MaterialStatePropertyAll(Color(0xfffffffc))',
       'rangePickerBackgroundColor: Color(0xfffffffd)',
-      'rangePickerElevation: 7.0',
+      'rangePickerElevation: Elevation(height: 8.0, level: level4)',
       'rangePickerShadowColor: Color(0xfffffffe)',
       'rangePickerSurfaceTintColor: Color(0xffffffff)',
       'rangePickerShape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.zero)',

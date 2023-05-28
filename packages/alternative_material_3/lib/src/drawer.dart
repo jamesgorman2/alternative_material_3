@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'colors.dart';
 import 'debug.dart';
 import 'drawer_theme.dart';
+import 'elevation.dart';
 import 'list_tile.dart';
 import 'list_tile_theme.dart';
 import 'material.dart';
@@ -154,7 +155,7 @@ class Drawer extends StatelessWidget {
     this.child,
     this.semanticLabel,
     this.clipBehavior,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   /// Sets the color of the [Material] that holds all of the [Drawer]'s
   /// contents.
@@ -169,7 +170,7 @@ class Drawer extends StatelessWidget {
   ///
   /// If this is null, then [DrawerThemeData.elevation] is used. If that
   /// is also null, then it defaults to 16.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The color used to paint a drop shadow under the drawer's [Material],
   /// which reflects the drawer's [elevation].
@@ -809,7 +810,7 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
 
 class _DrawerDefaultsM3 extends DrawerThemeData {
   _DrawerDefaultsM3(this.context)
-      : super(elevation: 1.0);
+      : super(elevation: Elevation.level1);
 
   final BuildContext context;
   late final TextDirection direction = Directionality.of(context);

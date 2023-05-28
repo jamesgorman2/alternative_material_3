@@ -5,6 +5,7 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'text_form_field.dart';
@@ -153,7 +154,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: Material(
-        elevation: 4.0,
+        elevation: Elevation.level2,
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: maxOptionsHeight),
           child: ListView.builder(

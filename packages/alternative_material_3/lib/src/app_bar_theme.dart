@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 /// Overrides the default values of visual properties for descendant
@@ -69,11 +70,11 @@ class AppBarTheme with Diagnosticable {
 
   /// Overrides the default value of [AppBar.elevation] in all
   /// descendant [AppBar] widgets.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value of [AppBar.scrolledUnderElevation] in all
   /// descendant [AppBar] widgets.
-  final double? scrolledUnderElevation;
+  final Elevation? scrolledUnderElevation;
 
   /// Overrides the default value of [AppBar.shadowColor] in all
   /// descendant [AppBar] widgets.
@@ -157,8 +158,8 @@ class AppBarTheme with Diagnosticable {
     Color? color,
     Color? backgroundColor,
     Color? foregroundColor,
-    double? elevation,
-    double? scrolledUnderElevation,
+    Elevation? elevation,
+    Elevation? scrolledUnderElevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     ShapeBorder? shape,
@@ -210,8 +211,8 @@ class AppBarTheme with Diagnosticable {
     return AppBarTheme(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
-      scrolledUnderElevation: lerpDouble(a?.scrolledUnderElevation, b?.scrolledUnderElevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
+      scrolledUnderElevation: Elevation.lerp(a?.scrolledUnderElevation, b?.scrolledUnderElevation, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
@@ -276,8 +277,8 @@ class AppBarTheme with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
     properties.add(ColorProperty('foregroundColor', foregroundColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<double>('elevation', elevation, defaultValue: null));
-    properties.add(DiagnosticsProperty<double>('scrolledUnderElevation', scrolledUnderElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('scrolledUnderElevation', scrolledUnderElevation, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));

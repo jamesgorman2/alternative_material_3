@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
@@ -68,7 +69,7 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const BottomNavigationBarThemeData(
       backgroundColor: Color(0xfffffff0),
-      elevation: 10.0,
+      elevation: Elevation.level4,
       selectedIconTheme: IconThemeData(size: 1.0),
       unselectedIconTheme: IconThemeData(size: 2.0),
       selectedItemColor: Color(0xfffffff1),
@@ -87,7 +88,7 @@ void main() {
         .toList();
 
     expect(description[0], 'backgroundColor: Color(0xfffffff0)');
-    expect(description[1], 'elevation: 10.0');
+    expect(description[1], 'elevation: Elevation(height: 8.0, level: level4)');
 
     // Ignore instance address for IconThemeData.
     expect(description[2].contains('selectedIconTheme: IconThemeData'), isTrue);
@@ -113,7 +114,7 @@ void main() {
     const IconThemeData unselectedIconTheme = IconThemeData(size: 11);
     const TextStyle selectedTextStyle = TextStyle(fontSize: 22);
     const TextStyle unselectedTextStyle = TextStyle(fontSize: 21);
-    const double elevation = 9.0;
+    const Elevation elevation = Elevation.level4;
 
     await tester.pumpWidget(
       MaterialApp(
@@ -217,7 +218,7 @@ void main() {
     const IconThemeData themeUnselectedIconTheme = IconThemeData(size: 11);
     const TextStyle themeSelectedTextStyle = TextStyle(fontSize: 22);
     const TextStyle themeUnselectedTextStyle = TextStyle(fontSize: 21);
-    const double themeElevation = 9.0;
+    const Elevation themeElevation = Elevation.level4;
     const BottomNavigationBarLandscapeLayout themeLandscapeLayout = BottomNavigationBarLandscapeLayout.centered;
     const MaterialStateMouseCursor themeCursor = MaterialStateMouseCursor.clickable;
 
@@ -228,7 +229,7 @@ void main() {
     const IconThemeData unselectedIconTheme = IconThemeData(size: 16);
     const TextStyle selectedTextStyle = TextStyle(fontSize: 25);
     const TextStyle unselectedTextStyle = TextStyle(fontSize: 26);
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const BottomNavigationBarLandscapeLayout landscapeLayout = BottomNavigationBarLandscapeLayout.spread;
     const MaterialStateMouseCursor cursor = MaterialStateMouseCursor.textable;
 

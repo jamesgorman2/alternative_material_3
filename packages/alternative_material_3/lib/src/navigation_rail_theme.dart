@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'navigation_rail.dart';
 import 'theme.dart';
 
@@ -58,7 +59,7 @@ class NavigationRailThemeData with Diagnosticable {
   final Color? backgroundColor;
 
   /// The z-coordinate to be used for the [NavigationRail]'s elevation.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The style to merge with the default text style for
   /// [NavigationRailDestination] labels, when the destination is not selected.
@@ -107,7 +108,7 @@ class NavigationRailThemeData with Diagnosticable {
   /// new values.
   NavigationRailThemeData copyWith({
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     TextStyle? unselectedLabelTextStyle,
     TextStyle? selectedLabelTextStyle,
     IconThemeData? unselectedIconTheme,
@@ -148,7 +149,7 @@ class NavigationRailThemeData with Diagnosticable {
     }
     return NavigationRailThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       unselectedLabelTextStyle: TextStyle.lerp(a?.unselectedLabelTextStyle, b?.unselectedLabelTextStyle, t),
       selectedLabelTextStyle: TextStyle.lerp(a?.selectedLabelTextStyle, b?.selectedLabelTextStyle, t),
       unselectedIconTheme: a?.unselectedIconTheme == null && b?.unselectedIconTheme == null
@@ -213,7 +214,7 @@ class NavigationRailThemeData with Diagnosticable {
     const NavigationRailThemeData defaultData = NavigationRailThemeData();
 
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: defaultData.backgroundColor));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: defaultData.elevation));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: defaultData.elevation));
     properties.add(DiagnosticsProperty<TextStyle>('unselectedLabelTextStyle', unselectedLabelTextStyle, defaultValue: defaultData.unselectedLabelTextStyle));
     properties.add(DiagnosticsProperty<TextStyle>('selectedLabelTextStyle', selectedLabelTextStyle, defaultValue: defaultData.selectedLabelTextStyle));
     properties.add(DiagnosticsProperty<IconThemeData>('unselectedIconTheme', unselectedIconTheme, defaultValue: defaultData.unselectedIconTheme));

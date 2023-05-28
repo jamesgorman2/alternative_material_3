@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import 'card_theme.dart';
 import 'color_scheme.dart';
+import 'elevation.dart';
 import 'material.dart';
 import 'theme.dart';
 
@@ -72,7 +73,7 @@ class Card extends StatelessWidget {
     this.clipBehavior,
     this.child,
     this.semanticContainer = true,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   /// The card's background color.
   ///
@@ -109,7 +110,7 @@ class Card extends StatelessWidget {
   ///
   /// If this property is null then [CardTheme.elevation] of
   /// [ThemeData.cardTheme] is used. If that's null, the default value is 1.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The shape of the card's [Material].
   ///
@@ -200,7 +201,7 @@ class _CardDefaultsM3 extends CardTheme {
   _CardDefaultsM3(this.context)
     : super(
         clipBehavior: Clip.none,
-        elevation: 1.0,
+        elevation: Elevation.level1,
         margin: const EdgeInsets.all(4.0),
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
       );

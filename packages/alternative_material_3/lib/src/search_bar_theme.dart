@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'material_state.dart';
 import 'theme.dart';
 
@@ -50,7 +51,7 @@ class SearchBarThemeData with Diagnosticable {
   });
 
   /// Overrides the default value of the [SearchBar.elevation].
-  final MaterialStateProperty<double?>? elevation;
+  final MaterialStateProperty<Elevation?>? elevation;
 
   /// Overrides the default value of the [SearchBar.backgroundColor].
   final MaterialStateProperty<Color?>? backgroundColor;
@@ -85,7 +86,7 @@ class SearchBarThemeData with Diagnosticable {
   /// Creates a copy of this object but with the given fields replaced with the
   /// new values.
   SearchBarThemeData copyWith({
-    MaterialStateProperty<double?>? elevation,
+    MaterialStateProperty<Elevation?>? elevation,
     MaterialStateProperty<Color?>? backgroundColor,
     MaterialStateProperty<Color?>? shadowColor,
     MaterialStateProperty<Color?>? surfaceTintColor,
@@ -120,7 +121,7 @@ class SearchBarThemeData with Diagnosticable {
       return a;
     }
     return SearchBarThemeData(
-      elevation: MaterialStateProperty.lerp<double?>(a?.elevation, b?.elevation, t, lerpDouble),
+      elevation: MaterialStateProperty.lerp<Elevation?>(a?.elevation, b?.elevation, t, Elevation.lerp),
       backgroundColor: MaterialStateProperty.lerp<Color?>(a?.backgroundColor, b?.backgroundColor, t, Color.lerp),
       shadowColor: MaterialStateProperty.lerp<Color?>(a?.shadowColor, b?.shadowColor, t, Color.lerp),
       surfaceTintColor: MaterialStateProperty.lerp<Color?>(a?.surfaceTintColor, b?.surfaceTintColor, t, Color.lerp),
@@ -174,7 +175,7 @@ class SearchBarThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<MaterialStateProperty<double?>>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Elevation?>>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('backgroundColor', backgroundColor, defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('shadowColor', shadowColor, defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('surfaceTintColor', surfaceTintColor, defaultValue: null));

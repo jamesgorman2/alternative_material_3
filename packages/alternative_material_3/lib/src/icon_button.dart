@@ -12,6 +12,7 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'icon_button_theme.dart';
 import 'icons.dart';
 import 'ink_well.dart';
@@ -606,7 +607,7 @@ class IconButton extends StatelessWidget {
     Color? highlightColor,
     Color? shadowColor,
     Color? surfaceTintColor,
-    double? elevation,
+    Elevation? elevation,
     Size? minimumSize,
     Size? fixedSize,
     Size? maximumSize,
@@ -642,7 +643,7 @@ class IconButton extends StatelessWidget {
       overlayColor: overlayColor,
       shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
       surfaceTintColor: ButtonStyleButton.allOrNull<Color>(surfaceTintColor),
-      elevation: ButtonStyleButton.allOrNull<double>(elevation),
+      elevation: ButtonStyleButton.allOrNull<Elevation>(elevation),
       padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
       minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize),
       fixedSize: ButtonStyleButton.allOrNull<Size>(fixedSize),
@@ -1060,8 +1061,8 @@ class _IconButtonDefaultsM3 extends ButtonStyle {
     });
 
   @override
-  MaterialStateProperty<double>? get elevation =>
-    const MaterialStatePropertyAll<double>(0.0);
+  MaterialStateProperty<Elevation>? get elevation =>
+    const MaterialStatePropertyAll<Elevation>(Elevation.level0);
 
   @override
   MaterialStateProperty<Color>? get shadowColor =>
@@ -1208,8 +1209,8 @@ class _FilledIconButtonDefaultsM3 extends ButtonStyle {
     });
 
   @override
-  MaterialStateProperty<double>? get elevation =>
-    const MaterialStatePropertyAll<double>(0.0);
+  MaterialStateProperty<Elevation>? get elevation =>
+    const MaterialStatePropertyAll<Elevation>(Elevation.level0);
 
   @override
   MaterialStateProperty<Color>? get shadowColor =>
@@ -1356,8 +1357,8 @@ class _FilledTonalIconButtonDefaultsM3 extends ButtonStyle {
     });
 
   @override
-  MaterialStateProperty<double>? get elevation =>
-    const MaterialStatePropertyAll<double>(0.0);
+  MaterialStateProperty<Elevation>? get elevation =>
+    const MaterialStatePropertyAll<Elevation>(Elevation.level0);
 
   @override
   MaterialStateProperty<Color>? get shadowColor =>
@@ -1489,8 +1490,8 @@ class _OutlinedIconButtonDefaultsM3 extends ButtonStyle {
     });
 
   @override
-  MaterialStateProperty<double>? get elevation =>
-    const MaterialStatePropertyAll<double>(0.0);
+  MaterialStateProperty<Elevation>? get elevation =>
+    const MaterialStatePropertyAll<Elevation>(Elevation.level0);
 
   @override
   MaterialStateProperty<Color>? get shadowColor =>

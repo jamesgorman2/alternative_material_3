@@ -10,6 +10,7 @@ import 'color_scheme.dart';
 import 'constants.dart';
 import 'debug.dart';
 import 'divider.dart';
+import 'elevation.dart';
 import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
@@ -789,7 +790,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
   final List<PopupMenuEntry<T>> items;
   final List<Size?> itemSizes;
   final T? initialValue;
-  final double? elevation;
+  final Elevation? elevation;
   final Color? surfaceTintColor;
   final Color? shadowColor;
   final String? semanticLabel;
@@ -931,7 +932,7 @@ Future<T?> showMenu<T>({
   required RelativeRect position,
   required List<PopupMenuEntry<T>> items,
   T? initialValue,
-  double? elevation,
+  Elevation? elevation,
   Color? shadowColor,
   Color? surfaceTintColor,
   String? semanticLabel,
@@ -1085,7 +1086,7 @@ class PopupMenuButton<T> extends StatefulWidget {
   /// size of the shadow below the menu.
   ///
   /// Defaults to 8, the appropriate elevation for popup menus.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The color used to paint the shadow below the menu.
   ///
@@ -1349,7 +1350,7 @@ class _EffectiveMouseCursor extends MaterialStateMouseCursor {
 
 class _PopupMenuDefaultsM3 extends PopupMenuThemeData {
   _PopupMenuDefaultsM3(this.context)
-    : super(elevation: 3.0);
+    : super(elevation: Elevation.level2);
 
   final BuildContext context;
   late final ThemeData _theme = Theme.of(context);

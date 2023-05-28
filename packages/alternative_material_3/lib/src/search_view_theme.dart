@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 // Examples can assume:
@@ -51,7 +52,7 @@ class SearchViewThemeData with Diagnosticable {
   final Color? backgroundColor;
 
   /// Overrides the default value of the [SearchAnchor.viewElevation].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value of the [SearchAnchor.viewSurfaceTintColor].
   final Color? surfaceTintColor;
@@ -78,7 +79,7 @@ class SearchViewThemeData with Diagnosticable {
   /// new values.
   SearchViewThemeData copyWith({
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     Color? surfaceTintColor,
     BorderSide? side,
     OutlinedBorder? shape,
@@ -107,7 +108,7 @@ class SearchViewThemeData with Diagnosticable {
     }
     return SearchViewThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       side: _lerpSides(a?.side, b?.side, t),
       shape: OutlinedBorder.lerp(a?.shape, b?.shape, t),
@@ -155,7 +156,7 @@ class SearchViewThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Color?>('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<double?>('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation?>('elevation', elevation, defaultValue: null));
     properties.add(DiagnosticsProperty<Color?>('surfaceTintColor', surfaceTintColor, defaultValue: null));
     properties.add(DiagnosticsProperty<BorderSide?>('side', side, defaultValue: null));
     properties.add(DiagnosticsProperty<OutlinedBorder?>('shape', shape, defaultValue: null));

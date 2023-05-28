@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'bottom_app_bar_theme.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
+import 'elevation.dart';
 import 'elevation_overlay.dart';
 import 'material.dart';
 import 'scaffold.dart';
@@ -75,7 +76,7 @@ class BottomAppBar extends StatefulWidget {
     this.surfaceTintColor,
     this.shadowColor,
     this.height,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   /// The widget below this widget in the tree.
   ///
@@ -107,7 +108,7 @@ class BottomAppBar extends StatefulWidget {
   /// If this property is null then [BottomAppBarTheme.elevation] of
   /// [ThemeData.bottomAppBarTheme] is used. If that's null and
   /// [ThemeData.useMaterial3] is true, than the default value is 3 else is 8.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The notch that is made for the floating action button.
   ///
@@ -185,7 +186,7 @@ class _BottomAppBarState extends State<BottomAppBar> {
           notchMargin: widget.notchMargin,
         )
       : const ShapeBorderClipper(shape: RoundedRectangleBorder());
-    final double elevation = widget.elevation ?? babTheme.elevation ?? defaults.elevation!;
+    final Elevation elevation = widget.elevation ?? babTheme.elevation ?? defaults.elevation!;
     final double? height = widget.height ?? babTheme.height ?? defaults.height;
     final Color color = widget.color ?? babTheme.color ?? defaults.color!;
     final Color surfaceTintColor = widget.surfaceTintColor ?? babTheme.surfaceTintColor ?? defaults.surfaceTintColor!;
@@ -212,7 +213,7 @@ class _BottomAppBarState extends State<BottomAppBar> {
 
     return PhysicalShape(
       clipper: clipper,
-      elevation: elevation,
+      elevation: elevation.height,
       shadowColor: shadowColor,
       color: effectiveColor,
       clipBehavior: widget.clipBehavior,
@@ -277,7 +278,7 @@ class _BottomAppBarClipper extends CustomClipper<Path> {
 class _BottomAppBarDefaultsM3 extends BottomAppBarTheme {
   _BottomAppBarDefaultsM3(this.context)
     : super(
-      elevation: 3.0,
+      elevation: Elevation.level2,
       height: 80.0,
       shape: const AutomaticNotchedShape(RoundedRectangleBorder()),
     );

@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'drawer.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'material_localizations.dart';
@@ -90,7 +91,7 @@ class NavigationDrawer extends StatelessWidget {
   ///
   /// If null, [NavigationDrawerThemeData.elevation] is used. If that
   /// is also null, it will be 1.0.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The color of the [indicatorShape] when this destination is selected.
   ///

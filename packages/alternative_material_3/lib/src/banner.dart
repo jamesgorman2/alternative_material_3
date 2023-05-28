@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'banner_theme.dart';
 import 'color_scheme.dart';
 import 'divider.dart';
+import 'elevation.dart';
 import 'material.dart';
 import 'scaffold.dart';
 import 'text_theme.dart';
@@ -114,7 +115,7 @@ class MaterialBanner extends StatefulWidget {
     this.overflowAlignment = OverflowBarAlignment.end,
     this.animation,
     this.onVisible,
-  }) : assert(elevation == null || elevation >= 0.0);
+  });
 
   /// The content of the [MaterialBanner].
   ///
@@ -143,7 +144,7 @@ class MaterialBanner extends StatefulWidget {
   /// [ThemeData.bannerTheme] is used, if that is also null, the default value is 0.
   /// If the elevation is 0, the [Scaffold]'s body will be pushed down by the
   /// MaterialBanner when used with [ScaffoldMessenger].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The (optional) leading widget of the [MaterialBanner].
   ///
@@ -330,8 +331,8 @@ class _MaterialBannerState extends State<MaterialBanner> {
       ),
     );
 
-    final double elevation = widget.elevation ?? bannerTheme.elevation ?? 0.0;
-    final EdgeInsetsGeometry margin = widget.margin ?? EdgeInsets.only(bottom: elevation > 0 ? 10.0 : 0.0);
+    final Elevation elevation = widget.elevation ?? bannerTheme.elevation ?? Elevation.level0;
+    final EdgeInsetsGeometry margin = widget.margin ?? EdgeInsets.only(bottom: elevation > Elevation.level0 ? 10.0 : 0.0);
     final Color backgroundColor = widget.backgroundColor
         ?? bannerTheme.backgroundColor
         ?? defaults.backgroundColor!;
@@ -379,7 +380,7 @@ class _MaterialBannerState extends State<MaterialBanner> {
             ),
             if (!isSingleRow)
               buttonBar,
-            if (elevation == 0)
+            if (elevation == Elevation.level0)
               Divider(height: 0, color: dividerColor),
           ],
         ),
@@ -453,7 +454,7 @@ class _MaterialBannerState extends State<MaterialBanner> {
 
 class _BannerDefaultsM3 extends MaterialBannerThemeData {
   _BannerDefaultsM3(this.context)
-    : super(elevation: 1.0);
+    : super(elevation: Elevation.level1);
 
   final BuildContext context;
   late final ColorScheme _colors = Theme.of(context).colorScheme;

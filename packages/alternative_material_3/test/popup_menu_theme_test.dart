@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,7 +12,7 @@ PopupMenuThemeData _popupMenuThemeM2() {
   return PopupMenuThemeData(
     color: Colors.orange,
     shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-    elevation: 12.0,
+    elevation: Elevation.level5,
     textStyle: const TextStyle(color: Color(0xffffffff), textBaseline: TextBaseline.alphabetic),
     mouseCursor: MaterialStateProperty.resolveWith<MouseCursor?>((Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -26,7 +27,7 @@ PopupMenuThemeData _popupMenuThemeM3() {
   return PopupMenuThemeData(
     color: Colors.orange,
     shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-    elevation: 12.0,
+    elevation: Elevation.level5,
     shadowColor: const Color(0xff00ff00),
     surfaceTintColor: const Color(0xff00ff00),
     labelTextStyle: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
@@ -86,7 +87,7 @@ void main() {
      PopupMenuThemeData(
       color: const Color(0xFFFFFFFF),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))),
-      elevation: 2.0,
+      elevation: Elevation.level2,
       shadowColor: const Color(0xff00ff00),
       surfaceTintColor: const Color(0xff00ff00),
       textStyle: const TextStyle(color: Color(0xffffffff)),
@@ -107,7 +108,7 @@ void main() {
     expect(description, <String>[
       'color: Color(0xffffffff)',
       'shape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.circular(2.0))',
-      'elevation: 2.0',
+      'elevation: Elevation(height: 3.0, level: level2)',
       'shadowColor: Color(0xff00ff00)',
       'surfaceTintColor: Color(0xff00ff00)',
       'text style: TextStyle(inherit: true, color: Color(0xffffffff))',
@@ -173,7 +174,7 @@ void main() {
     expect(button.shadowColor, theme.colorScheme.shadow);
     expect(button.surfaceTintColor, theme.colorScheme.surfaceTint);
     expect(button.shape, RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)));
-    expect(button.elevation, 3.0);
+    expect(button.elevation, Elevation.level2);
 
     /// The last DefaultTextStyle widget under popupItemKey is the
     /// [PopupMenuItem] specified above, so by finding the last descendent of
@@ -274,7 +275,7 @@ void main() {
     expect(button.surfaceTintColor, const Color(0xff00ff00));
     expect(button.shadowColor, const Color(0xff00ff00));
     expect(button.shape, const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))));
-    expect(button.elevation, 12.0);
+    expect(button.elevation, Elevation.level5);
 
     final DefaultTextStyle enabledText = tester.widget<DefaultTextStyle>(
       find.descendant(
@@ -327,7 +328,7 @@ void main() {
     const ShapeBorder shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(9.0)),
     );
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level4;
     const TextStyle textStyle = TextStyle(color: Color(0xffffffef), fontSize: 19.0);
     const MouseCursor cursor =  SystemMouseCursors.forbidden;
 

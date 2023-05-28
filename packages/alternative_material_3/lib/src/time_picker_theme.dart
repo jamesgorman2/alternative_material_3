@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import 'button_style.dart';
+import 'elevation.dart';
 import 'input_decorator.dart';
 import 'material_state.dart';
 import 'theme.dart';
@@ -168,7 +169,7 @@ class TimePickerThemeData with Diagnosticable {
   final TextStyle? dialTextStyle;
 
   /// The Material elevation for the time picker dialog.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// The color of the entry mode [IconButton].
   ///
@@ -256,7 +257,7 @@ class TimePickerThemeData with Diagnosticable {
     Color? dialHandColor,
     Color? dialTextColor,
     TextStyle? dialTextStyle,
-    double? elevation,
+    Elevation? elevation,
     Color? entryModeIconColor,
     TextStyle? helpTextStyle,
     Color? hourMinuteColor,
@@ -326,7 +327,7 @@ class TimePickerThemeData with Diagnosticable {
       dialHandColor: Color.lerp(a?.dialHandColor, b?.dialHandColor, t),
       dialTextColor: Color.lerp(a?.dialTextColor, b?.dialTextColor, t),
       dialTextStyle: TextStyle.lerp(a?.dialTextStyle, b?.dialTextStyle, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       entryModeIconColor: Color.lerp(a?.entryModeIconColor, b?.entryModeIconColor, t),
       helpTextStyle: TextStyle.lerp(a?.helpTextStyle, b?.helpTextStyle, t),
       hourMinuteColor: Color.lerp(a?.hourMinuteColor, b?.hourMinuteColor, t),
@@ -413,7 +414,7 @@ class TimePickerThemeData with Diagnosticable {
     properties.add(ColorProperty('dialHandColor', dialHandColor, defaultValue: null));
     properties.add(ColorProperty('dialTextColor', dialTextColor, defaultValue: null));
     properties.add(DiagnosticsProperty<TextStyle?>('dialTextStyle', dialTextStyle, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(ColorProperty('entryModeIconColor', entryModeIconColor, defaultValue: null));
     properties.add(DiagnosticsProperty<TextStyle>('helpTextStyle', helpTextStyle, defaultValue: null));
     properties.add(ColorProperty('hourMinuteColor', hourMinuteColor, defaultValue: null));

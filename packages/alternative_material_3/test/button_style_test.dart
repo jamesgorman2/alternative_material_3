@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -65,7 +66,7 @@ void main() {
       overlayColor: MaterialStatePropertyAll<Color>(Color(0xfffffff3)),
       shadowColor: MaterialStatePropertyAll<Color>(Color(0xfffffff4)),
       surfaceTintColor: MaterialStatePropertyAll<Color>(Color(0xfffffff5)),
-      elevation: MaterialStatePropertyAll<double>(1.5),
+      elevation: MaterialStatePropertyAll<Elevation>(Elevation.level1),
       padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(1.0)),
       minimumSize: MaterialStatePropertyAll<Size>(Size(1.0, 2.0)),
       side: MaterialStatePropertyAll<BorderSide>(BorderSide(width: 4.0, color: Color(0xfffffff6))),
@@ -91,7 +92,7 @@ void main() {
       'overlayColor: MaterialStatePropertyAll(Color(0xfffffff3))',
       'shadowColor: MaterialStatePropertyAll(Color(0xfffffff4))',
       'surfaceTintColor: MaterialStatePropertyAll(Color(0xfffffff5))',
-      'elevation: MaterialStatePropertyAll(1.5)',
+      'elevation: MaterialStatePropertyAll(Elevation(height: 1.0, level: level1))',
       'padding: MaterialStatePropertyAll(EdgeInsets.all(1.0))',
       'minimumSize: MaterialStatePropertyAll(Size(1.0, 2.0))',
       'maximumSize: MaterialStatePropertyAll(Size(100.0, 200.0))',
@@ -113,7 +114,7 @@ void main() {
     const MaterialStateProperty<Color> overlayColor = MaterialStatePropertyAll<Color>(Color(0xfffffff3));
     const MaterialStateProperty<Color> shadowColor =  MaterialStatePropertyAll<Color>(Color(0xfffffff4));
     const MaterialStateProperty<Color> surfaceTintColor = MaterialStatePropertyAll<Color>(Color(0xfffffff5));
-    const MaterialStateProperty<double> elevation = MaterialStatePropertyAll<double>(1);
+    const MaterialStateProperty<Elevation> elevation = MaterialStatePropertyAll<Elevation>(Elevation.level1);
     const MaterialStateProperty<EdgeInsets> padding = MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(1));
     const MaterialStateProperty<Size> minimumSize = MaterialStatePropertyAll<Size>(Size(1, 2));
     const MaterialStateProperty<Size> fixedSize = MaterialStatePropertyAll<Size>(Size(3, 4));

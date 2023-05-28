@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 import 'color_scheme.dart';
+import 'elevation.dart';
 import 'material.dart';
 import 'progress_indicator_theme.dart';
 import 'theme.dart';
@@ -856,7 +857,7 @@ class _RefreshProgressIndicatorState extends _CircularProgressIndicatorState {
         child: Material(
           type: MaterialType.circle,
           color: backgroundColor,
-          elevation: 2.0,
+          elevation: Elevation.level2,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Opacity(

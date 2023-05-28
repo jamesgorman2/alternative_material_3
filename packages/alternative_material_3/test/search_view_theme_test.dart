@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -61,7 +62,7 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const SearchViewThemeData(
       backgroundColor: Color(0xfffffff1),
-      elevation: 3.5,
+      elevation: Elevation(3.5),
       surfaceTintColor: Color(0xfffffff3),
       side: BorderSide(width: 2.5, color: Color(0xfffffff5)),
       shape: RoundedRectangleBorder(),
@@ -76,7 +77,7 @@ void main() {
         .toList();
 
     expect(description[0], 'backgroundColor: Color(0xfffffff1)');
-    expect(description[1], 'elevation: 3.5');
+    expect(description[1], 'elevation: Elevation(height: 3.5, level: level2)');
     expect(description[2], 'surfaceTintColor: Color(0xfffffff3)');
     expect(description[3], 'side: BorderSide(color: Color(0xfffffff5), width: 2.5)');
     expect(description[4], 'shape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.zero)');
@@ -87,7 +88,7 @@ void main() {
 
   group('[Theme, SearchViewTheme, SearchView properties overrides]', () {
     const Color backgroundColor = Color(0xff000001);
-    const double elevation = 5.0;
+    const Elevation elevation = Elevation(5.0);
     const Color surfaceTintColor = Color(0xff000002);
     const BorderSide side = BorderSide(color: Color(0xff000003), width: 2.0);
     const OutlinedBorder shape = RoundedRectangleBorder(side: side, borderRadius: BorderRadius.all(Radius.circular(20.0)));

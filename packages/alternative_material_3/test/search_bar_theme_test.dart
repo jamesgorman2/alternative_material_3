@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -64,7 +65,7 @@ void main() {
       WidgetTester tester) async {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const SearchBarThemeData(
-      elevation: MaterialStatePropertyAll<double>(3.0),
+      elevation: MaterialStatePropertyAll<Elevation>(Elevation.level2),
       backgroundColor: MaterialStatePropertyAll<Color>(Color(0xfffffff1)),
       shadowColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
       surfaceTintColor: MaterialStatePropertyAll<Color>(Color(0xfffffff3)),
@@ -82,7 +83,7 @@ void main() {
       .map((DiagnosticsNode node) => node.toString())
       .toList();
 
-    expect(description[0], 'elevation: MaterialStatePropertyAll(3.0)');
+    expect(description[0], 'elevation: MaterialStatePropertyAll(Elevation(height: 3.0, level: level2))');
     expect(description[1], 'backgroundColor: MaterialStatePropertyAll(Color(0xfffffff1))');
     expect(description[2], 'shadowColor: MaterialStatePropertyAll(Color(0xfffffff2))');
     expect(description[3], 'surfaceTintColor: MaterialStatePropertyAll(Color(0xfffffff3))');
@@ -96,7 +97,7 @@ void main() {
   });
 
   group('[Theme, SearchBarTheme, SearchBar properties overrides]', () {
-    const double elevationValue = 5.0;
+    const Elevation elevationValue = Elevation(5.0);
     const Color backgroundColorValue = Color(0xff000001);
     const Color shadowColorValue = Color(0xff000001);
     const Color surfaceTintColorValue = Color(0xff000001);
@@ -107,7 +108,7 @@ void main() {
     const TextStyle textStyleValue = TextStyle(color: Color(0xff000005), fontSize: 20.0);
     const TextStyle hintStyleValue = TextStyle(color: Color(0xff000006), fontSize: 18.0);
 
-    const MaterialStateProperty<double?> elevation = MaterialStatePropertyAll<double>(elevationValue);
+    const MaterialStateProperty<Elevation?> elevation = MaterialStatePropertyAll<Elevation>(elevationValue);
     const MaterialStateProperty<Color?> backgroundColor = MaterialStatePropertyAll<Color>(backgroundColorValue);
     const MaterialStateProperty<Color?> shadowColor = MaterialStatePropertyAll<Color>(shadowColorValue);
     const MaterialStateProperty<Color?> surfaceTintColor = MaterialStatePropertyAll<Color>(surfaceTintColorValue);

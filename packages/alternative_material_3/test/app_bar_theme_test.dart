@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,7 +47,7 @@ void main() {
 
     expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.light);
     expect(widget.color, theme.colorScheme.surface);
-    expect(widget.elevation, 0);
+    expect(widget.elevation, Elevation.level0);
     expect(widget.shadowColor, Colors.transparent);
     expect(widget.surfaceTintColor, theme.colorScheme.surfaceTint);
     expect(widget.shape, null);
@@ -57,12 +58,6 @@ void main() {
     expect(tester.getSize(find.byType(AppBar)).height, kToolbarHeight);
     expect(tester.getSize(find.byType(AppBar)).width, 800);
   });
-
-
-  void _printTree(WidgetTester tester, Element e, {String indent = ''}) {
-    print('$indent${e.widget.runtimeType}');
-    e.visitChildren((c) => _printTree(tester, c, indent: '$indent  '));
-  }
 
   testWidgets('AppBar uses values from AppBarTheme', (WidgetTester tester) async {
     final AppBarTheme appBarTheme = _appBarTheme();
@@ -106,7 +101,7 @@ void main() {
     const Brightness brightness = Brightness.dark;
     const SystemUiOverlayStyle systemOverlayStyle = SystemUiOverlayStyle.light;
     const Color color = Colors.orange;
-    const double elevation = 3.0;
+    const Elevation elevation = Elevation.level2;
     const Color shadowColor = Colors.purple;
     const Color surfaceTintColor = Colors.brown;
     const ShapeBorder shape = RoundedRectangleBorder();
@@ -251,7 +246,7 @@ void main() {
 
       expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.light);
       expect(widget.color, lightTheme.colorScheme.surface);
-      expect(widget.elevation, 0);
+      expect(widget.elevation, Elevation.level0);
       expect(widget.shadowColor, Colors.transparent);
       expect(widget.surfaceTintColor, lightTheme.colorScheme.surfaceTint);
       expect(iconTheme.data.color, lightTheme.colorScheme.onSurface);
@@ -280,7 +275,7 @@ void main() {
 
       expect(SystemChrome.latestStyle!.statusBarBrightness, Brightness.dark);
       expect(widget.color, darkTheme.colorScheme.surface);
-      expect(widget.elevation, 0);
+      expect(widget.elevation, Elevation.level0);
       expect(widget.shadowColor, Colors.transparent);
       expect(widget.surfaceTintColor, darkTheme.colorScheme.surfaceTint);
       expect(iconTheme.data.color, darkTheme.colorScheme.onSurface);
@@ -794,7 +789,7 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const AppBarTheme(
       backgroundColor: Color(0xff000001),
-      elevation: 8.0,
+      elevation: Elevation.level4,
       shadowColor: Color(0xff000002),
       surfaceTintColor: Color(0xff000003),
       centerTitle: true,
@@ -808,7 +803,7 @@ void main() {
 
     expect(description, <String>[
       'backgroundColor: Color(0xff000001)',
-      'elevation: 8.0',
+      'elevation: Elevation(height: 8.0, level: level4)',
       'shadowColor: Color(0xff000002)',
       'surfaceTintColor: Color(0xff000003)',
       'centerTitle: true',
@@ -826,7 +821,7 @@ void main() {
 AppBarTheme _appBarTheme() {
   const SystemUiOverlayStyle systemOverlayStyle = SystemUiOverlayStyle.dark;
   const Color backgroundColor = Colors.lightBlue;
-  const double elevation = 6.0;
+  const Elevation elevation = Elevation.level3;
   const Color shadowColor = Colors.red;
   const Color surfaceTintColor = Colors.green;
   const IconThemeData iconThemeData = IconThemeData(color: Colors.black);

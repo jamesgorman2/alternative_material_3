@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -52,7 +53,7 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const BottomSheetThemeData(
       backgroundColor: Color(0xFFFFFFFF),
-      elevation: 2.0,
+      elevation: Elevation.level1,
       shadowColor: Color(0xFF00FFFF),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))),
       clipBehavior: Clip.antiAlias,
@@ -68,7 +69,7 @@ void main() {
 
     expect(description, <String>[
       'backgroundColor: Color(0xffffffff)',
-      'elevation: 2.0',
+      'elevation: Elevation(height: 1.0, level: level1)',
       'shadowColor: Color(0xff00ffff)',
       'shape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.circular(2.0))',
       'dragHandleColor: Color(0xffffffff)',
@@ -97,7 +98,7 @@ void main() {
       ),
     );
     expect(material.color, ColorScheme.m3DefaultLight.surface);
-    expect(material.elevation, 1.0);
+    expect(material.elevation, Elevation.level1);
     //FIXME
     //expect(material.shape, null);
     expect(material.clipBehavior, Clip.none);
@@ -133,7 +134,7 @@ void main() {
   testWidgets('BottomSheet widget properties take priority over theme', (WidgetTester tester) async {
     const Color backgroundColor = Colors.purple;
     const Color shadowColor = Colors.blue;
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const ShapeBorder shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(9.0)),
     );
@@ -170,8 +171,8 @@ void main() {
   });
 
   testWidgets('Modal bottom sheet-specific parameters are used for modal bottom sheets', (WidgetTester tester) async {
-    const double modalElevation = 5.0;
-    const double persistentElevation = 7.0;
+    const Elevation modalElevation = Elevation.level2;
+    const Elevation persistentElevation = Elevation.level4;
     const Color modalBackgroundColor = Colors.yellow;
     const Color modalBarrierColor = Colors.blue;
     const Color persistentBackgroundColor = Colors.red;
@@ -201,8 +202,8 @@ void main() {
   });
 
   testWidgets('General bottom sheet parameters take priority over modal bottom sheet-specific parameters for persistent bottom sheets', (WidgetTester tester) async {
-    const double modalElevation = 5.0;
-    const double persistentElevation = 7.0;
+    const Elevation modalElevation = Elevation.level3;
+    const Elevation persistentElevation = Elevation.level5;
     const Color modalBackgroundColor = Colors.yellow;
     const Color persistentBackgroundColor = Colors.red;
     const BottomSheetThemeData bottomSheetTheme = BottomSheetThemeData(
@@ -227,7 +228,7 @@ void main() {
   });
 
   testWidgets("Modal bottom sheet-specific parameters don't apply to persistent bottom sheets", (WidgetTester tester) async {
-    const double modalElevation = 5.0;
+    const Elevation modalElevation = Elevation.level3;
     const Color modalBackgroundColor = Colors.yellow;
     const BottomSheetThemeData bottomSheetTheme = BottomSheetThemeData(
       modalElevation: modalElevation,
@@ -244,13 +245,13 @@ void main() {
         matching: find.byType(Material),
       ),
     );
-    expect(material.elevation, 1.0);
+    expect(material.elevation, Elevation.level1);
     expect(material.color, ColorScheme.m3DefaultLight.surface);
   });
 
   testWidgets('Modal bottom sheets respond to theme changes', (WidgetTester tester) async {
-    const double lightElevation = 1.0;
-    const double darkElevation = 3.0;
+    const Elevation lightElevation = Elevation.level1;
+    const Elevation darkElevation = Elevation.level2;
     const Color lightBackgroundColor = Colors.green;
     const Color darkBackgroundColor = Colors.grey;
     const Color lightShadowColor = Colors.blue;
@@ -367,7 +368,7 @@ Widget bottomSheetWithElevations(BottomSheetThemeData bottomSheetTheme) {
 BottomSheetThemeData _bottomSheetTheme() {
   return const BottomSheetThemeData(
     backgroundColor: Colors.orange,
-    elevation: 12.0,
+    elevation: Elevation.level5,
     shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
     clipBehavior: Clip.antiAlias,
   );

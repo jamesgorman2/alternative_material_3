@@ -8,6 +8,7 @@
 library;
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -38,7 +39,7 @@ void main() {
     expect(material.color, theme.colorScheme.surfaceContainerLow);
     expect(material.shadowColor, theme.colorScheme.shadow);
     expect(material.surfaceTintColor, theme.colorScheme.surfaceTint); // Default primary color
-    expect(material.elevation, 1.0);
+    expect(material.elevation, Elevation.level1);
     expect(container.margin, const EdgeInsets.all(4.0));
     expect(material.shape, const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -71,7 +72,7 @@ void main() {
     const Clip clip = Clip.hardEdge;
     const Color color = Colors.orange;
     const Color shadowColor = Colors.pink;
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const EdgeInsets margin = EdgeInsets.all(3.0);
     const ShapeBorder shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(9.0)),
@@ -138,7 +139,7 @@ CardTheme _cardTheme() {
     color: Colors.green,
     shadowColor: Colors.red,
     surfaceTintColor: Colors.purple,
-    elevation: 6.0,
+    elevation: Elevation.level3,
     margin: EdgeInsets.all(7.0),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(5.0)),

@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'button_style.dart';
 import 'color_scheme.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'ink_ripple.dart';
 import 'material_state.dart';
 import 'text_button.dart';
@@ -693,7 +694,7 @@ class ToggleButtons extends StatelessWidget {
       }
       final TextStyle currentTextStyle = textStyle
         ?? toggleButtonsTheme.textStyle
-        ?? theme.textTheme.bodyMedium!;
+        ?? theme.textTheme.bodyMedium;
       final BoxConstraints? currentConstraints = constraints
         ?? toggleButtonsTheme.constraints;
       final Size minimumSize = currentConstraints == null
@@ -748,7 +749,7 @@ class ToggleButtons extends StatelessWidget {
                 hoverColor: hoverColor ?? toggleButtonsTheme.hoverColor,
                 splashColor: splashColor ?? toggleButtonsTheme.splashColor,
               ),
-              elevation: const MaterialStatePropertyAll<double>(0),
+              elevation: const MaterialStatePropertyAll<Elevation>(Elevation.level0),
               textStyle: MaterialStatePropertyAll<TextStyle?>(currentTextStyle.copyWith(
                 color: currentColor,
               )),

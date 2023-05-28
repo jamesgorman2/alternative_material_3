@@ -8,6 +8,7 @@
 library;
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -31,7 +32,7 @@ void main() {
       const Color themedColor = Colors.black87;
       const BottomAppBarTheme theme = BottomAppBarTheme(
         color: themedColor,
-        elevation: 0
+        elevation: Elevation.level0,
       );
       await tester.pumpWidget(_withTheme(theme));
 
@@ -86,7 +87,7 @@ void main() {
     testWidgets('BAB theme overrides surfaceTintColor - M3', (WidgetTester tester) async {
       const Color babThemeSurfaceTintColor = Colors.black87;
       const BottomAppBarTheme theme = BottomAppBarTheme(
-        surfaceTintColor: babThemeSurfaceTintColor, elevation: 0
+        surfaceTintColor: babThemeSurfaceTintColor, elevation: Elevation.level0
       );
       await tester.pumpWidget(_withTheme(theme));
 
@@ -97,7 +98,7 @@ void main() {
     testWidgets('BAB theme overrides shadowColor - M3', (WidgetTester tester) async {
       const Color babThemeShadowColor = Colors.yellow;
       const BottomAppBarTheme theme = BottomAppBarTheme(
-        shadowColor: babThemeShadowColor, elevation: 0
+        shadowColor: babThemeShadowColor, elevation: Elevation.level0
       );
       await tester.pumpWidget(_withTheme(theme));
 

@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -62,12 +63,12 @@ void main() {
     );
 
     final EditableText editableText = tester.widget(find.byType(EditableText));
-    expect(editableText.style.color, themeData.textTheme.labelLarge!.color);
-    expect(editableText.style.background, themeData.textTheme.labelLarge!.background);
-    expect(editableText.style.shadows, themeData.textTheme.labelLarge!.shadows);
-    expect(editableText.style.decoration, themeData.textTheme.labelLarge!.decoration);
-    expect(editableText.style.locale, themeData.textTheme.labelLarge!.locale);
-    expect(editableText.style.wordSpacing, themeData.textTheme.labelLarge!.wordSpacing);
+    expect(editableText.style.color, themeData.textTheme.labelLarge.color);
+    expect(editableText.style.background, themeData.textTheme.labelLarge.background);
+    expect(editableText.style.shadows, themeData.textTheme.labelLarge.shadows);
+    expect(editableText.style.decoration, themeData.textTheme.labelLarge.decoration);
+    expect(editableText.style.locale, themeData.textTheme.labelLarge.locale);
+    expect(editableText.style.wordSpacing, themeData.textTheme.labelLarge.wordSpacing);
 
     final TextField textField = tester.widget(find.byType(TextField));
     expect(textField.decoration?.border, const OutlineInputBorder());
@@ -84,7 +85,7 @@ void main() {
     expect(material.color, themeData.colorScheme.surface);
     expect(material.shadowColor, themeData.colorScheme.shadow);
     expect(material.surfaceTintColor, themeData.colorScheme.surfaceTint);
-    expect(material.elevation, 3.0);
+    expect(material.elevation, Elevation.level2);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))));
 
     final Finder buttonMaterial = find.descendant(
@@ -94,7 +95,7 @@ void main() {
 
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, themeData.colorScheme.onSurface);
   });
@@ -114,7 +115,7 @@ void main() {
           backgroundColor: MaterialStatePropertyAll<Color>(Colors.grey),
           shadowColor: MaterialStatePropertyAll<Color>(Colors.brown),
           surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.amberAccent),
-          elevation: MaterialStatePropertyAll<double>(10.0),
+          elevation: MaterialStatePropertyAll<Elevation>(Elevation.level4),
           shape: MaterialStatePropertyAll<OutlinedBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
           ),
@@ -163,7 +164,7 @@ void main() {
     expect(material.color, Colors.grey);
     expect(material.shadowColor, Colors.brown);
     expect(material.surfaceTintColor, Colors.amberAccent);
-    expect(material.elevation, 10.0);
+    expect(material.elevation, Elevation.level4);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))));
 
     final Finder buttonMaterial = find.descendant(
@@ -173,7 +174,7 @@ void main() {
 
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, theme.colorScheme.onSurface);
   });
@@ -192,7 +193,7 @@ void main() {
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.grey),
         shadowColor: MaterialStatePropertyAll<Color>(Colors.brown),
         surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.amberAccent),
-        elevation: MaterialStatePropertyAll<double>(10.0),
+        elevation: MaterialStatePropertyAll<Elevation>(Elevation.level4),
         shape: MaterialStatePropertyAll<OutlinedBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         ),
@@ -213,7 +214,7 @@ void main() {
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.yellow),
         shadowColor: MaterialStatePropertyAll<Color>(Colors.green),
         surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.teal),
-        elevation: MaterialStatePropertyAll<double>(15.0),
+        elevation: MaterialStatePropertyAll<Elevation>(Elevation.level5),
         shape: MaterialStatePropertyAll<OutlinedBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
         ),
@@ -266,7 +267,7 @@ void main() {
     expect(material.color, Colors.yellow);
     expect(material.shadowColor, Colors.green);
     expect(material.surfaceTintColor, Colors.teal);
-    expect(material.elevation, 15.0);
+    expect(material.elevation, Elevation.level5);
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))));
 
     final Finder buttonMaterial = find.descendant(
@@ -276,7 +277,7 @@ void main() {
 
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, theme.colorScheme.onSurface);
   });
@@ -295,7 +296,7 @@ void main() {
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.grey),
         shadowColor: MaterialStatePropertyAll<Color>(Colors.brown),
         surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.amberAccent),
-        elevation: MaterialStatePropertyAll<double>(10.0),
+        elevation: MaterialStatePropertyAll<Elevation>(Elevation.level4),
         shape: MaterialStatePropertyAll<OutlinedBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         ),
@@ -316,7 +317,7 @@ void main() {
         backgroundColor: MaterialStatePropertyAll<Color>(Colors.yellow),
         shadowColor: MaterialStatePropertyAll<Color>(Colors.green),
         surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.teal),
-        elevation: MaterialStatePropertyAll<double>(15.0),
+        elevation: MaterialStatePropertyAll<Elevation>(Elevation.level5),
         shape: MaterialStatePropertyAll<OutlinedBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
         ),
@@ -345,7 +346,7 @@ void main() {
                   backgroundColor: MaterialStatePropertyAll<Color>(Colors.limeAccent),
                   shadowColor: MaterialStatePropertyAll<Color>(Colors.deepOrangeAccent),
                   surfaceTintColor: MaterialStatePropertyAll<Color>(Colors.lightBlue),
-                  elevation: MaterialStatePropertyAll<double>(21.0),
+                  elevation: MaterialStatePropertyAll<Elevation>(Elevation(21.0)),
                   shape: MaterialStatePropertyAll<OutlinedBorder>(
                     RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   ),
@@ -387,7 +388,7 @@ void main() {
     expect(material.color, Colors.limeAccent);
     expect(material.shadowColor, Colors.deepOrangeAccent);
     expect(material.surfaceTintColor, Colors.lightBlue);
-    expect(material.elevation, 21.0);
+    expect(material.elevation, const Elevation(21.0));
     expect(material.shape, const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))));
 
     final Finder buttonMaterial = find.descendant(
@@ -397,7 +398,7 @@ void main() {
 
     material = tester.widget<Material>(buttonMaterial);
     expect(material.color, Colors.transparent);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     expect(material.shape, const RoundedRectangleBorder());
     expect(material.textStyle?.color, theme.colorScheme.onSurface);
   });

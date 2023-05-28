@@ -13,6 +13,7 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'constants.dart';
 import 'elevated_button_theme.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material_state.dart';
 import 'theme.dart';
@@ -158,7 +159,7 @@ class ElevatedButton extends ButtonStyleButton {
     Color? disabledBackgroundColor,
     Color? shadowColor,
     Color? surfaceTintColor,
-    double? elevation,
+    Elevation? elevation,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     Size? minimumSize,
@@ -203,7 +204,7 @@ class ElevatedButton extends ButtonStyleButton {
     final MaterialStateProperty<Color?>? overlayColor = (foreground == null)
       ? null
       : _ElevatedButtonDefaultOverlay(foreground);
-    final MaterialStateProperty<double>? elevationValue = (elevation == null)
+    final MaterialStateProperty<Elevation>? elevationValue = (elevation == null)
       ? null
       : _ElevatedButtonDefaultElevation(elevation);
     final MaterialStateProperty<MouseCursor?>? mouseCursor = (enabledMouseCursor == null && disabledMouseCursor == null)
@@ -412,24 +413,24 @@ class _ElevatedButtonDefaultOverlay extends MaterialStateProperty<Color?> with D
 }
 
 @immutable
-class _ElevatedButtonDefaultElevation extends MaterialStateProperty<double> with Diagnosticable {
+class _ElevatedButtonDefaultElevation extends MaterialStateProperty<Elevation> with Diagnosticable {
   _ElevatedButtonDefaultElevation(this.elevation);
 
-  final double elevation;
+  final Elevation elevation;
 
   @override
-  double resolve(Set<MaterialState> states) {
+  Elevation resolve(Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return 0;
+      return Elevation.level0;
     }
     if (states.contains(MaterialState.hovered)) {
-      return elevation + 2;
+      return Elevation.level2;
     }
     if (states.contains(MaterialState.focused)) {
-      return elevation + 2;
+      return Elevation.level1;
     }
     if (states.contains(MaterialState.pressed)) {
-      return elevation + 6;
+      return Elevation.level1;
     }
     return elevation;
   }
@@ -568,21 +569,21 @@ class _ElevatedButtonDefaultsM3 extends ButtonStyle {
     MaterialStatePropertyAll<Color>(_colors.surfaceTint);
 
   @override
-  MaterialStateProperty<double>? get elevation =>
+  MaterialStateProperty<Elevation>? get elevation =>
     MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
-        return 0.0;
+        return Elevation.level0;
       }
       if (states.contains(MaterialState.hovered)) {
-        return 3.0;
+        return Elevation.level2;
       }
       if (states.contains(MaterialState.focused)) {
-        return 1.0;
+        return Elevation.level1;
       }
       if (states.contains(MaterialState.pressed)) {
-        return 1.0;
+        return Elevation.level1;
       }
-      return 1.0;
+      return Elevation.level1;
     });
 
   @override

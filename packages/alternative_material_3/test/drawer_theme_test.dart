@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,7 +36,7 @@ void main() {
     const DrawerThemeData(
       backgroundColor: Color(0x00000099),
       scrimColor: Color(0x00000098),
-      elevation: 5.0,
+      elevation: Elevation.level3,
       shadowColor: Color(0x00000097),
       surfaceTintColor: Color(0x00000096),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2.0))),
@@ -50,7 +51,7 @@ void main() {
     expect(description, <String>[
       'backgroundColor: Color(0x00000099)',
       'scrimColor: Color(0x00000098)',
-      'elevation: 5.0',
+      'elevation: Elevation(height: 6.0, level: level3)',
       'shadowColor: Color(0x00000097)',
       'surfaceTintColor: Color(0x00000096)',
       'shape: RoundedRectangleBorder(BorderSide(width: 0.0, style: none), BorderRadius.circular(2.0))',
@@ -73,7 +74,7 @@ void main() {
 
     // FIXME
     // expect(_drawerMaterial(tester).color, null);
-    expect(_drawerMaterial(tester).elevation, 1.0);
+    expect(_drawerMaterial(tester).elevation, Elevation.level1);
     expect(_drawerMaterial(tester).shadowColor, Colors.transparent);
     expect(_drawerMaterial(tester).surfaceTintColor, ThemeData().colorScheme.surfaceTint);
     expect(
@@ -99,7 +100,7 @@ void main() {
 
     // FIXME
     // expect(_drawerMaterial(tester).color, null);
-    expect(_drawerMaterial(tester).elevation, 1.0);
+    expect(_drawerMaterial(tester).elevation, Elevation.level1);
     expect(_drawerMaterial(tester).shadowColor, Colors.transparent);
     expect(_drawerMaterial(tester).surfaceTintColor, ThemeData().colorScheme.surfaceTint);
     expect(
@@ -113,7 +114,7 @@ void main() {
   testWidgets('DrawerThemeData values are used when no Drawer properties are specified', (WidgetTester tester) async {
     const Color backgroundColor = Color(0x00000001);
     const Color scrimColor = Color(0x00000002);
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const Color shadowColor = Color(0x00000003);
     const Color surfaceTintColor = Color(0x00000004);
     const RoundedRectangleBorder shape = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0)));
@@ -154,7 +155,7 @@ void main() {
   testWidgets('Drawer values take priority over DrawerThemeData values when both properties are specified', (WidgetTester tester) async {
     const Color backgroundColor = Color(0x00000001);
     const Color scrimColor = Color(0x00000002);
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const Color shadowColor = Color(0x00000003);
     const Color surfaceTintColor = Color(0x00000004);
     const RoundedRectangleBorder shape = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0)));
@@ -167,7 +168,7 @@ void main() {
           drawerTheme: const DrawerThemeData(
             backgroundColor: Color(0x00000005),
             scrimColor: Color(0x00000006),
-            elevation: 13.0,
+            elevation: Elevation.level5,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(29.0))),
             width: 400.0,
           ),
@@ -201,7 +202,7 @@ void main() {
   testWidgets('DrawerTheme values take priority over ThemeData.drawerTheme values when both properties are specified', (WidgetTester tester) async {
     const Color backgroundColor = Color(0x00000001);
     const Color scrimColor = Color(0x00000002);
-    const double elevation = 7.0;
+    const Elevation elevation = Elevation.level3;
     const Color shadowColor = Color(0x00000003);
     const Color surfaceTintColor = Color(0x00000004);
     const RoundedRectangleBorder shape = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0)));
@@ -214,7 +215,7 @@ void main() {
           drawerTheme: const DrawerThemeData(
             backgroundColor: Color(0x00000005),
             scrimColor: Color(0x00000006),
-            elevation: 13.0,
+            elevation: Elevation.level5,
             shadowColor: Color(0x00000007),
             surfaceTintColor: Color(0x00000007),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(29.0))),

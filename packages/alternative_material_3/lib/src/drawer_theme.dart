@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 // Examples can assume:
@@ -52,7 +53,7 @@ class DrawerThemeData with Diagnosticable {
   final Color? scrimColor;
 
   /// Overrides the default value of [Drawer.elevation].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value for [Drawer.shadowColor].
   final Color? shadowColor;
@@ -74,7 +75,7 @@ class DrawerThemeData with Diagnosticable {
   DrawerThemeData copyWith({
     Color? backgroundColor,
     Color? scrimColor,
-    double? elevation,
+    Elevation? elevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     ShapeBorder? shape,
@@ -105,7 +106,7 @@ class DrawerThemeData with Diagnosticable {
     return DrawerThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       scrimColor: Color.lerp(a?.scrimColor, b?.scrimColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
@@ -150,7 +151,7 @@ class DrawerThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
     properties.add(ColorProperty('scrimColor', scrimColor, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));

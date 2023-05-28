@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -243,7 +244,7 @@ void main() {
 
     await tester.pumpWidget(buildFrame(lightTheme));
     expect(getMaterial(tester).color, null);
-    expect(getMaterial(tester).elevation, 0);
+    expect(getMaterial(tester).elevation, Elevation.level0);
     expect(getMaterial(tester).shape, RoundedRectangleBorder(
       side: BorderSide(color: lightTheme.colorScheme.outline),
       borderRadius: BorderRadius.circular(8.0),
@@ -271,7 +272,7 @@ void main() {
     await tester.pumpWidget(buildFrame(darkTheme));
     await tester.pumpAndSettle(); // Theme transition animation
     expect(getMaterial(tester).color, null);
-    expect(getMaterial(tester).elevation, 0);
+    expect(getMaterial(tester).elevation, Elevation.level0);
     expect(getMaterial(tester).shape, RoundedRectangleBorder(
       side: BorderSide(color: darkTheme.colorScheme.outline),
       borderRadius: BorderRadius.circular(8.0),
@@ -2430,13 +2431,13 @@ void main() {
 
     await tester.pumpWidget(buildChip(chipTheme));
     Material material = getMaterial(tester);
-    expect(material.elevation, 0.0);
+    expect(material.elevation, Elevation.level0);
     // FIXME
     // expect(material.shadowColor, Colors.black);
 
     inputChip = const InputChip(
       label: Text('Label'),
-      elevation: 4.0,
+      elevation: Elevation.level3,
       shadowColor: Colors.green,
       selectedShadowColor: Colors.blue,
     );
@@ -2444,7 +2445,7 @@ void main() {
     await tester.pumpWidget(buildChip(chipTheme));
     await tester.pumpAndSettle();
     material = getMaterial(tester);
-    expect(material.elevation, 4.0);
+    expect(material.elevation, Elevation.level3);
     expect(material.shadowColor, Colors.green);
 
     inputChip = const InputChip(

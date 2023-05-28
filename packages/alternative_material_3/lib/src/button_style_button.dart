@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'button_style.dart';
 import 'colors.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'material_state.dart';
@@ -197,7 +198,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
 ///  * [TextButton], a simple button without a shadow.
 class _ButtonStyleState extends State<ButtonStyleButton> with TickerProviderStateMixin {
   AnimationController? controller;
-  double? elevation;
+  Elevation? elevation;
   Color? backgroundColor;
   MaterialStatesController? internalStatesController;
 
@@ -271,7 +272,7 @@ class _ButtonStyleState extends State<ButtonStyleButton> with TickerProviderStat
       );
     }
 
-    final double? resolvedElevation = resolve<double?>((ButtonStyle? style) => style?.elevation);
+    final Elevation? resolvedElevation = resolve<Elevation?>((ButtonStyle? style) => style?.elevation);
     final TextStyle? resolvedTextStyle = resolve<TextStyle?>((ButtonStyle? style) => style?.textStyle);
     Color? resolvedBackgroundColor = resolve<Color?>((ButtonStyle? style) => style?.backgroundColor);
     final Color? resolvedForegroundColor = resolve<Color?>((ButtonStyle? style) => style?.foregroundColor);

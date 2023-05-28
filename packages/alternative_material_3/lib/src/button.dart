@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 
 import 'button_theme.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'material_state.dart';
@@ -57,11 +58,11 @@ class RawMaterialButton extends StatefulWidget {
     this.hoverColor,
     this.highlightColor,
     this.splashColor,
-    this.elevation = 2.0,
-    this.focusElevation = 4.0,
-    this.hoverElevation = 4.0,
-    this.highlightElevation = 8.0,
-    this.disabledElevation = 0.0,
+    this.elevation = Elevation.level1,
+    this.focusElevation = Elevation.level2,
+    this.hoverElevation = Elevation.level2,
+    this.highlightElevation = Elevation.level3,
+    this.disabledElevation = Elevation.level0,
     this.padding = EdgeInsets.zero,
     this.visualDensity = VisualDensity.standard,
     this.constraints = const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
@@ -73,12 +74,7 @@ class RawMaterialButton extends StatefulWidget {
     MaterialTapTargetSize? materialTapTargetSize,
     this.child,
     this.enableFeedback = true,
-  }) : materialTapTargetSize = materialTapTargetSize ?? MaterialTapTargetSize.padded,
-       assert(elevation >= 0.0),
-       assert(focusElevation >= 0.0),
-       assert(hoverElevation >= 0.0),
-       assert(highlightElevation >= 0.0),
-       assert(disabledElevation >= 0.0);
+  }) : materialTapTargetSize = materialTapTargetSize ?? MaterialTapTargetSize.padded;
 
   /// Called when the button is tapped or otherwise activated.
   ///
@@ -161,7 +157,7 @@ class RawMaterialButton extends StatefulWidget {
   ///    button.
   ///  * [focusElevation], the elevation when the button is focused.
   ///  * [disabledElevation], the elevation when the button is disabled.
-  final double elevation;
+  final Elevation elevation;
 
   /// The elevation for the button's [Material] when the button
   /// is [enabled] and a pointer is hovering over it.
@@ -177,7 +173,7 @@ class RawMaterialButton extends StatefulWidget {
   ///  * [focusElevation], the elevation when the button is focused.
   ///  * [disabledElevation], the elevation when the button is disabled.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double hoverElevation;
+  final Elevation hoverElevation;
 
   /// The elevation for the button's [Material] when the button
   /// is [enabled] and has the input focus.
@@ -195,7 +191,7 @@ class RawMaterialButton extends StatefulWidget {
   ///    button.
   ///  * [disabledElevation], the elevation when the button is disabled.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double focusElevation;
+  final Elevation focusElevation;
 
   /// The elevation for the button's [Material] when the button
   /// is [enabled] and pressed.
@@ -209,7 +205,7 @@ class RawMaterialButton extends StatefulWidget {
   ///    button.
   ///  * [focusElevation], the elevation when the button is focused.
   ///  * [disabledElevation], the elevation when the button is disabled.
-  final double highlightElevation;
+  final Elevation highlightElevation;
 
   /// The elevation for the button's [Material] when the button
   /// is not [enabled].
@@ -223,7 +219,7 @@ class RawMaterialButton extends StatefulWidget {
   ///    button.
   ///  * [focusElevation], the elevation when the button is focused.
   ///  * [highlightElevation], the elevation when the button is pressed.
-  final double disabledElevation;
+  final Elevation disabledElevation;
 
   /// The internal padding for the button's [child].
   final EdgeInsetsGeometry padding;
@@ -326,7 +322,7 @@ class _RawMaterialButtonState extends State<RawMaterialButton> with MaterialStat
     }
   }
 
-  double get _effectiveElevation {
+  Elevation get _effectiveElevation {
     // These conditionals are in order of precedence, so be careful about
     // reorganizing them.
     if (isDisabled) {

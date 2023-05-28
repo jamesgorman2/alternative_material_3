@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'theme.dart';
 
 /// Defines a theme for [Dialog] widgets.
@@ -44,7 +44,7 @@ class DialogTheme with Diagnosticable {
   final Color? backgroundColor;
 
   /// Overrides the default value for [Dialog.elevation].
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value for [Dialog.shadowColor].
   final Color? shadowColor;
@@ -76,7 +76,7 @@ class DialogTheme with Diagnosticable {
   /// new values.
   DialogTheme copyWith({
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     ShapeBorder? shape,
@@ -114,9 +114,20 @@ class DialogTheme with Diagnosticable {
     if (identical(a, b) && a != null) {
       return a;
     }
+
+    final elevation = a?.elevation == null && b?.elevation == null
+      ? null
+      : Elevation.lerpNullable(
+          a?.elevation ?? Elevation.level3,
+          b?.elevation ?? Elevation.level3,
+          t,
+          defaultHeight: Elevation.level3,
+        );
     return DialogTheme(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerpNullable(
+        a?.elevation, b?.elevation, t, defaultHeight: Elevation.level3
+      ),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
@@ -156,7 +167,7 @@ class DialogTheme with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(DoubleProperty('elevation', elevation));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation));
     properties.add(ColorProperty('shadowColor', shadowColor));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));

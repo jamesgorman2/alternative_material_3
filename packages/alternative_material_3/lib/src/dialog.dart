@@ -11,6 +11,7 @@ import 'color_scheme.dart';
 import 'colors.dart';
 import 'debug.dart';
 import 'dialog_theme.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
 import 'material_localizations.dart';
@@ -60,8 +61,7 @@ class Dialog extends StatelessWidget {
     this.shape,
     this.alignment,
     this.child,
-  }) : assert(elevation == null || elevation >= 0.0),
-       _fullscreen = false;
+  }) : _fullscreen = false;
 
   /// Creates a fullscreen dialog.
   ///
@@ -72,7 +72,7 @@ class Dialog extends StatelessWidget {
     this.insetAnimationDuration = Duration.zero,
     this.insetAnimationCurve = Curves.decelerate,
     this.child,
-  }) : elevation = 0,
+  }) : elevation = Elevation.level0,
        shadowColor = null,
        surfaceTintColor = null,
        insetPadding = EdgeInsets.zero,
@@ -110,7 +110,7 @@ class Dialog extends StatelessWidget {
   ///   * <https://m3.material.io/components/dialogs/overview>, the Material
   ///     Design specification for dialogs.
   /// {@endtemplate}
-  final double? elevation;
+  final Elevation? elevation;
 
   /// {@template flutter.material.dialog.shadowColor}
   /// The color used to paint a drop shadow under the dialog's [Material],
@@ -587,7 +587,7 @@ class AlertDialog extends StatelessWidget {
   final Color? backgroundColor;
 
   /// {@macro flutter.material.dialog.elevation}
-  final double? elevation;
+  final Elevation? elevation;
 
   /// {@macro flutter.material.dialog.shadowColor}
   final Color? shadowColor;
@@ -1030,7 +1030,7 @@ class SimpleDialog extends StatelessWidget {
   final Color? backgroundColor;
 
   /// {@macro flutter.material.dialog.elevation}
-  final double? elevation;
+  final Elevation? elevation;
 
   /// {@macro flutter.material.dialog.shadowColor}
   final Color? shadowColor;
@@ -1414,7 +1414,7 @@ class _DialogDefaultsM3 extends DialogTheme {
   _DialogDefaultsM3(this.context)
     : super(
         alignment: Alignment.center,
-        elevation: 6.0,
+        elevation: Elevation.level3,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28.0))),
       );
 

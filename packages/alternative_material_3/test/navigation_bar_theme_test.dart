@@ -7,8 +7,8 @@
 @Tags(<String>['reduced-test-set'])
 library;
 
-import 'package:flutter/gestures.dart';
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -41,7 +41,7 @@ void main() {
     const NavigationBarThemeData(
       height: 200.0,
       backgroundColor: Color(0x00000099),
-      elevation: 20.0,
+      elevation: Elevation(20.0),
       indicatorColor: Color(0x00000098),
       indicatorShape: CircleBorder(),
       labelTextStyle: MaterialStatePropertyAll<TextStyle>(TextStyle(fontSize: 7.0)),
@@ -56,7 +56,7 @@ void main() {
 
     expect(description[0], 'height: 200.0');
     expect(description[1], 'backgroundColor: Color(0x00000099)');
-    expect(description[2], 'elevation: 20.0');
+    expect(description[2], 'elevation: Elevation(height: 20.0, level: level5)');
     expect(description[3], 'indicatorColor: Color(0x00000098)');
     expect(description[4], 'indicatorShape: CircleBorder(BorderSide(width: 0.0, style: none))');
     expect(description[5], 'labelTextStyle: MaterialStatePropertyAll(TextStyle(inherit: true, size: 7.0))');
@@ -71,7 +71,7 @@ void main() {
   testWidgets('NavigationBarThemeData values are used when no NavigationBar properties are specified', (WidgetTester tester) async {
     const double height = 200.0;
     const Color backgroundColor = Color(0x00000001);
-    const double elevation = 42.0;
+    const Elevation elevation = Elevation(42.0);
     const Color indicatorColor = Color(0x00000002);
     const ShapeBorder indicatorShape = CircleBorder();
     const double selectedIconSize = 25.0;
@@ -143,7 +143,7 @@ void main() {
   testWidgets('NavigationBar values take priority over NavigationBarThemeData values when both properties are specified', (WidgetTester tester) async {
     const double height = 200.0;
     const Color backgroundColor = Color(0x00000001);
-    const double elevation = 42.0;
+    const Elevation elevation = Elevation(42.0);
     const NavigationDestinationLabelBehavior labelBehavior = NavigationDestinationLabelBehavior.alwaysShow;
 
     await tester.pumpWidget(
@@ -152,7 +152,7 @@ void main() {
           bottomNavigationBar: NavigationBarTheme(
             data: const NavigationBarThemeData(
               height: 100.0,
-              elevation: 18.0,
+              elevation: Elevation(18.0),
               backgroundColor: Color(0x00000099),
               labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
             ),

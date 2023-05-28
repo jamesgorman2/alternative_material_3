@@ -4,6 +4,7 @@
 
 import 'package:flutter/widgets.dart';
 
+import 'elevation.dart';
 import 'material.dart';
 import 'text_selection_toolbar.dart';
 
@@ -54,7 +55,7 @@ class DesktopTextSelectionToolbar extends StatelessWidget {
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(7.0)),
         clipBehavior: Clip.antiAlias,
-        elevation: 1.0,
+        elevation: Elevation.level1,
         type: MaterialType.card,
         child: child,
       ),

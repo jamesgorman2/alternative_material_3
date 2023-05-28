@@ -13,6 +13,7 @@ import 'button_style_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
+import 'elevation.dart';
 import 'ink_well.dart';
 import 'material_state.dart';
 import 'outlined_button_theme.dart';
@@ -145,7 +146,7 @@ class OutlinedButton extends ButtonStyleButton {
     Color? disabledBackgroundColor,
     Color? shadowColor,
     Color? surfaceTintColor,
-    double? elevation,
+    Elevation? elevation,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     Size? minimumSize,
@@ -196,7 +197,7 @@ class OutlinedButton extends ButtonStyleButton {
       overlayColor: overlayColor,
       shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
       surfaceTintColor: ButtonStyleButton.allOrNull<Color>(surfaceTintColor),
-      elevation: ButtonStyleButton.allOrNull<double>(elevation),
+      elevation: ButtonStyleButton.allOrNull<Elevation>(elevation),
       padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
       minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize),
       fixedSize: ButtonStyleButton.allOrNull<Size>(fixedSize),
@@ -493,8 +494,8 @@ class _OutlinedButtonDefaultsM3 extends ButtonStyle {
     const MaterialStatePropertyAll<Color>(Colors.transparent);
 
   @override
-  MaterialStateProperty<double>? get elevation =>
-    const MaterialStatePropertyAll<double>(0.0);
+  MaterialStateProperty<Elevation>? get elevation =>
+    const MaterialStatePropertyAll<Elevation>(Elevation.level0);
 
   @override
   MaterialStateProperty<EdgeInsetsGeometry>? get padding =>

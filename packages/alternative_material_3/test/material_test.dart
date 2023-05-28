@@ -8,6 +8,7 @@
 library;
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/elevation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -24,7 +25,7 @@ class NotifyMaterial extends StatelessWidget {
 }
 
 Widget buildMaterial({
-  double elevation = 0.0,
+  Elevation elevation = Elevation.level0,
   Color shadowColor = const Color(0xFF00FF00),
   Color? surfaceTintColor,
   Color color = const Color(0xFF0000FF),
@@ -198,7 +199,7 @@ void main() {
           width: 100.0,
           child: Material(
             shadowColor: shadowColor,
-            elevation: 10,
+            elevation: const Elevation(10),
             shape: const CircleBorder(),
           ),
         )
@@ -238,7 +239,7 @@ void main() {
     final RenderPhysicalShape modelA = getModel(tester);
     expect(modelA.elevation, equals(0.0));
 
-    await tester.pumpWidget(buildMaterial(elevation: 9.0));
+    await tester.pumpWidget(buildMaterial(elevation: Elevation.level4));
     final RenderPhysicalShape modelB = getModel(tester);
     expect(modelB.elevation, equals(0.0));
 
@@ -252,7 +253,7 @@ void main() {
 
     await tester.pump(kThemeChangeDuration);
     final RenderPhysicalShape modelE = getModel(tester);
-    expect(modelE.elevation, equals(9.0));
+    expect(modelE.elevation, equals(Elevation.level4.height));
   });
 
   testWidgets('Shadow colors animate smoothly', (WidgetTester tester) async {
@@ -323,7 +324,7 @@ void main() {
           ),
           child: buildMaterial(
             color: baseColor,
-            elevation: 12.0,
+            elevation: Elevation.level5,
           ),
         ),
       );
@@ -340,7 +341,7 @@ void main() {
           child: buildMaterial(
             color: baseColor,
             surfaceTintColor: Colors.transparent,
-            elevation: 12.0,
+            elevation: Elevation.level5,
           ),
         ),
       );
@@ -358,7 +359,7 @@ void main() {
           child: buildMaterial(
             color: baseColor,
             surfaceTintColor: surfaceTintColor,
-            elevation: 12.0,
+            elevation: Elevation.level5,
           ),
         ),
       );
@@ -527,7 +528,7 @@ void main() {
         Material(
           key: materialKey,
           borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-          elevation: 1.0,
+          elevation: Elevation.level1,
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );
@@ -545,7 +546,7 @@ void main() {
         Material(
           key: materialKey,
           shape: const StadiumBorder(),
-          elevation: 1.0,
+          elevation: Elevation.level1,
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );
@@ -580,7 +581,7 @@ void main() {
           key: materialKey,
           type: MaterialType.card,
           borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-          elevation: 5.0,
+          elevation: const Elevation(5.0),
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );
@@ -599,7 +600,7 @@ void main() {
           key: materialKey,
           type: MaterialType.card,
           shape: const StadiumBorder(),
-          elevation: 5.0,
+          elevation: const Elevation(5.0),
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );
@@ -653,7 +654,7 @@ void main() {
           type: MaterialType.button,
           color: const Color(0xFF0000FF),
           borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-          elevation: 4.0,
+          elevation: const Elevation(4.0),
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );
@@ -673,7 +674,7 @@ void main() {
           type: MaterialType.button,
           color: const Color(0xFF0000FF),
           shape: const StadiumBorder(),
-          elevation: 4.0,
+          elevation: const Elevation(4.0),
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );

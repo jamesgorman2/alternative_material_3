@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 
 import 'color_scheme.dart';
 import 'colors.dart';
+import 'elevation.dart';
 import 'material_state.dart';
 import 'text_theme.dart';
 import 'theme.dart';
@@ -76,7 +77,7 @@ class DatePickerThemeData with Diagnosticable {
   ///
   /// See also:
   ///   [Material.elevation], which explains how elevation is related to a component's shadow.
-  final double? elevation;
+  final Elevation? elevation;
 
   /// Overrides the default value of [Dialog.shadowColor].
   ///
@@ -207,7 +208,7 @@ class DatePickerThemeData with Diagnosticable {
   ///
   /// See also:
   ///   [Material.elevation], which explains how elevation is related to a component's shadow.
-  final double? rangePickerElevation;
+  final Elevation? rangePickerElevation;
 
   /// Overrides the color of the shadow painted below a full screen
   /// [DateRangePickerDialog].
@@ -286,7 +287,7 @@ class DatePickerThemeData with Diagnosticable {
   /// new values.
   DatePickerThemeData copyWith({
     Color? backgroundColor,
-    double? elevation,
+    Elevation? elevation,
     Color? shadowColor,
     Color? surfaceTintColor,
     ShapeBorder? shape,
@@ -307,7 +308,7 @@ class DatePickerThemeData with Diagnosticable {
     MaterialStateProperty<Color?>? yearBackgroundColor,
     MaterialStateProperty<Color?>? yearOverlayColor,
     Color? rangePickerBackgroundColor,
-    double? rangePickerElevation,
+    Elevation? rangePickerElevation,
     Color? rangePickerShadowColor,
     Color? rangePickerSurfaceTintColor,
     ShapeBorder? rangePickerShape,
@@ -361,7 +362,7 @@ class DatePickerThemeData with Diagnosticable {
     }
     return DatePickerThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      elevation: lerpDouble(a?.elevation, b?.elevation, t),
+      elevation: Elevation.lerp(a?.elevation, b?.elevation, t),
       shadowColor: Color.lerp(a?.shadowColor, b?.shadowColor, t),
       surfaceTintColor: Color.lerp(a?.surfaceTintColor, b?.surfaceTintColor, t),
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
@@ -382,7 +383,7 @@ class DatePickerThemeData with Diagnosticable {
       yearBackgroundColor: MaterialStateProperty.lerp<Color?>(a?.yearBackgroundColor, b?.yearBackgroundColor, t, Color.lerp),
       yearOverlayColor: MaterialStateProperty.lerp<Color?>(a?.yearOverlayColor, b?.yearOverlayColor, t, Color.lerp),
       rangePickerBackgroundColor: Color.lerp(a?.rangePickerBackgroundColor, b?.rangePickerBackgroundColor, t),
-      rangePickerElevation: lerpDouble(a?.rangePickerElevation, b?.rangePickerElevation, t),
+      rangePickerElevation: Elevation.lerp(a?.rangePickerElevation, b?.rangePickerElevation, t),
       rangePickerShadowColor: Color.lerp(a?.rangePickerShadowColor, b?.rangePickerShadowColor, t),
       rangePickerSurfaceTintColor: Color.lerp(a?.rangePickerSurfaceTintColor, b?.rangePickerSurfaceTintColor, t),
       rangePickerShape: ShapeBorder.lerp(a?.rangePickerShape, b?.rangePickerShape, t),
@@ -485,7 +486,7 @@ class DatePickerThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(DoubleProperty('elevation', elevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('elevation', elevation, defaultValue: null));
     properties.add(ColorProperty('shadowColor', shadowColor, defaultValue: null));
     properties.add(ColorProperty('surfaceTintColor', surfaceTintColor, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
@@ -506,7 +507,7 @@ class DatePickerThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('yearBackgroundColor', yearBackgroundColor, defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('yearOverlayColor', yearOverlayColor, defaultValue: null));
     properties.add(ColorProperty('rangePickerBackgroundColor', rangePickerBackgroundColor, defaultValue: null));
-    properties.add(DoubleProperty('rangePickerElevation', rangePickerElevation, defaultValue: null));
+    properties.add(DiagnosticsProperty<Elevation>('rangePickerElevation', rangePickerElevation, defaultValue: null));
     properties.add(ColorProperty('rangePickerShadowColor', rangePickerShadowColor, defaultValue: null));
     properties.add(ColorProperty('rangePickerSurfaceTintColor', rangePickerSurfaceTintColor, defaultValue: null));
     properties.add(DiagnosticsProperty<ShapeBorder>('rangePickerShape', rangePickerShape, defaultValue: null));
@@ -625,9 +626,9 @@ class DatePickerTheme extends InheritedTheme {
 class _DatePickerDefaultsM3 extends DatePickerThemeData {
   _DatePickerDefaultsM3(this.context)
     : super(
-        elevation: 6.0,
+        elevation: Elevation.level3,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28.0))),
-        rangePickerElevation: 0.0,
+        rangePickerElevation: Elevation.level0,
         rangePickerShape: const RoundedRectangleBorder(),
       );
 
