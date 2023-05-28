@@ -610,7 +610,7 @@ class SurfaceContainerRowLight extends StatelessWidget {
           ),
           Swatch(
             role: 'Surface Container Highest',
-            token: 'N-9',
+            token: 'N-90',
             color: colorScheme.surfaceContainerHighest,
             textColor: colorScheme.onSurface,
             height: ColorPage.tallCell,

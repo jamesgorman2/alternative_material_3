@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/state_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -426,6 +427,7 @@ void main() {
       visualDensity: VisualDensity.standard,
       // COLOR
       colorScheme: ColorScheme.m3DefaultLight,
+      stateTheme: const StateThemeData(),
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: ThemeData.dark().iconTheme,
       textTheme: ThemeData.dark().textTheme,
@@ -510,9 +512,15 @@ void main() {
       splashFactory: InkRipple.splashFactory,
       
       visualDensity: VisualDensity.standard,
-
       // COLOR
       colorScheme: ColorScheme.m3DefaultLight,
+      stateTheme: const StateThemeData(
+        hoverOpacity: 0.1,
+        disabledOpacity: 0.1,
+        dragOpacity: 0.1,
+        focusOpacity: 0.1,
+        pressOpacity: 0.1,
+      ),
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: ThemeData.light().iconTheme,
       textTheme: ThemeData.light().textTheme,
@@ -585,6 +593,7 @@ void main() {
 
       // COLOR
       colorScheme: otherTheme.colorScheme,
+      stateTheme: otherTheme.stateTheme,
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: otherTheme.iconTheme,
       textTheme: otherTheme.textTheme,
@@ -737,6 +746,7 @@ void main() {
       'visualDensity',
       // COLOR
       'colorScheme',
+      'stateTheme',
       // TYPOGRAPHY & ICONOGRAPHY
       'typography',
       'textTheme',

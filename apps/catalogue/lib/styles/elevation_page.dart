@@ -85,7 +85,6 @@ class ElevationCards extends StatelessWidget {
       child: Theme(
         data: outerTheme.copyWith(colorScheme: colorScheme),
         child: Material(
-          type: MaterialType.card,
           shape: shape,
           child: Padding(
             padding: const EdgeInsets.all(24.0),

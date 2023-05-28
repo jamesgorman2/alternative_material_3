@@ -435,24 +435,23 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
 
   Color? _getBackgroundColor(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    Color? color = widget.color;
-    if (color == null) {
+    if (widget.color == null) {
       switch (widget.type) {
         case MaterialType.canvas:
           return theme.colorScheme.surface;
         case MaterialType.card:
-          switch (widget.elevation) {
-            case Elevation.level0:
+          switch (widget.elevation.level) {
+            case ElevationLevel.level0:
               return theme.colorScheme.surfaceContainerLowest;
-            case Elevation.level1:
+            case ElevationLevel.level1:
               return theme.colorScheme.surfaceContainerLow;
-            case Elevation.level2:
+            case ElevationLevel.level2:
               return theme.colorScheme.surfaceContainer;
-            case Elevation.level3:
+            case ElevationLevel.level3:
               return theme.colorScheme.surfaceContainerHigh;
-            case Elevation.level4:
+            case ElevationLevel.level4:
               return theme.colorScheme.surfaceContainerHigh;
-            case Elevation.level5:
+            case ElevationLevel.level5:
               return theme.colorScheme.surfaceContainerHighest;
           }
         case MaterialType.button:
@@ -461,7 +460,7 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
           break;
       }
     }
-    return color;
+    return widget.color;
   }
 
   @override

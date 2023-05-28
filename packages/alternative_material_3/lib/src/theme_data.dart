@@ -58,6 +58,7 @@ import 'search_view_theme.dart';
 import 'segmented_button_theme.dart';
 import 'slider_theme.dart';
 import 'snack_bar_theme.dart';
+import 'state_theme.dart';
 import 'switch_theme.dart';
 import 'tab_bar_theme.dart';
 import 'text_button_theme.dart';
@@ -287,10 +288,8 @@ class ThemeData with Diagnosticable {
     InteractiveInkFeatureFactory? splashFactory,
     VisualDensity? visualDensity,
     // COLOR
-    // [colorScheme] is the preferred way to configure colors. The other color
-    // properties (as well as primaryColorBrightness, and primarySwatch)
-    // will gradually be phased out, see https://github.com/flutter/flutter/issues/91772.
     ColorScheme? colorScheme,
+    StateThemeData? stateTheme,
     // TYPOGRAPHY & ICONOGRAPHY
     String? fontFamily,
     List<String>? fontFamilyFallback,
@@ -369,6 +368,8 @@ class ThemeData with Diagnosticable {
     // COLOR
     colorScheme ??= ColorScheme.m3DefaultLight;
     final bool isDark = colorScheme.brightness == Brightness.dark;
+
+    stateTheme ??= const StateThemeData();
 
       // TYPOGRAPHY & ICONOGRAPHY
     typography ??= Typography.material2021(platform: platform, colorScheme: colorScheme);
@@ -449,6 +450,7 @@ class ThemeData with Diagnosticable {
       visualDensity: visualDensity,
       // COLOR
       colorScheme: colorScheme,
+      stateTheme: stateTheme,
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: iconTheme,
       textTheme: textTheme,
@@ -527,6 +529,7 @@ class ThemeData with Diagnosticable {
     required this.visualDensity,
     // COLOR
     required this.colorScheme,
+    required this.stateTheme,
     // TYPOGRAPHY & ICONOGRAPHY
     required this.iconTheme,
     required this.textTheme,
@@ -810,6 +813,9 @@ class ThemeData with Diagnosticable {
   /// backwards compatibility breaks.
   final ColorScheme colorScheme;
 
+  /// A theme for customizing state opacities.
+  final StateThemeData stateTheme;
+
   // TYPOGRAPHY & ICONOGRAPHY
 
   /// An icon theme that contrasts with the card and canvas colors.
@@ -1014,10 +1020,8 @@ class ThemeData with Diagnosticable {
     InteractiveInkFeatureFactory? splashFactory,
     VisualDensity? visualDensity,
     // COLOR
-    // [colorScheme] is the preferred way to configure colors. The other color
-    // properties will gradually be phased out, see
-    // https://github.com/flutter/flutter/issues/91772.
     ColorScheme? colorScheme,
+    StateThemeData? stateTheme,
     // TYPOGRAPHY & ICONOGRAPHY
     IconThemeData? iconTheme,
     IconThemeData? primaryIconTheme,
@@ -1091,6 +1095,7 @@ class ThemeData with Diagnosticable {
       visualDensity: visualDensity ?? this.visualDensity,
       // COLOR
       colorScheme: colorScheme ?? this.colorScheme,
+      stateTheme: stateTheme ?? this.stateTheme,
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: iconTheme ?? this.iconTheme,
       textTheme: textTheme ?? this.textTheme,
@@ -1254,6 +1259,7 @@ class ThemeData with Diagnosticable {
       visualDensity: VisualDensity.lerp(a.visualDensity, b.visualDensity, t),
       // COLOR
       colorScheme: ColorScheme.lerp(a.colorScheme, b.colorScheme, t),
+      stateTheme: StateThemeData.lerp(a.stateTheme, b.stateTheme, t),
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme: IconThemeData.lerp(a.iconTheme, b.iconTheme, t),
       textTheme: TextTheme.lerp(a.textTheme, b.textTheme, t)!,
@@ -1330,6 +1336,7 @@ class ThemeData with Diagnosticable {
         other.visualDensity == visualDensity &&
         // COLOR
         other.colorScheme == colorScheme &&
+        other.stateTheme == stateTheme &&
         // TYPOGRAPHY & ICONOGRAPHY
         other.iconTheme == iconTheme &&
         other.textTheme == textTheme &&
@@ -1403,6 +1410,7 @@ class ThemeData with Diagnosticable {
       visualDensity,
       // COLOR
       colorScheme,
+      stateTheme,
       // TYPOGRAPHY & ICONOGRAPHY
       iconTheme,
       textTheme,
@@ -1478,6 +1486,7 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<VisualDensity>('visualDensity', visualDensity, defaultValue: defaultData.visualDensity, level: DiagnosticLevel.debug));
     // COLORS
     properties.add(DiagnosticsProperty<ColorScheme>('colorScheme', colorScheme, defaultValue: defaultData.colorScheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<StateThemeData>('stateTheme', stateTheme, defaultValue: defaultData.stateTheme, level: DiagnosticLevel.debug));
     // TYPOGRAPHY & ICONOGRAPHY
     properties.add(DiagnosticsProperty<IconThemeData>('iconTheme', iconTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TextTheme>('textTheme', textTheme, level: DiagnosticLevel.debug));

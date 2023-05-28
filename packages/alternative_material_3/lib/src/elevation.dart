@@ -114,17 +114,52 @@ class Elevation {
     }
   }
 
+  /// Components: Assist Chip (Flat), Carousel Item, Filled Button,
+  /// Filled Tonal Button, Filled Card, Filter Chip (Flat), Full Screen Dialog,
+  /// List Item, Input Chip, Navigation Rail, Primary Navigation Tabs,
+  /// Secondary Navigation Tabs, Outlined Card, Side Sheet (Docked),
+  /// Slider (Track), Suggestion Chip (Flat), Top App Bar.
+  ///
+  /// Height is 0dp.
   static const Elevation level0 = Elevation(0.0);
+
+  /// Components: Assist Chip (Elevated), Banner, Bottom Sheet (Modal),
+  /// Elevated Button,Elevated Card, Extended FAB (Lowered), FAB (Lowered),
+  /// Filter Chip (Elevated), Navigation Drawer (Modal), Side Sheet (Modal),
+  /// Slider (Handle), Suggestion Chip (Elevated).
+  ///
+  /// Height is 1dp.
   static const Elevation level1 = Elevation(1.0);
+
+  /// Components: Autocomplete Menu, Bottom App Bar, Dropdown Menu, Menu,
+  /// Navigation Bar, Select Menu, Rich Tooltip, Top App Bar (Scrolled).
+  ///
+  /// Height is 3dp.
   static const Elevation level2 = Elevation(3.0);
+
+  /// Components: FAB, Extended FAB, Modal Date Picker, Docked Date Picker,
+  /// Modal Date Input, Dialog, Search Bar, Search View, Time Picker,
+  /// Time Input.
+  ///
+  /// Height is 6dp.
   static const Elevation level3 = Elevation(6.0);
+
+  /// Not assigned as resting level. Reserved for user-interacted states such
+  /// as hover and dragged.
+  ///
+  /// Height is 8dp.
   static const Elevation level4 = Elevation(8.0);
+
+  /// Not assigned as resting level. Reserved for user-interacted states such
+  /// as hover and dragged.
+  ///
+  /// Height is 12dp.
   static const Elevation level5 = Elevation(12.0);
 
   /// The height of this Elevation in dps.
   final double height;
 
-  /// The level that contains this Elevalation
+  /// The level that contains this Elevation.
   ///
   /// See also
   ///
@@ -144,11 +179,12 @@ class Elevation {
     return ElevationLevel.level5;
   }
 
-  ///
+  /// Return the closest Elevation equal to or lower than this Elevation.
   Elevation get baseElevation {
     return Elevation.atLevel(level);
   }
 
+  /// Return a human readable label of the elevation's level.
   String get label {
     if (height < level1.height) {
       return 'Level 0';
@@ -164,18 +200,42 @@ class Elevation {
     return 'Level 5';
   }
 
+  /// Returns a new Elevation whose level is the sum of the levels of this
+  /// and the other Elevation, discarding any height
+  /// between levels.
+  ///
+  /// The result is capped at [Elevation.level5].
+  ///
+  /// See also:
+  ///
+  /// * [ElevationLevel.+]
   Elevation addLevel(Elevation other) {
     return Elevation.atLevel(level + other.level);
   }
 
+  /// Returns a new Elevation whose height is the sum of this
+  /// and the other Elevation's heights.
   Elevation addHeight(Elevation other) {
     return Elevation(height + other.height);
   }
 
+  /// Returns a new Elevation whose level is the difference of the levels of
+  /// this and the other Elevation, discarding any height
+  /// between levels.
+  ///
+  /// The result has a floor of [Elevation.level0].
+  ///
+  /// See also:
+  ///
+  /// * [ElevationLevel.-]
   Elevation subtractLevel(Elevation other) {
     return Elevation.atLevel(level - other.level);
   }
 
+  /// Returns a new Elevation whose height is the difference of this
+  /// and the other Elevation's heights.
+  ///
+  /// The result has a floor of [Elevation.level0].
   Elevation subtractHeight(Elevation other) {
     return Elevation(math.max(height - other.height, 0.0));
   }
@@ -219,6 +279,11 @@ class Elevation {
   @override
   int get hashCode => Object.hash(height, level);
 
+  /// Linearly interpolate between two Elevations.
+  ///
+  /// This assumes null values to be [Elevation.level0].
+  ///
+  /// {@macro dart.ui.shadow.lerp}
   static Elevation lerp(Elevation? a, Elevation? b, double t) {
     if (a == b && a != null) {
       return a;
@@ -226,6 +291,13 @@ class Elevation {
     return Elevation(lerpDouble(a?.height, b?.height, t) ?? 0.0);
   }
 
+  /// Linearly interpolate between two Elevations.
+  ///
+  /// This will return null if both a and b are null.
+  /// Otherwise it will replace will values with defaultHeight,
+  /// which has a default value of [Elevation.level0].
+  ///
+  /// {@macro dart.ui.shadow.lerp}
   static Elevation? lerpNullable(
     Elevation? a,
     Elevation? b,
