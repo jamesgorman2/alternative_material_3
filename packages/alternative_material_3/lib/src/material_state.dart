@@ -356,6 +356,38 @@ abstract class MaterialStateBorderSide extends BorderSide implements MaterialSta
   /// ```
   static MaterialStateBorderSide resolveWith(MaterialPropertyResolver<BorderSide?> callback) =>
       _MaterialStateBorderSide(callback);
+
+  /// Linearly interpolate between two [MaterialStateBorderSide]s.
+  ///
+  /// {@macro dart.ui.shadow.lerp}
+  static MaterialStateBorderSide? lerp(MaterialStateBorderSide? a, MaterialStateBorderSide? b, double t,) {
+    return _LerpMaterialStateBorderSide(a, b, t,);
+  }
+}
+
+class _LerpMaterialStateBorderSide extends MaterialStateBorderSide {
+  const _LerpMaterialStateBorderSide(this.a, this.b, this.t);
+
+  final MaterialStateBorderSide? a;
+  final MaterialStateBorderSide? b;
+  final double t;
+
+  @override
+  BorderSide? resolve(Set<MaterialState> states) {
+    final BorderSide? resolvedA = a?.resolve(states);
+    final BorderSide? resolvedB = b?.resolve(states);
+    return _lerpSides(resolvedA, resolvedB, t);
+  }
+
+  BorderSide? _lerpSides(BorderSide? a, BorderSide? b, double t) {
+    if (a == null || b == null) {
+      return null;
+    }
+    if (identical(a, b)) {
+      return a;
+    }
+    return BorderSide.lerp(a, b, t);
+  }
 }
 
 /// A [MaterialStateBorderSide] created from a
@@ -607,7 +639,7 @@ class _MaterialStateUnderlineInputBorder extends MaterialStateUnderlineInputBord
 /// Material state properties represent values that depend on a widget's material
 /// "state". The state is encoded as a set of [MaterialState] values, like
 /// [MaterialState.focused], [MaterialState.hovered], [MaterialState.pressed]. For
-/// example the [InkWell.overlayColor] defines the color that fills the ink well
+/// example the [InkWell.stateLayerColor] defines the color that fills the ink well
 /// when it's pressed (the "splash color"), focused, or hovered. The [InkWell]
 /// uses the overlay color's [resolve] method to compute the color for the
 /// ink well's current state.
@@ -680,6 +712,23 @@ abstract class MaterialStateProperty<T> {
     }
     return _LerpProperties<T>(a, b, t, lerpFunction);
   }
+
+  /// Linearly interpolate between two [MaterialStateProperty]s
+  /// Where the value of [T] is non-nullable.
+  ///
+  /// {@macro dart.ui.shadow.lerp}
+  static MaterialStateProperty<T>? lerpNonNull<T>(
+    MaterialStateProperty<T>? a,
+    MaterialStateProperty<T>? b,
+    double t,
+    T Function(T?, T?, double) lerpFunction,
+  ) {
+    // Avoid creating a _LerpProperties object for a common case.
+    if (a == null && b == null) {
+      return null;
+    }
+    return _LerpPropertiesNonNull<T>(a, b, t, lerpFunction);
+  }
 }
 
 class _LerpProperties<T> implements MaterialStateProperty<T?> {
@@ -692,6 +741,22 @@ class _LerpProperties<T> implements MaterialStateProperty<T?> {
 
   @override
   T? resolve(Set<MaterialState> states) {
+    final T? resolvedA = a?.resolve(states);
+    final T? resolvedB = b?.resolve(states);
+    return lerpFunction(resolvedA, resolvedB, t);
+  }
+}
+
+class _LerpPropertiesNonNull<T> implements MaterialStateProperty<T> {
+  const _LerpPropertiesNonNull(this.a, this.b, this.t, this.lerpFunction);
+
+  final MaterialStateProperty<T>? a;
+  final MaterialStateProperty<T>? b;
+  final double t;
+  final T Function(T?, T?, double) lerpFunction;
+
+  @override
+  T resolve(Set<MaterialState> states) {
     final T? resolvedA = a?.resolve(states);
     final T? resolvedB = b?.resolve(states);
     return lerpFunction(resolvedA, resolvedB, t);

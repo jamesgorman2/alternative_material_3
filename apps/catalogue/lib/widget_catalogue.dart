@@ -1,6 +1,7 @@
 import 'package:alternative_material_3/material.dart';
 import 'package:provider/provider.dart';
 
+import 'components/components_overview.dart';
 import 'home.dart';
 import 'styles/styles_overview.dart';
 
@@ -16,6 +17,7 @@ class WidgetCatalogue extends StatelessWidget {
   final Map<String, WidgetBuilder> _routes = {
     Home.route: (context) => const Home(),
     ...StylesOverview.routes,
+    ...ComponentsOverview.routes,
   };
 
   @override

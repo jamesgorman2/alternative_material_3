@@ -367,24 +367,20 @@ class ThemeData with Diagnosticable {
 
     // COLOR
     colorScheme ??= ColorScheme.m3DefaultLight;
-    final bool isDark = colorScheme.brightness == Brightness.dark;
 
     stateTheme ??= const StateThemeData();
 
       // TYPOGRAPHY & ICONOGRAPHY
     typography ??= Typography.material2021(platform: platform, colorScheme: colorScheme);
-    TextTheme defaultTextTheme = isDark ? typography.white : typography.black;
-    if (fontFamily != null) {
-      defaultTextTheme = defaultTextTheme.apply(fontFamily: fontFamily);
-    }
-    if (fontFamilyFallback != null) {
-      defaultTextTheme = defaultTextTheme.apply(fontFamilyFallback: fontFamilyFallback);
-    }
-    if (package != null) {
-      defaultTextTheme = defaultTextTheme.apply(package: package);
-    }
-    textTheme = defaultTextTheme.merge(textTheme);
-    iconTheme ??= isDark ? const IconThemeData(color: kDefaultIconLightColor) : const IconThemeData(color: kDefaultIconDarkColor);
+    textTheme = textThemeFor(
+      colorScheme: colorScheme,
+      typography: typography,
+      fontFamily: fontFamily,
+      fontFamilyFallback: fontFamilyFallback,
+      package: package
+    ).merge(textTheme);
+
+    iconTheme ??= iconThemeFor(colorScheme);
 
     // COMPONENT THEMES
     appBarTheme ??= const AppBarTheme();
@@ -653,6 +649,37 @@ class ThemeData with Diagnosticable {
   /// Most applications would use [Theme.of], which provides correct localized
   /// text geometry.
   factory ThemeData.fallback() => ThemeData.light();
+
+  /// Create a [TextTheme] matching the brightness of the [colorScheme].
+  /// Also apply any non-null type parameters.
+  static TextTheme textThemeFor({
+    required ColorScheme colorScheme,
+    required Typography typography,
+    String? package,
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+  }) {
+    final bool isDark = colorScheme.brightness == Brightness.dark;
+    // typography ??= Typography.material2021(platform: platform, colorScheme: colorScheme);
+    TextTheme defaultTextTheme = isDark ? typography.white : typography.black;
+    if (fontFamily != null) {
+      defaultTextTheme = defaultTextTheme.apply(fontFamily: fontFamily);
+    }
+    if (fontFamilyFallback != null) {
+      defaultTextTheme = defaultTextTheme.apply(fontFamilyFallback: fontFamilyFallback);
+    }
+    if (package != null) {
+      defaultTextTheme = defaultTextTheme.apply(package: package);
+    }
+    return defaultTextTheme;
+  }
+
+  /// Create an [IconThemeData] matching the brightness of the [colorScheme].
+  static IconThemeData iconThemeFor(ColorScheme colorScheme) {
+    return colorScheme.brightness == Brightness.dark
+        ? const IconThemeData(color: kDefaultIconLightColor)
+        : const IconThemeData(color: kDefaultIconDarkColor);
+  }
 
   /// The overall theme brightness.
   ///
@@ -1148,6 +1175,7 @@ class ThemeData with Diagnosticable {
       tooltipTheme: tooltipTheme ?? this.tooltipTheme,
     );
   }
+
   // just seemed like a number that's not too big (we should be able to fit 5
   static final _FifoCache<_IdentityThemeDataCacheKey, ThemeData> _localizedThemeDataCache =
       _FifoCache<_IdentityThemeDataCacheKey, ThemeData>(_localizedThemeDataCacheSize);
@@ -1898,13 +1926,13 @@ class VisualDensity with Diagnosticable {
   }
 
   /// Linearly interpolate between two densities.
-  static VisualDensity lerp(VisualDensity a, VisualDensity b, double t) {
-    if (identical(a, b)) {
+  static VisualDensity lerp(VisualDensity? a, VisualDensity? b, double t) {
+    if (identical(a, b) && a != null) {
       return a;
     }
     return VisualDensity(
-      horizontal: lerpDouble(a.horizontal, b.horizontal, t)!,
-      vertical: lerpDouble(a.vertical, b.vertical, t)!,
+      horizontal: lerpDouble(a?.horizontal, b?.horizontal, t) ?? 0.0,
+      vertical: lerpDouble(a?.vertical, b?.vertical, t) ?? 0.0,
     );
   }
 

@@ -15,6 +15,7 @@ import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'list_tile.dart';
+import 'list_tile_element.dart';
 import 'material.dart';
 import 'material_localizations.dart';
 import 'material_state.dart';
@@ -486,7 +487,7 @@ class CheckedPopupMenuItem<T> extends PopupMenuItem<T> {
   /// Typically a [Text]. An appropriate [DefaultTextStyle] is put in scope for
   /// the child. The text should be short enough that it won't wrap.
   ///
-  /// This widget is placed in the [ListTile.title] slot of a [ListTile] whose
+  /// This widget is placed in the [ListTile.headline] slot of a [ListTile] whose
   /// [ListTile.leading] slot is an [Icons.done] icon.
   @override
   Widget? get child => super.child;
@@ -524,11 +525,13 @@ class _CheckedPopupMenuItemState<T> extends PopupMenuItemState<T, CheckedPopupMe
     return IgnorePointer(
       child: ListTile(
         enabled: widget.enabled,
-        leading: FadeTransition(
-          opacity: _opacity,
-          child: Icon(_controller.isDismissed ? null : Icons.done),
+        leading: ListTileElement.icon24(
+          child: FadeTransition(
+            opacity: _opacity,
+            child: Icon(_controller.isDismissed ? null : Icons.done),
+          ),
         ),
-        title: widget.child,
+        headline: widget.child,
       ),
     );
   }

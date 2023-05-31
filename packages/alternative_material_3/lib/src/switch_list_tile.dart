@@ -6,8 +6,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
 import 'list_tile.dart';
+import 'list_tile_element.dart';
 import 'list_tile_theme.dart';
-import 'material_state.dart';
+import 'padding_correction.dart';
 import 'switch.dart';
 import 'switch_theme.dart';
 import 'theme.dart';
@@ -35,12 +36,12 @@ enum _SwitchListTileType { material, adaptive }
 /// [inactiveThumbImage] properties of this widget are identical to the
 /// similarly-named properties on the [Switch] widget.
 ///
-/// The [title], [subtitle], [isThreeLine], and [dense] properties are like
+/// The [headline], [supportingText], [isThreeLine], and [dense] properties are like
 /// those of the same name on [ListTile].
 ///
 /// The [selected] property on this widget is similar to the [ListTile.selected]
 /// property. This tile's [activeColor] is used for the selected item's text color, or
-/// the theme's [SwitchThemeData.overlayColor] if [activeColor] is null.
+/// the theme's [SwitchThemeData.stateLayerColor] if [activeColor] is null.
 ///
 /// This widget does not coordinate the [selected] state and the
 /// [value]; to have the list tile appear selected when the
@@ -164,45 +165,28 @@ class SwitchListTile extends StatelessWidget {
     super.key,
     required this.value,
     required this.onChanged,
-    this.activeColor,
-    this.activeTrackColor,
-    this.inactiveThumbColor,
-    this.inactiveTrackColor,
-    this.activeThumbImage,
-    this.onActiveThumbImageError,
-    this.inactiveThumbImage,
-    this.onInactiveThumbImageError,
-    this.thumbColor,
-    this.trackColor,
-    this.trackOutlineColor,
-    this.thumbIcon,
-    this.materialTapTargetSize,
+    this.switchTheme,
+    this.listTileTheme,
+    this.layout,
     this.dragStartBehavior = DragStartBehavior.start,
-    this.mouseCursor,
-    this.overlayColor,
-    this.splashRadius,
     this.focusNode,
     this.onFocusChange,
     this.autofocus = false,
-    this.tileColor,
-    this.title,
-    this.subtitle,
-    this.isThreeLine = false,
-    this.dense,
-    this.contentPadding,
+    this.overline,
+    this.headline,
+    this.supportingText,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
-    this.shape,
-    this.selectedTileColor,
-    this.visualDensity,
-    this.enableFeedback,
-    this.hoverColor,
-  }) : _switchListTileType = _SwitchListTileType.material,
-       applyCupertinoTheme = false,
-       assert(activeThumbImage != null || onActiveThumbImageError == null),
-       assert(inactiveThumbImage != null || onInactiveThumbImageError == null),
-       assert(!isThreeLine || subtitle != null);
+  })  : _switchListTileType = _SwitchListTileType.material,
+        applyCupertinoTheme = false,
+        assert(
+          !(supportingText != null &&
+              overline != null &&
+              layout != ListTileLayout.threeLine),
+          'SwitchListTile.supportingText and SwitchListTile.overline must not be present '
+          'together when layout != ListTileLayout.threeLine',
+        );
 
   /// Creates a Material [ListTile] with an adaptive [Switch], following
   /// Material design's
@@ -220,45 +204,26 @@ class SwitchListTile extends StatelessWidget {
     super.key,
     required this.value,
     required this.onChanged,
-    this.activeColor,
-    this.activeTrackColor,
-    this.inactiveThumbColor,
-    this.inactiveTrackColor,
-    this.activeThumbImage,
-    this.onActiveThumbImageError,
-    this.inactiveThumbImage,
-    this.onInactiveThumbImageError,
-    this.thumbColor,
-    this.trackColor,
-    this.trackOutlineColor,
-    this.thumbIcon,
-    this.materialTapTargetSize,
+    this.switchTheme,
+    this.listTileTheme,
+    this.layout,
     this.dragStartBehavior = DragStartBehavior.start,
-    this.mouseCursor,
-    this.overlayColor,
-    this.splashRadius,
     this.focusNode,
     this.onFocusChange,
     this.autofocus = false,
     this.applyCupertinoTheme,
-    this.tileColor,
-    this.title,
-    this.subtitle,
-    this.isThreeLine = false,
-    this.dense,
-    this.contentPadding,
+    this.overline,
+    this.headline,
+    this.supportingText,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
-    this.shape,
-    this.selectedTileColor,
-    this.visualDensity,
-    this.enableFeedback,
-    this.hoverColor,
-  }) : _switchListTileType = _SwitchListTileType.adaptive,
-       assert(!isThreeLine || subtitle != null),
-       assert(activeThumbImage != null || onActiveThumbImageError == null),
-       assert(inactiveThumbImage != null || onInactiveThumbImageError == null);
+  })  : _switchListTileType = _SwitchListTileType.adaptive,
+        assert(
+        layout == null || layout == ListTileLayout.threeLine ||
+            (layout == ListTileLayout.oneLine && overline == null && supportingText == null) ||
+            (layout == ListTileLayout.twoLine && (overline == null || supportingText == null))
+        );
 
   /// Whether this switch is checked.
   ///
@@ -292,133 +257,20 @@ class SwitchListTile extends StatelessWidget {
   /// {@end-tool}
   final ValueChanged<bool>? onChanged;
 
-  /// {@macro flutter.material.switch.activeColor}
-  ///
-  /// Defaults to [ColorScheme.secondary] of the current [Theme].
-  final Color? activeColor;
+  /// SwitchTheme overrides that only apply to this switch list tile.
+  final SwitchThemeData? switchTheme;
 
-  /// {@macro flutter.material.switch.activeTrackColor}
-  ///
-  /// Defaults to [ThemeData.toggleableActiveColor] with the opacity set at 50%.
-  ///
-  /// Ignored if created with [SwitchListTile.adaptive].
-  final Color? activeTrackColor;
+  /// ListTileThemeData overrides that only apply to this switch list tile.
+  final ListTileThemeData? listTileTheme;
 
-  /// {@macro flutter.material.switch.inactiveThumbColor}
-  ///
-  /// Defaults to the colors described in the Material design specification.
-  ///
-  /// Ignored if created with [SwitchListTile.adaptive].
-  final Color? inactiveThumbColor;
-
-  /// {@macro flutter.material.switch.inactiveTrackColor}
-  ///
-  /// Defaults to the colors described in the Material design specification.
-  ///
-  /// Ignored if created with [SwitchListTile.adaptive].
-  final Color? inactiveTrackColor;
-
-  /// {@macro flutter.material.switch.activeThumbImage}
-  final ImageProvider? activeThumbImage;
-
-  /// {@macro flutter.material.switch.onActiveThumbImageError}
-  final ImageErrorListener? onActiveThumbImageError;
-
-  /// {@macro flutter.material.switch.inactiveThumbImage}
-  ///
-  /// Ignored if created with [SwitchListTile.adaptive].
-  final ImageProvider? inactiveThumbImage;
-
-  /// {@macro flutter.material.switch.onInactiveThumbImageError}
-  final ImageErrorListener? onInactiveThumbImageError;
-
-  /// The color of this switch's thumb.
-  ///
-  /// Resolved in the following states:
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.disabled].
-  ///
-  /// If null, then the value of [activeColor] is used in the selected state
-  /// and [inactiveThumbColor] in the default state. If that is also null, then
-  /// the value of [SwitchThemeData.thumbColor] is used. If that is also null,
-  /// The default value is used.
-  final MaterialStateProperty<Color?>? thumbColor;
-
-  /// The color of this switch's track.
-  ///
-  /// Resolved in the following states:
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.disabled].
-  ///
-  /// If null, then the value of [activeTrackColor] is used in the selected
-  /// state and [inactiveTrackColor] in the default state. If that is also null,
-  /// then the value of [SwitchThemeData.trackColor] is used. If that is also
-  /// null, then the default value is used.
-  final MaterialStateProperty<Color?>? trackColor;
-
-  /// {@macro flutter.material.switch.trackOutlineColor}
-  ///
-  /// The [ListTile] will be focused when this [SwitchListTile] requests focus,
-  /// so the focused outline color of the switch will be ignored.
-  ///
-  /// In Material 3, the outline color defaults to transparent in the selected
-  /// state and [ColorScheme.outline] in the unselected state. In Material 2,
-  /// the [Switch] track has no outline.
-  final MaterialStateProperty<Color?>? trackOutlineColor;
-
-  /// The icon to use on the thumb of this switch
-  ///
-  /// Resolved in the following states:
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.disabled].
-  ///
-  /// If null, then the value of [SwitchThemeData.thumbIcon] is used. If this is
-  /// also null, then the [Switch] does not have any icons on the thumb.
-  final MaterialStateProperty<Icon?>? thumbIcon;
-
-  /// {@macro flutter.material.switch.materialTapTargetSize}
-  ///
-  /// defaults to [MaterialTapTargetSize.shrinkWrap].
-  final MaterialTapTargetSize? materialTapTargetSize;
+  /// The line layout of the [ListTile]. When no layout is passed in during
+  /// construction the value will be calculated base on the presence
+  /// or absence of [overline] and [supportingText], and the length of
+  /// [supportingText].
+  final ListTileLayout? layout;
 
   /// {@macro flutter.cupertino.CupertinoSwitch.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
-
-  /// The cursor for a mouse pointer when it enters or is hovering over the
-  /// widget.
-  ///
-  /// If [mouseCursor] is a [MaterialStateProperty<MouseCursor>],
-  /// [MaterialStateProperty.resolve] is used for the following [MaterialState]s:
-  ///
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.disabled].
-  ///
-  /// If null, then the value of [SwitchThemeData.mouseCursor] is used. If that
-  /// is also null, then [MaterialStateMouseCursor.clickable] is used.
-  final MouseCursor? mouseCursor;
-
-  /// The color for the switch's [Material].
-  ///
-  /// Resolves in the following states:
-  ///  * [MaterialState.pressed].
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///
-  /// If null, then the value of [activeColor] with alpha [kRadialReactionAlpha]
-  /// and [hoverColor] is used in the pressed and hovered state. If that is also
-  /// null, the value of [SwitchThemeData.overlayColor] is used. If that is
-  /// also null, then the default value is used in the pressed and hovered state.
-  final MaterialStateProperty<Color?>? overlayColor;
-
-  /// {@macro flutter.material.switch.splashRadius}
-  ///
-  /// If null, then the value of [SwitchThemeData.splashRadius] is used. If that
-  /// is also null, then [kRadialReactionRadius] is used.
-  final double? splashRadius;
 
   /// {@macro flutter.widgets.Focus.focusNode}
   final FocusNode? focusNode;
@@ -429,43 +281,23 @@ class SwitchListTile extends StatelessWidget {
   /// {@macro flutter.widgets.Focus.autofocus}
   final bool autofocus;
 
-  /// {@macro flutter.material.ListTile.tileColor}
-  final Color? tileColor;
+  /// Typically a [Text] widget.
+  final Widget? overline;
 
   /// The primary content of the list tile.
   ///
   /// Typically a [Text] widget.
-  final Widget? title;
+  final Widget? headline;
 
   /// Additional content displayed below the title.
   ///
   /// Typically a [Text] widget.
-  final Widget? subtitle;
+  final Widget? supportingText;
 
   /// A widget to display on the opposite side of the tile from the switch.
   ///
   /// Typically an [Icon] widget.
-  final Widget? secondary;
-
-  /// Whether this list tile is intended to display three lines of text.
-  ///
-  /// If false, the list tile is treated as having one line if the subtitle is
-  /// null and treated as having two lines if the subtitle is non-null.
-  final bool isThreeLine;
-
-  /// Whether this list tile is part of a vertically dense list.
-  ///
-  /// If this property is null then its value is based on [ListTileThemeData.dense].
-  final bool? dense;
-
-  /// The tile's internal padding.
-  ///
-  /// Insets a [SwitchListTile]'s contents: its [title], [subtitle],
-  /// [secondary], and [Switch] widgets.
-  ///
-  /// If null, [ListTile]'s default of `EdgeInsets.symmetric(horizontal: 16.0)`
-  /// is used.
-  final EdgeInsetsGeometry? contentPadding;
+  final ListTileElement? secondary;
 
   /// Whether to render icons and text in the [activeColor].
   ///
@@ -484,87 +316,45 @@ class SwitchListTile extends StatelessWidget {
   /// By default, the value of [controlAffinity] is [ListTileControlAffinity.platform].
   final ListTileControlAffinity controlAffinity;
 
-  /// {@macro flutter.material.ListTile.shape}
-  final ShapeBorder? shape;
-
-  /// If non-null, defines the background color when [SwitchListTile.selected] is true.
-  final Color? selectedTileColor;
-
-  /// Defines how compact the list tile's layout will be.
-  ///
-  /// {@macro flutter.material.themedata.visualDensity}
-  final VisualDensity? visualDensity;
-
-  /// {@macro flutter.material.ListTile.enableFeedback}
-  ///
-  /// See also:
-  ///
-  ///  * [Feedback] for providing platform-specific feedback to certain actions.
-  final bool? enableFeedback;
-
-  /// The color for the tile's [Material] when a pointer is hovering over it.
-  final Color? hoverColor;
-
   /// {@macro flutter.cupertino.CupertinoSwitch.applyTheme}
   final bool? applyCupertinoTheme;
 
   @override
   Widget build(BuildContext context) {
-    final Widget control;
+    final ListTileElement control;
     switch (_switchListTileType) {
       case _SwitchListTileType.adaptive:
-        control = Switch.adaptive(
-          value: value,
-          onChanged: onChanged,
-          activeColor: activeColor,
-          activeThumbImage: activeThumbImage,
-          inactiveThumbImage: inactiveThumbImage,
-          materialTapTargetSize: materialTapTargetSize ?? MaterialTapTargetSize.shrinkWrap,
-          activeTrackColor: activeTrackColor,
-          inactiveTrackColor: inactiveTrackColor,
-          inactiveThumbColor: inactiveThumbColor,
-          autofocus: autofocus,
-          onFocusChange: onFocusChange,
-          onActiveThumbImageError: onActiveThumbImageError,
-          onInactiveThumbImageError: onInactiveThumbImageError,
-          thumbColor: thumbColor,
-          trackColor: trackColor,
-          trackOutlineColor: trackOutlineColor,
-          thumbIcon: thumbIcon,
-          applyCupertinoTheme: applyCupertinoTheme,
-          dragStartBehavior: dragStartBehavior,
-          mouseCursor: mouseCursor,
-          splashRadius: splashRadius,
-          overlayColor: overlayColor,
+        control = ListTileElement(
+          paddingCorrection: (actualWidgetSize) =>
+              PaddingCorrection.of(const EdgeInsetsDirectional.all(2.0)),
+          child: Switch.adaptive(
+            value: value,
+            onChanged: onChanged,
+            theme: switchTheme,
+            autofocus: autofocus,
+            onFocusChange: onFocusChange,
+            applyCupertinoTheme: applyCupertinoTheme,
+            dragStartBehavior: dragStartBehavior,
+          ),
         );
 
       case _SwitchListTileType.material:
-        control = Switch(
-          value: value,
-          onChanged: onChanged,
-          activeColor: activeColor,
-          activeThumbImage: activeThumbImage,
-          inactiveThumbImage: inactiveThumbImage,
-          materialTapTargetSize: materialTapTargetSize ?? MaterialTapTargetSize.shrinkWrap,
-          activeTrackColor: activeTrackColor,
-          inactiveTrackColor: inactiveTrackColor,
-          inactiveThumbColor: inactiveThumbColor,
-          autofocus: autofocus,
-          onFocusChange: onFocusChange,
-          onActiveThumbImageError: onActiveThumbImageError,
-          onInactiveThumbImageError: onInactiveThumbImageError,
-          thumbColor: thumbColor,
-          trackColor: trackColor,
-          trackOutlineColor: trackOutlineColor,
-          thumbIcon: thumbIcon,
-          dragStartBehavior: dragStartBehavior,
-          mouseCursor: mouseCursor,
-          splashRadius: splashRadius,
-          overlayColor: overlayColor,
+        control = ListTileElement(
+          paddingCorrection: (actualWidgetSize) =>
+              PaddingCorrection.of(const EdgeInsetsDirectional.all(2.0)),
+          child: Switch(
+            value: value,
+            onChanged: onChanged,
+            theme: switchTheme,
+            autofocus: autofocus,
+            onFocusChange: onFocusChange,
+            dragStartBehavior: dragStartBehavior,
+          ),
         );
     }
 
-    Widget? leading, trailing;
+    ListTileElement? leading;
+    ListTileElement? trailing;
     switch (controlAffinity) {
       case ListTileControlAffinity.leading:
         leading = control;
@@ -575,36 +365,25 @@ class SwitchListTile extends StatelessWidget {
         trailing = control;
     }
 
-    final ThemeData theme = Theme.of(context);
-    final SwitchThemeData switchTheme = SwitchTheme.of(context);
-    final Set<MaterialState> states = <MaterialState>{
-      if (selected) MaterialState.selected,
-    };
-    final Color effectiveActiveColor = activeColor
-      ?? switchTheme.thumbColor?.resolve(states)
-      ?? theme.colorScheme.secondary;
     return MergeSemantics(
       child: ListTile(
-        selectedColor: effectiveActiveColor,
+        layout: layout,
+        theme: listTileTheme,
         leading: leading,
-        title: title,
-        subtitle: subtitle,
+        overline: overline,
+        headline: headline,
+        supportingText: supportingText,
         trailing: trailing,
-        isThreeLine: isThreeLine,
-        dense: dense,
-        contentPadding: contentPadding,
         enabled: onChanged != null,
-        onTap: onChanged != null ? () { onChanged!(!value); } : null,
+        onTap: onChanged != null
+            ? () {
+                onChanged!(!value);
+              }
+            : null,
         selected: selected,
-        selectedTileColor: selectedTileColor,
         autofocus: autofocus,
-        shape: shape,
-        tileColor: tileColor,
-        visualDensity: visualDensity,
         focusNode: focusNode,
         onFocusChange: onFocusChange,
-        enableFeedback: enableFeedback,
-        hoverColor: hoverColor,
       ),
     );
   }

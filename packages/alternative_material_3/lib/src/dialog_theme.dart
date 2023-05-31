@@ -115,14 +115,6 @@ class DialogTheme with Diagnosticable {
       return a;
     }
 
-    final elevation = a?.elevation == null && b?.elevation == null
-      ? null
-      : Elevation.lerpNullable(
-          a?.elevation ?? Elevation.level3,
-          b?.elevation ?? Elevation.level3,
-          t,
-          defaultHeight: Elevation.level3,
-        );
     return DialogTheme(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       elevation: Elevation.lerpNullable(

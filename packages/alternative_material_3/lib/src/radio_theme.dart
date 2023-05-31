@@ -8,7 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'color_extensions.dart';
+import 'color_scheme.dart';
+import 'colors.dart';
+import 'constants.dart';
 import 'material_state.dart';
+import 'state_theme.dart';
 import 'theme.dart';
 import 'theme_data.dart';
 
@@ -39,72 +44,175 @@ import 'theme_data.dart';
 class RadioThemeData with Diagnosticable {
   /// Creates a theme that can be used for [ThemeData.radioTheme].
   const RadioThemeData({
-    this.mouseCursor,
-    this.fillColor,
-    this.overlayColor,
-    this.splashRadius,
-    this.materialTapTargetSize,
-    this.visualDensity,
-  });
+    MaterialStateProperty<MouseCursor>? mouseCursor,
+    MaterialStateProperty<Color>? containerColor,
+    MaterialStateProperty<Color>? stateLayerColor,
+    StateThemeData? stateTheme,
+    double? splashRadius,
+    MaterialTapTargetSize? materialTapTargetSize,
+    VisualDensity? visualDensity,
+  })  : _mouseCursor = mouseCursor,
+        _containerColor = containerColor,
+        _stateLayerColor = stateLayerColor,
+        _stateTheme = stateTheme,
+        _splashRadius = splashRadius,
+        _materialTapTargetSize = materialTapTargetSize,
+        _visualDensity = visualDensity;
 
-  /// {@macro flutter.material.radio.mouseCursor}
-  ///
-  /// If specified, overrides the default value of [Radio.mouseCursor]. The
-  /// default value is [MaterialStateMouseCursor.clickable].
-  final MaterialStateProperty<MouseCursor?>? mouseCursor;
+  RadioThemeData._clone(RadioThemeData other)
+      : _mouseCursor = other._mouseCursor,
+        _containerColor = other._containerColor,
+        _stateLayerColor = other._stateLayerColor,
+        _stateTheme = other._stateTheme,
+        _splashRadius = other._splashRadius,
+        _materialTapTargetSize = other._materialTapTargetSize,
+        _visualDensity = other._visualDensity;
 
-  /// {@macro flutter.material.radio.fillColor}
-  ///
-  /// If specified, overrides the default value of [Radio.fillColor]. The
-  /// default value is the value of [ThemeData.disabledColor] in the disabled
-  /// state, [ThemeData.toggleableActiveColor] in the selected state, and
-  /// [ThemeData.unselectedWidgetColor] in the default state.
-  final MaterialStateProperty<Color?>? fillColor;
+  /// Copy this RadioThemeData and set any default values that
+  /// require a [BuildContext] set, such as colors and text themes.
+  RadioThemeData withContext(BuildContext context) =>
+      _LateResolvingRadioThemeData(this, context);
 
-  /// {@macro flutter.material.radio.overlayColor}
+  /// {@template flutter.material.radio.mouseCursor}
+  /// The cursor for a mouse pointer when it enters or is hovering over the
+  /// widget.
   ///
-  /// If specified, overrides the default value of [Radio.overlayColor]. The
-  /// default value is [ThemeData.toggleableActiveColor] with alpha
-  /// [kRadialReactionAlpha], [ThemeData.focusColor] and [ThemeData.hoverColor]
-  /// in the pressed, focused, and hovered state.
-  final MaterialStateProperty<Color?>? overlayColor;
+  /// If [mouseCursor] is a [MaterialStateProperty<MouseCursor>],
+  /// [MaterialStateProperty.resolve] is used for the following [MaterialState]s:
+  ///
+  ///  * [MaterialState.selected].
+  ///  * [MaterialState.hovered].
+  ///  * [MaterialState.focused].
+  ///  * [MaterialState.disabled].
+  /// {@endtemplate}
+  ///
+  /// The default value is [MaterialStateMouseCursor.clickable].
+  ///
+  /// See also:
+  ///
+  ///  * [MaterialStateMouseCursor], a [MouseCursor] that implements
+  ///    `MaterialStateProperty` which is used in APIs that need to accept
+  ///    either a [MouseCursor] or a [MaterialStateProperty<MouseCursor>].
+  MaterialStateProperty<MouseCursor> get mouseCursor =>
+      _mouseCursor ?? MaterialStateMouseCursor.clickable;
+  final MaterialStateProperty<MouseCursor>? _mouseCursor;
 
-  /// {@macro flutter.material.radio.splashRadius}
+  /// {@template flutter.material.radio.fillColor}
+  /// The color that fills the radio button, in all [MaterialState]s.
   ///
-  /// If specified, overrides the default value of [Radio.splashRadius]. The
-  /// default value is [kRadialReactionRadius].
-  final double? splashRadius;
+  /// Resolves in the following states:
+  ///  * [MaterialState.selected].
+  ///  * [MaterialState.hovered].
+  ///  * [MaterialState.focused].
+  ///  * [MaterialState.disabled].
+  ///
+  /// {@tool snippet}
+  /// This example resolves the [containerColor] based on the current [MaterialState]
+  /// of the [Radio], providing a different [Color] when it is
+  /// [MaterialState.disabled].
+  ///
+  /// ```dart
+  /// Radio<int>(
+  ///   value: 1,
+  ///   groupValue: 1,
+  ///   onChanged: (_){},
+  ///   fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+  ///     if (states.contains(MaterialState.disabled)) {
+  ///       return Colors.orange.withOpacity(.32);
+  ///     }
+  ///     return Colors.orange;
+  ///   })
+  /// )
+  /// ```
+  /// {@end-tool}
+  /// {@endtemplate}
+  ///
+  /// The default is to use the colors in the Material 3 specification
+  ///
+  /// See also:
+  ///
+  /// * https://m3.material.io/components/radio-button/specs
+  MaterialStateProperty<Color> get containerColor => _containerColor!;
+  final MaterialStateProperty<Color>? _containerColor;
 
-  /// {@macro flutter.material.radio.materialTapTargetSize}
+  /// {@template flutter.material.radio.overlayColor}
+  /// The color for the radio's [Material].
   ///
-  /// If specified, overrides the default value of
-  /// [Radio.materialTapTargetSize]. The default value is the value of
-  /// [ThemeData.materialTapTargetSize].
-  final MaterialTapTargetSize? materialTapTargetSize;
+  /// Resolves in the following states:
+  ///  * [MaterialState.pressed].
+  ///  * [MaterialState.selected].
+  ///  * [MaterialState.hovered].
+  ///  * [MaterialState.focused].
+  /// {@endtemplate}
+  ///
+  /// The default is to use the colors in the Material 3 specification
+  ///
+  /// See also:
+  ///
+  /// * https://m3.material.io/components/radio-button/specs
+  MaterialStateProperty<Color> get stateLayerColor => _stateLayerColor!;
+  final MaterialStateProperty<Color>? _stateLayerColor;
 
-  /// {@macro flutter.material.radio.visualDensity}
+  /// Defines the state layer opacities applied to this radio.
   ///
-  /// If specified, overrides the default value of [Radio.visualDensity]. The
-  /// default value is the value of [ThemeData.visualDensity].
-  final VisualDensity? visualDensity;
+  /// Default value is [ThemeData.stateTheme] .
+  StateThemeData get stateTheme => _stateTheme!;
+  final StateThemeData? _stateTheme;
+
+  /// {@template flutter.material.radio.splashRadius}
+  /// The splash radius of the circular [Material] ink response.
+  /// {@endtemplate}
+  ///
+  /// The default is [kRadialReactionRadius].
+  double get splashRadius => _splashRadius ?? kRadialReactionRadius;
+  final double? _splashRadius;
+
+  /// {@template flutter.material.radio.materialTapTargetSize}
+  /// Configures the minimum size of the tap target.
+  /// {@endtemplate}
+  ///
+  /// The default is [ThemeData.materialTapTargetSize].
+  ///
+  /// See also:
+  ///
+  ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
+  MaterialTapTargetSize get materialTapTargetSize => _materialTapTargetSize!;
+  final MaterialTapTargetSize? _materialTapTargetSize;
+
+  /// {@template flutter.material.radio.visualDensity}
+  /// Defines how compact the radio's layout will be.
+  /// {@endtemplate}
+  ///
+  /// {@macro flutter.material.themedata.visualDensity}
+  ///
+  /// The default is [ThemeData.visualDensity].
+  ///
+  /// See also:
+  ///
+  ///  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
+  ///    widgets within a [Theme].
+  VisualDensity get visualDensity => _visualDensity!;
+  final VisualDensity? _visualDensity;
 
   /// Creates a copy of this object but with the given fields replaced with the
   /// new values.
   RadioThemeData copyWith({
-    MaterialStateProperty<MouseCursor?>? mouseCursor,
-    MaterialStateProperty<Color?>? fillColor,
-    MaterialStateProperty<Color?>? overlayColor,
+    MaterialStateProperty<MouseCursor>? mouseCursor,
+    MaterialStateProperty<Color>? containerColor,
+    MaterialStateProperty<Color>? stateLayerColor,
+    StateThemeData? stateTheme,
     double? splashRadius,
     MaterialTapTargetSize? materialTapTargetSize,
     VisualDensity? visualDensity,
   }) {
     return RadioThemeData(
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      fillColor: fillColor ?? this.fillColor,
-      overlayColor: overlayColor ?? this.overlayColor,
-      splashRadius: splashRadius ?? this.splashRadius,
-      materialTapTargetSize: materialTapTargetSize ?? this.materialTapTargetSize,
-      visualDensity: visualDensity ?? this.visualDensity,
+      mouseCursor: mouseCursor ?? _mouseCursor,
+      containerColor: containerColor ?? _containerColor,
+      stateLayerColor: stateLayerColor ?? _stateLayerColor,
+      stateTheme: stateTheme ?? _stateTheme,
+      splashRadius: splashRadius ?? _splashRadius,
+      materialTapTargetSize: materialTapTargetSize ?? _materialTapTargetSize,
+      visualDensity: visualDensity ?? _visualDensity,
     );
   }
 
@@ -117,9 +225,18 @@ class RadioThemeData with Diagnosticable {
     }
     return RadioThemeData(
       mouseCursor: t < 0.5 ? a?.mouseCursor : b?.mouseCursor,
-      fillColor: MaterialStateProperty.lerp<Color?>(a?.fillColor, b?.fillColor, t, Color.lerp),
-      materialTapTargetSize: t < 0.5 ? a?.materialTapTargetSize : b?.materialTapTargetSize,
-      overlayColor: MaterialStateProperty.lerp<Color?>(a?.overlayColor, b?.overlayColor, t, Color.lerp),
+      containerColor: MaterialStateProperty.lerpNonNull<Color>(
+          a?._containerColor,
+          b?._containerColor,
+          t,
+          ColorExtensions.lerpNonNull),
+      materialTapTargetSize:
+          t < 0.5 ? a?.materialTapTargetSize : b?.materialTapTargetSize,
+      stateLayerColor: MaterialStateProperty.lerpNonNull<Color>(
+          a?._stateLayerColor,
+          b?._stateLayerColor,
+          t,
+          ColorExtensions.lerpNonNull),
       splashRadius: lerpDouble(a?.splashRadius, b?.splashRadius, t),
       visualDensity: t < 0.5 ? a?.visualDensity : b?.visualDensity,
     );
@@ -127,13 +244,14 @@ class RadioThemeData with Diagnosticable {
 
   @override
   int get hashCode => Object.hash(
-    mouseCursor,
-    fillColor,
-    overlayColor,
-    splashRadius,
-    materialTapTargetSize,
-    visualDensity,
-  );
+        _mouseCursor,
+        _containerColor,
+        _stateLayerColor,
+        _stateTheme,
+        _splashRadius,
+        _materialTapTargetSize,
+        _visualDensity,
+      );
 
   @override
   bool operator ==(Object other) {
@@ -143,25 +261,127 @@ class RadioThemeData with Diagnosticable {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is RadioThemeData
-      && other.mouseCursor == mouseCursor
-      && other.fillColor == fillColor
-      && other.overlayColor == overlayColor
-      && other.splashRadius == splashRadius
-      && other.materialTapTargetSize == materialTapTargetSize
-      && other.visualDensity == visualDensity;
+    return other is RadioThemeData &&
+        other._mouseCursor == _mouseCursor &&
+        other._containerColor == _containerColor &&
+        other._stateLayerColor == _stateLayerColor &&
+        other._stateTheme == _stateTheme &&
+        other._splashRadius == _splashRadius &&
+        other._materialTapTargetSize == _materialTapTargetSize &&
+        other._visualDensity == _visualDensity;
+  }
+
+  /// Creates a copy of this object with fields replaced with the
+  /// non-null values from [other].
+  RadioThemeData mergeWith(RadioThemeData other) {
+    return copyWith(
+      mouseCursor: other._mouseCursor,
+      containerColor: other._containerColor,
+      stateLayerColor: other._stateLayerColor,
+      stateTheme: other._stateTheme,
+      splashRadius: other._splashRadius,
+      materialTapTargetSize:
+          other._materialTapTargetSize,
+      visualDensity: other._visualDensity,
+    );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>('mouseCursor', mouseCursor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('fillColor', fillColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color?>>('overlayColor', overlayColor, defaultValue: null));
-    properties.add(DoubleProperty('splashRadius', splashRadius, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialTapTargetSize>('materialTapTargetSize', materialTapTargetSize, defaultValue: null));
-    properties.add(DiagnosticsProperty<VisualDensity>('visualDensity', visualDensity, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor>>(
+        'mouseCursor', _mouseCursor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>(
+        'containerColor', _containerColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>(
+        'stateLayerColor', _stateLayerColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<StateThemeData>(
+        'stateTheme', _stateTheme,
+        defaultValue: null));
+    properties
+        .add(DoubleProperty('splashRadius', _splashRadius, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialTapTargetSize>(
+        'materialTapTargetSize', _materialTapTargetSize,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<VisualDensity>(
+        'visualDensity', _visualDensity,
+        defaultValue: null));
   }
+}
+
+class _LateResolvingRadioThemeData extends RadioThemeData {
+  _LateResolvingRadioThemeData(super.other, this.context) : super._clone();
+
+  final BuildContext context;
+
+  late final ThemeData _theme = Theme.of(context);
+  late final ColorScheme _colors = _theme.colorScheme;
+
+  @override
+  StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
+
+  @override
+  MaterialStateProperty<Color> get containerColor {
+    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        if (states.contains(MaterialState.disabled)) {
+          return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
+        }
+        return _colors.primary;
+      }
+      if (states.contains(MaterialState.disabled)) {
+        return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return _colors.onSurface;
+      }
+      if (states.contains(MaterialState.hovered)) {
+        return _colors.onSurface;
+      }
+      if (states.contains(MaterialState.focused)) {
+        return _colors.onSurface;
+      }
+      return _colors.onSurfaceVariant;
+    });
+  }
+
+  @override
+  MaterialStateProperty<Color> get stateLayerColor {
+    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        if (states.contains(MaterialState.pressed)) {
+          return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
+        }
+        if (states.contains(MaterialState.hovered)) {
+          return _colors.primary.withOpacity(stateTheme.hoverOpacity);
+        }
+        if (states.contains(MaterialState.focused)) {
+          return _colors.primary.withOpacity(stateTheme.focusOpacity);
+        }
+        return Colors.transparent;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return _colors.primary.withOpacity(stateTheme.pressOpacity);
+      }
+      if (states.contains(MaterialState.hovered)) {
+        return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
+      }
+      if (states.contains(MaterialState.focused)) {
+        return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
+      }
+      return Colors.transparent;
+    });
+  }
+
+  @override
+  MaterialTapTargetSize get materialTapTargetSize =>
+      _materialTapTargetSize ?? _theme.materialTapTargetSize;
+
+  @override
+  VisualDensity get visualDensity => _visualDensity ?? _theme.visualDensity;
 }
 
 /// Applies a radio theme to descendant [Radio] widgets.
@@ -197,8 +417,38 @@ class RadioTheme extends InheritedWidget {
   /// RadioThemeData theme = RadioTheme.of(context);
   /// ```
   static RadioThemeData of(BuildContext context) {
-    final RadioTheme? radioTheme = context.dependOnInheritedWidgetOfExactType<RadioTheme>();
+    final RadioTheme? radioTheme =
+        context.dependOnInheritedWidgetOfExactType<RadioTheme>();
     return radioTheme?.data ?? Theme.of(context).radioTheme;
+  }
+
+  /// Return a [RadioThemeData] that merges the nearest ancestor [RadioTheme]
+  /// and the [RadioThemeData] provided by the nearest [Theme].
+  ///
+  /// A current context theme can also be provided, used when the
+  /// StateThemeData is passed as a parameter to a widget other than
+  /// StateTheme.
+  ///
+  /// See also:
+  ///
+  /// * [BuildContext.dependOnInheritedWidgetOfExactType]
+  static RadioThemeData resolve(
+    BuildContext context, [
+    RadioThemeData? currentContextTheme,
+  ]) {
+    final ancestorTheme =
+        context.dependOnInheritedWidgetOfExactType<RadioTheme>()?.data;
+    final List<RadioThemeData> ancestorThemes = [
+      Theme.of(context).radioTheme,
+      if (ancestorTheme != null) ancestorTheme,
+      if (currentContextTheme != null) currentContextTheme,
+    ];
+    if (ancestorThemes.length > 1) {
+      return ancestorThemes
+          .reduce((acc, e) => acc.mergeWith(e))
+          .withContext(context);
+    }
+    return ancestorThemes.first.withContext(context);
   }
 
   @override

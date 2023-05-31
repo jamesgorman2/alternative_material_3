@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'colors.dart';
 import 'theme.dart';
 
 // Examples can assume:
@@ -40,123 +41,179 @@ import 'theme.dart';
 class ExpansionTileThemeData with Diagnosticable {
   /// Creates a [ExpansionTileThemeData].
   const ExpansionTileThemeData ({
-    this.backgroundColor,
-    this.collapsedBackgroundColor,
-    this.tilePadding,
-    this.expandedAlignment,
-    this.childrenPadding,
-    this.iconColor,
-    this.collapsedIconColor,
-    this.textColor,
-    this.collapsedTextColor,
-    this.shape,
-    this.collapsedShape,
-    this.clipBehavior,
-  });
+    Color? expandedBackgroundColor,
+    Color? collapsedBackgroundColor,
+    Color? expandedIconColor,
+    Color? collapsedIconColor,
+    Color? expandedHeadlineColor,
+    Color? collapsedHeadlineColor,
+    bool? showTopDividerWhenExpanded,
+    bool? showBottomDividerWhenExpanded,
+    Alignment? expandedAlignment,
+    Clip? clipBehavior,
+  }) : _expandedBackgroundColor =  expandedBackgroundColor,
+        _collapsedBackgroundColor =  collapsedBackgroundColor,
+        _expandedIconColor =  expandedIconColor,
+        _collapsedIconColor =  collapsedIconColor,
+        _expandedHeadlineColor =  expandedHeadlineColor,
+        _collapsedHeadlineColor =  collapsedHeadlineColor,
+        _showTopDividerWhenExpanded = showTopDividerWhenExpanded,
+        _showBottomDividerWhenExpanded = showBottomDividerWhenExpanded,
+  _expandedAlignment = expandedAlignment,
+        _clipBehavior = clipBehavior;
 
-  /// Overrides the default value of [ExpansionTile.backgroundColor].
-  final Color? backgroundColor;
+  /// The color to display behind the sublist when expanded.
+  /// 
+  /// The default value is [Colors.transparent].
+  Color get expandedBackgroundColor => _expandedBackgroundColor ?? Colors.transparent;
+  final Color? _expandedBackgroundColor;
 
-  /// Overrides the default value of [ExpansionTile.collapsedBackgroundColor].
-  final Color? collapsedBackgroundColor;
+  /// The color to display behind the sublist when collapsed.
+  /// 
+  /// The default value is [Colors.transparent].
+  Color get collapsedBackgroundColor => _collapsedBackgroundColor ?? Colors.transparent;
+  final Color? _collapsedBackgroundColor;
+  
+  /// The color of the tile's expansion icon when the sublist is expanded.
+  /// 
+  /// When null the color is set from [ListTileThemeData.trailingColor].
+  /// 
+  /// The default value is null.
+  Color? get expandedIconColor => _expandedIconColor;
+  final Color? _expandedIconColor;
 
-  /// Overrides the default value of [ExpansionTile.tilePadding].
-  final EdgeInsetsGeometry? tilePadding;
+  /// The color of the tile's expansion icon when the sublist is collapsed.
+  /// 
+  /// When null the color is set from [ListTileThemeData.trailingColor].
+  /// 
+  /// The default value is null.
+  Color? get collapsedIconColor => _collapsedIconColor;
+  final Color? _collapsedIconColor;
 
-  /// Overrides the default value of [ExpansionTile.expandedAlignment].
-  final AlignmentGeometry? expandedAlignment;
+  /// The color of the tile's titles when the sublist is expanded.
+  /// 
+  /// When null the color is set from [ListTileThemeData.headlineColor].
+  /// 
+  /// The default value is null.
+  Color? get expandedHeadlineColor => _expandedHeadlineColor;
+  final Color? _expandedHeadlineColor;
 
-  /// Overrides the default value of [ExpansionTile.childrenPadding].
-  final EdgeInsetsGeometry? childrenPadding;
+  /// The color of the tile's titles when the sublist is collapsed.
+  /// 
+  /// When null the color is set from [ListTileThemeData.headlineColor].
+  /// 
+  /// The default value is null.
+  Color? get collapsedHeadlineColor => _collapsedHeadlineColor;
+  final Color? _collapsedHeadlineColor;
 
-  /// Overrides the default value of [ExpansionTile.iconColor].
-  final Color? iconColor;
+  /// If true, a divider is drawn across the top of the expansion tile
+  /// when it is expanded.
+  /// 
+  /// Default value is false.
+  bool get showTopDividerWhenExpanded => _showTopDividerWhenExpanded ?? false;
+  final bool? _showTopDividerWhenExpanded;
 
-  /// Overrides the default value of [ExpansionTile.collapsedIconColor].
-  final Color? collapsedIconColor;
+  /// If true, a divider is drawn across the top of the expansion tile
+  /// when it is expanded.
+  /// 
+  /// Default value is true.
+  bool get showBottomDividerWhenExpanded => _showBottomDividerWhenExpanded ?? true;
+  final bool? _showBottomDividerWhenExpanded;
 
-  /// Overrides the default value of [ExpansionTile.textColor].
-  final Color? textColor;
+  /// Specifies the alignment of [ExpansionTile.child].
+  ///
+  /// The default value is [Alignment.center].
+  Alignment get expandedAlignment => _expandedAlignment ?? Alignment.center;
+  final Alignment? _expandedAlignment;
 
-  /// Overrides the default value of [ExpansionTile.collapsedTextColor].
-  final Color? collapsedTextColor;
-
-  /// Overrides the default value of [ExpansionTile.shape].
-  final ShapeBorder? shape;
-
-  /// Overrides the default value of [ExpansionTile.collapsedShape].
-  final ShapeBorder? collapsedShape;
-
-  /// Overrides the default value of [ExpansionTile.clipBehavior].
-  final Clip? clipBehavior;
+  /// {@macro flutter.material.Material.clipBehavior}
+  ///
+  /// The default is [Clip.none].
+  ///
+  /// See also:
+  ///
+  /// * [ExpansionTileTheme.of], which returns the nearest [ExpansionTileTheme]'s
+  ///   [ExpansionTileThemeData].
+  Clip get clipBehavior => _clipBehavior ?? Clip.none;
+  final Clip? _clipBehavior;
 
   /// Creates a copy of this object with the given fields replaced with the
   /// new values.
   ExpansionTileThemeData copyWith({
-    Color? backgroundColor,
+    Color? expandedBackgroundColor,
     Color? collapsedBackgroundColor,
-    EdgeInsetsGeometry? tilePadding,
-    AlignmentGeometry? expandedAlignment,
-    EdgeInsetsGeometry? childrenPadding,
-    Color? iconColor,
+    Color? expandedIconColor,
     Color? collapsedIconColor,
-    Color? textColor,
-    Color? collapsedTextColor,
-    ShapeBorder? shape,
-    ShapeBorder? collapsedShape,
+    Color? expandedHeadlineColor,
+    Color? collapsedHeadlineColor,
+    bool? showTopDividerWhenExpanded,
+    bool? showBottomDividerWhenExpanded,
+    Alignment? expandedAlignment,
     Clip? clipBehavior,
   }) {
     return ExpansionTileThemeData(
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      collapsedBackgroundColor: collapsedBackgroundColor ?? this.collapsedBackgroundColor,
-      tilePadding: tilePadding ?? this.tilePadding,
-      expandedAlignment: expandedAlignment ?? this.expandedAlignment,
-      childrenPadding: childrenPadding ?? this.childrenPadding,
-      iconColor: iconColor ?? this.iconColor,
-      collapsedIconColor: collapsedIconColor ?? this.collapsedIconColor,
-      textColor: textColor ?? this.textColor,
-      collapsedTextColor: collapsedTextColor ?? this.collapsedTextColor,
-      shape: shape ?? this.shape,
-      collapsedShape: collapsedShape ?? this.collapsedShape,
-      clipBehavior: clipBehavior ?? this.clipBehavior,
+      expandedBackgroundColor: expandedBackgroundColor ?? _expandedBackgroundColor,
+      collapsedBackgroundColor: collapsedBackgroundColor ?? _collapsedBackgroundColor,
+      expandedIconColor: expandedIconColor ?? _expandedIconColor,
+      collapsedIconColor: collapsedIconColor ?? _collapsedIconColor,
+      expandedHeadlineColor: expandedHeadlineColor ?? _expandedHeadlineColor,
+      collapsedHeadlineColor: collapsedHeadlineColor ?? _collapsedHeadlineColor,
+      showTopDividerWhenExpanded: showTopDividerWhenExpanded ?? _showTopDividerWhenExpanded,
+      showBottomDividerWhenExpanded: showBottomDividerWhenExpanded ?? _showBottomDividerWhenExpanded,
+      expandedAlignment: expandedAlignment ?? _expandedAlignment,
+      clipBehavior: clipBehavior ?? _clipBehavior,
     );
   }
 
+  /// Creates a copy of this object with fields replaced with the
+  /// non-null values from [other].
+  ExpansionTileThemeData mergeWith(ExpansionTileThemeData other) {
+    return copyWith(
+      expandedBackgroundColor: other._expandedBackgroundColor,
+      collapsedBackgroundColor: other._collapsedBackgroundColor,
+      expandedIconColor: other._expandedIconColor,
+      collapsedIconColor: other._collapsedIconColor,
+      expandedHeadlineColor: other._expandedHeadlineColor,
+      collapsedHeadlineColor: other._collapsedHeadlineColor,
+      showTopDividerWhenExpanded: other._showTopDividerWhenExpanded,
+      showBottomDividerWhenExpanded: other._showBottomDividerWhenExpanded,
+      expandedAlignment: other._expandedAlignment,
+      clipBehavior: other._clipBehavior,
+    );
+  }
+  
   /// Linearly interpolate between ExpansionTileThemeData objects.
   static ExpansionTileThemeData? lerp(ExpansionTileThemeData? a, ExpansionTileThemeData? b, double t) {
     if (identical(a, b)) {
       return a;
     }
     return ExpansionTileThemeData(
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      collapsedBackgroundColor: Color.lerp(a?.collapsedBackgroundColor, b?.collapsedBackgroundColor, t),
-      tilePadding: EdgeInsetsGeometry.lerp(a?.tilePadding, b?.tilePadding, t),
-      expandedAlignment: AlignmentGeometry.lerp(a?.expandedAlignment, b?.expandedAlignment, t),
-      childrenPadding: EdgeInsetsGeometry.lerp(a?.childrenPadding, b?.childrenPadding, t),
-      iconColor: Color.lerp(a?.iconColor, b?.iconColor, t),
-      collapsedIconColor: Color.lerp(a?.collapsedIconColor, b?.collapsedIconColor, t),
-      textColor: Color.lerp(a?.textColor, b?.textColor, t),
-      collapsedTextColor: Color.lerp(a?.collapsedTextColor, b?.collapsedTextColor, t),
-      shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
-      collapsedShape: ShapeBorder.lerp(a?.collapsedShape, b?.collapsedShape, t),
+      expandedBackgroundColor: Color.lerp(a?._expandedBackgroundColor, b?._expandedBackgroundColor, t),
+      collapsedBackgroundColor: Color.lerp(a?._collapsedBackgroundColor, b?._collapsedBackgroundColor, t),
+      expandedIconColor: Color.lerp(a?._expandedIconColor, b?._expandedIconColor, t),
+      collapsedIconColor: Color.lerp(a?._collapsedIconColor, b?._collapsedIconColor, t),
+      expandedHeadlineColor: Color.lerp(a?._expandedHeadlineColor, b?._expandedHeadlineColor, t),
+      collapsedHeadlineColor: Color.lerp(a?._collapsedHeadlineColor, b?._collapsedHeadlineColor, t),
+      showTopDividerWhenExpanded: t < 0.5 ? a?._showTopDividerWhenExpanded : b?._showTopDividerWhenExpanded,
+      showBottomDividerWhenExpanded: t < 0.5 ? a?._showBottomDividerWhenExpanded : b?._showBottomDividerWhenExpanded,
+      expandedAlignment: t < 0.5 ? a?._expandedAlignment : b?._expandedAlignment,
+      clipBehavior: t < 0.5 ? a?._clipBehavior : b?._clipBehavior,
     );
   }
 
   @override
   int get hashCode {
     return Object.hash(
-      backgroundColor,
-      collapsedBackgroundColor,
-      tilePadding,
-      expandedAlignment,
-      childrenPadding,
-      iconColor,
-      collapsedIconColor,
-      textColor,
-      collapsedTextColor,
-      shape,
-      collapsedShape,
-      clipBehavior,
+      _expandedBackgroundColor,
+      _collapsedBackgroundColor,
+      _expandedIconColor,
+      _collapsedIconColor,
+      _expandedHeadlineColor,
+      _collapsedHeadlineColor,
+      _showTopDividerWhenExpanded,
+      _showBottomDividerWhenExpanded,
+      _expandedAlignment,
+      _clipBehavior,
     );
   }
 
@@ -169,35 +226,31 @@ class ExpansionTileThemeData with Diagnosticable {
       return false;
     }
     return other is ExpansionTileThemeData
-      && other.backgroundColor == backgroundColor
-      && other.collapsedBackgroundColor == collapsedBackgroundColor
-      && other.tilePadding == tilePadding
-      && other.expandedAlignment == expandedAlignment
-      && other.childrenPadding == childrenPadding
-      && other.iconColor == iconColor
-      && other.collapsedIconColor == collapsedIconColor
-      && other.textColor == textColor
-      && other.collapsedTextColor == collapsedTextColor
-      && other.shape == shape
-      && other.collapsedShape == collapsedShape
-      && other.clipBehavior == clipBehavior;
+    && other._expandedBackgroundColor == _expandedBackgroundColor
+    && other._collapsedBackgroundColor == _collapsedBackgroundColor
+    && other._expandedIconColor == _expandedIconColor
+    && other._collapsedIconColor == _collapsedIconColor
+    && other._expandedHeadlineColor == _expandedHeadlineColor
+    && other._collapsedHeadlineColor == _collapsedHeadlineColor
+    && other._showTopDividerWhenExpanded == _showTopDividerWhenExpanded
+    && other._showBottomDividerWhenExpanded == _showBottomDividerWhenExpanded
+    && other._expandedAlignment == _expandedAlignment
+    && other._clipBehavior == _clipBehavior;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('backgroundColor', backgroundColor, defaultValue: null));
-    properties.add(ColorProperty('collapsedBackgroundColor', collapsedBackgroundColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('tilePadding', tilePadding, defaultValue: null));
-    properties.add(DiagnosticsProperty<AlignmentGeometry>('expandedAlignment', expandedAlignment, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('childrenPadding', childrenPadding, defaultValue: null));
-    properties.add(ColorProperty('iconColor', iconColor, defaultValue: null));
-    properties.add(ColorProperty('collapsedIconColor', collapsedIconColor, defaultValue: null));
-    properties.add(ColorProperty('textColor', textColor, defaultValue: null));
-    properties.add(ColorProperty('collapsedTextColor', collapsedTextColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
-    properties.add(DiagnosticsProperty<ShapeBorder>('collapsedShape', collapsedShape, defaultValue: null));
-    properties.add(DiagnosticsProperty<Clip>('clipBehavior', clipBehavior, defaultValue: null));
+    properties.add(ColorProperty('expandedBackgroundColor', _expandedBackgroundColor, defaultValue: null));
+    properties.add(ColorProperty('collapsedBackgroundColor', _collapsedBackgroundColor, defaultValue: null));
+    properties.add(ColorProperty('iconColor', _expandedIconColor, defaultValue: null));
+    properties.add(ColorProperty('collapsedIconColor', _collapsedIconColor, defaultValue: null));
+    properties.add(ColorProperty('textColor', _expandedHeadlineColor, defaultValue: null));
+    properties.add(ColorProperty('collapsedTextColor', _collapsedHeadlineColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<bool?>('shape', _showTopDividerWhenExpanded, defaultValue: null));
+    properties.add(DiagnosticsProperty<bool?>('collapsedShape', _showBottomDividerWhenExpanded, defaultValue: null));
+    properties.add(DiagnosticsProperty<Alignment?>('expandedAlignment', _expandedAlignment, defaultValue: null));
+    properties.add(DiagnosticsProperty<Clip?>('clipBehavior', _clipBehavior, defaultValue: null));
   }
 }
 
@@ -235,6 +288,35 @@ class ExpansionTileTheme extends InheritedTheme {
   static ExpansionTileThemeData of(BuildContext context) {
     final ExpansionTileTheme? inheritedTheme = context.dependOnInheritedWidgetOfExactType<ExpansionTileTheme>();
     return inheritedTheme?.data ?? Theme.of(context).expansionTileTheme;
+  }
+
+  /// Return a [ListTileThemeData] that merges the nearest ancestor [ListTileTheme]
+  /// and the [ListTileThemeData] provided by the nearest [Theme].
+  ///
+  /// A current context theme can also be provided, used when the
+  /// StateThemeData is passed as a parameter to a widget other than
+  /// StateTheme.
+  ///
+  /// See also:
+  ///
+  /// * [BuildContext.dependOnInheritedWidgetOfExactType]
+  static ExpansionTileThemeData resolve(
+      BuildContext context, [
+        ExpansionTileThemeData? currentContextTheme,
+      ]) {
+    final ancestorTheme =
+        context.dependOnInheritedWidgetOfExactType<ExpansionTileTheme>()?.data;
+    final List<ExpansionTileThemeData> ancestorThemes = [
+      Theme.of(context).expansionTileTheme,
+      if (ancestorTheme != null) ancestorTheme,
+      if (currentContextTheme != null) currentContextTheme,
+    ];
+    // no default values require build context
+    if (ancestorThemes.length > 1) {
+      return ancestorThemes
+          .reduce((acc, e) => acc.mergeWith(e));
+    }
+    return ancestorThemes.first;
   }
 
   @override

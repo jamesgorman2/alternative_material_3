@@ -202,7 +202,7 @@ class _CardDefaultsM3 extends CardTheme {
     : super(
         clipBehavior: Clip.none,
         elevation: Elevation.level1,
-        margin: const EdgeInsets.all(4.0),
+        margin: EdgeInsets.zero,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
       );
 

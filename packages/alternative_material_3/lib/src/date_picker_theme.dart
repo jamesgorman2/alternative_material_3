@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -659,7 +658,7 @@ class _DatePickerDefaultsM3 extends DatePickerThemeData {
   TextStyle? get headerHelpStyle => _textTheme.labelLarge;
 
   @override
-  TextStyle? get weekdayStyle => _textTheme.bodyLarge?.apply(
+  TextStyle? get weekdayStyle => _textTheme.bodyLarge.apply(
     color: _colors.onSurface,
   );
 

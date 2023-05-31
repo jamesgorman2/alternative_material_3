@@ -8,8 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'color_scheme.dart';
+import 'colors.dart';
 import 'list_tile.dart';
 import 'material_state.dart';
+import 'state_theme.dart';
+import 'text_theme.dart';
 import 'theme.dart';
 import 'theme_data.dart';
 
@@ -44,182 +48,508 @@ import 'theme_data.dart';
 @immutable
 class ListTileThemeData with Diagnosticable {
   /// Creates a [ListTileThemeData].
-  const ListTileThemeData ({
-    this.dense,
-    this.shape,
-    this.style,
-    this.selectedColor,
-    this.iconColor,
-    this.textColor,
-    this.titleTextStyle,
-    this.subtitleTextStyle,
-    this.leadingAndTrailingTextStyle,
-    this.contentPadding,
-    this.tileColor,
-    this.selectedTileColor,
-    this.horizontalTitleGap,
-    this.minVerticalPadding,
-    this.minLeadingWidth,
-    this.enableFeedback,
-    this.mouseCursor,
-    this.visualDensity,
-    this.titleAlignment,
-  });
+  const ListTileThemeData({
+    ShapeBorder? customBorder,
+    bool? strict,
+    Color? tileColor,
+    Color? selectedTileColor,
+    StateThemeData? stateTheme,
+    StateLayerTheme? stateLayers,
+    Color? selectedLeadingColor,
+    Color? selectedOverlineColor,
+    Color? selectedHeadlineColor,
+    Color? selectedSupportingTextColor,
+    Color? selectedTrailingColor,
+    Color? leadingColor,
+    Color? overlineColor,
+    Color? headlineColor,
+    Color? supportingTextColor,
+    Color? trailingColor,
+    TextStyle? leadingTextStyle,
+    TextStyle? overlineTextStyle,
+    TextStyle? headlineTextStyle,
+    TextStyle? supportingTextTextStyle,
+    TextStyle? trailingTextStyle,
+    EdgeInsetsDirectional? padding,
+    double? tallVerticalPadding,
+    double? internalHorizontalPadding,
+    bool? enableFeedback,
+    MaterialStateProperty<MouseCursor>? mouseCursor,
+    VisualDensity? visualDensity,
+  })  : _customBorder = customBorder,
+        _strict = strict,
+        _tileColor = tileColor,
+        _selectedTileColor = selectedTileColor,
+        _stateTheme = stateTheme,
+        _stateLayers = stateLayers,
+        _selectedLeadingColor = selectedLeadingColor,
+        _selectedOverlineColor = selectedOverlineColor,
+        _selectedHeadlineColor = selectedHeadlineColor,
+        _selectedSupportingTextColor = selectedSupportingTextColor,
+        _selectedTrailingColor = selectedTrailingColor,
+        _leadingColor = leadingColor,
+        _overlineColor = overlineColor,
+        _headlineColor = headlineColor,
+        _supportingTextColor = supportingTextColor,
+        _trailingColor = trailingColor,
+        _leadingTextStyle = leadingTextStyle,
+        _overlineTextStyle = overlineTextStyle,
+        _headlineTextStyle = headlineTextStyle,
+        _supportingTextTextStyle = supportingTextTextStyle,
+        _trailingTextStyle = trailingTextStyle,
+        _padding = padding,
+        _tallVerticalPadding = tallVerticalPadding,
+        _internalHorizontalPadding = internalHorizontalPadding,
+        _enableFeedback = enableFeedback,
+        _mouseCursor = mouseCursor,
+        _visualDensity = visualDensity;
 
-  /// Overrides the default value of [ListTile.dense].
-  final bool? dense;
+  ListTileThemeData._clone(ListTileThemeData other)
+      : _customBorder = other._customBorder,
+        _strict = other._strict,
+        _tileColor = other._tileColor,
+        _selectedTileColor = other._selectedTileColor,
+        _stateTheme = other._stateTheme,
+        _stateLayers = other._stateLayers,
+        _selectedLeadingColor = other._selectedLeadingColor,
+        _selectedOverlineColor = other._selectedOverlineColor,
+        _selectedHeadlineColor = other._selectedHeadlineColor,
+        _selectedSupportingTextColor = other._selectedSupportingTextColor,
+        _selectedTrailingColor = other._selectedTrailingColor,
+        _leadingColor = other._leadingColor,
+        _overlineColor = other._overlineColor,
+        _headlineColor = other._headlineColor,
+        _supportingTextColor = other._supportingTextColor,
+        _trailingColor = other._trailingColor,
+        _leadingTextStyle = other._leadingTextStyle,
+        _overlineTextStyle = other._overlineTextStyle,
+        _headlineTextStyle = other._headlineTextStyle,
+        _supportingTextTextStyle = other._supportingTextTextStyle,
+        _trailingTextStyle = other._trailingTextStyle,
+        _padding = other._padding,
+        _tallVerticalPadding = other._tallVerticalPadding,
+        _internalHorizontalPadding = other._internalHorizontalPadding,
+        _enableFeedback = other._enableFeedback,
+        _mouseCursor = other._mouseCursor,
+        _visualDensity = other._visualDensity;
 
-  /// Overrides the default value of [ListTile.shape].
-  final ShapeBorder? shape;
+  /// Copy this ListTileThemeData with any default values that
+  /// require a [BuildContext] set, such as colors and text themes.
+  ListTileThemeData withContext(BuildContext context) =>
+      _LateResolvingListTileThemeData(this, context);
 
-  /// Overrides the default value of [ListTile.style].
-  final ListTileStyle? style;
+  /// Defines the tile's [InkWell.customBorder] and [Ink.decoration] border
+  /// shape.
+  ///
+  /// The default shape is an empty [Border].
+  ///
+  /// See also:
+  ///
+  /// * [ListTileTheme.of], which returns the nearest [ListTileTheme]'s
+  ///   [ListTileThemeData].
+  ShapeBorder get customBorder => _customBorder ?? const Border();
+  final ShapeBorder? _customBorder;
 
-  /// Overrides the default value of [ListTile.selectedColor].
-  final Color? selectedColor;
+  /// Defines the tiles response to multi-line text and over sized
+  /// leading a trailing elements based on the value of [ListTile.layout].
+  ///
+  /// If true, [ListTile.overline] and [ListTile.headline] will be limited to
+  /// one line. When [ListTile.layout] is [ListTileLayout.twoLine] or
+  /// [ListTile.overline] is not null,
+  /// [ListTile.supportingText] will be limited to one line, otherwise it will
+  /// be limited to two lines.
+  ///
+  /// The default value is true;
+  bool get strict => _strict ?? true;
+  final bool? _strict;
 
-  /// Overrides the default value of [ListTile.iconColor].
-  final Color? iconColor;
+  /// Defines the background color of `ListTile` when [selected] is false.
+  ///
+  /// This defaults to [Colors.transparent].
+  ///
+  /// If this property is null and [selected] is false then [ListTileThemeData.tileColor]
+  /// is used. If that is also null and [selected] is true, [selectedTileColor] is used.
+  /// When that is also null, the [ListTileTheme.selectedTileColor] is used, otherwise
+  /// [Colors.transparent] is used.
+  Color get tileColor => _tileColor ?? Colors.transparent;
+  final Color? _tileColor;
 
-  /// Overrides the default value of [ListTile.textColor].
-  final Color? textColor;
+  /// Defines the background color of `ListTile` when [selected] is true.
+  ///
+  /// This defaults to [Colors.transparent].
+  Color get selectedTileColor => _selectedTileColor ?? Colors.transparent;
+  final Color? _selectedTileColor;
 
-  /// Overrides the default value of [ListTile.titleTextStyle].
-  final TextStyle? titleTextStyle;
+  /// Defines the state layer opacities applied to this list tile.
+  ///
+  /// Default value is [ThemeData.stateTheme] .
+  StateThemeData get stateTheme => _stateTheme!;
+  final StateThemeData? _stateTheme;
 
-  /// Overrides the default value of [ListTile.subtitleTextStyle].
-  final TextStyle? subtitleTextStyle;
+  /// Defines the state layers applied to this list tile.
+  ///
+  /// Default color values are [ColorScheme.onSurface] and the
+  /// opacities are from [ListTileThemeData.stateThemeData].
+  StateLayerTheme get stateLayers => _stateLayers!;
+  final StateLayerTheme? _stateLayers;
 
-  /// Overrides the default value of [ListTile.leadingAndTrailingTextStyle].
-  final TextStyle? leadingAndTrailingTextStyle;
+  /// Defines the color used for text and icons in [ListTile.leading]
+  /// when the list tile is selected.
+  ///
+  /// If this property is null then [ListTileThemeData.leadingColor]
+  /// is used.
+  Color get selectedLeadingColor => _selectedLeadingColor ?? leadingColor;
+  final Color? _selectedLeadingColor;
 
-  /// Overrides the default value of [ListTile.contentPadding].
-  final EdgeInsetsGeometry? contentPadding;
+  /// Defines the color used for [ListTile.overline] when the list tile is selected.
+  ///
+  /// If this property is null then [ListTileThemeData.overlineColor]
+  /// is used.
+  Color get selectedOverlineColor => _selectedOverlineColor ?? overlineColor;
+  final Color? _selectedOverlineColor;
 
-  /// Overrides the default value of [ListTile.tileColor].
-  final Color? tileColor;
+  /// Defines the color used for [ListTile.headline] when the list tile is selected.
+  ///
+  /// If this property is null then [ListTileThemeData.headlineColor]
+  /// is used.
+  Color get selectedHeadlineColor => _selectedHeadlineColor ?? headlineColor;
+  final Color? _selectedHeadlineColor;
 
-  /// Overrides the default value of [ListTile.selectedTileColor].
-  final Color? selectedTileColor;
+  /// Defines the color used for [ListTile.supportingText] when the list tile is selected.
+  ///
+  /// If this property is null then [ListTileThemeData.supportingTextColor]
+  /// is used.
+  Color get selectedSupportingTextColor =>
+      _selectedSupportingTextColor ?? supportingTextColor;
+  final Color? _selectedSupportingTextColor;
 
-  /// Overrides the default value of [ListTile.horizontalTitleGap].
-  final double? horizontalTitleGap;
+  /// Defines the color used for text and icons in [ListTile.trailing] when the list
+  /// tile is selected.
+  ///
+  /// If this property is null then [ListTileThemeData.trailingColor]
+  /// is used.
+  Color get selectedTrailingColor => _selectedTrailingColor ?? trailingColor;
+  final Color? _selectedTrailingColor;
 
-  /// Overrides the default value of [ListTile.minVerticalPadding].
-  final double? minVerticalPadding;
+  /// Defines the color used for text and icons in [ListTile.leading].
+  ///
+  /// Defaults to [ColorScheme.onSurfaceVariant].
+  Color get leadingColor => _leadingColor!;
+  final Color? _leadingColor;
 
-  /// Overrides the default value of [ListTile.minLeadingWidth].
-  final double? minLeadingWidth;
+  /// Defines the color used for [ListTile.overline].
+  ///
+  /// Defaults to [ColorScheme.onSurfaceVariant].
+  Color get overlineColor => _overlineColor!;
+  final Color? _overlineColor;
 
-  /// Overrides the default value of [ListTile.enableFeedback].
-  final bool? enableFeedback;
+  /// Defines the color used for [ListTile.headline].
+  ///
+  /// Defaults to [ColorScheme.onSurface].
+  Color get headlineColor => _headlineColor!;
+  final Color? _headlineColor;
 
-  /// If specified, overrides the default value of [ListTile.mouseCursor].
-  final MaterialStateProperty<MouseCursor?>? mouseCursor;
+  /// Defines the color used for [ListTile.supportingText].
+  ///
+  /// Defaults to [ColorScheme.onSurfaceVariant].
+  Color get supportingTextColor => _supportingTextColor!;
+  final Color? _supportingTextColor;
 
-  /// If specified, overrides the default value of [ListTile.visualDensity].
-  final VisualDensity? visualDensity;
+  /// Defines the color used for text and icons in [ListTile.trailing].
+  ///
+  /// Defaults to [ColorScheme.onSurfaceVariant].
+  Color get trailingColor => _trailingColor!;
+  final Color? _trailingColor;
 
-  /// If specified, overrides the default value of [ListTile.titleAlignment].
-  final ListTileTitleAlignment? titleAlignment;
+  /// Defines the color used for text in [ListTile.leading].
+  ///
+  /// Defaults to [TextTheme.labelSmall].
+  TextStyle get leadingTextStyle => _leadingTextStyle!;
+  final TextStyle? _leadingTextStyle;
+
+  /// Defines the color used for text in [ListTile.overline].
+  ///
+  /// Defaults to [TextTheme.labelSmall].
+  TextStyle get overlineTextStyle => _overlineTextStyle!;
+  final TextStyle? _overlineTextStyle;
+
+  /// Defines the color used for text in [ListTile.headline].
+  ///
+  /// Defaults to [TextTheme.bodyLarge].
+  TextStyle get headlineTextStyle => _headlineTextStyle!;
+  final TextStyle? _headlineTextStyle;
+
+  /// Defines the color used for text in [ListTile.supportingText].
+  ///
+  /// Defaults to [TextTheme.bodyMedium].
+  TextStyle get supportingTextTextStyle => _supportingTextTextStyle!;
+  final TextStyle? _supportingTextTextStyle;
+
+  /// Defines the color used for text in [ListTile.trailing].
+  ///
+  /// Defaults to [TextTheme.labelSmall].
+  TextStyle get trailingTextStyle => _trailingTextStyle!;
+  final TextStyle? _trailingTextStyle;
+
+  /// The tile's internal padding.
+  ///
+  /// Insets a [ListTile]'s contents: its [leading], [headline], [supportingText],
+  /// and [trailing] widgets.
+  ///
+  /// If null, `EdgeInsetsDirectional.only(start: 16.0, end: 24.0, top: 8.0, bottom: 8.0)` is used.
+  EdgeInsetsDirectional get padding =>
+      _padding ??
+      const EdgeInsetsDirectional.only(
+        start: 16.0,
+        end: 24.0,
+        top: 8.0,
+        bottom: 8.0,
+      );
+  final EdgeInsetsDirectional? _padding;
+
+  /// The vertical padding to use on tall tiles. Tall tiles have are either
+  /// where [ListTile.layout] is [ListTileLayout.threeLine] or the
+  /// content height is greater than or equal to 64.
+  ///
+  /// Defaults to 12.0
+  double get tallVerticalPadding => _tallVerticalPadding ?? 12.0;
+  final double? _tallVerticalPadding;
+
+  /// The horizontal gap between the titles and the leading/trailing widgets.
+  ///
+  /// THe default value is 16.
+  double get internalHorizontalPadding => _internalHorizontalPadding ?? 16.0;
+  final double? _internalHorizontalPadding;
+
+  /// {@template flutter.material.ListTile.enableFeedback}
+  /// Whether detected gestures should provide acoustic and/or haptic feedback.
+  ///
+  /// For example, on Android a tap will produce a clicking sound and a
+  /// long-press will produce a short vibration, when feedback is enabled.
+  ///
+  /// When null, the default value is true.
+  /// {@endtemplate}
+  ///
+  /// See also:
+  ///
+  ///  * [Feedback] for providing platform-specific feedback to certain actions.
+  bool get enableFeedback => _enableFeedback ?? true;
+  final bool? _enableFeedback;
+
+  /// {@template flutter.material.ListTile.mouseCursor}
+  /// The cursor for a mouse pointer when it enters or is hovering over the
+  /// widget.
+  ///
+  /// If [mouseCursor] is a [MaterialStateProperty<MouseCursor>],
+  /// [MaterialStateProperty.resolve] is used for the following [MaterialState]s:
+  ///
+  ///  * [MaterialState.selected].
+  ///  * [MaterialState.disabled].
+  /// {@endtemplate}
+  ///
+  /// If null, then the value of [ListTileThemeData.mouseCursor] is used. If
+  /// that is also null, then [MaterialStateMouseCursor.clickable] is used.
+  ///
+  /// See also:
+  ///
+  ///  * [MaterialStateMouseCursor], which can be used to create a [MouseCursor]
+  ///    that is also a [MaterialStateProperty<MouseCursor>].
+  MaterialStateProperty<MouseCursor> get mouseCursor =>
+      _mouseCursor ?? MaterialStateMouseCursor.clickable;
+  final MaterialStateProperty<MouseCursor>? _mouseCursor;
+
+  /// Defines how compact the list tile's layout will be.
+  ///
+  /// {@macro flutter.material.themedata.visualDensity}
+  ///
+  /// See also:
+  ///
+  ///  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
+  ///    widgets within a [Theme].
+  VisualDensity get visualDensity => _visualDensity!;
+  final VisualDensity? _visualDensity;
 
   /// Creates a copy of this object with the given fields replaced with the
   /// new values.
   ListTileThemeData copyWith({
-    bool? dense,
-    ShapeBorder? shape,
-    ListTileStyle? style,
-    Color? selectedColor,
-    Color? iconColor,
-    Color? textColor,
-    TextStyle? titleTextStyle,
-    TextStyle? subtitleTextStyle,
-    TextStyle? leadingAndTrailingTextStyle,
-    EdgeInsetsGeometry? contentPadding,
+    ShapeBorder? customBorder,
+    bool? strict,
     Color? tileColor,
     Color? selectedTileColor,
-    double? horizontalTitleGap,
-    double? minVerticalPadding,
-    double? minLeadingWidth,
+    StateThemeData? stateTheme,
+    StateLayerTheme? stateLayers,
+    Color? selectedLeadingColor,
+    Color? selectedOverlineColor,
+    Color? selectedHeadlineColor,
+    Color? selectedSupportingTextColor,
+    Color? selectedTrailingColor,
+    Color? leadingColor,
+    Color? overlineColor,
+    Color? headlineColor,
+    Color? supportingTextColor,
+    Color? trailingColor,
+    TextStyle? leadingTextStyle,
+    TextStyle? overlineTextStyle,
+    TextStyle? headlineTextStyle,
+    TextStyle? supportingTextTextStyle,
+    TextStyle? trailingTextStyle,
+    EdgeInsetsDirectional? padding,
+    double? tallVerticalPadding,
+    double? internalHorizontalPadding,
     bool? enableFeedback,
-    MaterialStateProperty<MouseCursor?>? mouseCursor,
-    bool? isThreeLine,
+    MaterialStateProperty<MouseCursor>? mouseCursor,
     VisualDensity? visualDensity,
-    ListTileTitleAlignment? titleAlignment,
   }) {
     return ListTileThemeData(
-      dense: dense ?? this.dense,
-      shape: shape ?? this.shape,
-      style: style ?? this.style,
-      selectedColor: selectedColor ?? this.selectedColor,
-      iconColor: iconColor ?? this.iconColor,
-      textColor: textColor ?? this.textColor,
-      titleTextStyle: titleTextStyle ?? this.titleTextStyle,
-      subtitleTextStyle: subtitleTextStyle ?? this.subtitleTextStyle,
-      leadingAndTrailingTextStyle: leadingAndTrailingTextStyle ?? this.leadingAndTrailingTextStyle,
-      contentPadding: contentPadding ?? this.contentPadding,
-      tileColor: tileColor ?? this.tileColor,
-      selectedTileColor: selectedTileColor ?? this.selectedTileColor,
-      horizontalTitleGap: horizontalTitleGap ?? this.horizontalTitleGap,
-      minVerticalPadding: minVerticalPadding ?? this.minVerticalPadding,
-      minLeadingWidth: minLeadingWidth ?? this.minLeadingWidth,
-      enableFeedback: enableFeedback ?? this.enableFeedback,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      visualDensity: visualDensity ?? this.visualDensity,
-      titleAlignment: titleAlignment ?? this.titleAlignment,
+      customBorder: customBorder ?? _customBorder,
+      strict: strict ?? _strict,
+      tileColor: tileColor ?? _tileColor,
+      selectedTileColor: selectedTileColor ?? _selectedTileColor,
+      stateTheme: stateTheme ?? _stateTheme,
+      stateLayers: stateLayers ?? _stateLayers,
+      selectedLeadingColor: selectedLeadingColor ?? _selectedLeadingColor,
+      selectedOverlineColor: selectedOverlineColor ?? _selectedOverlineColor,
+      selectedHeadlineColor: selectedHeadlineColor ?? _selectedHeadlineColor,
+      selectedSupportingTextColor:
+          selectedSupportingTextColor ?? _selectedSupportingTextColor,
+      selectedTrailingColor: selectedTrailingColor ?? _selectedTrailingColor,
+      leadingColor: leadingColor ?? _leadingColor,
+      overlineColor: overlineColor ?? _overlineColor,
+      headlineColor: headlineColor ?? _headlineColor,
+      supportingTextColor: supportingTextColor ?? _supportingTextColor,
+      trailingColor: trailingColor ?? _trailingColor,
+      leadingTextStyle: leadingTextStyle ?? _leadingTextStyle,
+      overlineTextStyle: overlineTextStyle ?? _overlineTextStyle,
+      headlineTextStyle: headlineTextStyle ?? _headlineTextStyle,
+      supportingTextTextStyle:
+          supportingTextTextStyle ?? _supportingTextTextStyle,
+      trailingTextStyle: trailingTextStyle ?? _trailingTextStyle,
+      padding: padding ?? _padding,
+      tallVerticalPadding: tallVerticalPadding ?? _tallVerticalPadding,
+      internalHorizontalPadding:
+          internalHorizontalPadding ?? _internalHorizontalPadding,
+      enableFeedback: enableFeedback ?? _enableFeedback,
+      mouseCursor: mouseCursor ?? _mouseCursor,
+      visualDensity: visualDensity ?? _visualDensity,
+    );
+  }
+
+  /// Creates a copy of this object with fields replaced with the
+  /// non-null values from [other].
+  ListTileThemeData mergeWith(ListTileThemeData other) {
+    return copyWith(
+      customBorder: other._customBorder,
+      strict: other._strict,
+      tileColor: other._tileColor,
+      selectedTileColor: other._selectedTileColor,
+      stateTheme: other._stateTheme,
+      stateLayers: other._stateLayers,
+      selectedLeadingColor: other._selectedLeadingColor,
+      selectedOverlineColor: other._selectedOverlineColor,
+      selectedHeadlineColor: other._selectedHeadlineColor,
+      selectedSupportingTextColor: other._selectedSupportingTextColor,
+      selectedTrailingColor: other._selectedTrailingColor,
+      leadingColor: other._leadingColor,
+      overlineColor: other._overlineColor,
+      headlineColor: other._headlineColor,
+      supportingTextColor: other._supportingTextColor,
+      trailingColor: other._trailingColor,
+      leadingTextStyle: other._leadingTextStyle,
+      overlineTextStyle: other._overlineTextStyle,
+      headlineTextStyle: other._headlineTextStyle,
+      supportingTextTextStyle: other._supportingTextTextStyle,
+      trailingTextStyle: other._trailingTextStyle,
+      padding: other._padding,
+      tallVerticalPadding: other._tallVerticalPadding,
+      internalHorizontalPadding: other._internalHorizontalPadding,
+      enableFeedback: other._enableFeedback,
+      mouseCursor: other._mouseCursor,
+      visualDensity: other._visualDensity,
     );
   }
 
   /// Linearly interpolate between ListTileThemeData objects.
-  static ListTileThemeData? lerp(ListTileThemeData? a, ListTileThemeData? b, double t) {
+  static ListTileThemeData? lerp(
+      ListTileThemeData? a, ListTileThemeData? b, double t) {
     if (identical(a, b)) {
       return a;
     }
     return ListTileThemeData(
-      dense: t < 0.5 ? a?.dense : b?.dense,
-      shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
-      style: t < 0.5 ? a?.style : b?.style,
-      selectedColor: Color.lerp(a?.selectedColor, b?.selectedColor, t),
-      iconColor: Color.lerp(a?.iconColor, b?.iconColor, t),
-      textColor: Color.lerp(a?.textColor, b?.textColor, t),
-      titleTextStyle: TextStyle.lerp(a?.titleTextStyle, b?.titleTextStyle, t),
-      subtitleTextStyle: TextStyle.lerp(a?.subtitleTextStyle, b?.subtitleTextStyle, t),
-      leadingAndTrailingTextStyle: TextStyle.lerp(a?.leadingAndTrailingTextStyle, b?.leadingAndTrailingTextStyle, t),
-      contentPadding: EdgeInsetsGeometry.lerp(a?.contentPadding, b?.contentPadding, t),
-      tileColor: Color.lerp(a?.tileColor, b?.tileColor, t),
-      selectedTileColor: Color.lerp(a?.selectedTileColor, b?.selectedTileColor, t),
-      horizontalTitleGap: lerpDouble(a?.horizontalTitleGap, b?.horizontalTitleGap, t),
-      minVerticalPadding: lerpDouble(a?.minVerticalPadding, b?.minVerticalPadding, t),
-      minLeadingWidth: lerpDouble(a?.minLeadingWidth, b?.minLeadingWidth, t),
-      enableFeedback: t < 0.5 ? a?.enableFeedback : b?.enableFeedback,
-      mouseCursor: t < 0.5 ? a?.mouseCursor : b?.mouseCursor,
-      visualDensity: t < 0.5 ? a?.visualDensity : b?.visualDensity,
-      titleAlignment: t < 0.5 ? a?.titleAlignment : b?.titleAlignment,
+      customBorder: ShapeBorder.lerp(a?._customBorder, b?._customBorder, t),
+      strict: t < 0.5 ? a?._strict : b?._strict,
+      tileColor: Color.lerp(a?._tileColor, b?._tileColor, t),
+      selectedTileColor:
+          Color.lerp(a?._selectedTileColor, b?._selectedTileColor, t),
+      stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
+      stateLayers: StateLayerTheme.lerp(a?._stateLayers, b?._stateLayers, t),
+      selectedLeadingColor:
+          Color.lerp(a?._selectedLeadingColor, b?._selectedLeadingColor, t),
+      selectedOverlineColor:
+          Color.lerp(a?._selectedOverlineColor, b?._selectedOverlineColor, t),
+      selectedHeadlineColor:
+          Color.lerp(a?._selectedHeadlineColor, b?._selectedHeadlineColor, t),
+      selectedSupportingTextColor: Color.lerp(
+          a?._selectedSupportingTextColor, b?._selectedSupportingTextColor, t),
+      selectedTrailingColor:
+          Color.lerp(a?._selectedTrailingColor, b?._selectedTrailingColor, t),
+      leadingColor: Color.lerp(a?._leadingColor, b?._leadingColor, t),
+      overlineColor: Color.lerp(a?._overlineColor, b?._overlineColor, t),
+      headlineColor: Color.lerp(a?._headlineColor, b?._headlineColor, t),
+      supportingTextColor:
+          Color.lerp(a?._supportingTextColor, b?._supportingTextColor, t),
+      trailingColor: Color.lerp(a?._trailingColor, b?._trailingColor, t),
+      leadingTextStyle:
+          TextStyle.lerp(a?._leadingTextStyle, b?._leadingTextStyle, t),
+      overlineTextStyle:
+          TextStyle.lerp(a?._overlineTextStyle, b?._overlineTextStyle, t),
+      headlineTextStyle:
+          TextStyle.lerp(a?._headlineTextStyle, b?._headlineTextStyle, t),
+      supportingTextTextStyle: TextStyle.lerp(
+          a?._supportingTextTextStyle, b?._supportingTextTextStyle, t),
+      trailingTextStyle:
+          TextStyle.lerp(a?._trailingTextStyle, b?._trailingTextStyle, t),
+      padding: EdgeInsetsDirectional.lerp(a?._padding, b?._padding, t),
+      tallVerticalPadding:
+          lerpDouble(a?._tallVerticalPadding, b?._tallVerticalPadding, t),
+      internalHorizontalPadding: lerpDouble(
+          a?._internalHorizontalPadding, b?._internalHorizontalPadding, t),
+      enableFeedback: t < 0.5 ? a?._enableFeedback : b?._enableFeedback,
+      mouseCursor: t < 0.5 ? a?._mouseCursor : b?._mouseCursor,
+      visualDensity:
+          VisualDensity.lerp(a?._visualDensity, b?._visualDensity, t),
     );
   }
 
   @override
-  int get hashCode => Object.hash(
-    dense,
-    shape,
-    style,
-    selectedColor,
-    iconColor,
-    textColor,
-    titleTextStyle,
-    subtitleTextStyle,
-    leadingAndTrailingTextStyle,
-    contentPadding,
-    tileColor,
-    selectedTileColor,
-    horizontalTitleGap,
-    minVerticalPadding,
-    minLeadingWidth,
-    enableFeedback,
-    mouseCursor,
-    visualDensity,
-    titleAlignment,
-  );
+  int get hashCode => Object.hashAll([
+        _customBorder,
+        _strict,
+        _tileColor,
+        _selectedTileColor,
+        _stateTheme,
+        _stateLayers,
+        _selectedLeadingColor,
+        _selectedOverlineColor,
+        _selectedHeadlineColor,
+        _selectedSupportingTextColor,
+        _selectedTrailingColor,
+        _leadingColor,
+        _overlineColor,
+        _headlineColor,
+        _supportingTextColor,
+        _trailingColor,
+        _leadingTextStyle,
+        _overlineTextStyle,
+        _headlineTextStyle,
+        _supportingTextTextStyle,
+        _trailingTextStyle,
+        _padding,
+        _tallVerticalPadding,
+        _internalHorizontalPadding,
+        _enableFeedback,
+        _mouseCursor,
+        _visualDensity,
+      ]);
 
   @override
   bool operator ==(Object other) {
@@ -229,51 +559,179 @@ class ListTileThemeData with Diagnosticable {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is ListTileThemeData
-      && other.dense == dense
-      && other.shape == shape
-      && other.style == style
-      && other.selectedColor == selectedColor
-      && other.iconColor == iconColor
-      && other.titleTextStyle == titleTextStyle
-      && other.subtitleTextStyle == subtitleTextStyle
-      && other.leadingAndTrailingTextStyle == leadingAndTrailingTextStyle
-      && other.textColor == textColor
-      && other.contentPadding == contentPadding
-      && other.tileColor == tileColor
-      && other.selectedTileColor == selectedTileColor
-      && other.horizontalTitleGap == horizontalTitleGap
-      && other.minVerticalPadding == minVerticalPadding
-      && other.minLeadingWidth == minLeadingWidth
-      && other.enableFeedback == enableFeedback
-      && other.mouseCursor == mouseCursor
-      && other.visualDensity == visualDensity
-      && other.titleAlignment == titleAlignment;
+    return other is ListTileThemeData &&
+        other._customBorder == _customBorder &&
+        other._strict == _strict &&
+        other._tileColor == _tileColor &&
+        other._selectedTileColor == _selectedTileColor &&
+        other._stateTheme == _stateTheme &&
+        other._stateLayers == _stateLayers &&
+        other._selectedLeadingColor == _selectedLeadingColor &&
+        other._selectedOverlineColor == _selectedOverlineColor &&
+        other._selectedHeadlineColor == _selectedHeadlineColor &&
+        other._selectedSupportingTextColor == _selectedSupportingTextColor &&
+        other._selectedTrailingColor == _selectedTrailingColor &&
+        other._leadingColor == _leadingColor &&
+        other._overlineColor == _overlineColor &&
+        other._headlineColor == _headlineColor &&
+        other._supportingTextColor == _supportingTextColor &&
+        other._trailingColor == _trailingColor &&
+        other._leadingTextStyle == _leadingTextStyle &&
+        other._overlineTextStyle == _overlineTextStyle &&
+        other._headlineTextStyle == _headlineTextStyle &&
+        other._supportingTextTextStyle == _supportingTextTextStyle &&
+        other._trailingTextStyle == _trailingTextStyle &&
+        other._padding == _padding &&
+        other._tallVerticalPadding == _tallVerticalPadding &&
+        other._internalHorizontalPadding == _internalHorizontalPadding &&
+        other._enableFeedback == _enableFeedback &&
+        other._mouseCursor == _mouseCursor &&
+        other._visualDensity == _visualDensity;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('dense', dense, defaultValue: null));
-    properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape, defaultValue: null));
-    properties.add(EnumProperty<ListTileStyle>('style', style, defaultValue: null));
-    properties.add(ColorProperty('selectedColor', selectedColor, defaultValue: null));
-    properties.add(ColorProperty('iconColor', iconColor, defaultValue: null));
-    properties.add(ColorProperty('textColor', textColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextStyle>('titleTextStyle', titleTextStyle, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextStyle>('subtitleTextStyle', subtitleTextStyle, defaultValue: null));
-    properties.add(DiagnosticsProperty<TextStyle>('leadingAndTrailingTextStyle', leadingAndTrailingTextStyle, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('contentPadding', contentPadding, defaultValue: null));
-    properties.add(ColorProperty('tileColor', tileColor, defaultValue: null));
-    properties.add(ColorProperty('selectedTileColor', selectedTileColor, defaultValue: null));
-    properties.add(DoubleProperty('horizontalTitleGap', horizontalTitleGap, defaultValue: null));
-    properties.add(DoubleProperty('minVerticalPadding', minVerticalPadding, defaultValue: null));
-    properties.add(DoubleProperty('minLeadingWidth', minLeadingWidth, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('enableFeedback', enableFeedback, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>('mouseCursor', mouseCursor, defaultValue: null));
-    properties.add(DiagnosticsProperty<VisualDensity>('visualDensity', visualDensity, defaultValue: null));
-    properties.add(DiagnosticsProperty<ListTileTitleAlignment>('titleAlignment', titleAlignment, defaultValue: null));
+    properties.add(DiagnosticsProperty<ShapeBorder?>(
+        'customBorder', _customBorder,
+        defaultValue: null));
+    properties
+        .add(DiagnosticsProperty<bool?>('strict', _strict, defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>('tileColor', _tileColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'selectedTileColor', _selectedTileColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<StateThemeData?>(
+        'stateTheme', _stateTheme,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<StateLayerTheme?>(
+        'stateLayers', _stateLayers,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'selectedLeadingColor', _selectedLeadingColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'selectedOverlineColor', _selectedOverlineColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'selectedHeadlineColor', _selectedHeadlineColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'selectedSupportingTextColor', _selectedSupportingTextColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'selectedTrailingColor', _selectedTrailingColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>('leadingColor', _leadingColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>('overlineColor', _overlineColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>('headlineColor', _headlineColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>(
+        'supportingTextColor', _supportingTextColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color?>('trailingColor', _trailingColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'leadingTextStyle', _leadingTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'overlineTextStyle', _overlineTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'headlineTextStyle', _headlineTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'supportingTextTextStyle', _supportingTextTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'trailingTextStyle', _trailingTextStyle,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsDirectional?>(
+        'padding', _padding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<double?>(
+        'tallVerticalPadding', _tallVerticalPadding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<double?>(
+        'internalHorizontalPadding', _internalHorizontalPadding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<bool?>('enableFeedback', _enableFeedback,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>?>(
+        'mouseCursor', _mouseCursor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<VisualDensity?>(
+        'visualDensity', _visualDensity,
+        defaultValue: null));
   }
+}
+
+// Resolves late
+class _LateResolvingListTileThemeData extends ListTileThemeData {
+  _LateResolvingListTileThemeData(super.other, this.context) : super._clone();
+
+  final BuildContext context;
+
+  late final ThemeData _theme = Theme.of(context);
+  late final ColorScheme _colors = _theme.colorScheme;
+  late final TextTheme _textTheme = _theme.textTheme;
+
+  @override
+  StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
+
+  @override
+  StateLayerTheme get stateLayers {
+    final defaultStateLayerTheme = StateLayerTheme(
+      hoverColor: StateLayer(_colors.onSurface, stateTheme.hoverOpacity),
+      focusColor: StateLayer(_colors.onSurface, stateTheme.focusOpacity),
+      pressColor: StateLayer(_colors.onSurface, stateTheme.pressOpacity),
+      dragColor: StateLayer(_colors.onSurface, stateTheme.dragOpacity),
+    );
+    if (_stateLayers != null) {
+      _stateLayers!.mergeWith(defaultStateLayerTheme);
+    }
+    return defaultStateLayerTheme;
+  }
+
+  @override
+  Color get leadingColor => _leadingColor ?? _colors.onSurfaceVariant;
+
+  @override
+  Color get overlineColor => _overlineColor ?? _colors.onSurfaceVariant;
+
+  @override
+  Color get headlineColor => _headlineColor ?? _colors.onSurface;
+
+  @override
+  Color get supportingTextColor =>
+      _supportingTextColor ?? _colors.onSurfaceVariant;
+
+  @override
+  Color get trailingColor => _trailingColor ?? _colors.onSurfaceVariant;
+
+  @override
+  TextStyle get leadingTextStyle => _leadingTextStyle ?? _textTheme.labelSmall;
+
+  @override
+  TextStyle get overlineTextStyle =>
+      _overlineTextStyle ?? _textTheme.labelSmall;
+
+  @override
+  TextStyle get headlineTextStyle => _headlineTextStyle ?? _textTheme.bodyLarge;
+
+  @override
+  TextStyle get supportingTextTextStyle =>
+      _supportingTextTextStyle ?? _textTheme.bodyMedium;
+
+  @override
+  TextStyle get trailingTextStyle =>
+      _trailingTextStyle ?? _textTheme.labelSmall;
+
+  @override
+  VisualDensity get visualDensity => _visualDensity ?? _theme.visualDensity;
 }
 
 /// An inherited widget that defines color and style parameters for [ListTile]s
@@ -292,165 +750,31 @@ class ListTileTheme extends InheritedTheme {
   /// redundant (are now obsolete) and will be deprecated in a future update.
   const ListTileTheme({
     super.key,
-    ListTileThemeData? data,
-    bool? dense,
-    ShapeBorder? shape,
-    ListTileStyle? style,
-    Color? selectedColor,
-    Color? iconColor,
-    Color? textColor,
-    EdgeInsetsGeometry? contentPadding,
-    Color? tileColor,
-    Color? selectedTileColor,
-    bool? enableFeedback,
-    MaterialStateProperty<MouseCursor?>? mouseCursor,
-    double? horizontalTitleGap,
-    double? minVerticalPadding,
-    double? minLeadingWidth,
+    required this.data,
     required super.child,
-  }) : assert(
-         data == null ||
-         (shape ??
-          selectedColor ??
-          iconColor ??
-          textColor ??
-          contentPadding ??
-          tileColor ??
-          selectedTileColor ??
-          enableFeedback ??
-          mouseCursor ??
-          horizontalTitleGap ??
-          minVerticalPadding ??
-          minLeadingWidth) == null),
-       _data = data,
-       _dense = dense,
-       _shape = shape,
-       _style = style,
-       _selectedColor = selectedColor,
-       _iconColor = iconColor,
-       _textColor = textColor,
-       _contentPadding = contentPadding,
-       _tileColor = tileColor,
-       _selectedTileColor = selectedTileColor,
-       _enableFeedback = enableFeedback,
-       _mouseCursor = mouseCursor,
-       _horizontalTitleGap = horizontalTitleGap,
-       _minVerticalPadding = minVerticalPadding,
-       _minLeadingWidth = minLeadingWidth;
+  });
 
-  final ListTileThemeData? _data;
-  final bool? _dense;
-  final ShapeBorder? _shape;
-  final ListTileStyle? _style;
-  final Color? _selectedColor;
-  final Color? _iconColor;
-  final Color? _textColor;
-  final EdgeInsetsGeometry? _contentPadding;
-  final Color? _tileColor;
-  final Color? _selectedTileColor;
-  final double? _horizontalTitleGap;
-  final double? _minVerticalPadding;
-  final double? _minLeadingWidth;
-  final bool? _enableFeedback;
-  final MaterialStateProperty<MouseCursor?>? _mouseCursor;
-
-  /// The configuration of this theme.
-  ListTileThemeData get data {
-    return _data ?? ListTileThemeData(
-      dense: _dense,
-      shape: _shape,
-      style: _style,
-      selectedColor: _selectedColor,
-      iconColor: _iconColor,
-      textColor: _textColor,
-      contentPadding: _contentPadding,
-      tileColor: _tileColor,
-      selectedTileColor: _selectedTileColor,
-      enableFeedback: _enableFeedback,
-      mouseCursor: _mouseCursor,
-      horizontalTitleGap: _horizontalTitleGap,
-      minVerticalPadding: _minVerticalPadding,
-      minLeadingWidth: _minLeadingWidth,
+  static Widget merge({
+    Key? key,
+    required ListTileThemeData data,
+    required Widget child,
+  }) {
+    return Builder(
+      builder: (BuildContext context) {
+        final ListTileTheme? listTileTheme =
+            context.dependOnInheritedWidgetOfExactType<ListTileTheme>();
+        return ListTileTheme(
+          key: key,
+          data:
+              listTileTheme != null ? listTileTheme.data.mergeWith(data) : data,
+          child: child,
+        );
+      },
     );
   }
 
-  /// Overrides the default value of [ListTile.dense].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.dense] property instead.
-  bool? get dense => _data != null ? _data!.dense : _dense;
-
-  /// Overrides the default value of [ListTile.shape].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.shape] property instead.
-  ShapeBorder? get shape => _data != null ? _data!.shape : _shape;
-
-  /// Overrides the default value of [ListTile.style].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.style] property instead.
-  ListTileStyle? get style => _data != null ? _data!.style : _style;
-
-  /// Overrides the default value of [ListTile.selectedColor].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.selectedColor] property instead.
-  Color? get selectedColor => _data != null ? _data!.selectedColor : _selectedColor;
-
-  /// Overrides the default value of [ListTile.iconColor].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.iconColor] property instead.
-  Color? get iconColor => _data != null ? _data!.iconColor : _iconColor;
-
-  /// Overrides the default value of [ListTile.textColor].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.textColor] property instead.
-  Color? get textColor => _data != null ? _data!.textColor : _textColor;
-
-  /// Overrides the default value of [ListTile.contentPadding].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.contentPadding] property instead.
-  EdgeInsetsGeometry? get contentPadding => _data != null ? _data!.contentPadding : _contentPadding;
-
-  /// Overrides the default value of [ListTile.tileColor].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.tileColor] property instead.
-  Color? get tileColor => _data != null ? _data!.tileColor : _tileColor;
-
-  /// Overrides the default value of [ListTile.selectedTileColor].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.selectedTileColor] property instead.
-  Color? get selectedTileColor => _data != null ? _data!.selectedTileColor : _selectedTileColor;
-
-  /// Overrides the default value of [ListTile.horizontalTitleGap].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.horizontalTitleGap] property instead.
-  double? get horizontalTitleGap => _data != null ? _data!.horizontalTitleGap : _horizontalTitleGap;
-
-  /// Overrides the default value of [ListTile.minVerticalPadding].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.minVerticalPadding] property instead.
-  double? get minVerticalPadding => _data != null ? _data!.minVerticalPadding : _minVerticalPadding;
-
-  /// Overrides the default value of [ListTile.minLeadingWidth].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.minLeadingWidth] property instead.
-  double? get minLeadingWidth => _data != null ? _data!.minLeadingWidth : _minLeadingWidth;
-
-  /// Overrides the default value of [ListTile.enableFeedback].
-  ///
-  /// This property is obsolete: please use the [data]
-  /// [ListTileThemeData.enableFeedback] property instead.
-  bool? get enableFeedback => _data != null ? _data!.enableFeedback : _enableFeedback;
+  /// The configuration of this theme.
+  final ListTileThemeData data;
 
   /// The [data] property of the closest instance of this class that
   /// encloses the given context.
@@ -464,87 +788,44 @@ class ListTileTheme extends InheritedTheme {
   /// ListTileThemeData theme = ListTileTheme.of(context);
   /// ```
   static ListTileThemeData of(BuildContext context) {
-    final ListTileTheme? result = context.dependOnInheritedWidgetOfExactType<ListTileTheme>();
+    final ListTileTheme? result =
+        context.dependOnInheritedWidgetOfExactType<ListTileTheme>();
     return result?.data ?? Theme.of(context).listTileTheme;
   }
 
-  /// Creates a list tile theme that controls the color and style parameters for
-  /// [ListTile]s, and merges in the current list tile theme, if any.
+  /// Return a [ListTileThemeData] that merges the nearest ancestor [ListTileTheme]
+  /// and the [ListTileThemeData] provided by the nearest [Theme].
   ///
-  /// The [child] argument must not be null.
-  static Widget merge({
-    Key? key,
-    bool? dense,
-    ShapeBorder? shape,
-    ListTileStyle? style,
-    Color? selectedColor,
-    Color? iconColor,
-    Color? textColor,
-    TextStyle? titleTextStyle,
-    TextStyle? subtitleTextStyle,
-    TextStyle? leadingAndTrailingTextStyle,
-    EdgeInsetsGeometry? contentPadding,
-    Color? tileColor,
-    Color? selectedTileColor,
-    bool? enableFeedback,
-    double? horizontalTitleGap,
-    double? minVerticalPadding,
-    double? minLeadingWidth,
-    ListTileTitleAlignment? titleAlignment,
-    MaterialStateProperty<MouseCursor?>? mouseCursor,
-    VisualDensity? visualDensity,
-    required Widget child,
-  }) {
-    return Builder(
-      builder: (BuildContext context) {
-        final ListTileThemeData parent = ListTileTheme.of(context);
-        return ListTileTheme(
-          key: key,
-          data: ListTileThemeData(
-            dense: dense ?? parent.dense,
-            shape: shape ?? parent.shape,
-            style: style ?? parent.style,
-            selectedColor: selectedColor ?? parent.selectedColor,
-            iconColor: iconColor ?? parent.iconColor,
-            textColor: textColor ?? parent.textColor,
-            titleTextStyle: titleTextStyle ?? parent.titleTextStyle,
-            subtitleTextStyle: subtitleTextStyle ?? parent.subtitleTextStyle,
-            leadingAndTrailingTextStyle: leadingAndTrailingTextStyle ?? parent.leadingAndTrailingTextStyle,
-            contentPadding: contentPadding ?? parent.contentPadding,
-            tileColor: tileColor ?? parent.tileColor,
-            selectedTileColor: selectedTileColor ?? parent.selectedTileColor,
-            enableFeedback: enableFeedback ?? parent.enableFeedback,
-            horizontalTitleGap: horizontalTitleGap ?? parent.horizontalTitleGap,
-            minVerticalPadding: minVerticalPadding ?? parent.minVerticalPadding,
-            minLeadingWidth: minLeadingWidth ?? parent.minLeadingWidth,
-            titleAlignment: titleAlignment ?? parent.titleAlignment,
-            mouseCursor: mouseCursor ?? parent.mouseCursor,
-            visualDensity: visualDensity ?? parent.visualDensity,
-          ),
-          child: child,
-        );
-      },
-    );
+  /// A current context theme can also be provided, used when the
+  /// StateThemeData is passed as a parameter to a widget other than
+  /// StateTheme.
+  ///
+  /// See also:
+  ///
+  /// * [BuildContext.dependOnInheritedWidgetOfExactType]
+  static ListTileThemeData resolve(
+    BuildContext context, [
+    ListTileThemeData? currentContextTheme,
+  ]) {
+    final ancestorTheme =
+        context.dependOnInheritedWidgetOfExactType<ListTileTheme>()?.data;
+    final List<ListTileThemeData> ancestorThemes = [
+      Theme.of(context).listTileTheme,
+      if (ancestorTheme != null) ancestorTheme,
+      if (currentContextTheme != null) currentContextTheme,
+    ];
+    if (ancestorThemes.length > 1) {
+      return ancestorThemes
+          .reduce((acc, e) => acc.mergeWith(e))
+          .withContext(context);
+    }
+    return ancestorThemes.first.withContext(context);
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
     return ListTileTheme(
-      data: ListTileThemeData(
-        dense: dense,
-        shape: shape,
-        style: style,
-        selectedColor: selectedColor,
-        iconColor: iconColor,
-        textColor: textColor,
-        contentPadding: contentPadding,
-        tileColor: tileColor,
-        selectedTileColor: selectedTileColor,
-        enableFeedback: enableFeedback,
-        horizontalTitleGap: horizontalTitleGap,
-        minVerticalPadding: minVerticalPadding,
-        minLeadingWidth: minLeadingWidth,
-      ),
+      data: data,
       child: child,
     );
   }

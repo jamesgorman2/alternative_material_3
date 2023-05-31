@@ -25,18 +25,16 @@ class ColorPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TonalPalettesCard(),
-                  SizedBox(height: 16.0),
-                  ThemeCardLight(),
-                  SizedBox(height: 16.0),
-                  ThemeCardDark(),
-                ],
-              ),
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TonalPalettesCard(),
+                SizedBox(height: 16.0),
+                ThemeCardLight(),
+                SizedBox(height: 16.0),
+                ThemeCardDark(),
+              ],
             ),
           ),
         ),
@@ -139,7 +137,7 @@ class TonalPaletteRow extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       '$tone',
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      style: Theme.of(context).textTheme.labelMedium.copyWith(
                             color: textColor(tone),
                           ),
                     ),
@@ -171,8 +169,7 @@ class ThemeCardLight extends StatelessWidget {
               'Light Theme',
               style: Theme.of(context)
                   .textTheme
-                  .titleMedium!
-                  .copyWith(color: colorScheme.onSurface),
+                  .titleMedium.copyWith(color: colorScheme.onSurface),
             ),
             const SizedBox(height: 16.0),
             const TopRowLight(),
@@ -206,8 +203,7 @@ class ThemeCardDark extends StatelessWidget {
               'Dark Theme',
               style: Theme.of(context)
                   .textTheme
-                  .titleMedium!
-                  .copyWith(color: colorScheme.onSurface),
+                  .titleMedium.copyWith(color: colorScheme.onSurface),
             ),
             const SizedBox(height: 16.0),
             const TopRowDark(),
@@ -1128,7 +1124,7 @@ class Swatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final font = Theme.of(context).textTheme.labelSmall!;
+    final font = Theme.of(context).textTheme.labelSmall;
 
     const double verticalPadding = 10;
     const double horizontalPadding = 12;

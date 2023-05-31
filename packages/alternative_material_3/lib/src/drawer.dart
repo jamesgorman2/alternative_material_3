@@ -10,7 +10,6 @@ import 'debug.dart';
 import 'drawer_theme.dart';
 import 'elevation.dart';
 import 'list_tile.dart';
-import 'list_tile_theme.dart';
 import 'material.dart';
 import 'material_localizations.dart';
 import 'theme.dart';
@@ -792,10 +791,7 @@ class DrawerControllerState extends State<DrawerController> with SingleTickerPro
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
-    return ListTileTheme.merge(
-      style: ListTileStyle.drawer,
-      child: _buildDrawer(context),
-    );
+    return _buildDrawer(context);
   }
 }
 

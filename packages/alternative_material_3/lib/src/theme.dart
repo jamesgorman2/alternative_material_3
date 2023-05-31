@@ -246,3 +246,34 @@ class _AnimatedThemeState extends AnimatedWidgetBaseState<AnimatedTheme> {
     description.add(DiagnosticsProperty<ThemeDataTween>('data', _data, showName: false, defaultValue: null));
   }
 }
+
+///
+extension BuildContextAncestors on BuildContext {
+  /// Return a list of all ancestors of type [T]. If the ancestor
+  /// is an [InheritedWidget], with will also add a dependency on it.
+  ///
+  /// By default this will find all ancestors until the first [Theme]
+  /// is found. Setting [haltAtTheme] to false will traverse the
+  /// entire parent list.
+  ///
+  /// See also:
+  ///
+  /// * [BuildContext.dependOnInheritedWidgetOfExactType]
+  Iterable<T> dependOnAllAncestorsOfType<T>({bool haltAtTheme = true}) {
+    final List<T> ancestors = [];
+    visitAncestorElements((ancestor) {
+      if (ancestor.widget is T) {
+        if (ancestor is InheritedElement) {
+          dependOnInheritedElement(ancestor);
+        }
+        ancestors.add(ancestor.widget as T);
+      } else if (haltAtTheme && ancestor.widget is Theme) {
+        // Theme is a complex widget, we add it below
+        // This gives us an early exit
+        return false;
+      }
+      return true;
+    });
+    return ancestors;
+  }
+}

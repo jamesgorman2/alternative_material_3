@@ -19,22 +19,20 @@ class TypographyPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Display(),
-                  SizedBox(height: 16),
-                  Headline(),
-                  SizedBox(height: 16),
-                  Title(),
-                  SizedBox(height: 16),
-                  Label(),
-                  SizedBox(height: 16),
-                  Body(),
-                ],
-              ),
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Display(),
+                SizedBox(height: 16),
+                Headline(),
+                SizedBox(height: 16),
+                Title(),
+                SizedBox(height: 16),
+                Label(),
+                SizedBox(height: 16),
+                Body(),
+              ],
             ),
           ),
         ),

@@ -20,6 +20,7 @@ import 'elevation.dart';
 import 'floating_action_button_location.dart';
 import 'ink_decoration.dart';
 import 'list_tile.dart';
+import 'list_tile_element.dart';
 import 'material.dart';
 import 'material_localizations.dart';
 import 'page.dart';
@@ -138,11 +139,10 @@ class AboutListTile extends StatelessWidget {
     assert(debugCheckHasMaterial(context));
     assert(debugCheckHasMaterialLocalizations(context));
     return ListTile(
-      leading: icon,
-      title: child ?? Text(MaterialLocalizations.of(context).aboutListTileTitle(
+      leading: icon != null ? ListTileElement.icon24(child: icon!): null,
+      headline: child ?? Text(MaterialLocalizations.of(context).aboutListTileTitle(
         applicationName ?? _defaultApplicationName(context),
       )),
-      dense: dense,
       onTap: () {
         showAboutDialog(
           context: context,
@@ -676,8 +676,8 @@ class _PackageListTile extends StatelessWidget {
         Theme.of(context).colorScheme.onSurface :
         Theme.of(context).colorScheme.surfaceContainerLow,
       child: ListTile(
-        title: Text(packageName),
-        subtitle: Text(MaterialLocalizations.of(context).licensesPackageDetailText(numberLicenses)),
+        headline: Text(packageName),
+        supportingText: Text(MaterialLocalizations.of(context).licensesPackageDetailText(numberLicenses)),
         selected: isSelected,
         onTap: onTap,
       ),

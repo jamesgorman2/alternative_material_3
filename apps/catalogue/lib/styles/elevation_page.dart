@@ -22,36 +22,34 @@ class ElevationPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Elevation using tone'),
-                  const SizedBox(height: 8),
-                  ElevationCards(
-                    hasShadow: false,
-                    colorScheme: colorSchemeLight,
-                  ),
-                  const SizedBox(height: 8),
-                  ElevationCards(
-                    hasShadow: false,
-                    colorScheme: colorSchemeDark,
-                  ),
-                  const SizedBox(height: 32),
-                  const Text('Elevation using tone and shadow'),
-                  const SizedBox(height: 16),
-                  ElevationCards(
-                    hasShadow: true,
-                    colorScheme: colorSchemeLight,
-                  ),
-                  const SizedBox(height: 8),
-                  ElevationCards(
-                    hasShadow: true,
-                    colorScheme: colorSchemeDark,
-                  ),
-                ],
-              ),
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Elevation using tone'),
+                const SizedBox(height: 8),
+                ElevationCards(
+                  hasShadow: false,
+                  colorScheme: colorSchemeLight,
+                ),
+                const SizedBox(height: 8),
+                ElevationCards(
+                  hasShadow: false,
+                  colorScheme: colorSchemeDark,
+                ),
+                const SizedBox(height: 32),
+                const Text('Elevation using tone and shadow'),
+                const SizedBox(height: 16),
+                ElevationCards(
+                  hasShadow: true,
+                  colorScheme: colorSchemeLight,
+                ),
+                const SizedBox(height: 8),
+                ElevationCards(
+                  hasShadow: true,
+                  colorScheme: colorSchemeDark,
+                ),
+              ],
             ),
           ),
         ),

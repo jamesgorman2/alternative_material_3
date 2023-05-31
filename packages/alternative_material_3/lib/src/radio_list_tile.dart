@@ -5,18 +5,12 @@
 import 'package:flutter/widgets.dart';
 
 import 'list_tile.dart';
+import 'list_tile_element.dart';
 import 'list_tile_theme.dart';
-import 'material_state.dart';
 import 'radio.dart';
 import 'radio_theme.dart';
 import 'theme.dart';
 import 'theme_data.dart';
-
-// Examples can assume:
-// void setState(VoidCallback fn) { }
-// enum Meridiem { am, pm }
-// enum SingingCharacter { lafayette }
-// late SingingCharacter? _character;
 
 enum _RadioType { material, adaptive }
 
@@ -30,7 +24,7 @@ enum _RadioType { material, adaptive }
 /// widget. The type parameter `T` serves the same purpose as that of the
 /// [Radio] class' type parameter.
 ///
-/// The [title], [subtitle], [isThreeLine], and [dense] properties are like
+/// The [headline], [supportingText], [isThreeLine], and [dense] properties are like
 /// those of the same name on [ListTile].
 ///
 /// The [selected] property on this widget is similar to the [ListTile.selected]
@@ -164,32 +158,27 @@ class RadioListTile<T> extends StatelessWidget {
     required this.value,
     required this.groupValue,
     required this.onChanged,
-    this.mouseCursor,
+    this.radioTheme,
+    this.listTileTheme,
+    this.layout,
     this.toggleable = false,
-    this.activeColor,
-    this.fillColor,
-    this.hoverColor,
-    this.overlayColor,
-    this.splashRadius,
-    this.materialTapTargetSize,
-    this.title,
-    this.subtitle,
-    this.isThreeLine = false,
-    this.dense,
+    this.overline,
+    this.headline,
+    this.supportingText,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
     this.autofocus = false,
-    this.contentPadding,
-    this.shape,
-    this.tileColor,
-    this.selectedTileColor,
-    this.visualDensity,
     this.focusNode,
     this.onFocusChange,
-    this.enableFeedback,
-  }) : _radioType = _RadioType.material,
-       assert(!isThreeLine || subtitle != null);
+  })  : _radioType = _RadioType.material,
+        assert(
+          !(supportingText != null &&
+              overline != null &&
+              layout != ListTileLayout.threeLine),
+          'RadioListTile.supportingText and RadioListTile.overline must not be present '
+          'together when layout == ListTileLayout.threeLine',
+        );
 
   /// Creates a combination of a list tile and a platform adaptive radio.
   ///
@@ -202,32 +191,27 @@ class RadioListTile<T> extends StatelessWidget {
     required this.value,
     required this.groupValue,
     required this.onChanged,
-    this.mouseCursor,
+    this.radioTheme,
+    this.listTileTheme,
+    this.layout,
     this.toggleable = false,
-    this.activeColor,
-    this.fillColor,
-    this.hoverColor,
-    this.overlayColor,
-    this.splashRadius,
-    this.materialTapTargetSize,
-    this.title,
-    this.subtitle,
-    this.isThreeLine = false,
-    this.dense,
+    this.overline,
+    this.headline,
+    this.supportingText,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
     this.autofocus = false,
-    this.contentPadding,
-    this.shape,
-    this.tileColor,
-    this.selectedTileColor,
-    this.visualDensity,
     this.focusNode,
     this.onFocusChange,
-    this.enableFeedback,
-  }) : _radioType = _RadioType.adaptive,
-       assert(!isThreeLine || subtitle != null);
+  })  : _radioType = _RadioType.adaptive,
+        assert(layout == null ||
+            layout == ListTileLayout.threeLine ||
+            (layout == ListTileLayout.oneLine &&
+                overline == null &&
+                supportingText == null) ||
+            (layout == ListTileLayout.twoLine &&
+                (overline == null || supportingText == null)));
 
   /// The value represented by this radio button.
   final T value;
@@ -267,19 +251,17 @@ class RadioListTile<T> extends StatelessWidget {
   /// ```
   final ValueChanged<T?>? onChanged;
 
-  /// The cursor for a mouse pointer when it enters or is hovering over the
-  /// widget.
-  ///
-  /// If [mouseCursor] is a [MaterialStateProperty<MouseCursor>],
-  /// [MaterialStateProperty.resolve] is used for the following [MaterialState]s:
-  ///
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.disabled].
-  ///
-  /// If null, then the value of [RadioThemeData.mouseCursor] is used.
-  /// If that is also null, then [MaterialStateMouseCursor.clickable] is used.
-  final MouseCursor? mouseCursor;
+  /// RadioTheme overrides that only apply to this radio list tile.
+  final RadioThemeData? radioTheme;
+
+  /// ListTileThemeData overrides that only apply to this radio list tile.
+  final ListTileThemeData? listTileTheme;
+
+  /// The line layout of the [ListTile]. When no layout is passed in during
+  /// construction the value will be calculated base on the presence
+  /// or absence of [overline] and [supportingText], and the length of
+  /// [supportingText].
+  final ListTileLayout? layout;
 
   /// Set to true if this radio list tile is allowed to be returned to an
   /// indeterminate state by selecting it again when selected.
@@ -306,75 +288,22 @@ class RadioListTile<T> extends StatelessWidget {
   /// {@end-tool}
   final bool toggleable;
 
-  /// The color to use when this radio button is selected.
-  ///
-  /// Defaults to [ColorScheme.secondary] of the current [Theme].
-  final Color? activeColor;
-
-  /// The color that fills the radio button.
-  ///
-  /// Resolves in the following states:
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///  * [MaterialState.disabled].
-  ///
-  /// If null, then the value of [activeColor] is used in the selected state. If
-  /// that is also null, then the value of [RadioThemeData.fillColor] is used.
-  /// If that is also null, then the default value is used.
-  final MaterialStateProperty<Color?>? fillColor;
-
-  /// {@macro flutter.material.radio.materialTapTargetSize}
-  ///
-  /// Defaults to [MaterialTapTargetSize.shrinkWrap].
-  final MaterialTapTargetSize? materialTapTargetSize;
-
-  /// {@macro flutter.material.radio.hoverColor}
-  final Color? hoverColor;
-
-  /// The color for the radio's [Material].
-  ///
-  /// Resolves in the following states:
-  ///  * [MaterialState.pressed].
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.hovered].
-  ///
-  /// If null, then the value of [activeColor] with alpha [kRadialReactionAlpha]
-  /// and [hoverColor] is used in the pressed and hovered state. If that is also
-  /// null, the value of [SwitchThemeData.overlayColor] is used. If that is
-  /// also null, then the default value is used in the pressed and hovered state.
-  final MaterialStateProperty<Color?>? overlayColor;
-
-  /// {@macro flutter.material.radio.splashRadius}
-  ///
-  /// If null, then the value of [RadioThemeData.splashRadius] is used. If that
-  /// is also null, then [kRadialReactionRadius] is used.
-  final double? splashRadius;
+  final Widget? overline;
 
   /// The primary content of the list tile.
   ///
   /// Typically a [Text] widget.
-  final Widget? title;
+  final Widget? headline;
 
   /// Additional content displayed below the title.
   ///
   /// Typically a [Text] widget.
-  final Widget? subtitle;
+  final Widget? supportingText;
 
   /// A widget to display on the opposite side of the tile from the radio button.
   ///
   /// Typically an [Icon] widget.
-  final Widget? secondary;
-
-  /// Whether this list tile is intended to display three lines of text.
-  ///
-  /// If false, the list tile is treated as having one line if the subtitle is
-  /// null and treated as having two lines if the subtitle is non-null.
-  final bool isThreeLine;
-
-  /// Whether this list tile is part of a vertically dense list.
-  ///
-  /// If this property is null then its value is based on [ListTileThemeData.dense].
-  final bool? dense;
+  final ListTileElement? secondary;
 
   /// Whether to render icons and text in the [activeColor].
   ///
@@ -392,33 +321,10 @@ class RadioListTile<T> extends StatelessWidget {
   /// {@macro flutter.widgets.Focus.autofocus}
   final bool autofocus;
 
-  /// Defines the insets surrounding the contents of the tile.
-  ///
-  /// Insets the [Radio], [title], [subtitle], and [secondary] widgets
-  /// in [RadioListTile].
-  ///
-  /// When null, `EdgeInsets.symmetric(horizontal: 16.0)` is used.
-  final EdgeInsetsGeometry? contentPadding;
-
   /// Whether this radio button is checked.
   ///
   /// To control this value, set [value] and [groupValue] appropriately.
   bool get checked => value == groupValue;
-
-  /// If specified, [shape] defines the shape of the [RadioListTile]'s [InkWell] border.
-  final ShapeBorder? shape;
-
-  /// If specified, defines the background color for `RadioListTile` when
-  /// [RadioListTile.selected] is false.
-  final Color? tileColor;
-
-  /// If non-null, defines the background color when [RadioListTile.selected] is true.
-  final Color? selectedTileColor;
-
-  /// Defines how compact the list tile's layout will be.
-  ///
-  /// {@macro flutter.material.themedata.visualDensity}
-  final VisualDensity? visualDensity;
 
   /// {@macro flutter.widgets.Focus.focusNode}
   final FocusNode? focusNode;
@@ -426,52 +332,38 @@ class RadioListTile<T> extends StatelessWidget {
   /// {@macro flutter.material.inkwell.onFocusChange}
   final ValueChanged<bool>? onFocusChange;
 
-  /// {@macro flutter.material.ListTile.enableFeedback}
-  ///
-  /// See also:
-  ///
-  ///  * [Feedback] for providing platform-specific feedback to certain actions.
-  final bool? enableFeedback;
-
   final _RadioType _radioType;
 
   @override
   Widget build(BuildContext context) {
-    final Widget control;
+    final ListTileElement control;
     switch (_radioType) {
       case _RadioType.material:
-        control = Radio<T>(
-          value: value,
-          groupValue: groupValue,
-          onChanged: onChanged,
-          toggleable: toggleable,
-          activeColor: activeColor,
-          materialTapTargetSize: materialTapTargetSize ?? MaterialTapTargetSize.shrinkWrap,
-          autofocus: autofocus,
-          fillColor: fillColor,
-          mouseCursor: mouseCursor,
-          hoverColor: hoverColor,
-          overlayColor: overlayColor,
-          splashRadius: splashRadius,
+        control = ListTileElement.icon24(
+          child: Radio<T>(
+            value: value,
+            theme: radioTheme,
+            groupValue: groupValue,
+            onChanged: onChanged,
+            toggleable: toggleable,
+            autofocus: autofocus,
+          ),
         );
       case _RadioType.adaptive:
-        control = Radio<T>.adaptive(
-          value: value,
-          groupValue: groupValue,
-          onChanged: onChanged,
-          toggleable: toggleable,
-          activeColor: activeColor,
-          materialTapTargetSize: materialTapTargetSize ?? MaterialTapTargetSize.shrinkWrap,
-          autofocus: autofocus,
-          fillColor: fillColor,
-          mouseCursor: mouseCursor,
-          hoverColor: hoverColor,
-          overlayColor: overlayColor,
-          splashRadius: splashRadius,
+        control = ListTileElement.icon24(
+          child: Radio<T>.adaptive(
+            value: value,
+            theme: radioTheme,
+            groupValue: groupValue,
+            onChanged: onChanged,
+            toggleable: toggleable,
+            autofocus: autofocus,
+          ),
         );
     }
 
-    Widget? leading, trailing;
+    ListTileElement? leading;
+    ListTileElement? trailing;
     switch (controlAffinity) {
       case ListTileControlAffinity.leading:
       case ListTileControlAffinity.platform:
@@ -481,43 +373,31 @@ class RadioListTile<T> extends StatelessWidget {
         leading = secondary;
         trailing = control;
     }
-    final ThemeData theme = Theme.of(context);
-    final RadioThemeData radioThemeData = RadioTheme.of(context);
-    final Set<MaterialState> states = <MaterialState>{
-      if (selected) MaterialState.selected,
-    };
-    final Color effectiveActiveColor = activeColor
-      ?? radioThemeData.fillColor?.resolve(states)
-      ?? theme.colorScheme.secondary;
     return MergeSemantics(
       child: ListTile(
-        selectedColor: effectiveActiveColor,
+        layout: layout,
+        theme: listTileTheme,
         leading: leading,
-        title: title,
-        subtitle: subtitle,
+        overline: overline,
+        headline: headline,
+        supportingText: supportingText,
         trailing: trailing,
-        isThreeLine: isThreeLine,
-        dense: dense,
         enabled: onChanged != null,
-        shape: shape,
-        tileColor: tileColor,
-        selectedTileColor: selectedTileColor,
-        onTap: onChanged != null ? () {
-          if (toggleable && checked) {
-            onChanged!(null);
-            return;
-          }
-          if (!checked) {
-            onChanged!(value);
-          }
-        } : null,
+        onTap: onChanged != null
+            ? () {
+                if (toggleable && checked) {
+                  onChanged!(null);
+                  return;
+                }
+                if (!checked) {
+                  onChanged!(value);
+                }
+              }
+            : null,
         selected: selected,
         autofocus: autofocus,
-        contentPadding: contentPadding,
-        visualDensity: visualDensity,
         focusNode: focusNode,
         onFocusChange: onFocusChange,
-        enableFeedback: enableFeedback,
       ),
     );
   }
