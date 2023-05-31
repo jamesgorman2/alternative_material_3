@@ -6,13 +6,13 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import 'colors.dart';
-import 'debug.dart';
-import 'drawer_header.dart';
-import 'icons.dart';
-import 'ink_well.dart';
-import 'material_localizations.dart';
-import 'theme.dart';
+import '../../alternative_material_3/lib/src/colors.dart';
+import '../../alternative_material_3/lib/src/debug.dart';
+import '../../alternative_material_3/lib/src/drawer_header.dart';
+import '../../alternative_material_3/lib/src/icons.dart';
+import '../../alternative_material_3/lib/src/ink_well.dart';
+import '../../alternative_material_3/lib/src/material_localizations.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
 
 class _AccountPictures extends StatelessWidget {
   const _AccountPictures({

@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
-import 'package:alternative_material_3/src/state_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -451,7 +450,7 @@ void main() {
       drawerTheme: const DrawerThemeData(),
       dropdownMenuTheme: const DropdownMenuThemeData(),
       elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Colors.green)),
-      expansionTileTheme: const ExpansionTileThemeData(backgroundColor: Colors.black),
+      expansionTileTheme: const ExpansionTileThemeData(expandedBackgroundColor: Colors.black),
       filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(foregroundColor: Colors.green)),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: Colors.black),
       iconButtonTheme: IconButtonThemeData(style: IconButton.styleFrom(foregroundColor: Colors.pink)),
@@ -545,7 +544,7 @@ void main() {
       drawerTheme: const DrawerThemeData(),
       dropdownMenuTheme: const DropdownMenuThemeData(),
       elevatedButtonTheme: const ElevatedButtonThemeData(),
-      expansionTileTheme: const ExpansionTileThemeData(backgroundColor: Colors.black),
+      expansionTileTheme: const ExpansionTileThemeData(expandedBackgroundColor: Colors.black),
       filledButtonTheme: const FilledButtonThemeData(),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: Colors.white),
       iconButtonTheme: const IconButtonThemeData(),

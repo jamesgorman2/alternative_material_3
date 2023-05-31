@@ -1336,7 +1336,7 @@ void main() {
                 suggestionsBuilder: (BuildContext context, SearchController controller) {
                   return <Widget>[
                     ListTile(
-                      title: const Text(suggestion),
+                      headline: const Text(suggestion),
                       onTap: () {
                         setState(() {
                           controller.closeView(suggestion);
@@ -1402,7 +1402,7 @@ void main() {
           suggestionsBuilder: (BuildContext context, SearchController controller) {
             return <Widget>[
               ListTile(
-                title: const Text('item 0'),
+                headline: const Text('item 0'),
                 onTap: () {
                   controller.closeView('item 0');
                 },

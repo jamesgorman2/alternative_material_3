@@ -27,7 +27,7 @@ void main() {
     expect(themeData.trackOutlineColor, null);
     expect(themeData.mouseCursor, null);
     expect(themeData.materialTapTargetSize, null);
-    expect(themeData.overlayColor, null);
+    expect(themeData.stateLayerColor, null);
     expect(themeData.splashRadius, null);
     expect(themeData.thumbIcon, null);
 
@@ -37,7 +37,7 @@ void main() {
     expect(theme.data.trackOutlineColor, null);
     expect(theme.data.mouseCursor, null);
     expect(theme.data.materialTapTargetSize, null);
-    expect(theme.data.overlayColor, null);
+    expect(theme.data.stateLayerColor, null);
     expect(theme.data.splashRadius, null);
     expect(theme.data.thumbIcon, null);
   });
@@ -62,7 +62,7 @@ void main() {
       trackOutlineColor: MaterialStatePropertyAll<Color>(Color(0xfffffff3)),
       mouseCursor: MaterialStatePropertyAll<MouseCursor>(SystemMouseCursors.click),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      overlayColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
+      stateLayerColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
       splashRadius: 1.0,
       thumbIcon: MaterialStatePropertyAll<Icon>(Icon(IconData(123))),
     ).debugFillProperties(builder);
@@ -121,7 +121,7 @@ void main() {
         }),
         mouseCursor: const MaterialStatePropertyAll<MouseCursor>(mouseCursor),
         materialTapTargetSize: materialTapTargetSize,
-        overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        stateLayerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
           if (states.contains(MaterialState.focused)) {
             return focusOverlayColor;
           }
@@ -243,7 +243,7 @@ void main() {
         }),
         mouseCursor: const MaterialStatePropertyAll<MouseCursor>(themeMouseCursor),
         materialTapTargetSize: themeMaterialTapTargetSize,
-        overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        stateLayerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
           if (states.contains(MaterialState.focused)) {
             return themeFocusOverlayColor;
           }
@@ -428,7 +428,7 @@ void main() {
     const double splashRadius = 24.0;
     final ThemeData themeData = ThemeData(
       switchTheme: SwitchThemeData(
-        overlayColor: MaterialStateProperty.resolveWith(getOverlayColor),
+        stateLayerColor: MaterialStateProperty.resolveWith(getOverlayColor),
         splashRadius: splashRadius,
       ),
     );

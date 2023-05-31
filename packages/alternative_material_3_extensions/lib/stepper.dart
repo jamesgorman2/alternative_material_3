@@ -4,19 +4,19 @@
 
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
-import 'color_scheme.dart';
-import 'colors.dart';
-import 'debug.dart';
-import 'elevation.dart';
-import 'icons.dart';
-import 'ink_well.dart';
-import 'material.dart';
-import 'material_localizations.dart';
-import 'material_state.dart';
-import 'text_button.dart';
-import 'text_theme.dart';
-import 'theme.dart';
+import '../../alternative_material_3/lib/src/button_style.dart';
+import '../../alternative_material_3/lib/src/color_scheme.dart';
+import '../../alternative_material_3/lib/src/colors.dart';
+import '../../alternative_material_3/lib/src/debug.dart';
+import '../../alternative_material_3/lib/src/elevation.dart';
+import '../../alternative_material_3/lib/src/icons.dart';
+import '../../alternative_material_3/lib/src/ink_well.dart';
+import '../../alternative_material_3/lib/src/material.dart';
+import '../../alternative_material_3/lib/src/material_localizations.dart';
+import '../../alternative_material_3/lib/src/material_state.dart';
+import '../../alternative_material_3/lib/src/text_button.dart';
+import '../../alternative_material_3/lib/src/text_theme.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
 
 // TODO(dragostis): Missing functionality:
 //   * mobile horizontal mode with adding/removing steps

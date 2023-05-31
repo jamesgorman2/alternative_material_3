@@ -24,16 +24,16 @@ void main() {
   test('RadioThemeData defaults', () {
     const RadioThemeData themeData = RadioThemeData();
     expect(themeData.mouseCursor, null);
-    expect(themeData.fillColor, null);
-    expect(themeData.overlayColor, null);
+    expect(themeData.containerColor, null);
+    expect(themeData.stateLayerColor, null);
     expect(themeData.splashRadius, null);
     expect(themeData.materialTapTargetSize, null);
     expect(themeData.visualDensity, null);
 
     const RadioTheme theme = RadioTheme(data: RadioThemeData(), child: SizedBox());
     expect(theme.data.mouseCursor, null);
-    expect(theme.data.fillColor, null);
-    expect(theme.data.overlayColor, null);
+    expect(theme.data.containerColor, null);
+    expect(theme.data.stateLayerColor, null);
     expect(theme.data.splashRadius, null);
     expect(theme.data.materialTapTargetSize, null);
     expect(theme.data.visualDensity, null);
@@ -55,8 +55,8 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const RadioThemeData(
       mouseCursor: MaterialStatePropertyAll<MouseCursor>(SystemMouseCursors.click),
-      fillColor: MaterialStatePropertyAll<Color>(Color(0xfffffff0)),
-      overlayColor: MaterialStatePropertyAll<Color>(Color(0xfffffff1)),
+      containerColor: MaterialStatePropertyAll<Color>(Color(0xfffffff0)),
+      stateLayerColor: MaterialStatePropertyAll<Color>(Color(0xfffffff1)),
       splashRadius: 1.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.standard,
@@ -97,13 +97,13 @@ void main() {
         theme: ThemeData(
           radioTheme: RadioThemeData(
             mouseCursor: const MaterialStatePropertyAll<MouseCursor>(mouseCursor),
-            fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            containerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
                 return selectedFillColor;
               }
               return defaultFillColor;
             }),
-            overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            stateLayerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
               if (states.contains(MaterialState.focused)) {
                 return focusOverlayColor;
               }
@@ -179,13 +179,13 @@ void main() {
         theme: ThemeData(
           radioTheme: RadioThemeData(
             mouseCursor: const MaterialStatePropertyAll<MouseCursor>(themeMouseCursor),
-            fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            containerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
                 return themeSelectedFillColor;
               }
               return themeDefaultFillColor;
             }),
-            overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            stateLayerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
               if (states.contains(MaterialState.focused)) {
                 return themeFocusOverlayColor;
               }
@@ -257,7 +257,7 @@ void main() {
       return MaterialApp(
         theme: ThemeData(
           radioTheme: RadioThemeData(
-            fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            containerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
                 return themeSelectedFillColor;
               }
@@ -307,7 +307,7 @@ void main() {
       return MaterialApp(
         theme: ThemeData(
           radioTheme: RadioThemeData(
-            overlayColor: MaterialStateProperty.resolveWith(getOverlayColor),
+            stateLayerColor: MaterialStateProperty.resolveWith(getOverlayColor),
             splashRadius: splashRadius,
           ),
         ),
@@ -358,13 +358,13 @@ void main() {
       return MaterialApp(
         theme: ThemeData(
           radioTheme: const RadioThemeData(
-            fillColor: MaterialStatePropertyAll<Color>(globalThemeFillColor),
+            containerColor: MaterialStatePropertyAll<Color>(globalThemeFillColor),
           ),
         ),
         home: Scaffold(
           body: RadioTheme(
             data: const RadioThemeData(
-              fillColor: MaterialStatePropertyAll<Color>(localThemeFillColor),
+              containerColor: MaterialStatePropertyAll<Color>(localThemeFillColor),
             ),
             child: Radio<int>(
               value: active ? 1 : 0,

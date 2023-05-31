@@ -454,7 +454,7 @@ void main() {
               return Checkbox(
                 value: true,
                 activeColor: activeColor,
-                checkColor: checkColor,
+                expandedIconColor: checkColor,
                 onChanged: (bool? value) { },
               );
             },
@@ -946,7 +946,7 @@ void main() {
             builder: (BuildContext context, StateSetter setState) {
               return Checkbox(
                 value: true,
-                fillColor: fillColor,
+                containerColor: fillColor,
                 onChanged: enabled ? (bool? value) { } : null,
               );
             },
@@ -997,7 +997,7 @@ void main() {
                 focusNode: focusNode,
                 autofocus: true,
                 value: true,
-                fillColor: fillColor,
+                containerColor: fillColor,
                 onChanged: (bool? value) { },
               );
             },
@@ -1169,8 +1169,8 @@ void main() {
             autofocus: focused,
             value: active,
             onChanged: (_) { },
-            fillColor: const MaterialStatePropertyAll<Color>(fillColor),
-            overlayColor: useOverlay ? MaterialStateProperty.resolveWith(getOverlayColor) : null,
+            containerColor: const MaterialStatePropertyAll<Color>(fillColor),
+            stateLayerColor: useOverlay ? MaterialStateProperty.resolveWith(getOverlayColor) : null,
             hoverColor: hoverColor,
             focusColor: focusColor,
             splashRadius: splashRadius,
@@ -1298,7 +1298,7 @@ void main() {
                     value = v;
                   });
                 },
-                overlayColor: MaterialStateProperty.resolveWith(getOverlayColor),
+                stateLayerColor: MaterialStateProperty.resolveWith(getOverlayColor),
                 splashRadius: splashRadius,
               );
             },

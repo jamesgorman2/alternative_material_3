@@ -586,7 +586,7 @@ void main() {
                 height: itemHeight,
                 child: Material(
                   child: SwitchListTile(
-                    title: const Text('Switch tile'),
+                    headline: const Text('Switch tile'),
                     value: true,
                     onChanged: (bool? newValue) { },
                   ),

@@ -24,18 +24,18 @@ void main() {
   test('CheckboxThemeData defaults', () {
     const CheckboxThemeData themeData = CheckboxThemeData();
     expect(themeData.mouseCursor, null);
-    expect(themeData.fillColor, null);
-    expect(themeData.checkColor, null);
-    expect(themeData.overlayColor, null);
+    expect(themeData.containerColor, null);
+    expect(themeData.iconColor, null);
+    expect(themeData.stateLayerColor, null);
     expect(themeData.splashRadius, null);
     expect(themeData.materialTapTargetSize, null);
     expect(themeData.visualDensity, null);
 
     const CheckboxTheme theme = CheckboxTheme(data: CheckboxThemeData(), child: SizedBox());
     expect(theme.data.mouseCursor, null);
-    expect(theme.data.fillColor, null);
-    expect(theme.data.checkColor, null);
-    expect(theme.data.overlayColor, null);
+    expect(theme.data.containerColor, null);
+    expect(theme.data.iconColor, null);
+    expect(theme.data.stateLayerColor, null);
     expect(theme.data.splashRadius, null);
     expect(theme.data.materialTapTargetSize, null);
     expect(theme.data.visualDensity, null);
@@ -59,7 +59,7 @@ void main() {
       mouseCursor: MaterialStatePropertyAll<MouseCursor?>(SystemMouseCursors.click),
       fillColor: MaterialStatePropertyAll<Color>(Color(0xfffffff0)),
       checkColor: MaterialStatePropertyAll<Color>(Color(0xfffffff1)),
-      overlayColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
+      stateLayerColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
       splashRadius: 1.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.standard,
@@ -115,7 +115,7 @@ void main() {
               }
               return defaultCheckColor;
             }),
-            overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            stateLayerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
               if (states.contains(MaterialState.focused)) {
                 return focusOverlayColor;
               }
@@ -201,7 +201,7 @@ void main() {
                 return themeDefaultFillColor;
               }),
               checkColor: const MaterialStatePropertyAll<Color?>(themeCheckColor),
-              overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+              stateLayerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
                 if (states.contains(MaterialState.focused)) {
                   return themeFocusOverlayColor;
                 }
@@ -221,13 +221,13 @@ void main() {
               value: selected,
               autofocus: autofocus,
               mouseCursor: mouseCursor,
-              fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+              containerColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
                   return selectedFillColor;
                 }
                 return defaultFillColor;
               }),
-              checkColor: checkColor,
+              expandedIconColor: checkColor,
               focusColor: focusColor,
               hoverColor: hoverColor,
               splashRadius: splashRadius,
@@ -321,7 +321,7 @@ void main() {
       return MaterialApp(
         theme: ThemeData(
           checkboxTheme: CheckboxThemeData(
-            overlayColor: MaterialStateProperty.resolveWith(getOverlayColor),
+            stateLayerColor: MaterialStateProperty.resolveWith(getOverlayColor),
             splashRadius: splashRadius,
           ),
         ),
@@ -402,9 +402,9 @@ void main() {
     final CheckboxThemeData lerped = CheckboxThemeData.lerp(null, null, 0.25);
 
     expect(lerped.mouseCursor, null);
-    expect(lerped.fillColor, null);
-    expect(lerped.checkColor, null);
-    expect(lerped.overlayColor, null);
+    expect(lerped.containerColor, null);
+    expect(lerped.iconColor, null);
+    expect(lerped.stateLayerColor, null);
     expect(lerped.splashRadius, null);
     expect(lerped.materialTapTargetSize, null);
     expect(lerped.visualDensity, null);
@@ -416,7 +416,7 @@ void main() {
     final CheckboxThemeData theme = CheckboxThemeData(
       fillColor: MaterialStateProperty.all(const Color(0xfffffff0)),
       checkColor: MaterialStateProperty.all(const Color(0xfffffff1)),
-      overlayColor: MaterialStateProperty.all(const Color(0xfffffff2)),
+      stateLayerColor: MaterialStateProperty.all(const Color(0xfffffff2)),
       splashRadius: 3.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: const VisualDensity(vertical: 1.0, horizontal: 1.0),
@@ -425,9 +425,9 @@ void main() {
     );
     final CheckboxThemeData lerped = CheckboxThemeData.lerp(theme, null, 0.5);
 
-    expect(lerped.fillColor!.resolve(<MaterialState>{}), const Color(0x80fffff0));
-    expect(lerped.checkColor!.resolve(<MaterialState>{}), const Color(0x80fffff1));
-    expect(lerped.overlayColor!.resolve(<MaterialState>{}), const Color(0x80fffff2));
+    expect(lerped.containerColor!.resolve(<MaterialState>{}), const Color(0x80fffff0));
+    expect(lerped.iconColor!.resolve(<MaterialState>{}), const Color(0x80fffff1));
+    expect(lerped.stateLayerColor!.resolve(<MaterialState>{}), const Color(0x80fffff2));
     expect(lerped.splashRadius, 1.5);
     expect(lerped.materialTapTargetSize, null);
     expect(lerped.visualDensity, null);
@@ -440,7 +440,7 @@ void main() {
     final CheckboxThemeData themeA = CheckboxThemeData(
       fillColor: MaterialStateProperty.all(const Color(0xfffffff0)),
       checkColor: MaterialStateProperty.all(const Color(0xfffffff1)),
-      overlayColor: MaterialStateProperty.all(const Color(0xfffffff2)),
+      stateLayerColor: MaterialStateProperty.all(const Color(0xfffffff2)),
       splashRadius: 3.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: const VisualDensity(vertical: 1.0, horizontal: 1.0),
@@ -450,7 +450,7 @@ void main() {
     final CheckboxThemeData themeB = CheckboxThemeData(
       fillColor: MaterialStateProperty.all(const Color(0xfffffff3)),
       checkColor: MaterialStateProperty.all(const Color(0xfffffff4)),
-      overlayColor: MaterialStateProperty.all(const Color(0xfffffff5)),
+      stateLayerColor: MaterialStateProperty.all(const Color(0xfffffff5)),
       splashRadius: 9.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: const VisualDensity(vertical: 2.0, horizontal: 2.0),
@@ -459,9 +459,9 @@ void main() {
     );
     final CheckboxThemeData lerped = CheckboxThemeData.lerp(themeA, themeB, 0.5);
 
-    expect(lerped.fillColor!.resolve(<MaterialState>{}), const Color(0xfffffff1));
-    expect(lerped.checkColor!.resolve(<MaterialState>{}), const Color(0xfffffff2));
-    expect(lerped.overlayColor!.resolve(<MaterialState>{}), const Color(0xfffffff3));
+    expect(lerped.containerColor!.resolve(<MaterialState>{}), const Color(0xfffffff1));
+    expect(lerped.iconColor!.resolve(<MaterialState>{}), const Color(0xfffffff2));
+    expect(lerped.stateLayerColor!.resolve(<MaterialState>{}), const Color(0xfffffff3));
     expect(lerped.splashRadius, 6);
     expect(lerped.materialTapTargetSize, MaterialTapTargetSize.shrinkWrap);
     expect(lerped.visualDensity,  const VisualDensity(vertical: 2.0, horizontal: 2.0));

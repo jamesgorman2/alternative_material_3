@@ -1262,7 +1262,7 @@ void main() {
           ),
           body: ListView.builder(
             itemCount: 100,
-            itemBuilder: (BuildContext context, int index) => ListTile(title: Text('Item $index')),
+            itemBuilder: (BuildContext context, int index) => ListTile(headline: Text('Item $index')),
           ),
         ),
       );
@@ -1306,7 +1306,7 @@ void main() {
                 child: ListView.builder(
                   itemCount: 100,
                   itemBuilder: (BuildContext context, int index) =>
-                    ListTile(title: Text('Item $index')),
+                    ListTile(headline: Text('Item $index')),
                 ),
               );
             },

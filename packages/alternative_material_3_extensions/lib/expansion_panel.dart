@@ -4,13 +4,13 @@
 
 import 'package:flutter/widgets.dart';
 
-import 'constants.dart';
-import 'expand_icon.dart';
-import 'ink_well.dart';
-import 'material_localizations.dart';
-import 'mergeable_material.dart';
-import 'shadows.dart';
-import 'theme.dart';
+import '../../alternative_material_3/lib/src/constants.dart';
+import '../../alternative_material_3/lib/src/expand_icon.dart';
+import '../../alternative_material_3/lib/src/ink_well.dart';
+import '../../alternative_material_3/lib/src/material_localizations.dart';
+import '../../alternative_material_3/lib/src/mergeable_material.dart';
+import '../../alternative_material_3/lib/src/shadows.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
 
 const double _kPanelHeaderCollapsedHeight = kMinInteractiveDimension;
 const EdgeInsets _kPanelHeaderExpandedDefaultPadding = EdgeInsets.symmetric(

@@ -23,7 +23,6 @@ import 'chip_theme.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'data_table_theme.dart';
 import 'date_picker_theme.dart';
 import 'dialog_theme.dart';
 import 'divider_theme.dart';
@@ -309,7 +308,6 @@ class ThemeData with Diagnosticable {
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
-    DataTableThemeData? dataTableTheme,
     DatePickerThemeData? datePickerTheme,
     DialogTheme? dialogTheme,
     DividerThemeData? dividerTheme,
@@ -393,7 +391,6 @@ class ThemeData with Diagnosticable {
     cardTheme ??= const CardTheme();
     checkboxTheme ??= const CheckboxThemeData();
     chipTheme ??= const ChipThemeData();
-    dataTableTheme ??= const DataTableThemeData();
     datePickerTheme ??= const DatePickerThemeData();
     dialogTheme ??= const DialogTheme();
     dividerTheme ??= const DividerThemeData();
@@ -463,7 +460,6 @@ class ThemeData with Diagnosticable {
       cardTheme: cardTheme,
       checkboxTheme: checkboxTheme,
       chipTheme: chipTheme,
-      dataTableTheme: dataTableTheme,
       datePickerTheme: datePickerTheme,
       dialogTheme: dialogTheme,
       dividerTheme: dividerTheme,
@@ -542,7 +538,6 @@ class ThemeData with Diagnosticable {
     required this.cardTheme,
     required this.checkboxTheme,
     required this.chipTheme,
-    required this.dataTableTheme,
     required this.datePickerTheme,
     required this.dialogTheme,
     required this.dividerTheme,
@@ -898,10 +893,6 @@ class ThemeData with Diagnosticable {
   /// This is the value returned from [ChipTheme.of].
   final ChipThemeData chipTheme;
 
-  /// A theme for customizing the appearance and layout of [DataTable]
-  /// widgets.
-  final DataTableThemeData dataTableTheme;
-
   /// A theme for customizing the appearance and layout of [DatePickerDialog]
   /// widgets.
   final DatePickerThemeData datePickerTheme;
@@ -1068,7 +1059,6 @@ class ThemeData with Diagnosticable {
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
-    DataTableThemeData? dataTableTheme,
     DatePickerThemeData? datePickerTheme,
     DialogTheme? dialogTheme,
     DividerThemeData? dividerTheme,
@@ -1139,7 +1129,6 @@ class ThemeData with Diagnosticable {
       cardTheme: cardTheme ?? this.cardTheme,
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
       chipTheme: chipTheme ?? this.chipTheme,
-      dataTableTheme: dataTableTheme ?? this.dataTableTheme,
       datePickerTheme: datePickerTheme ?? this.datePickerTheme,
       dialogTheme: dialogTheme ?? this.dialogTheme,
       dividerTheme: dividerTheme ?? this.dividerTheme,
@@ -1304,7 +1293,6 @@ class ThemeData with Diagnosticable {
       cardTheme: CardTheme.lerp(a.cardTheme, b.cardTheme, t),
       checkboxTheme: CheckboxThemeData.lerp(a.checkboxTheme, b.checkboxTheme, t),
       chipTheme: ChipThemeData.lerp(a.chipTheme, b.chipTheme, t)!,
-      dataTableTheme: DataTableThemeData.lerp(a.dataTableTheme, b.dataTableTheme, t),
       datePickerTheme: DatePickerThemeData.lerp(a.datePickerTheme, b.datePickerTheme, t),
       dialogTheme: DialogTheme.lerp(a.dialogTheme, b.dialogTheme, t),
       dividerTheme: DividerThemeData.lerp(a.dividerTheme, b.dividerTheme, t),
@@ -1381,7 +1369,6 @@ class ThemeData with Diagnosticable {
         other.cardTheme == cardTheme &&
         other.checkboxTheme == checkboxTheme &&
         other.chipTheme == chipTheme &&
-        other.dataTableTheme == dataTableTheme &&
         other.datePickerTheme == datePickerTheme &&
         other.dialogTheme == dialogTheme &&
         other.dividerTheme == dividerTheme &&
@@ -1455,7 +1442,6 @@ class ThemeData with Diagnosticable {
       cardTheme,
       checkboxTheme,
       chipTheme,
-      dataTableTheme,
       datePickerTheme,
       dialogTheme,
       dividerTheme,
@@ -1531,7 +1517,6 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<CardTheme>('cardTheme', cardTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<CheckboxThemeData>('checkboxTheme', checkboxTheme, defaultValue: defaultData.checkboxTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ChipThemeData>('chipTheme', chipTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<DataTableThemeData>('dataTableTheme', dataTableTheme, defaultValue: defaultData.dataTableTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<DatePickerThemeData>('datePickerTheme', datePickerTheme, defaultValue: defaultData.datePickerTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<DialogTheme>('dialogTheme', dialogTheme, defaultValue: defaultData.dialogTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<DividerThemeData>('dividerTheme', dividerTheme, defaultValue: defaultData.dividerTheme, level: DiagnosticLevel.debug));

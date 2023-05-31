@@ -60,10 +60,10 @@ void main() {
     expect(theme.tilePadding, null);
     expect(theme.expandedAlignment, null);
     expect(theme.childrenPadding, null);
-    expect(theme.iconColor, null);
+    expect(theme.expandedIconColor, null);
     expect(theme.collapsedIconColor, null);
-    expect(theme.textColor, null);
-    expect(theme.collapsedTextColor, null);
+    expect(theme.expandedHeadlineColor, null);
+    expect(theme.collapsedHeadlineColor, null);
     expect(theme.shape, null);
     expect(theme.collapsedShape, null);
     expect(theme.clipBehavior, null);
@@ -89,10 +89,10 @@ void main() {
       tilePadding: EdgeInsets.all(20.0),
       expandedAlignment: Alignment.bottomCenter,
       childrenPadding: EdgeInsets.all(10.0),
-      iconColor: Color(0xffa7c61c),
+      expandedIconColor: Color(0xffa7c61c),
       collapsedIconColor: Color(0xffdd0b1f),
-      textColor: Color(0xffffffff),
-      collapsedTextColor: Color(0xff522bab),
+      expandedHeadlineColor: Color(0xffffffff),
+      collapsedHeadlineColor: Color(0xff522bab),
       shape: Border(),
       collapsedShape: Border(),
       clipBehavior: Clip.antiAlias,
@@ -148,10 +148,10 @@ void main() {
             tilePadding: EdgeInsets.fromLTRB(8, 12, 4, 10),
             expandedAlignment: Alignment.centerRight,
             childrenPadding: EdgeInsets.all(20.0),
-            iconColor: iconColor,
+            expandedIconColor: iconColor,
             collapsedIconColor: collapsedIconColor,
-            textColor: textColor,
-            collapsedTextColor: collapsedTextColor,
+            expandedHeadlineColor: textColor,
+            collapsedHeadlineColor: collapsedTextColor,
             shape: shape,
             collapsedShape: collapsedShape,
             clipBehavior: clipBehavior,
@@ -161,9 +161,9 @@ void main() {
           child: Center(
             child: ExpansionTile(
               key: tileKey,
-              title: TestText('Collapsed Tile', key: titleKey),
+              headline: TestText('Collapsed Tile', key: titleKey),
               trailing: TestIcon(key: iconKey),
-              children: const <Widget>[Text('Tile 1')],
+              child: const <Widget>[Text('Tile 1')],
             ),
           ),
         ),
@@ -239,10 +239,10 @@ void main() {
             tilePadding: EdgeInsets.fromLTRB(8, 12, 4, 10),
             expandedAlignment: Alignment.centerRight,
             childrenPadding: EdgeInsets.all(20.0),
-            iconColor: iconColor,
+            expandedIconColor: iconColor,
             collapsedIconColor: collapsedIconColor,
-            textColor: textColor,
-            collapsedTextColor: collapsedTextColor,
+            expandedHeadlineColor: textColor,
+            collapsedHeadlineColor: collapsedTextColor,
             shape: shape,
             collapsedShape: collapsedShape,
           ),
@@ -252,9 +252,9 @@ void main() {
             child: ExpansionTile(
               key: tileKey,
               initiallyExpanded: true,
-              title: TestText('Expanded Tile', key: titleKey),
+              headline: TestText('Expanded Tile', key: titleKey),
               trailing: TestIcon(key: iconKey),
-              children: const <Widget>[Text('Tile 1')],
+              child: const <Widget>[Text('Tile 1')],
             ),
           ),
         ),

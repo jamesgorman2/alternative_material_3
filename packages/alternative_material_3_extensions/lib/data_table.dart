@@ -8,18 +8,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'checkbox.dart';
-import 'constants.dart';
-import 'data_table_theme.dart';
-import 'debug.dart';
-import 'divider.dart';
-import 'dropdown.dart';
-import 'icons.dart';
-import 'ink_well.dart';
-import 'material.dart';
-import 'material_state.dart';
-import 'theme.dart';
-import 'tooltip.dart';
+import '../../alternative_material_3/lib/src/checkbox.dart';
+import '../../alternative_material_3/lib/src/constants.dart';
+import '../../alternative_material_3/lib/src/data_table_theme.dart';
+import '../../alternative_material_3/lib/src/debug.dart';
+import '../../alternative_material_3/lib/src/divider.dart';
+import '../../alternative_material_3/lib/src/dropdown.dart';
+import '../../alternative_material_3/lib/src/icons.dart';
+import '../../alternative_material_3/lib/src/ink_well.dart';
+import '../../alternative_material_3/lib/src/material.dart';
+import '../../alternative_material_3/lib/src/material_state.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
+import '../../alternative_material_3/lib/src/tooltip.dart';
 
 // Examples can assume:
 // late BuildContext context;

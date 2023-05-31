@@ -58,7 +58,7 @@ void main() {
                   },
                   value: values[index],
                   groupValue: selectedValue,
-                  title: Text(values[index].toString()),
+                  headline: Text(values[index].toString()),
                 ),
               ),
             );
@@ -96,7 +96,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: log.add,
-          title: Text('Title', key: titleKey),
+          headline: Text('Title', key: titleKey),
         ),
       ),
     );
@@ -114,7 +114,7 @@ void main() {
           groupValue: 1,
           onChanged: log.add,
           activeColor: Colors.green[500],
-          title: Text('Title', key: titleKey),
+          headline: Text('Title', key: titleKey),
         ),
       ),
     );
@@ -130,7 +130,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: null,
-          title: Text('Title', key: titleKey),
+          headline: Text('Title', key: titleKey),
         ),
       ),
     );
@@ -146,7 +146,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: log.add,
-          title: Text('Title', key: titleKey),
+          headline: Text('Title', key: titleKey),
         ),
       ),
     );
@@ -184,7 +184,7 @@ void main() {
                   },
                   value: values[index],
                   groupValue: selectedValue,
-                  title: Text(values[index].toString()),
+                  headline: Text(values[index].toString()),
                 ),
               ),
             );
@@ -252,7 +252,7 @@ void main() {
                   },
                   value: values[index],
                   groupValue: selectedValue,
-                  title: Text(values[index].toString()),
+                  headline: Text(values[index].toString()),
                 ),
               ),
             );
@@ -305,7 +305,7 @@ void main() {
                     toggleable: true,
                     value: values[index],
                     groupValue: selectedValue,
-                    title: Text(values[index].toString()),
+                    headline: Text(values[index].toString()),
                   );
                 },
               ),
@@ -393,7 +393,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: (int? i) {},
-          title: const Text('Title'),
+          headline: const Text('Title'),
         ),
       ),
     );
@@ -429,7 +429,7 @@ void main() {
           value: 2,
           groupValue: 2,
           onChanged: (int? i) {},
-          title: const Text('Title'),
+          headline: const Text('Title'),
         ),
       ),
     );
@@ -466,7 +466,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: null,
-          title: Text('Title'),
+          headline: Text('Title'),
         ),
       ),
     );
@@ -501,7 +501,7 @@ void main() {
           value: 2,
           groupValue: 2,
           onChanged: null,
-          title: Text('Title'),
+          headline: Text('Title'),
         ),
       ),
     );
@@ -551,7 +551,7 @@ void main() {
           onChanged: (int? i) {
             radioValue = i;
           },
-          title: const Text('Title'),
+          headline: const Text('Title'),
         ),
       ),
     );
@@ -581,7 +581,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: (_) {},
-          title: Text('Title', key: childKey),
+          headline: Text('Title', key: childKey),
           autofocus: true,
         ),
       ),
@@ -596,7 +596,7 @@ void main() {
           value: 1,
           groupValue: 2,
           onChanged: null,
-          title: Text('Title', key: childKey),
+          headline: Text('Title', key: childKey),
           autofocus: true,
         ),
       ),
@@ -619,7 +619,7 @@ void main() {
           child: RadioListTile<bool>(
             groupValue: true,
             value: true,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             onChanged: (_){},
             contentPadding: const EdgeInsets.fromLTRB(8, 10, 15, 20),
           ),
@@ -657,7 +657,7 @@ void main() {
           value: true,
           groupValue: true,
           onChanged: null,
-          title: Text('Title'),
+          headline: Text('Title'),
           shape: shapeBorder,
         ),
       ),
@@ -676,7 +676,7 @@ void main() {
             value: false,
             groupValue: true,
             onChanged: null,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             tileColor: tileColor,
           ),
         ),
@@ -696,7 +696,7 @@ void main() {
             value: false,
             groupValue: true,
             onChanged: null,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             selected: true,
             selectedTileColor: selectedTileColor,
           ),
@@ -716,7 +716,7 @@ void main() {
       return MaterialApp(
         theme: ThemeData.light().copyWith(
           radioTheme: RadioThemeData(
-            fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+            containerColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
               return states.contains(MaterialState.selected) ? fillColor : null;
             }),
           ),
@@ -726,7 +726,7 @@ void main() {
             child: RadioListTile<bool>(
               activeColor: activeColor,
               selected: true,
-              title: const Text('title'),
+              headline: const Text('title'),
               value: false,
               groupValue: true,
               onChanged: (bool? newValue) { },
@@ -780,7 +780,7 @@ void main() {
           child: RadioListTile<bool>(
             value: false,
             groupValue: true,
-            title: Text('A', key: childKey),
+            headline: Text('A', key: childKey),
             onChanged: (bool? value) {},
           ),
         ),
@@ -1105,7 +1105,7 @@ void main() {
           groupValue: true,
           onChanged: (_) { },
           fillColor: const MaterialStatePropertyAll<Color>(fillColor),
-          overlayColor: useOverlay ? MaterialStateProperty.resolveWith(getOverlayColor) : null,
+          stateLayerColor: useOverlay ? MaterialStateProperty.resolveWith(getOverlayColor) : null,
           hoverColor: hoverColor,
         ),
       );

@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'flutter_test/extensions.dart';
+import '../../alternative_material_3/test/flutter_test/extensions.dart';
 
 void main() {
   tearDown(() {

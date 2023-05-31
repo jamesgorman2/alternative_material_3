@@ -7,18 +7,18 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/widgets.dart';
 
-import 'card.dart';
-import 'constants.dart';
+import '../../alternative_material_3/lib/src/card.dart';
+import '../../alternative_material_3/lib/src/constants.dart';
 import 'data_table.dart';
-import 'data_table_source.dart';
-import 'debug.dart';
-import 'dropdown.dart';
-import 'icon_button.dart';
-import 'icons.dart';
-import 'ink_decoration.dart';
-import 'material_localizations.dart';
-import 'progress_indicator.dart';
-import 'theme.dart';
+import '../../alternative_material_3/lib/src/data_table_source.dart';
+import '../../alternative_material_3/lib/src/debug.dart';
+import '../../alternative_material_3/lib/src/dropdown.dart';
+import '../../alternative_material_3/lib/src/icon_button.dart';
+import '../../alternative_material_3/lib/src/icons.dart';
+import '../../alternative_material_3/lib/src/ink_decoration.dart';
+import '../../alternative_material_3/lib/src/material_localizations.dart';
+import '../../alternative_material_3/lib/src/progress_indicator.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
 
 /// A Material Design data table that shows data using multiple pages.
 ///

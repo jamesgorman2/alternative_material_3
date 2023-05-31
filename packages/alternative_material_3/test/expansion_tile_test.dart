@@ -63,35 +63,35 @@ void main() {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              ListTile(title: const Text('Top'), key: topKey),
+              ListTile(headline: const Text('Top'), key: topKey),
               ExpansionTile(
                 key: expandedKey,
                 initiallyExpanded: true,
-                title: const Text('Expanded'),
+                headline: const Text('Expanded'),
                 backgroundColor: Colors.red,
                 clipBehavior: clipBehavior,
-                children: <Widget>[
+                child: <Widget>[
                   ListTile(
                     key: tileKey,
-                    title: const Text('0'),
+                    headline: const Text('0'),
                   ),
                 ],
               ),
               ExpansionTile(
                 key: collapsedKey,
-                title: const Text('Collapsed'),
-                children: <Widget>[
+                headline: const Text('Collapsed'),
+                child: <Widget>[
                   ListTile(
                     key: tileKey,
-                    title: const Text('0'),
+                    headline: const Text('0'),
                   ),
                 ],
               ),
               const ExpansionTile(
                 key: defaultKey,
-                title: Text('Default'),
-                children: <Widget>[
-                  ListTile(title: Text('0')),
+                headline: Text('Default'),
+                child: <Widget>[
+                  ListTile(headline: Text('0')),
                 ],
               ),
             ],
@@ -174,18 +174,18 @@ void main() {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                const ListTile(title: Text('Top')),
+                const ListTile(headline: Text('Top')),
                 ExpansionTile(
                   initiallyExpanded: true,
-                  title: TestText('Expanded', key: expandedTitleKey),
+                  headline: TestText('Expanded', key: expandedTitleKey),
                   backgroundColor: Colors.red,
                   trailing: TestIcon(key: expandedIconKey),
-                  children: const <Widget>[ListTile(title: Text('0'))],
+                  child: const <Widget>[ListTile(headline: Text('0'))],
                 ),
                 ExpansionTile(
-                  title: TestText('Collapsed', key: collapsedTitleKey),
+                  headline: TestText('Collapsed', key: collapsedTitleKey),
                   trailing: TestIcon(key: collapsedIconKey),
-                  children: const <Widget>[ListTile(title: Text('0'))],
+                  child: const <Widget>[ListTile(headline: Text('0'))],
                 ),
               ],
             ),
@@ -220,9 +220,9 @@ void main() {
       const MaterialApp(
         home: Scaffold(
           body: ExpansionTile(
-            title: Text('Title'),
-            subtitle: Text('Subtitle'),
-            children: <Widget>[ListTile(title: Text('0'))],
+            headline: Text('Title'),
+            supportingText: Text('Subtitle'),
+            child: <Widget>[ListTile(headline: Text('0'))],
           ),
         ),
       ),
@@ -244,15 +244,15 @@ void main() {
             child: Column(
               children: <Widget>[
                 ExpansionTile(
-                  title: Text('Tile 1'),
+                  headline: Text('Tile 1'),
                   maintainState: true,
-                  children: <Widget>[
+                  child: <Widget>[
                     Text('Maintaining State'),
                   ],
                 ),
                 ExpansionTile(
-                  title: Text('Title 2'),
-                  children: <Widget>[
+                  headline: Text('Title 2'),
+                  child: <Widget>[
                     Text('Discarding State'),
                   ],
                 ),
@@ -275,7 +275,7 @@ void main() {
       home: Material(
         child: Center(
           child: ExpansionTile(
-            title: Text('Hello'),
+            headline: Text('Hello'),
             tilePadding: EdgeInsets.fromLTRB(8, 12, 4, 10),
           ),
         ),
@@ -302,9 +302,9 @@ void main() {
       home: Material(
         child: Center(
           child: ExpansionTile(
-            title: Text('title'),
+            headline: Text('title'),
             expandedAlignment: Alignment.centerLeft,
-            children: <Widget>[
+            child: <Widget>[
               SizedBox(height: 100, width: 100),
               SizedBox(height: 100, width: 80),
             ],
@@ -334,13 +334,13 @@ void main() {
       home: Material(
         child: Center(
           child: ExpansionTile(
-            title: Text('title'),
+            headline: Text('title'),
             // Set the column's alignment to Alignment.centerRight to test CrossAxisAlignment
             // of children widgets. This helps distinguish the effect of expandedAlignment
             // and expandedCrossAxisAlignment later in the test.
             expandedAlignment: Alignment.centerRight,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            child: <Widget>[
               SizedBox(height: 100, width: 100, key: child0Key),
               SizedBox(height: 100, width: 80, key: child1Key),
             ],
@@ -377,7 +377,7 @@ void main() {
           home: Material(
             child: ExpansionTile(
               initiallyExpanded: true,
-              title: const Text('title'),
+              headline: const Text('title'),
               expandedCrossAxisAlignment: CrossAxisAlignment.baseline,
             ),
           ),
@@ -397,8 +397,8 @@ void main() {
       home: Material(
         child: Center(
           child: ExpansionTile(
-            title: Text('title'),
-            children: <Widget>[
+            headline: Text('title'),
+            child: <Widget>[
               SizedBox(height: 100, width: 100),
               SizedBox(height: 100, width: 80, key: child1Key),
             ],
@@ -431,8 +431,8 @@ void main() {
         home: Material(
           child: Center(
             child: ExpansionTile(
-              title: Text('title'),
-              children: <Widget>[
+              headline: Text('title'),
+              child: <Widget>[
                 SizedBox(height: 100, width: 100),
               ],
             ),
@@ -461,9 +461,9 @@ void main() {
         home: Material(
           child: Center(
             child: ExpansionTile(
-              title: Text('title'),
+              headline: Text('title'),
               childrenPadding: EdgeInsets.fromLTRB(10, 8, 12, 4),
-              children: <Widget>[
+              child: <Widget>[
                 SizedBox(height: 100, width: 100),
               ],
             ),
@@ -495,10 +495,10 @@ void main() {
       home: Material(
         child: ExpansionTile(
           key: expansionTileKey,
-          title: Text('Title'),
+          headline: Text('Title'),
           backgroundColor: backgroundColor,
           collapsedBackgroundColor: collapsedBackgroundColor,
-          children: <Widget>[
+          child: <Widget>[
             SizedBox(height: 100, width: 100),
           ],
         ),
@@ -530,9 +530,9 @@ void main() {
       theme: theme,
       home: const Material(
         child: ExpansionTile(
-          title: TestText('title'),
+          headline: TestText('title'),
           trailing: TestIcon(),
-          children: <Widget>[
+          child: <Widget>[
             SizedBox(height: 100, width: 100),
           ],
         ),
@@ -563,13 +563,13 @@ void main() {
     await tester.pumpWidget(const MaterialApp(
       home: Material(
         child: ExpansionTile(
-          iconColor: iconColor,
+          expandedIconColor: iconColor,
           collapsedIconColor: collapsedIconColor,
-          textColor: textColor,
-          collapsedTextColor: collapsedTextColor,
-          title: TestText('title'),
+          expandedHeadlineColor: textColor,
+          collapsedHeadlineColor: collapsedTextColor,
+          headline: TestText('title'),
           trailing: TestIcon(),
-          children: <Widget>[
+          child: <Widget>[
             SizedBox(height: 100, width: 100),
           ],
         ),
@@ -605,12 +605,12 @@ void main() {
             children: <Widget>[
               ExpansionTile(
                 key: expansionTileKey,
-                title: const Text('ExpansionTile'),
+                headline: const Text('ExpansionTile'),
                 collapsedShape: collapsedShape,
                 shape: shape,
-                children: const <Widget>[
+                child: const <Widget>[
                   ListTile(
-                    title: Text('0'),
+                    headline: Text('0'),
                   ),
                 ],
               ),
@@ -641,7 +641,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(
       home: Material(
         child: ExpansionTile(
-          title: Text('Title'),
+          headline: Text('Title'),
         ),
       ),
     ));
@@ -655,7 +655,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(
       home: Material(
         child: ExpansionTile(
-          title: Text('Title'),
+          headline: Text('Title'),
           controlAffinity: ListTileControlAffinity.trailing,
         ),
       ),
@@ -670,7 +670,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(
       home: Material(
         child: ExpansionTile(
-          title: Text('Title'),
+          headline: Text('Title'),
           controlAffinity: ListTileControlAffinity.leading,
         ),
       ),
@@ -685,7 +685,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(
       home: Material(
         child: ExpansionTile(
-          title: Text('Title'),
+          headline: Text('Title'),
           leading: Icon(Icons.info),
           controlAffinity: ListTileControlAffinity.leading,
         ),
@@ -704,8 +704,8 @@ void main() {
       home: Material(
         child: ExpansionTile(
           controller: controller,
-          title: const Text('Title'),
-          children: const <Widget>[
+          headline: const Text('Title'),
+          child: const <Widget>[
             Text('Child 0'),
           ],
         ),
@@ -732,9 +732,9 @@ void main() {
       home: Material(
         child: ExpansionTile(
           controller: controller,
-          title: const Text('Title'),
+          headline: const Text('Title'),
           initiallyExpanded: true,
-          children: const <Widget>[
+          child: const <Widget>[
             Text('Child 0'),
           ],
         ),
@@ -768,8 +768,8 @@ void main() {
       home: Material(
         child: ExpansionTile(
           initiallyExpanded: true,
-          title: Text('Title', key: titleKey),
-          children: <Widget>[
+          headline: Text('Title', key: titleKey),
+          child: <Widget>[
             Text('Child 0', key: childKey),
           ],
         ),
@@ -793,8 +793,8 @@ void main() {
         child: Column(
           children: <Widget>[
             ExpansionTile(
-              title: Text('Title', key: titleKey),
-              children: const <Widget>[
+              headline: Text('Title', key: titleKey),
+              child: const <Widget>[
                 Text('Child 0'),
               ],
             ),

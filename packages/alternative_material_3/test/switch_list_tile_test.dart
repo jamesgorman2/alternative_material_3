@@ -29,7 +29,7 @@ void main() {
       child: SwitchListTile(
         value: true,
         onChanged: (bool value) { log.add(value); },
-        title: const Text('Hello'),
+        headline: const Text('Hello'),
       ),
     ));
     await tester.tap(find.text('Hello'));
@@ -46,20 +46,20 @@ void main() {
           SwitchListTile(
             value: true,
             onChanged: (bool value) { },
-            title: const Text('AAA'),
+            headline: const Text('AAA'),
             secondary: const Text('aaa'),
           ),
           CheckboxListTile(
             value: true,
             onChanged: (bool? value) { },
-            title: const Text('BBB'),
+            headline: const Text('BBB'),
             secondary: const Text('bbb'),
           ),
           RadioListTile<bool>(
             value: true,
             groupValue: false,
             onChanged: (bool? value) { },
-            title: const Text('CCC'),
+            headline: const Text('CCC'),
             secondary: const Text('ccc'),
           ),
         ],
@@ -233,7 +233,7 @@ void main() {
                   bottom: 40.0,
                 ),
                 secondary: const Text('L'),
-                title: const Text('title'),
+                headline: const Text('title'),
                 value: true,
                 onChanged: (bool selected) {},
               ),
@@ -265,7 +265,7 @@ void main() {
               SwitchListTile(
                 value: true,
                 onChanged: (_) {},
-                title: Text('A', key: childKey),
+                headline: Text('A', key: childKey),
                 autofocus: true,
               ),
             ],
@@ -285,7 +285,7 @@ void main() {
               SwitchListTile(
                 value: true,
                 onChanged: null,
-                title: Text('A', key: childKey),
+                headline: Text('A', key: childKey),
                 autofocus: true,
               ),
             ],
@@ -305,7 +305,7 @@ void main() {
           value: true,
           onChanged: null,
           secondary: Icon(Icons.info),
-          title: Text('Title'),
+          headline: Text('Title'),
           controlAffinity: ListTileControlAffinity.leading,
         ),
       ),
@@ -325,7 +325,7 @@ void main() {
           value: true,
           onChanged: null,
           secondary: Icon(Icons.info),
-          title: Text('Title'),
+          headline: Text('Title'),
         ),
       ),
     ));
@@ -348,7 +348,7 @@ void main() {
         child: SwitchListTile(
           value: true,
           onChanged: null,
-          title: Text('Title'),
+          headline: Text('Title'),
           shape: shapeBorder,
         ),
       ),
@@ -366,7 +366,7 @@ void main() {
           child: SwitchListTile(
             value: false,
             onChanged: null,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             tileColor: tileColor,
           ),
         ),
@@ -385,7 +385,7 @@ void main() {
           child: SwitchListTile(
             value: false,
             onChanged: null,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             selected: true,
             selectedTileColor: selectedTileColor,
           ),
@@ -415,7 +415,7 @@ void main() {
             child: SwitchListTile(
               activeColor: activeColor,
               selected: true,
-              title: const Text('title'),
+              headline: const Text('title'),
               value: true,
               onChanged: (bool? value) { },
             ),
@@ -466,7 +466,7 @@ void main() {
         child: Center(
           child: SwitchListTile(
             value: false,
-            title: Text('A', key: childKey),
+            headline: Text('A', key: childKey),
             onChanged: (bool? value) {},
           ),
         ),
@@ -595,7 +595,7 @@ void main() {
                 value: false,
                 key: key,
                 hoverColor: Colors.orange[500],
-                title: const Text('A'),
+                headline: const Text('A'),
                 onChanged: (bool? value) {},
               ),
             );

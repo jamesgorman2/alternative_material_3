@@ -60,11 +60,11 @@ void main() {
   test('ListTileThemeData defaults', () {
     const ListTileThemeData themeData = ListTileThemeData();
     expect(themeData.dense, null);
-    expect(themeData.shape, null);
+    expect(themeData.customBorder, null);
     expect(themeData.style, null);
     expect(themeData.selectedColor, null);
-    expect(themeData.iconColor, null);
-    expect(themeData.textColor, null);
+    expect(themeData.expandedIconColor, null);
+    expect(themeData.headlineColor, null);
     expect(themeData.titleTextStyle, null);
     expect(themeData.subtitleTextStyle, null);
     expect(themeData.leadingAndTrailingTextStyle, null);
@@ -96,11 +96,11 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const ListTileThemeData(
       dense: true,
-      shape: StadiumBorder(),
+      customBorder: StadiumBorder(),
       style: ListTileStyle.drawer,
       selectedColor: Color(0x00000001),
-      iconColor: Color(0x00000002),
-      textColor: Color(0x00000003),
+      expandedIconColor: Color(0x00000002),
+      headlineColor: Color(0x00000003),
       titleTextStyle: TextStyle(color: Color(0x00000004)),
       subtitleTextStyle: TextStyle(color: Color(0x00000005)),
       leadingAndTrailingTextStyle: TextStyle(color: Color(0x00000006)),
@@ -155,11 +155,11 @@ void main() {
         home: Material(
           child: ListTileTheme(
             dense: true,
-            shape: const StadiumBorder(),
+            customBorder: const StadiumBorder(),
             style: ListTileStyle.drawer,
             selectedColor: const Color(0x00000001),
-            iconColor: const Color(0x00000002),
-            textColor: const Color(0x00000003),
+            expandedIconColor: const Color(0x00000002),
+            expandedHeadlineColor: const Color(0x00000003),
             contentPadding: const EdgeInsets.all(100),
             tileColor: const Color(0x00000004),
             selectedTileColor: const Color(0x00000005),
@@ -182,11 +182,11 @@ void main() {
     );
 
     expect(theme.dense, true);
-    expect(theme.shape, const StadiumBorder());
+    expect(theme.customBorder, const StadiumBorder());
     expect(theme.style, ListTileStyle.drawer);
     expect(theme.selectedColor, const Color(0x00000001));
-    expect(theme.iconColor, const Color(0x00000002));
-    expect(theme.textColor, const Color(0x00000003));
+    expect(theme.expandedIconColor, const Color(0x00000002));
+    expect(theme.headlineColor, const Color(0x00000003));
     expect(theme.contentPadding, const EdgeInsets.all(100));
     expect(theme.tileColor, const Color(0x00000004));
     expect(theme.selectedTileColor, const Color(0x00000005));
@@ -220,10 +220,10 @@ void main() {
             child: ListTileTheme(
               data: ListTileThemeData(
                 dense: dense,
-                shape: shape,
+                customBorder: shape,
                 selectedColor: selectedColor,
-                iconColor: iconColor,
-                textColor: textColor,
+                expandedIconColor: iconColor,
+                headlineColor: textColor,
                 minVerticalPadding: 25.0,
                 mouseCursor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
@@ -244,8 +244,8 @@ void main() {
                     selected: selected,
                     leading: TestIcon(key: leadingKey),
                     trailing: TestIcon(key: trailingKey),
-                    title: TestText('title', key: titleKey),
-                    subtitle: TestText('subtitle', key: subtitleKey),
+                    headline: TestText('title', key: titleKey),
+                    supportingText: TestText('subtitle', key: subtitleKey),
                   );
                 },
               ),
@@ -352,7 +352,7 @@ void main() {
             child: ListTileTheme(
               data: const ListTileThemeData(
                 selectedColor: selectedColor,
-                textColor: defaultColor,
+                headlineColor: defaultColor,
               ),
               child: Builder(
                 builder: (BuildContext context) {
@@ -361,7 +361,7 @@ void main() {
                     enabled: enabled,
                     selected: selected,
                     leading: TestText('leading', key: leadingKey),
-                    title: const TestText('title'),
+                    headline: const TestText('title'),
                     trailing: TestText('trailing', key: trailingKey),
                   );
                 },
@@ -415,8 +415,8 @@ void main() {
               builder: (BuildContext context) {
                 return const ListTile(
                   leading: TestText('leading'),
-                  title: TestText('title'),
-                  subtitle: TestText('subtitle'),
+                  headline: TestText('title'),
+                  supportingText: TestText('subtitle'),
                   trailing: TestText('trailing'),
                 );
               },
@@ -465,8 +465,8 @@ void main() {
                   subtitleTextStyle: subtitleTextStyle,
                   leadingAndTrailingTextStyle: leadingAndTrailingTextStyle,
                   leading: TestText('leading'),
-                  title: TestText('title'),
-                  subtitle: TestText('subtitle'),
+                  headline: TestText('title'),
+                  supportingText: TestText('subtitle'),
                   trailing: TestText('trailing'),
                 );
               },
@@ -508,7 +508,7 @@ void main() {
                     onTap: () {
                       setState(()=> isSelected = !isSelected);
                     },
-                    title: const Text('Title'),
+                    headline: const Text('Title'),
                   );
                 },
               ),
@@ -550,7 +550,7 @@ void main() {
                     onTap: () {
                       setState(()=> isSelected = !isSelected);
                     },
-                    title: const Text('Title'),
+                    headline: const Text('Title'),
                   );
                 },
               ),
@@ -577,7 +577,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(
-        listTileTheme: ListTileThemeData(shape: shapeBorder),
+        listTileTheme: ListTileThemeData(customBorder: shapeBorder),
       ),
       home: Scaffold(
         key: scaffoldKey,
@@ -611,7 +611,7 @@ void main() {
 
     final ThemeData theme = ThemeData(
       listTileTheme: ListTileThemeData(
-        textColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+        headlineColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return disabledColor;
           }
@@ -632,8 +632,8 @@ void main() {
                 return ListTile(
                   enabled: enabled,
                   selected: selected,
-                  title: const TestText('title'),
-                  subtitle: const TestText('subtitle') ,
+                  headline: const TestText('title'),
+                  supportingText: const TestText('subtitle') ,
                 );
               },
             ),
@@ -672,7 +672,7 @@ void main() {
 
     final ThemeData theme = ThemeData(
       listTileTheme: ListTileThemeData(
-        iconColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+        expandedIconColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return disabledColor;
           }
@@ -726,11 +726,11 @@ void main() {
 
     const ListTileThemeData original = ListTileThemeData(
       dense: true,
-      shape: StadiumBorder(),
+      customBorder: StadiumBorder(),
       style: ListTileStyle.drawer,
       selectedColor: Color(0x00000001),
-      iconColor: Color(0x00000002),
-      textColor: Color(0x00000003),
+      expandedIconColor: Color(0x00000002),
+      headlineColor: Color(0x00000003),
       titleTextStyle: TextStyle(color: Color(0x00000004)),
       subtitleTextStyle: TextStyle(color: Color(0x00000005)),
       leadingAndTrailingTextStyle: TextStyle(color: Color(0x00000006)),
@@ -746,11 +746,11 @@ void main() {
 
     final ListTileThemeData copy = original.copyWith(
       dense: false,
-      shape: const RoundedRectangleBorder(),
+      customBorder: const RoundedRectangleBorder(),
       style: ListTileStyle.list,
       selectedColor: const Color(0x00000009),
-      iconColor: const Color(0x0000000A),
-      textColor: const Color(0x0000000B),
+      expandedIconColor: const Color(0x0000000A),
+      headlineColor: const Color(0x0000000B),
       titleTextStyle: const TextStyle(color: Color(0x0000000C)),
       subtitleTextStyle: const TextStyle(color: Color(0x0000000D)),
       leadingAndTrailingTextStyle: const TextStyle(color: Color(0x0000000E)),
@@ -765,11 +765,11 @@ void main() {
     );
 
     expect(copy.dense, false);
-    expect(copy.shape, const RoundedRectangleBorder());
+    expect(copy.customBorder, const RoundedRectangleBorder());
     expect(copy.style, ListTileStyle.list);
     expect(copy.selectedColor, const Color(0x00000009));
-    expect(copy.iconColor, const Color(0x0000000A));
-    expect(copy.textColor, const Color(0x0000000B));
+    expect(copy.expandedIconColor, const Color(0x0000000A));
+    expect(copy.headlineColor, const Color(0x0000000B));
     expect(copy.titleTextStyle, const TextStyle(color: Color(0x0000000C)));
     expect(copy.subtitleTextStyle, const TextStyle(color: Color(0x0000000D)));
     expect(copy.leadingAndTrailingTextStyle, const TextStyle(color: Color(0x0000000E)));
@@ -802,8 +802,8 @@ void main() {
             child: ListTile(
               titleAlignment: ListTileTitleAlignment.top,
               leading: SizedBox(key: leadingKey, width: 24.0, height: 24.0),
-              title: const Text(titleText),
-              subtitle: const Text(subtitleText),
+              headline: const Text(titleText),
+              supportingText: const Text(subtitleText),
               trailing: SizedBox(key: trailingKey, width: 24.0, height: 24.0),
             ),
           ),
@@ -825,11 +825,11 @@ void main() {
         theme: ThemeData(
           listTileTheme: const ListTileThemeData(
             dense: true,
-            shape: StadiumBorder(),
+            customBorder: StadiumBorder(),
             style: ListTileStyle.drawer,
             selectedColor: Color(0x00000001),
-            iconColor: Color(0x00000002),
-            textColor: Color(0x00000003),
+            expandedIconColor: Color(0x00000002),
+            headlineColor: Color(0x00000003),
             titleTextStyle: TextStyle(color: Color(0x00000004)),
             subtitleTextStyle: TextStyle(color: Color(0x00000005)),
             leadingAndTrailingTextStyle: TextStyle(color: Color(0x00000006)),
@@ -851,11 +851,11 @@ void main() {
               builder: (BuildContext context) {
                 return ListTileTheme.merge(
                   dense: false,
-                  shape: const RoundedRectangleBorder(),
+                  customBorder: const RoundedRectangleBorder(),
                   style: ListTileStyle.list,
                   selectedColor: const Color(0x00000009),
-                  iconColor: const Color(0x0000000A),
-                  textColor: const Color(0x0000000B),
+                  expandedIconColor: const Color(0x0000000A),
+                  expandedHeadlineColor: const Color(0x0000000B),
                   titleTextStyle: const TextStyle(color: Color(0x0000000C)),
                   subtitleTextStyle: const TextStyle(color: Color(0x0000000D)),
                   leadingAndTrailingTextStyle: const TextStyle(color: Color(0x0000000E)),
@@ -881,11 +881,11 @@ void main() {
     await tester.pumpWidget(buildFrame());
     final ListTileThemeData theme = ListTileTheme.of(tester.element(find.byType(ListTile)));
     expect(theme.dense, false);
-    expect(theme.shape, const RoundedRectangleBorder());
+    expect(theme.customBorder, const RoundedRectangleBorder());
     expect(theme.style, ListTileStyle.list);
     expect(theme.selectedColor, const Color(0x00000009));
-    expect(theme.iconColor, const Color(0x0000000A));
-    expect(theme.textColor, const Color(0x0000000B));
+    expect(theme.expandedIconColor, const Color(0x0000000A));
+    expect(theme.headlineColor, const Color(0x0000000B));
     expect(theme.titleTextStyle, const TextStyle(color: Color(0x0000000C)));
     expect(theme.subtitleTextStyle, const TextStyle(color: Color(0x0000000D)));
     expect(theme.leadingAndTrailingTextStyle, const TextStyle(color: Color(0x0000000E)));

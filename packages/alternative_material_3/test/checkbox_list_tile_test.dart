@@ -28,7 +28,7 @@ void main() {
       child: CheckboxListTile(
         value: true,
         onChanged: (bool? value) { log.add(value); },
-        title: const Text('Hello'),
+        headline: const Text('Hello'),
       ),
     ));
     await tester.tap(find.text('Hello'));
@@ -107,7 +107,7 @@ void main() {
         child: CheckboxListTile(
           value: true,
           onChanged: (_) {},
-          title: Text('Hello', key: childKey),
+          headline: Text('Hello', key: childKey),
           autofocus: true,
         ),
       ),
@@ -121,7 +121,7 @@ void main() {
         child: CheckboxListTile(
           value: true,
           onChanged: null,
-          title: Text('Hello', key: childKey),
+          headline: Text('Hello', key: childKey),
           autofocus: true,
         ),
       ),
@@ -138,7 +138,7 @@ void main() {
           child: CheckboxListTile(
             value: false,
             onChanged: null,
-            title: Text('Title'),
+            headline: Text('Title'),
             contentPadding: EdgeInsets.fromLTRB(10, 18, 4, 2),
           ),
         ),
@@ -171,7 +171,7 @@ void main() {
           builder: (BuildContext context, StateSetter setState) {
             return wrap(
               child: CheckboxListTile(
-                title: const Text('Title'),
+                headline: const Text('Title'),
                 tristate: tristate,
                 value: value,
                 onChanged: (bool? v) {
@@ -248,7 +248,7 @@ void main() {
       child: const CheckboxListTile(
         value: false,
         onChanged: null,
-        title: Text('Title'),
+        headline: Text('Title'),
         shape: shapeBorder,
       ),
     ));
@@ -265,7 +265,7 @@ void main() {
           child: CheckboxListTile(
             value: false,
             onChanged: null,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             tileColor: tileColor,
           ),
         ),
@@ -284,7 +284,7 @@ void main() {
           child: CheckboxListTile(
             value: false,
             onChanged: null,
-            title: const Text('Title'),
+            headline: const Text('Title'),
             selected: true,
             selectedTileColor: selectedTileColor,
           ),
@@ -314,7 +314,7 @@ void main() {
             child: CheckboxListTile(
               activeColor: activeColor,
               selected: true,
-              title: const Text('title'),
+              headline: const Text('title'),
               value: true,
               onChanged: (bool? value) { },
             ),
@@ -419,7 +419,7 @@ void main() {
         child: Center(
           child: CheckboxListTile(
             value: false,
-            title: Text('A', key: childKey),
+            headline: Text('A', key: childKey),
             onChanged: (bool? value) {},
           ),
         ),
@@ -473,7 +473,7 @@ void main() {
             builder: (BuildContext context, StateSetter setState) {
               return wrap(
                 child: CheckboxListTile(
-                  title: const Text('Title'),
+                  headline: const Text('Title'),
                   enabled: enabled,
                   value: value,
                   onChanged: (bool? v) {
@@ -736,7 +736,7 @@ void main() {
           value: active,
           onChanged: (_) { },
           fillColor: const MaterialStatePropertyAll<Color>(fillColor),
-          overlayColor: useOverlay ? MaterialStateProperty.resolveWith(getOverlayColor) : null,
+          stateLayerColor: useOverlay ? MaterialStateProperty.resolveWith(getOverlayColor) : null,
           hoverColor: hoverColor,
           splashRadius: splashRadius,
         ),

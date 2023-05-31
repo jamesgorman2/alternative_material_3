@@ -6,7 +6,7 @@ import 'package:alternative_material_3/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'widgets/semantics_tester.dart';
+import '../../alternative_material_3/test/widgets/semantics_tester.dart';
 
 const Key avatarA = Key('A');
 const Key avatarC = Key('C');

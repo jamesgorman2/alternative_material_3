@@ -26,7 +26,7 @@ void main() {
                 ),
                 const ListTile(
                   leading: Icon(Icons.archive),
-                  title: Text('Archive'),
+                  headline: Text('Archive'),
                 ),
               ],
             ),

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:alternative_material_3/material.dart';
+import 'package:alternative_material_3/src/list_tile_element.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'rendering/mock_canvas.dart';
@@ -344,13 +345,13 @@ void main() {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.computer, key: selectedIconKey),
-              title: const Text('selected'),
+              leading: ListTileElement.icon24(child: Icon(Icons.computer, key: selectedIconKey)),
+              headline: const Text('selected'),
               selected: true,
             ),
             ListTile(
-              leading: Icon(Icons.add, key: unselectedIconKey),
-              title: const Text('unselected'),
+              leading: ListTileElement.icon24(child: Icon(Icons.add, key: unselectedIconKey)),
+              headline: const Text('unselected'),
             ),
           ],
         ),
@@ -363,9 +364,14 @@ void main() {
       return MaterialApp(
         home: Scaffold(
           body: ListTileTheme(
-            selectedColor: tileSelectedColor,
-            textColor: tileTextColor,
-            iconColor: tileIconColor,
+            data: const ListTileThemeData(
+              headlineColor: tileTextColor,
+              leadingColor: tileIconColor,
+              trailingColor: tileIconColor,
+              selectedHeadlineColor: tileSelectedColor,
+              selectedLeadingColor: tileSelectedColor,
+              selectedTrailingColor: tileSelectedColor,
+            ),
             child: Builder( // Introduce a context so the shadow ListTileTheme is visible to captureAll().
               builder: (BuildContext context) {
                 navigatorContext = context;

@@ -76,8 +76,8 @@ void main() {
             child: Center(
               child: ListTile(
                 leading: SizedBox(key: leadingKey, width: 24.0, height: 24.0),
-                title: const Text('title'),
-                subtitle: hasSubtitle ? Text('subtitle', textScaleFactor: subtitleScaleFactor) : null,
+                headline: const Text('title'),
+                supportingText: hasSubtitle ? Text('subtitle', textScaleFactor: subtitleScaleFactor) : null,
                 trailing: SizedBox(key: trailingKey, width: 24.0, height: 24.0),
                 dense: dense,
                 isThreeLine: isThreeLine,
@@ -190,7 +190,7 @@ void main() {
             child: Center(
               child: ListTile(
                 leading: Text('L'),
-                title: Text('title'),
+                headline: Text('title'),
                 trailing: Text('T'),
               ),
             ),
@@ -221,7 +221,7 @@ void main() {
             return ListView(
               children: ListTile.divideTiles(
                 context: context,
-                tiles: titles.map<Widget>((String title) => ListTile(title: Text(title))),
+                tiles: titles.map<Widget>((String title) => ListTile(headline: Text(title))),
               ).toList(),
             );
           },
@@ -270,18 +270,18 @@ void main() {
             child: Column(
               children: <Widget>[
                 const ListTile(
-                  title: Text('one'),
+                  headline: Text('one'),
                 ),
                 ListTile(
-                  title: const Text('two'),
+                  headline: const Text('two'),
                   onTap: () {},
                 ),
                 const ListTile(
-                  title: Text('three'),
+                  headline: Text('three'),
                   selected: true,
                 ),
                 const ListTile(
-                  title: Text('four'),
+                  headline: Text('four'),
                   enabled: false,
                 ),
               ],
@@ -354,7 +354,7 @@ void main() {
                   bottom: 40.0,
                 ),
                 leading: Text('L'),
-                title: Text('title'),
+                headline: Text('title'),
                 trailing: Text('T'),
               ),
             ),
@@ -393,8 +393,8 @@ void main() {
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: SizedBox(key: leadingKey, width: leadingWidth, height: 32.0),
-                title: const Text('title'),
-                subtitle: const Text('subtitle'),
+                headline: const Text('title'),
+                supportingText: const Text('subtitle'),
               ),
             ),
           ),
@@ -459,12 +459,12 @@ void main() {
               ListTile(
                 leading: CircleAvatar(),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
+                headline: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
               ),
               ListTile(
                 leading: CircleAvatar(),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A'),
+                headline: Text('A'),
               ),
             ],
           ),
@@ -491,14 +491,14 @@ void main() {
               ListTile(
                 leading: CircleAvatar(),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A'),
-                subtitle: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
+                headline: Text('A'),
+                supportingText: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
               ),
               ListTile(
                 leading: CircleAvatar(),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A'),
-                subtitle: Text('A'),
+                headline: Text('A'),
+                supportingText: Text('A'),
               ),
             ],
           ),
@@ -531,15 +531,15 @@ void main() {
                 isThreeLine: true,
                 leading: CircleAvatar(),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A'),
-                subtitle: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
+                headline: Text('A'),
+                supportingText: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
               ),
               ListTile(
                 isThreeLine: true,
                 leading: CircleAvatar(),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A'),
-                subtitle: Text('A'),
+                headline: Text('A'),
+                supportingText: Text('A'),
               ),
             ],
           ),
@@ -564,12 +564,12 @@ void main() {
               ListTile(
                 leading: SizedBox(height: 12.0, width: 24.0, child: Placeholder()),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
+                headline: Text('A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM'),
               ),
               ListTile(
                 leading: SizedBox(height: 12.0, width: 24.0, child: Placeholder()),
                 trailing: SizedBox(height: 24.0, width: 24.0, child: Placeholder()),
-                title: Text('A'),
+                headline: Text('A'),
               ),
             ],
           ),
@@ -599,11 +599,11 @@ void main() {
             children: const <Widget>[
               ListTile(
                 leading: oversizedWidget,
-                title: Text('A'),
+                headline: Text('A'),
               ),
               ListTile(
                 leading: oversizedWidget,
-                title: Text('B'),
+                headline: Text('B'),
               ),
             ],
           ),
@@ -623,13 +623,13 @@ void main() {
             children: const <Widget>[
               ListTile(
                 leading: oversizedWidget,
-                title: Text('A'),
-                subtitle: Text('A'),
+                headline: Text('A'),
+                supportingText: Text('A'),
               ),
               ListTile(
                 leading: oversizedWidget,
-                title: Text('B'),
-                subtitle: Text('B'),
+                headline: Text('B'),
+                supportingText: Text('B'),
               ),
             ],
           ),
@@ -649,14 +649,14 @@ void main() {
             children: const <Widget>[
               ListTile(
                 leading: oversizedWidget,
-                title: Text('A'),
-                subtitle: Text('A'),
+                headline: Text('A'),
+                supportingText: Text('A'),
                 isThreeLine:  true,
               ),
               ListTile(
                 leading: oversizedWidget,
-                title: Text('B'),
-                subtitle: Text('B'),
+                headline: Text('B'),
+                supportingText: Text('B'),
                 isThreeLine:  true,
               ),
             ],
@@ -682,12 +682,12 @@ void main() {
             children: const <Widget>[
               ListTile(
                 trailing: oversizedWidget,
-                title: Text('A'),
+                headline: Text('A'),
                 dense: false,
               ),
               ListTile(
                 trailing: oversizedWidget,
-                title: Text('B'),
+                headline: Text('B'),
                 dense: false,
               ),
             ],
@@ -708,14 +708,14 @@ void main() {
             children: const <Widget>[
               ListTile(
                 trailing: oversizedWidget,
-                title: Text('A'),
-                subtitle: Text('A'),
+                headline: Text('A'),
+                supportingText: Text('A'),
                 dense: false,
               ),
               ListTile(
                 trailing: oversizedWidget,
-                title: Text('B'),
-                subtitle: Text('B'),
+                headline: Text('B'),
+                supportingText: Text('B'),
                 dense: false,
               ),
             ],
@@ -736,15 +736,15 @@ void main() {
             children: const <Widget>[
               ListTile(
                 trailing: oversizedWidget,
-                title: Text('A'),
-                subtitle: Text('A'),
+                headline: Text('A'),
+                supportingText: Text('A'),
                 isThreeLine:  true,
                 dense: false,
               ),
               ListTile(
                 trailing: oversizedWidget,
-                title: Text('B'),
-                subtitle: Text('B'),
+                headline: Text('B'),
+                supportingText: Text('B'),
                 isThreeLine:  true,
                 dense: false,
               ),
@@ -767,7 +767,7 @@ void main() {
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Text('A', key: childKey),
+                headline: Text('A', key: childKey),
                 dense: true,
                 onTap: () {},
               ),
@@ -790,7 +790,7 @@ void main() {
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Text('A', key: childKey),
+                headline: Text('A', key: childKey),
                 dense: true,
                 enabled: false,
                 onTap: () {},
@@ -814,7 +814,7 @@ void main() {
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Text('A', key: childKey),
+                headline: Text('A', key: childKey),
                 dense: true,
                 autofocus: true,
                 onTap: () {},
@@ -834,7 +834,7 @@ void main() {
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Text('A', key: childKey),
+                headline: Text('A', key: childKey),
                 dense: true,
                 enabled: false,
                 autofocus: true,
@@ -1100,7 +1100,7 @@ void main() {
       return MaterialApp(
         home: Material(
           child: Center(
-            child: ListTile(shape: shape, tileColor: tileColor),
+            child: ListTile(customBorder: shape, tileColor: tileColor),
           ),
         ),
       );
@@ -1254,7 +1254,7 @@ void main() {
                   onTap: () {
                     setState(()=> isSelected = !isSelected);
                   },
-                  title: const Text('Title'),
+                  headline: const Text('Title'),
                 );
               },
             ),
@@ -1285,7 +1285,7 @@ void main() {
             child: ListTile(
               tileColor: tileColor,
               onTap: () {},
-              title: const Text('Title'),
+              headline: const Text('Title'),
             ),
           ),
         ),
@@ -1325,7 +1325,7 @@ void main() {
                   onTap: () {
                     setState(()=> isSelected = !isSelected);
                   },
-                  title: const Text('Title'),
+                  headline: const Text('Title'),
                 );
               },
             ),
@@ -1362,7 +1362,7 @@ void main() {
                   onTap: () {
                     setState(()=> isSelected = !isSelected);
                   },
-                  title: const Text('Title'),
+                  headline: const Text('Title'),
                 ),
               );
             },
@@ -1434,7 +1434,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: ListTile(
-              title: const Text('Title'),
+              headline: const Text('Title'),
               onTap: () {},
               enableFeedback: enableFeedback,
             ),
@@ -1455,7 +1455,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: ListTile(
-              title: const Text('Title'),
+              headline: const Text('Title'),
               onTap: () {},
               enableFeedback: enableFeedback,
             ),
@@ -1475,7 +1475,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: ListTile(
-              title: const Text('Title'),
+              headline: const Text('Title'),
               onTap: () {},
             ),
           ),
@@ -1497,7 +1497,7 @@ void main() {
             child: ListTileTheme(
               data: const ListTileThemeData(enableFeedback: enableFeedbackTheme),
               child: ListTile(
-                title: const Text('Title'),
+                headline: const Text('Title'),
                 onTap: () {},
               ),
             ),
@@ -1522,7 +1522,7 @@ void main() {
               data: const ListTileThemeData(enableFeedback: enableFeedbackTheme),
               child: ListTile(
                 enableFeedback: enableFeedback,
-                title: const Text('Title'),
+                headline: const Text('Title'),
                 onTap: () {},
               ),
             ),
@@ -1547,7 +1547,7 @@ void main() {
               child: ListTile(
                 key: tileKey,
                 mouseCursor: MaterialStateMouseCursor.textable,
-                title: const Text('Title'),
+                headline: const Text('Title'),
                 onTap: () {},
               ),
             ),
@@ -1578,7 +1578,7 @@ void main() {
                 child: ListTile(
                   horizontalTitleGap: widgetHorizontalTitleGap,
                   leading: const Text('L'),
-                  title: const Text('title'),
+                  headline: const Text('title'),
                   trailing: const Text('T'),
                 ),
               ),
@@ -1627,7 +1627,7 @@ void main() {
               alignment: Alignment.topLeft,
               child: const ListTile(
                 leading: Text('L'),
-                title: Text('title'),
+                headline: Text('title'),
                 trailing: Text('T'),
               ),
             ),
@@ -1668,7 +1668,7 @@ void main() {
                 visualDensity: visualDensity,
                 horizontalTitleGap: horizontalTitleGap,
                 leading: const Text('L'),
-                title: const Text('title'),
+                headline: const Text('title'),
                 trailing: const Text('T'),
               ),
             ),
@@ -1711,7 +1711,7 @@ void main() {
                 child: ListTile(
                   minVerticalPadding: widgetMinVerticalPadding,
                   leading: const Text('L'),
-                  title: const Text('title'),
+                  headline: const Text('title'),
                   trailing: const Text('T'),
                 ),
               ),
@@ -1757,7 +1757,7 @@ void main() {
                 child: ListTile(
                   minLeadingWidth: widgetMinLeadingWidth,
                   leading: const Text('L'),
-                  title: const Text('title'),
+                  headline: const Text('title'),
                   trailing: const Text('T'),
                 ),
               ),
@@ -1817,7 +1817,7 @@ void main() {
                   enabled: enabled,
                   selected: selected,
                   leading: TestText('leading', key: leadingKey),
-                  title: const TestText('title'),
+                  headline: const TestText('title'),
                   trailing: TestText('trailing', key: trailingKey),
                 );
               },
@@ -1866,8 +1866,8 @@ void main() {
             child: ListTile(
               selected: selected,
               leading: TestIcon(key: leadingKey),
-              title: TestIcon(key: titleKey),
-              subtitle: TestIcon(key: subtitleKey),
+              headline: TestIcon(key: titleKey),
+              supportingText: TestIcon(key: subtitleKey),
               trailing: TestIcon(key: trailingKey),
             ),
           ),
@@ -1900,8 +1900,8 @@ void main() {
               builder: (BuildContext context) {
                 return const ListTile(
                   leading: TestText('leading'),
-                  title: TestText('title'),
-                  subtitle: TestText('subtitle') ,
+                  headline: TestText('title'),
+                  supportingText: TestText('subtitle') ,
                   trailing: TestText('trailing'),
                 );
               },
@@ -1933,8 +1933,8 @@ void main() {
               builder: (BuildContext context) {
                 return const ListTile(
                   leading: TestText('leading'),
-                  title: TestText('title'),
-                  subtitle: TestText('subtitle') ,
+                  headline: TestText('title'),
+                  supportingText: TestText('subtitle') ,
                   trailing: TestText('trailing'),
                 );
               },
@@ -1974,17 +1974,17 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const ListTile(
       leading: Text('leading'),
-      title: Text('title'),
-      subtitle: Text('trailing'),
+      headline: Text('title'),
+      supportingText: Text('trailing'),
       trailing: Text('trailing'),
       isThreeLine: true,
       dense: true,
       visualDensity: VisualDensity.standard,
-      shape: RoundedRectangleBorder(),
+      customBorder: RoundedRectangleBorder(),
       style: ListTileStyle.list,
       selectedColor: Color(0xff0000ff),
-      iconColor: Color(0xff00ff00),
-      textColor: Color(0xffff0000),
+      expandedIconColor: Color(0xff00ff00),
+      expandedHeadlineColor: Color(0xffff0000),
       titleTextStyle: TextStyle(fontSize: 22),
       subtitleTextStyle: TextStyle(fontSize: 18),
       leadingAndTrailingTextStyle: TextStyle(fontSize: 16),
@@ -2060,7 +2060,7 @@ void main() {
                 return ListTile(
                   enabled: enabled,
                   selected: selected,
-                  textColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  expandedHeadlineColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
                     if (states.contains(MaterialState.disabled)) {
                       return disabledColor;
                     }
@@ -2069,8 +2069,8 @@ void main() {
                     }
                     return defaultColor;
                   }),
-                  title: const TestText('title'),
-                  subtitle: const TestText('subtitle') ,
+                  headline: const TestText('title'),
+                  supportingText: const TestText('subtitle') ,
                 );
               },
             ),
@@ -2117,7 +2117,7 @@ void main() {
                 return ListTile(
                   enabled: enabled,
                   selected: selected,
-                  iconColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  expandedIconColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
                     if (states.contains(MaterialState.disabled)) {
                       return disabledColor;
                     }
@@ -2175,7 +2175,7 @@ void main() {
             child: Builder(
               builder: (BuildContext context) {
                 return ListTile(
-                  iconColor: listTileIconColor,
+                  expandedIconColor: listTileIconColor,
                   leading: IconButton(icon: leadingIcon, onPressed: () {}),
                   trailing: IconButton(icon: trailingIcon, onPressed: () {}),
                 );
@@ -2210,7 +2210,7 @@ void main() {
               builder: (BuildContext context, StateSetter setState) {
                 return const ListTile(
                   dense: true,
-                  title: Text('Title'),
+                  headline: Text('Title'),
                 );
               },
             ),
@@ -2241,7 +2241,7 @@ void main() {
               titleAlignment: titleAlignment,
               minVerticalPadding: minVerticalPadding,
               leading: SizedBox(key: leadingKey, width: 24.0, height: leadingHeight),
-              title: const SizedBox(width: 20.0, height: titleHeight),
+              headline: const SizedBox(width: 20.0, height: titleHeight),
               trailing: SizedBox(key: trailingKey, width: 24.0, height: trailingHeight),
             ),
           ),
@@ -2341,8 +2341,8 @@ void main() {
               titleAlignment: titleAlignment,
               minVerticalPadding: minVerticalPadding,
               leading: SizedBox(key: leadingKey, width: 24.0, height: leadingHeight),
-              title: const SizedBox(width: 20.0, height: titleHeight),
-              subtitle: const SizedBox(width: 20.0, height: subtitleHeight),
+              headline: const SizedBox(width: 20.0, height: titleHeight),
+              supportingText: const SizedBox(width: 20.0, height: subtitleHeight),
               trailing: SizedBox(key: trailingKey, width: 24.0, height: trailingHeight),
             ),
           ),
@@ -2441,8 +2441,8 @@ void main() {
               titleAlignment: titleAlignment,
               minVerticalPadding: minVerticalPadding,
               leading: SizedBox(key: leadingKey, width: 24.0, height: leadingHeight),
-              title: const SizedBox(width: 20.0, height: titleHeight),
-              subtitle: const SizedBox(width: 20.0, height: subtitleHeight),
+              headline: const SizedBox(width: 20.0, height: titleHeight),
+              supportingText: const SizedBox(width: 20.0, height: subtitleHeight),
               trailing: SizedBox(key: trailingKey, width: 24.0, height: trailingHeight),
               isThreeLine: isThreeLine,
             ),
