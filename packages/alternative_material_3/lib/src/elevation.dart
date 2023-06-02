@@ -19,7 +19,7 @@ enum ElevationLevel {
   /// Slider (Track), Suggestion Chip (Flat), Top App Bar.
   ///
   /// Height is 0dp.
-  level0,
+  level0(0.0, 'Level 0'),
 
   /// Components: Assist Chip (Elevated), Banner, Bottom Sheet (Modal),
   /// Elevated Button,Elevated Card, Extended FAB (Lowered), FAB (Lowered),
@@ -27,32 +27,36 @@ enum ElevationLevel {
   /// Slider (Handle), Suggestion Chip (Elevated).
   ///
   /// Height is 1dp.
-  level1,
+  level1(1.0, 'Level 1'),
 
   /// Components: Autocomplete Menu, Bottom App Bar, Dropdown Menu, Menu,
   /// Navigation Bar, Select Menu, Rich Tooltip, Top App Bar (Scrolled).
   ///
   /// Height is 3dp.
-  level2,
+  level2(3.0, 'Level 2'),
 
   /// Components: FAB, Extended FAB, Modal Date Picker, Docked Date Picker,
   /// Modal Date Input, Dialog, Search Bar, Search View, Time Picker,
   /// Time Input.
   ///
   /// Height is 6dp.
-  level3,
+  level3(6.0, 'Level 3'),
 
   /// Not assigned as resting level. Reserved for user-interacted states such
   /// as hover and dragged.
   ///
   /// Height is 8dp.
-  level4,
+  level4(8.0, 'Level 4'),
 
   /// Not assigned as resting level. Reserved for user-interacted states such
   /// as hover and dragged.
   ///
   /// Height is 12dp.
-  level5;
+  level5(12.0, 'Level 5');
+
+  const ElevationLevel(this.height, this.label);
+  final double height;
+  final String label;
 
   /// Compare two ElevationLevels based on their level number.
   bool operator <(ElevationLevel other) {
@@ -185,20 +189,7 @@ class Elevation {
   }
 
   /// Return a human readable label of the elevation's level.
-  String get label {
-    if (height < level1.height) {
-      return 'Level 0';
-    } else if (height < level2.height) {
-      return 'Level 1';
-    } else if (height < level3.height) {
-      return 'Level 2';
-    } else if (height < level4.height) {
-      return 'Level 3';
-    } else if (height < level5.height) {
-      return 'Level 4';
-    }
-    return 'Level 5';
-  }
+  String get label => level.label;
 
   /// Returns a new Elevation whose level is the sum of the levels of this
   /// and the other Elevation, discarding any height
@@ -269,6 +260,16 @@ class Elevation {
   /// Compare the height of two Elevations.
   bool operator >(Elevation other) {
     return height > other.height;
+  }
+
+  /// Compare the height of two Elevations.
+  bool operator <=(Elevation other) {
+    return height <= other.height;
+  }
+
+  /// Compare the height of two Elevations.
+  bool operator >=(Elevation other) {
+    return height >= other.height;
   }
 
   @override

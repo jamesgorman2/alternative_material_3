@@ -64,6 +64,51 @@ bool debugCheckHasMaterial(BuildContext context) {
   return true;
 }
 
+/// Asserts that the given context has a [TapRegionSurface] ancestor
+/// within the closest [LookupBoundary].
+///
+/// To call this function, use the following pattern, typically in the
+/// relevant Widget's build method:
+///
+/// ```dart
+/// assert(debugCheckHasTapRegionSurface(context));
+/// ```
+///
+/// Always place this before any early returns, so that the invariant is checked
+/// in all cases. This prevents bugs from hiding until a particular codepath is
+/// hit.
+///
+/// This method can be expensive (it walks the element tree).
+///
+/// Does nothing if asserts are disabled. Always returns true.
+bool debugCheckHasTapRegionSurface(BuildContext context) {
+  assert(() {
+    if (LookupBoundary.findAncestorWidgetOfExactType<TapRegionSurface>(context) == null) {
+      final bool hiddenByBoundary = LookupBoundary.debugIsHidingAncestorWidgetOfExactType<Material>(context);
+      throw FlutterError.fromParts(<DiagnosticsNode>[
+        ErrorSummary('No TapRegionSurface widget found${hiddenByBoundary ? ' within the closest LookupBoundary' : ''}.'),
+        if (hiddenByBoundary)
+          ErrorDescription(
+            'There is an ancestor TapRegionSurface widget, but it is hidden '
+            'by a LookupBoundary.'
+          ),
+        ErrorDescription(
+          '${context.widget.runtimeType} widgets require a TapRegionSurface '
+          'widget ancestor within the closest LookupBoundary.\n',
+        ),
+        ErrorHint(
+          'To introduce a TapRegionSurface widget, you can either directly '
+          'include one, or use a widget that contains Material itself, '
+          'such as a WidgetsApp, MaterialApp or CupertinoApp.',
+        ),
+        ...context.describeMissingAncestor(expectedAncestorType: Material),
+      ]);
+    }
+    return true;
+  }());
+  return true;
+}
+
 /// Asserts that the given context has a [Localizations] ancestor that contains
 /// a [MaterialLocalizations] delegate.
 ///

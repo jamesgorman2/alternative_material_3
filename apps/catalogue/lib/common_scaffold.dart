@@ -4,6 +4,7 @@ import 'package:alternative_material_3/material.dart';
 import 'package:provider/provider.dart';
 
 import 'components/checkbox_page.dart';
+import 'components/chips_page.dart';
 import 'components/components_overview.dart';
 import 'components/list_tile_page.dart';
 import 'components/radio_button_page.dart';
@@ -15,7 +16,7 @@ import 'styles/styles_overview.dart';
 import 'styles/typography_page.dart';
 import 'widget_catalogue.dart';
 
-class CommonScaffold extends StatelessWidget {
+class CommonScaffold extends StatefulWidget {
   const CommonScaffold({
     super.key,
     required this.title,
@@ -26,15 +27,67 @@ class CommonScaffold extends StatelessWidget {
   final Widget body;
 
   @override
+  State<CommonScaffold> createState() => _CommonScaffoldState();
+}
+
+class _CommonScaffoldState extends State<CommonScaffold> {
+
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: title,
+    final textDirection = context.watch<TextDirectionNotifier>();
+
+    return Directionality(
+      textDirection: textDirection.direction,
+      child: Scaffold(
+        appBar: AppBar(
+          title: widget.title,
+        ),
+        drawer: const AppDrawer(),
+        body: SizedBox(
+          width: double.infinity,
+          child: Overlay(
+            initialEntries: [
+              OverlayEntry(
+                builder: (context) => ControlledScroll(
+                  controller: _scrollController,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16.0),
+                    child: widget.body,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      drawer: const AppDrawer(),
-      body: body,
     );
   }
+}
+
+@immutable
+class ControlledScroll extends InheritedWidget {
+  const ControlledScroll({super.key, required super.child, required this.controller});
+
+  final ScrollController controller;
+
+  static ScrollController? of(BuildContext context) {
+    final ControlledScroll? inheritedTheme =
+    context.dependOnInheritedWidgetOfExactType<ControlledScroll>();
+    return inheritedTheme?.controller;
+  }
+
+  @override
+  bool updateShouldNotify(ControlledScroll oldWidget) =>
+      oldWidget.controller != controller;
 }
 
 class AppDrawer extends StatelessWidget {
@@ -82,14 +135,20 @@ class AppDrawer extends StatelessWidget {
               navTile(Home.label, Home.route, isHome: true),
               const Divider(),
               navTile(StylesOverview.label, StylesOverview.route),
-              navTile(TypographyPage.label, TypographyPage.route, isChildPage: true),
+              navTile(TypographyPage.label, TypographyPage.route,
+                  isChildPage: true),
               navTile(ColorPage.label, ColorPage.route, isChildPage: true),
-              navTile(ElevationPage.label, ElevationPage.route, isChildPage: true),
+              navTile(ElevationPage.label, ElevationPage.route,
+                  isChildPage: true),
               const Divider(),
               navTile(ComponentsOverview.label, ComponentsOverview.route),
-              navTile(CheckboxPage.label, CheckboxPage.route, isChildPage: true),
-              navTile(ListTilePage.label, ListTilePage.route, isChildPage: true),
-              navTile(RadioButtonPage.label, RadioButtonPage.route, isChildPage: true),
+              navTile(CheckboxPage.label, CheckboxPage.route,
+                  isChildPage: true),
+              navTile(ChipsPage.label, ChipsPage.route, isChildPage: true),
+              navTile(ListTilePage.label, ListTilePage.route,
+                  isChildPage: true),
+              navTile(RadioButtonPage.label, RadioButtonPage.route,
+                  isChildPage: true),
               navTile(SwitchPage.label, SwitchPage.route, isChildPage: true),
             ],
           ),

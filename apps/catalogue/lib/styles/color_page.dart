@@ -20,23 +20,18 @@ class ColorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CommonScaffold(
       title: Text(label),
-      body: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TonalPalettesCard(),
-                SizedBox(height: 16.0),
-                ThemeCardLight(),
-                SizedBox(height: 16.0),
-                ThemeCardDark(),
-              ],
-            ),
-          ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TonalPalettesCard(),
+            SizedBox(height: 16.0),
+            ThemeCardLight(),
+            SizedBox(height: 16.0),
+            ThemeCardDark(),
+          ],
         ),
       ),
     );

@@ -128,14 +128,14 @@ class StateThemeData with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  StateThemeData mergeWith(StateThemeData other) {
+  StateThemeData mergeWith(StateThemeData? other) {
     return copyWith(
-      disabledOpacity: other._disabledOpacity,
-      disabledOpacityLight: other._disabledOpacityLight,
-      hoverOpacity: other._hoverOpacity,
-      focusOpacity: other._focusOpacity,
-      pressOpacity: other._pressOpacity,
-      dragOpacity: other._dragOpacity,
+      disabledOpacity: other?._disabledOpacity,
+      disabledOpacityLight: other?._disabledOpacityLight,
+      hoverOpacity: other?._hoverOpacity,
+      focusOpacity: other?._focusOpacity,
+      pressOpacity: other?._pressOpacity,
+      dragOpacity: other?._dragOpacity,
     );
   }
 
@@ -336,12 +336,12 @@ class StateLayerTheme with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  StateLayerTheme mergeWith(StateLayerTheme other) {
+  StateLayerTheme mergeWith(StateLayerTheme? other) {
     return copyWith(
-      hoverColor: other.hoverColor,
-      focusColor:  other.focusColor,
-      pressColor: other.pressColor,
-      dragColor:  other.dragColor,
+      hoverColor: other?.hoverColor,
+      focusColor:  other?.focusColor,
+      pressColor: other?.pressColor,
+      dragColor:  other?.dragColor,
     );
   }
 
@@ -376,7 +376,7 @@ class StateLayerTheme with Diagnosticable {
   }
 
   /// Linearly interpolate between two [StateLayerTheme]s.
-  static StateLayerTheme? lerp(StateLayerTheme? a, StateLayerTheme? b, double t,) {
+  static StateLayerTheme lerp(StateLayerTheme? a, StateLayerTheme? b, double t,) {
     if (identical(a, b) && a != null) {
       return a;
     }

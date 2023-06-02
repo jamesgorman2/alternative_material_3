@@ -11,7 +11,7 @@ import 'rendering/mock_canvas.dart';
 RenderBox getMaterialBox(WidgetTester tester) {
   return tester.firstRenderObject<RenderBox>(
     find.descendant(
-      of: find.byType(RawChip),
+      of: find.byType(Chip),
       matching: find.byType(CustomPaint),
     ),
   );
@@ -20,7 +20,7 @@ RenderBox getMaterialBox(WidgetTester tester) {
 Material getMaterial(WidgetTester tester) {
   return tester.widget<Material>(
     find.descendant(
-      of: find.byType(RawChip),
+      of: find.byType(Chip),
       matching: find.byType(Material),
     ),
   );
@@ -132,7 +132,7 @@ void main() {
       selected: true,
       iconTheme: iconTheme,
     )));
-    final RawChip rawChip = tester.widget(find.byType(RawChip));
+    final Chip rawChip = tester.widget(find.byType(Chip));
     expect(rawChip.iconTheme, iconTheme);
   });
 }

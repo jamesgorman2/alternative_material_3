@@ -31,7 +31,6 @@ class WidgetCatalogue extends StatelessWidget {
       builder: (context, child) {
         final seedColor = context.watch<ColorSeedNotifier>();
         final themeMode = context.watch<ThemeModeNotifier>();
-        final textDirection = context.watch<TextDirectionNotifier>();
         final colorScheme = seedColor.hasColor
             ? ColorScheme.fromSeed(seedColor: seedColor.color!)
             : ColorScheme.m3DefaultLight;
@@ -44,15 +43,14 @@ class WidgetCatalogue extends StatelessWidget {
           colorScheme: colorScheme.asDark(),
           typography: Typography.material2021(),
         );
-        return Directionality(
-          textDirection: textDirection.direction,
-          child: MaterialApp(
-            title: 'Alternative Material 3 Widgets Catalogue',
-            theme: theme,
-            darkTheme: darkTheme,
-            themeMode: themeMode.mode,
-            routes: _routes,
-          ),
+
+        return MaterialApp(
+          title: 'Alternative Material 3 Widgets Catalogue',
+          theme: theme,
+          darkTheme: darkTheme,
+          themeMode: themeMode.mode,
+
+          routes: _routes,
         );
       },
     );

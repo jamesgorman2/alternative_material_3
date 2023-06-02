@@ -13,7 +13,7 @@ import 'rendering/mock_canvas.dart';
 RenderBox getMaterialBox(WidgetTester tester) {
   return tester.firstRenderObject<RenderBox>(
     find.descendant(
-      of: find.byType(RawChip),
+      of: find.byType(Chip),
       matching: find.byType(CustomPaint),
     ),
   );
@@ -22,7 +22,7 @@ RenderBox getMaterialBox(WidgetTester tester) {
 Material getMaterial(WidgetTester tester) {
   return tester.widget<Material>(
     find.descendant(
-      of: find.byType(RawChip),
+      of: find.byType(Chip),
       matching: find.byType(Material),
     ),
   );
@@ -31,7 +31,7 @@ Material getMaterial(WidgetTester tester) {
 DefaultTextStyle getLabelStyle(WidgetTester tester) {
   return tester.widget(
     find.descendant(
-      of: find.byType(RawChip),
+      of: find.byType(Chip),
       matching: find.byType(DefaultTextStyle),
     ).last,
   );
@@ -155,7 +155,7 @@ void main() {
           textDirection: TextDirection.ltr,
           child: Material(
             child: Center(
-              child: RawChip(
+              child: Chip(
                 label: const SizedBox(width: 100, height: 100),
                 onSelected: (bool newValue) { },
               ),
@@ -168,7 +168,7 @@ void main() {
     final RenderBox materialBox = getMaterialBox(tester);
     expect(materialBox, paints..rect(color: chipTheme.backgroundColor));
     expect(getMaterial(tester).elevation, chipTheme.elevation);
-    expect(tester.getSize(find.byType(RawChip)), const Size(252, 252)); // label + padding + labelPadding
+    expect(tester.getSize(find.byType(Chip)), const Size(252, 252)); // label + padding + labelPadding
     // fIXMe
     //expect(getMaterial(tester).shape, chipTheme.shape);
     expect(getLabelStyle(tester).style.fontSize, 32);
@@ -206,7 +206,7 @@ void main() {
                 textDirection: TextDirection.ltr,
                 child: Material(
                   child: Center(
-                    child: RawChip(
+                    child: Chip(
                       label: const SizedBox(width: 100, height: 100),
                       onSelected: (bool newValue) { },
                     ),
@@ -221,7 +221,7 @@ void main() {
 
     final RenderBox materialBox = getMaterialBox(tester);
     expect(materialBox, paints..rect(color: chipTheme.backgroundColor));
-    expect(tester.getSize(find.byType(RawChip)), const Size(252, 252)); // label + padding + labelPadding
+    expect(tester.getSize(find.byType(Chip)), const Size(252, 252)); // label + padding + labelPadding
     expect(getMaterial(tester).elevation, chipTheme.elevation);
     // FIXME
     // expect(getMaterial(tester).shape, chipTheme.shape);
@@ -253,7 +253,7 @@ void main() {
                 textDirection: TextDirection.ltr,
                 child: Material(
                   child: Center(
-                    child: RawChip(
+                    child: Chip(
                       backgroundColor: backgroundColor,
                       elevation: elevation,
                       padding: const EdgeInsets.all(50),
@@ -274,7 +274,7 @@ void main() {
 
     final RenderBox materialBox = getMaterialBox(tester);
     expect(materialBox, paints..circle(color: backgroundColor));
-    expect(tester.getSize(find.byType(RawChip)), const Size(252, 252)); // label + padding + labelPadding
+    expect(tester.getSize(find.byType(Chip)), const Size(252, 252)); // label + padding + labelPadding
     expect(getMaterial(tester).elevation, elevation);
     // FIXME
     //expect(getMaterial(tester).shape, shape);
@@ -675,11 +675,11 @@ void main() {
 
     // Default.
     await tester.pumpWidget(chipWidget());
-    expect(find.byType(RawChip), paints..rrect()..rrect(color: defaultColor));
+    expect(find.byType(Chip), paints..rrect()..rrect(color: defaultColor));
 
     // Selected.
     await tester.pumpWidget(chipWidget(selected: true));
-    expect(find.byType(RawChip), paints..rrect()..rrect(color: selectedColor));
+    expect(find.byType(Chip), paints..rrect()..rrect(color: selectedColor));
   }, skip: true);
 
   // FIXME
@@ -718,11 +718,11 @@ void main() {
 
     // Default.
     await tester.pumpWidget(chipWidget());
-    expect(find.byType(RawChip), paints..rrect()..rrect(color: defaultColor));
+    expect(find.byType(Chip), paints..rrect()..rrect(color: defaultColor));
 
     // Selected.
     await tester.pumpWidget(chipWidget(selected: true));
-    expect(find.byType(RawChip), paints..rrect()..rrect(color: selectedColor));
+    expect(find.byType(Chip), paints..rrect()..rrect(color: selectedColor));
   }, skip: true);
 
   // FIXME

@@ -14,27 +14,22 @@ class TypographyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CommonScaffold(
       title: Text(label),
-      body: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Display(),
-                SizedBox(height: 16),
-                Headline(),
-                SizedBox(height: 16),
-                Title(),
-                SizedBox(height: 16),
-                Label(),
-                SizedBox(height: 16),
-                Body(),
-              ],
-            ),
-          ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Display(),
+            SizedBox(height: 16),
+            Headline(),
+            SizedBox(height: 16),
+            Title(),
+            SizedBox(height: 16),
+            Label(),
+            SizedBox(height: 16),
+            Body(),
+          ],
         ),
       ),
     );

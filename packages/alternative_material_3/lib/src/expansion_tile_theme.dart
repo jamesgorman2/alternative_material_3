@@ -167,18 +167,18 @@ class ExpansionTileThemeData with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  ExpansionTileThemeData mergeWith(ExpansionTileThemeData other) {
+  ExpansionTileThemeData mergeWith(ExpansionTileThemeData? other) {
     return copyWith(
-      expandedBackgroundColor: other._expandedBackgroundColor,
-      collapsedBackgroundColor: other._collapsedBackgroundColor,
-      expandedIconColor: other._expandedIconColor,
-      collapsedIconColor: other._collapsedIconColor,
-      expandedHeadlineColor: other._expandedHeadlineColor,
-      collapsedHeadlineColor: other._collapsedHeadlineColor,
-      showTopDividerWhenExpanded: other._showTopDividerWhenExpanded,
-      showBottomDividerWhenExpanded: other._showBottomDividerWhenExpanded,
-      expandedAlignment: other._expandedAlignment,
-      clipBehavior: other._clipBehavior,
+      expandedBackgroundColor: other?._expandedBackgroundColor,
+      collapsedBackgroundColor: other?._collapsedBackgroundColor,
+      expandedIconColor: other?._expandedIconColor,
+      collapsedIconColor: other?._collapsedIconColor,
+      expandedHeadlineColor: other?._expandedHeadlineColor,
+      collapsedHeadlineColor: other?._collapsedHeadlineColor,
+      showTopDividerWhenExpanded: other?._showTopDividerWhenExpanded,
+      showBottomDividerWhenExpanded: other?._showBottomDividerWhenExpanded,
+      expandedAlignment: other?._expandedAlignment,
+      clipBehavior: other?._clipBehavior,
     );
   }
   

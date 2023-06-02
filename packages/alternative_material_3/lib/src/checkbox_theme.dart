@@ -103,8 +103,8 @@ class CheckboxThemeData with Diagnosticable {
   ///  * [MaterialStateMouseCursor], a [MouseCursor] that implements
   ///    `MaterialStateProperty` which is used in APIs that need to accept
   ///    either a [MouseCursor] or a [MaterialStateProperty<MouseCursor>].
-  MaterialStateProperty<MouseCursor> get mouseCursor => _mouseCursor
-      ?? MaterialStateMouseCursor.clickable;
+  MaterialStateProperty<MouseCursor> get mouseCursor =>
+      _mouseCursor ?? MaterialStateMouseCursor.clickable;
   final MaterialStateProperty<MouseCursor>? _mouseCursor;
 
   /// {@template flutter.material.checkbox.fillColor}
@@ -345,19 +345,18 @@ class CheckboxThemeData with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  CheckboxThemeData mergeWith(CheckboxThemeData other) {
+  CheckboxThemeData mergeWith(CheckboxThemeData? other) {
     return copyWith(
-      mouseCursor: other._mouseCursor,
-      containerColor: other._containerColor,
-      checkColor: other._iconColor,
-      stateLayerColor: other._stateLayerColor,
-      stateTheme: other._stateTheme,
-      splashRadius: other._splashRadius,
-      materialTapTargetSize:
-          other._materialTapTargetSize,
-      visualDensity: other._visualDensity,
-      shape: other._shape,
-      side: other._side,
+      mouseCursor: other?._mouseCursor,
+      containerColor: other?._containerColor,
+      checkColor: other?._iconColor,
+      stateLayerColor: other?._stateLayerColor,
+      stateTheme: other?._stateTheme,
+      splashRadius: other?._splashRadius,
+      materialTapTargetSize: other?._materialTapTargetSize,
+      visualDensity: other?._visualDensity,
+      shape: other?._shape,
+      side: other?._side,
     );
   }
 
@@ -449,83 +448,83 @@ class _LateResolvingCheckboxThemeData extends CheckboxThemeData {
   StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
 
   @override
-  MaterialStateProperty<Color> get containerColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
-      }
-      if (states.contains(MaterialState.error)) {
-        return _colors.error;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return _colors.primary;
-      }
-      return _colors.onSurface;
-    });
-  }
+  MaterialStateProperty<Color> get containerColor =>
+      _containerColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
+        }
+        if (states.contains(MaterialState.error)) {
+          return _colors.error;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return _colors.primary;
+        }
+        return _colors.onSurface;
+      });
 
   @override
-  MaterialStateProperty<Color> get iconColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
+  MaterialStateProperty<Color> get iconColor =>
+      _iconColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          if (states.contains(MaterialState.selected)) {
+            return _colors.surface.withOpacity(stateTheme.disabledOpacity);
+          }
+          return Colors
+              .transparent; // No icons available when the checkbox is unselected.
+        }
         if (states.contains(MaterialState.selected)) {
-          return _colors.surface.withOpacity(stateTheme.disabledOpacity);
+          if (states.contains(MaterialState.error)) {
+            return _colors.onError;
+          }
+          return _colors.onPrimary;
         }
         return Colors
             .transparent; // No icons available when the checkbox is unselected.
-      }
-      if (states.contains(MaterialState.selected)) {
-        if (states.contains(MaterialState.error)) {
-          return _colors.onError;
-        }
-        return _colors.onPrimary;
-      }
-      return Colors
-          .transparent; // No icons available when the checkbox is unselected.
-    });
-  }
+      });
 
   @override
-  MaterialStateProperty<Color> get stateLayerColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return Colors.transparent;
-      }
-      if (states.contains(MaterialState.error)) {
+  MaterialStateProperty<Color> get stateLayerColor =>
+      _stateLayerColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.transparent;
+        }
+        if (states.contains(MaterialState.error)) {
+          if (states.contains(MaterialState.pressed)) {
+            return _colors.error.withOpacity(stateTheme.pressOpacity);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return _colors.error.withOpacity(stateTheme.hoverOpacity);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return _colors.error.withOpacity(stateTheme.focusOpacity);
+          }
+        }
+        if (states.contains(MaterialState.selected)) {
+          if (states.contains(MaterialState.pressed)) {
+            return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return _colors.primary.withOpacity(stateTheme.hoverOpacity);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return _colors.primary.withOpacity(stateTheme.focusOpacity);
+          }
+          return Colors.transparent;
+        }
         if (states.contains(MaterialState.pressed)) {
-          return _colors.error.withOpacity(stateTheme.pressOpacity);
+          return _colors.primary.withOpacity(stateTheme.pressOpacity);
         }
         if (states.contains(MaterialState.hovered)) {
-          return _colors.error.withOpacity(stateTheme.hoverOpacity);
+          return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
         }
         if (states.contains(MaterialState.focused)) {
-          return _colors.error.withOpacity(stateTheme.focusOpacity);
-        }
-      }
-      if (states.contains(MaterialState.selected)) {
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
-        }
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.primary.withOpacity(stateTheme.hoverOpacity);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.primary.withOpacity(stateTheme.focusOpacity);
+          return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
         }
         return Colors.transparent;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return _colors.primary.withOpacity(stateTheme.pressOpacity);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
-      }
-      return Colors.transparent;
-    });
-  }
+      });
 
   @override
   MaterialTapTargetSize get materialTapTargetSize =>
@@ -536,6 +535,7 @@ class _LateResolvingCheckboxThemeData extends CheckboxThemeData {
 
   @override
   MaterialStateBorderSide get side =>
+      _side ??
       MaterialStateBorderSide.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
           return null;

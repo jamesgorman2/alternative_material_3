@@ -17,23 +17,17 @@ class SwitchPage extends StatelessWidget {
 
     return CommonScaffold(
       title: const Text(label),
-      body: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SwitchSample(
-                colorScheme: colorSchemeLight,
-              ),
-              const SizedBox(height: 16.0),
-              SwitchSample(
-                colorScheme: colorSchemeDark,
-              ),
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SwitchSample(
+            colorScheme: colorSchemeLight,
           ),
-        ),
+          const SizedBox(height: 16.0),
+          SwitchSample(
+            colorScheme: colorSchemeDark,
+          ),
+        ],
       ),
     );
   }

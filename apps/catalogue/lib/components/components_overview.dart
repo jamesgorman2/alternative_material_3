@@ -2,6 +2,7 @@ import 'package:alternative_material_3/material.dart';
 
 import '../common_scaffold.dart';
 import 'checkbox_page.dart';
+import 'chips_page.dart';
 import 'list_tile_page.dart';
 import 'radio_button_page.dart';
 import 'switch_page.dart';
@@ -18,6 +19,7 @@ class ComponentsOverview extends StatelessWidget {
   static Map<String, WidgetBuilder> routes = {
     ComponentsOverview.route: (context) => const ComponentsOverview(),
     CheckboxPage.route: (context) => const CheckboxPage(),
+    ChipsPage.route: (context) => const ChipsPage(),
     SwitchPage.route: (context) => const SwitchPage(),
     RadioButtonPage.route: (context) => const RadioButtonPage(),
     ListTilePage.route: (context) => const ListTilePage(),

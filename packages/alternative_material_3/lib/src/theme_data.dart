@@ -19,7 +19,7 @@ import 'button_bar_theme.dart';
 import 'button_theme.dart';
 import 'card_theme.dart';
 import 'checkbox_theme.dart';
-import 'chip_theme.dart';
+import 'chips/chip_theme.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';

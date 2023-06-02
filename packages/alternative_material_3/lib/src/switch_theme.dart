@@ -52,16 +52,16 @@ class SwitchThemeData with Diagnosticable {
     StateThemeData? stateTheme,
     double? splashRadius,
     MaterialStateProperty<Icon?>? thumbIcon,
-  }) : _thumbColor = thumbColor,
-  _trackColor = trackColor,
-  _trackOutlineColor = trackOutlineColor,
-  _materialTapTargetSize = materialTapTargetSize,
-  _mouseCursor = mouseCursor,
-  _stateLayerColor = stateLayerColor,
-  _stateTheme = stateTheme,
-  _splashRadius = splashRadius,
-  _thumbIcon = thumbIcon;
-  
+  })  : _thumbColor = thumbColor,
+        _trackColor = trackColor,
+        _trackOutlineColor = trackOutlineColor,
+        _materialTapTargetSize = materialTapTargetSize,
+        _mouseCursor = mouseCursor,
+        _stateLayerColor = stateLayerColor,
+        _stateTheme = stateTheme,
+        _splashRadius = splashRadius,
+        _thumbIcon = thumbIcon;
+
   SwitchThemeData._clone(SwitchThemeData other)
       : _thumbColor = other._thumbColor,
         _trackColor = other._trackColor,
@@ -112,7 +112,6 @@ class SwitchThemeData with Diagnosticable {
   MaterialStateProperty<Color> get trackOutlineColor => _trackOutlineColor!;
   final MaterialStateProperty<Color>? _trackOutlineColor;
 
-
   /// {@template flutter.material.switch.materialTapTargetSize}
   /// Configures the minimum size of the tap target.
   /// {@endtemplate}
@@ -138,8 +137,8 @@ class SwitchThemeData with Diagnosticable {
   ///  * [MaterialState.focused].
   ///  * [MaterialState.disabled].
   /// {@endtemplate}
-  MaterialStateProperty<MouseCursor> get mouseCursor => _mouseCursor
-    ?? MaterialStateMouseCursor.clickable;
+  MaterialStateProperty<MouseCursor> get mouseCursor =>
+      _mouseCursor ?? MaterialStateMouseCursor.clickable;
   final MaterialStateProperty<MouseCursor>? _mouseCursor;
 
   /// {@template flutter.material.switch.overlayColor}
@@ -177,8 +176,9 @@ class SwitchThemeData with Diagnosticable {
   ///  * [MaterialState.hovered].
   ///  * [MaterialState.focused].
   ///  * [MaterialState.disabled].
-  MaterialStateProperty<Icon?> get thumbIcon => _thumbIcon
-      ?? MaterialStateProperty.resolveWith((states) {
+  MaterialStateProperty<Icon?> get thumbIcon =>
+      _thumbIcon ??
+      MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
           return const Icon(Icons.check_outlined);
         }
@@ -213,33 +213,45 @@ class SwitchThemeData with Diagnosticable {
 
   /// Creates a copy of this object with null fields replaced with the
   /// values from [other].
-  SwitchThemeData mergeWith(SwitchThemeData other) {
+  SwitchThemeData mergeWith(SwitchThemeData? other) {
     return copyWith(
-      thumbColor: other._thumbColor,
-      trackOutlineColor: other._trackOutlineColor,
-      materialTapTargetSize: other._materialTapTargetSize,
-      mouseCursor: other._mouseCursor,
-      stateLayerColor: other._stateLayerColor,
-      stateTheme: other._stateTheme,
-      splashRadius: other._splashRadius,
-      thumbIcon: other._thumbIcon,
+      thumbColor: other?._thumbColor,
+      trackOutlineColor: other?._trackOutlineColor,
+      materialTapTargetSize: other?._materialTapTargetSize,
+      mouseCursor: other?._mouseCursor,
+      stateLayerColor: other?._stateLayerColor,
+      stateTheme: other?._stateTheme,
+      splashRadius: other?._splashRadius,
+      thumbIcon: other?._thumbIcon,
     );
   }
-  
+
   /// Linearly interpolate between two [SwitchThemeData]s.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static SwitchThemeData lerp(SwitchThemeData? a, SwitchThemeData? b, double t) {
+  static SwitchThemeData lerp(
+      SwitchThemeData? a, SwitchThemeData? b, double t) {
     if (identical(a, b) && a != null) {
       return a;
     }
     return SwitchThemeData(
-      thumbColor: MaterialStateProperty.lerpNonNull<Color>(a?._thumbColor, b?._thumbColor, t, ColorExtensions.lerpNonNull),
-      trackColor: MaterialStateProperty.lerpNonNull<Color>(a?._trackColor, b?._trackColor, t, ColorExtensions.lerpNonNull),
-      trackOutlineColor: MaterialStateProperty.lerpNonNull<Color>(a?._trackOutlineColor, b?._trackOutlineColor, t, ColorExtensions.lerpNonNull),
-      materialTapTargetSize: t < 0.5 ? a?._materialTapTargetSize : b?._materialTapTargetSize,
+      thumbColor: MaterialStateProperty.lerpNonNull<Color>(
+          a?._thumbColor, b?._thumbColor, t, ColorExtensions.lerpNonNull),
+      trackColor: MaterialStateProperty.lerpNonNull<Color>(
+          a?._trackColor, b?._trackColor, t, ColorExtensions.lerpNonNull),
+      trackOutlineColor: MaterialStateProperty.lerpNonNull<Color>(
+          a?._trackOutlineColor,
+          b?._trackOutlineColor,
+          t,
+          ColorExtensions.lerpNonNull),
+      materialTapTargetSize:
+          t < 0.5 ? a?._materialTapTargetSize : b?._materialTapTargetSize,
       mouseCursor: t < 0.5 ? a?._mouseCursor : b?._mouseCursor,
-      stateLayerColor: MaterialStateProperty.lerpNonNull<Color>(a?._stateLayerColor, b?._stateLayerColor, t, ColorExtensions.lerpNonNull),
+      stateLayerColor: MaterialStateProperty.lerpNonNull<Color>(
+          a?._stateLayerColor,
+          b?._stateLayerColor,
+          t,
+          ColorExtensions.lerpNonNull),
       stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
       splashRadius: lerpDouble(a?._splashRadius, b?._splashRadius, t),
       thumbIcon: t < 0.5 ? a?._thumbIcon : b?._thumbIcon,
@@ -248,16 +260,16 @@ class SwitchThemeData with Diagnosticable {
 
   @override
   int get hashCode => Object.hash(
-    _thumbColor,
-    _trackColor,
-    _trackOutlineColor,
-    _materialTapTargetSize,
-    _mouseCursor,
-    _stateLayerColor,
-    _stateTheme,
-    _splashRadius,
-    _thumbIcon,
-  );
+        _thumbColor,
+        _trackColor,
+        _trackOutlineColor,
+        _materialTapTargetSize,
+        _mouseCursor,
+        _stateLayerColor,
+        _stateTheme,
+        _splashRadius,
+        _thumbIcon,
+      );
 
   @override
   bool operator ==(Object other) {
@@ -267,30 +279,47 @@ class SwitchThemeData with Diagnosticable {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is SwitchThemeData
-      && other._thumbColor == _thumbColor
-      && other._trackColor == _trackColor
-      && other._trackOutlineColor == _trackOutlineColor
-      && other._materialTapTargetSize == _materialTapTargetSize
-      && other._mouseCursor == _mouseCursor
-      && other._stateLayerColor == _stateLayerColor
-      && other._stateTheme == _stateTheme
-      && other._splashRadius == _splashRadius
-      && other._thumbIcon == _thumbIcon;
+    return other is SwitchThemeData &&
+        other._thumbColor == _thumbColor &&
+        other._trackColor == _trackColor &&
+        other._trackOutlineColor == _trackOutlineColor &&
+        other._materialTapTargetSize == _materialTapTargetSize &&
+        other._mouseCursor == _mouseCursor &&
+        other._stateLayerColor == _stateLayerColor &&
+        other._stateTheme == _stateTheme &&
+        other._splashRadius == _splashRadius &&
+        other._thumbIcon == _thumbIcon;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>('thumbColor', _thumbColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>('trackColor', _trackColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>('trackOutlineColor', _trackOutlineColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialTapTargetSize>('materialTapTargetSize', _materialTapTargetSize, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>('mouseCursor', _mouseCursor, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>('stateLayerColor', _stateLayerColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<StateThemeData>('stateTheme', _stateTheme, defaultValue: null));
-    properties.add(DoubleProperty('splashRadius', _splashRadius, defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<Icon?>>('thumbIcon', _thumbIcon, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>(
+        'thumbColor', _thumbColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>(
+        'trackColor', _trackColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>(
+        'trackOutlineColor', _trackOutlineColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialTapTargetSize>(
+        'materialTapTargetSize', _materialTapTargetSize,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>(
+        'mouseCursor', _mouseCursor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Color>>(
+        'stateLayerColor', _stateLayerColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<StateThemeData>(
+        'stateTheme', _stateTheme,
+        defaultValue: null));
+    properties
+        .add(DoubleProperty('splashRadius', _splashRadius, defaultValue: null));
+    properties.add(DiagnosticsProperty<MaterialStateProperty<Icon?>>(
+        'thumbIcon', _thumbIcon,
+        defaultValue: null));
   }
 }
 
@@ -306,107 +335,109 @@ class _LateResolvingSwitchThemeData extends SwitchThemeData {
   StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
 
   @override
-  MaterialStateProperty<Color> get thumbColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        if (states.contains(MaterialState.selected)) {
-          return _colors.surface;
+  MaterialStateProperty<Color> get thumbColor =>
+      _thumbColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          if (states.contains(MaterialState.selected)) {
+            return _colors.surface;
+          }
+          return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
         }
-        return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
-      }
-      if (states.contains(MaterialState.selected)) {
+        if (states.contains(MaterialState.selected)) {
+          if (states.contains(MaterialState.pressed)) {
+            return _colors.primaryContainer;
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return _colors.primaryContainer;
+          }
+          if (states.contains(MaterialState.focused)) {
+            return _colors.primaryContainer;
+          }
+          return _colors.onPrimary;
+        }
         if (states.contains(MaterialState.pressed)) {
-          return _colors.primaryContainer;
+          return _colors.onSurfaceVariant;
         }
         if (states.contains(MaterialState.hovered)) {
-          return _colors.primaryContainer;
+          return _colors.onSurfaceVariant;
         }
         if (states.contains(MaterialState.focused)) {
-          return _colors.primaryContainer;
+          return _colors.onSurfaceVariant;
         }
-        return _colors.onPrimary;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return _colors.onSurfaceVariant;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _colors.onSurfaceVariant;
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _colors.onSurfaceVariant;
-      }
-      return _colors.outline;
-    });
-  }
+        return _colors.outline;
+      });
 
   @override
-  MaterialStateProperty<Color> get trackColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
+  MaterialStateProperty<Color> get trackColor =>
+      _trackColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          if (states.contains(MaterialState.selected)) {
+            return _colors.onSurface
+                .withOpacity(stateTheme.disabledOpacityLight);
+          }
+          return _colors.surface.withOpacity(stateTheme.disabledOpacityLight);
+        }
         if (states.contains(MaterialState.selected)) {
+          return _colors.primary;
+        }
+        if (states.contains(MaterialState.pressed)) {
+          return _colors.surfaceContainerHighest;
+        }
+        if (states.contains(MaterialState.hovered)) {
+          return _colors.surfaceContainerHighest;
+        }
+        if (states.contains(MaterialState.focused)) {
+          return _colors.surfaceContainerHighest;
+        }
+        return _colors.surfaceContainerHighest;
+      });
+
+  @override
+  MaterialStateProperty<Color> get trackOutlineColor =>
+      _trackOutlineColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          return Colors.transparent;
+        }
+        if (states.contains(MaterialState.disabled)) {
           return _colors.onSurface.withOpacity(stateTheme.disabledOpacityLight);
         }
-        return _colors.surface.withOpacity(stateTheme.disabledOpacityLight);
-      }
-      if (states.contains(MaterialState.selected)) {
-        return _colors.primary;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return _colors.surfaceContainerHighest;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _colors.surfaceContainerHighest;
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _colors.surfaceContainerHighest;
-      }
-      return _colors.surfaceContainerHighest;
-    });
-  }
+        return _colors.outline;
+      });
 
   @override
-  MaterialStateProperty<Color> get trackOutlineColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return Colors.transparent;
-      }
-      if (states.contains(MaterialState.disabled)) {
-        return _colors.onSurface.withOpacity(stateTheme.disabledOpacityLight);
-      }
-      return _colors.outline;
-    });
-  }
-
-  @override
-  MaterialStateProperty<Color> get stateLayerColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
+  MaterialStateProperty<Color> get stateLayerColor =>
+      _stateLayerColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          if (states.contains(MaterialState.pressed)) {
+            return _colors.primary.withOpacity(stateTheme.pressOpacity);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return _colors.primary.withOpacity(stateTheme.hoverOpacity);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return _colors.primary.withOpacity(stateTheme.focusOpacity);
+          }
+          return Colors.transparent;
+        }
         if (states.contains(MaterialState.pressed)) {
-          return _colors.primary.withOpacity(stateTheme.pressOpacity);
+          return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
         }
         if (states.contains(MaterialState.hovered)) {
-          return _colors.primary.withOpacity(stateTheme.hoverOpacity);
+          return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
         }
         if (states.contains(MaterialState.focused)) {
-          return _colors.primary.withOpacity(stateTheme.focusOpacity);
+          return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
         }
         return Colors.transparent;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
-      }
-      return Colors.transparent;
-    });
-  }
+      });
 
   @override
-  MaterialTapTargetSize? get _materialTapTargetSize => _theme.materialTapTargetSize;
+  MaterialTapTargetSize? get _materialTapTargetSize =>
+      _theme.materialTapTargetSize;
 }
 
 /// Applies a switch theme to descendant [Switch] widgets.
@@ -442,9 +473,11 @@ class SwitchTheme extends InheritedWidget {
   /// SwitchThemeData theme = SwitchTheme.of(context);
   /// ```
   static SwitchThemeData of(BuildContext context) {
-    final SwitchTheme? switchTheme = context.dependOnInheritedWidgetOfExactType<SwitchTheme>();
+    final SwitchTheme? switchTheme =
+        context.dependOnInheritedWidgetOfExactType<SwitchTheme>();
     return switchTheme?.data ?? Theme.of(context).switchTheme;
   }
+
   /// Return a [SwitchThemeData] that merges the nearest ancestor [SwitchTheme]
   /// and the [SwitchThemeData] provided by the nearest [Theme].
   ///
@@ -456,9 +489,9 @@ class SwitchTheme extends InheritedWidget {
   ///
   /// * [BuildContext.dependOnInheritedWidgetOfExactType]
   static SwitchThemeData resolve(
-      BuildContext context, [
-        SwitchThemeData? currentContextTheme,
-      ]) {
+    BuildContext context, [
+    SwitchThemeData? currentContextTheme,
+  ]) {
     final ancestorTheme =
         context.dependOnInheritedWidgetOfExactType<SwitchTheme>()?.data;
     final List<SwitchThemeData> ancestorThemes = [

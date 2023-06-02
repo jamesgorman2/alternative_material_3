@@ -17,42 +17,36 @@ class ListTilePage extends StatelessWidget {
 
     return CommonScaffold(
       title: const Text(label),
-      body: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              SingleLineListTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              TwoListListTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              ThreeListListTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              CheckboxTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              RadioButtonTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              SwitchTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              ExpansionTiles(colorScheme: colorSchemeLight),
-              const SizedBox(height: 24.0),
-              SingleLineListTiles(colorScheme: colorSchemeDark),
-              const SizedBox(height: 24.0),
-              TwoListListTiles(colorScheme: colorSchemeDark),
-              const SizedBox(height: 24.0),
-              ThreeListListTiles(colorScheme: colorSchemeDark),
-              const SizedBox(height: 24.0),
-              CheckboxTiles(colorScheme: colorSchemeDark),
-              const SizedBox(height: 24.0),
-              RadioButtonTiles(colorScheme: colorSchemeDark),
-              const SizedBox(height: 24.0),
-              SwitchTiles(colorScheme: colorSchemeDark),
-              const SizedBox(height: 24.0),
-              ExpansionTiles(colorScheme: colorSchemeDark),
-            ],
-          ),
-        ),
+      body: Column(
+        children: [
+          SingleLineListTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          TwoListListTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          ThreeListListTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          CheckboxTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          RadioButtonTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          SwitchTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          ExpansionTiles(colorScheme: colorSchemeLight),
+          const SizedBox(height: 24.0),
+          SingleLineListTiles(colorScheme: colorSchemeDark),
+          const SizedBox(height: 24.0),
+          TwoListListTiles(colorScheme: colorSchemeDark),
+          const SizedBox(height: 24.0),
+          ThreeListListTiles(colorScheme: colorSchemeDark),
+          const SizedBox(height: 24.0),
+          CheckboxTiles(colorScheme: colorSchemeDark),
+          const SizedBox(height: 24.0),
+          RadioButtonTiles(colorScheme: colorSchemeDark),
+          const SizedBox(height: 24.0),
+          SwitchTiles(colorScheme: colorSchemeDark),
+          const SizedBox(height: 24.0),
+          ExpansionTiles(colorScheme: colorSchemeDark),
+        ],
       ),
     );
   }
@@ -72,37 +66,20 @@ class ListTilesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 800,
-          ),
-          child: Container(
-            alignment: AlignmentDirectional.topStart,
-            padding: const EdgeInsetsDirectional.only(start: 8.0),
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.titleLarge,
+    return LabeledComponentCard(
+      label: label,
+      colorScheme: colorScheme,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 360),
+        child: Material(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              children: children,
             ),
           ),
         ),
-        const SizedBox(height: 16.0),
-        ComponentCard(
-          colorScheme: colorScheme,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 360),
-            child: Material(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  children: children,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

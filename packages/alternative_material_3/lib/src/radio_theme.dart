@@ -273,16 +273,15 @@ class RadioThemeData with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  RadioThemeData mergeWith(RadioThemeData other) {
+  RadioThemeData mergeWith(RadioThemeData? other) {
     return copyWith(
-      mouseCursor: other._mouseCursor,
-      containerColor: other._containerColor,
-      stateLayerColor: other._stateLayerColor,
-      stateTheme: other._stateTheme,
-      splashRadius: other._splashRadius,
-      materialTapTargetSize:
-          other._materialTapTargetSize,
-      visualDensity: other._visualDensity,
+      mouseCursor: other?._mouseCursor,
+      containerColor: other?._containerColor,
+      stateLayerColor: other?._stateLayerColor,
+      stateTheme: other?._stateTheme,
+      splashRadius: other?._splashRadius,
+      materialTapTargetSize: other?._materialTapTargetSize,
+      visualDensity: other?._visualDensity,
     );
   }
 
@@ -324,57 +323,57 @@ class _LateResolvingRadioThemeData extends RadioThemeData {
   StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
 
   @override
-  MaterialStateProperty<Color> get containerColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
+  MaterialStateProperty<Color> get containerColor =>
+      _containerColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          if (states.contains(MaterialState.disabled)) {
+            return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
+          }
+          return _colors.primary;
+        }
         if (states.contains(MaterialState.disabled)) {
           return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
         }
-        return _colors.primary;
-      }
-      if (states.contains(MaterialState.disabled)) {
-        return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return _colors.onSurface;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _colors.onSurface;
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _colors.onSurface;
-      }
-      return _colors.onSurfaceVariant;
-    });
-  }
-
-  @override
-  MaterialStateProperty<Color> get stateLayerColor {
-    return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
         if (states.contains(MaterialState.pressed)) {
-          return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
+          return _colors.onSurface;
         }
         if (states.contains(MaterialState.hovered)) {
-          return _colors.primary.withOpacity(stateTheme.hoverOpacity);
+          return _colors.onSurface;
         }
         if (states.contains(MaterialState.focused)) {
-          return _colors.primary.withOpacity(stateTheme.focusOpacity);
+          return _colors.onSurface;
+        }
+        return _colors.onSurfaceVariant;
+      });
+
+  @override
+  MaterialStateProperty<Color> get stateLayerColor =>
+      _stateLayerColor ??
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          if (states.contains(MaterialState.pressed)) {
+            return _colors.onSurface.withOpacity(stateTheme.pressOpacity);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return _colors.primary.withOpacity(stateTheme.hoverOpacity);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return _colors.primary.withOpacity(stateTheme.focusOpacity);
+          }
+          return Colors.transparent;
+        }
+        if (states.contains(MaterialState.pressed)) {
+          return _colors.primary.withOpacity(stateTheme.pressOpacity);
+        }
+        if (states.contains(MaterialState.hovered)) {
+          return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
+        }
+        if (states.contains(MaterialState.focused)) {
+          return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
         }
         return Colors.transparent;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return _colors.primary.withOpacity(stateTheme.pressOpacity);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _colors.onSurface.withOpacity(stateTheme.hoverOpacity);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return _colors.onSurface.withOpacity(stateTheme.focusOpacity);
-      }
-      return Colors.transparent;
-    });
-  }
+      });
 
   @override
   MaterialTapTargetSize get materialTapTargetSize =>

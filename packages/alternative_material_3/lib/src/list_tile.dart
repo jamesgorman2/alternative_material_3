@@ -490,12 +490,9 @@ class ListTile extends StatelessWidget {
               color: overlineColor,
             ),
             duration: kThemeChangeDuration,
-            child: tileTheme.strict && overline is Text
-                ? (overline! as Text).copyWith(
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                : overline!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            child: overline!,
           ),
         ),
       );
@@ -516,12 +513,9 @@ class ListTile extends StatelessWidget {
             color: headlineColor,
           ),
           duration: kThemeChangeDuration,
-          child: tileTheme.strict && headline is Text
-              ? (headline! as Text).copyWith(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                )
-              : headline ?? const SizedBox(),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          child: headline ?? const SizedBox(),
         ),
       ),
     );
@@ -546,12 +540,9 @@ class ListTile extends StatelessWidget {
               color: supportingTextColor,
             ),
             duration: kThemeChangeDuration,
-            child: tileTheme.strict && supportingText is Text
-                ? (supportingText! as Text).copyWith(
-                    maxLines: maxSupportingTextLines,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                : supportingText!,
+            maxLines: maxSupportingTextLines,
+            overflow: TextOverflow.ellipsis,
+            child: supportingText!,
           ),
         ),
       );

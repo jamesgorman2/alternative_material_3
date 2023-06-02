@@ -436,35 +436,35 @@ class ListTileThemeData with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  ListTileThemeData mergeWith(ListTileThemeData other) {
+  ListTileThemeData mergeWith(ListTileThemeData? other) {
     return copyWith(
-      customBorder: other._customBorder,
-      strict: other._strict,
-      tileColor: other._tileColor,
-      selectedTileColor: other._selectedTileColor,
-      stateTheme: other._stateTheme,
-      stateLayers: other._stateLayers,
-      selectedLeadingColor: other._selectedLeadingColor,
-      selectedOverlineColor: other._selectedOverlineColor,
-      selectedHeadlineColor: other._selectedHeadlineColor,
-      selectedSupportingTextColor: other._selectedSupportingTextColor,
-      selectedTrailingColor: other._selectedTrailingColor,
-      leadingColor: other._leadingColor,
-      overlineColor: other._overlineColor,
-      headlineColor: other._headlineColor,
-      supportingTextColor: other._supportingTextColor,
-      trailingColor: other._trailingColor,
-      leadingTextStyle: other._leadingTextStyle,
-      overlineTextStyle: other._overlineTextStyle,
-      headlineTextStyle: other._headlineTextStyle,
-      supportingTextTextStyle: other._supportingTextTextStyle,
-      trailingTextStyle: other._trailingTextStyle,
-      padding: other._padding,
-      tallVerticalPadding: other._tallVerticalPadding,
-      internalHorizontalPadding: other._internalHorizontalPadding,
-      enableFeedback: other._enableFeedback,
-      mouseCursor: other._mouseCursor,
-      visualDensity: other._visualDensity,
+      customBorder: other?._customBorder,
+      strict: other?._strict,
+      tileColor: other?._tileColor,
+      selectedTileColor: other?._selectedTileColor,
+      stateTheme: other?._stateTheme,
+      stateLayers: other?._stateLayers,
+      selectedLeadingColor: other?._selectedLeadingColor,
+      selectedOverlineColor: other?._selectedOverlineColor,
+      selectedHeadlineColor: other?._selectedHeadlineColor,
+      selectedSupportingTextColor: other?._selectedSupportingTextColor,
+      selectedTrailingColor: other?._selectedTrailingColor,
+      leadingColor: other?._leadingColor,
+      overlineColor: other?._overlineColor,
+      headlineColor: other?._headlineColor,
+      supportingTextColor: other?._supportingTextColor,
+      trailingColor: other?._trailingColor,
+      leadingTextStyle: other?._leadingTextStyle,
+      overlineTextStyle: other?._overlineTextStyle,
+      headlineTextStyle: other?._headlineTextStyle,
+      supportingTextTextStyle: other?._supportingTextTextStyle,
+      trailingTextStyle: other?._trailingTextStyle,
+      padding: other?._padding,
+      tallVerticalPadding: other?._tallVerticalPadding,
+      internalHorizontalPadding: other?._internalHorizontalPadding,
+      enableFeedback: other?._enableFeedback,
+      mouseCursor: other?._mouseCursor,
+      visualDensity: other?._visualDensity,
     );
   }
 
@@ -754,6 +754,8 @@ class ListTileTheme extends InheritedTheme {
     required super.child,
   });
 
+  /// Create a new [ListTileTheme] from the nearest ancestor [ListTileTheme],
+  /// non-null values in [data] replacing the values from the ancestor.
   static Widget merge({
     Key? key,
     required ListTileThemeData data,
