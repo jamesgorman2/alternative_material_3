@@ -5,9 +5,13 @@ import 'package:provider/provider.dart';
 
 import 'components/checkbox_page.dart';
 import 'components/chips_page.dart';
+import 'components/common_buttons_page.dart';
 import 'components/components_overview.dart';
+import 'components/floating_action_button_page.dart';
+import 'components/icon_buttons_page.dart';
 import 'components/list_tile_page.dart';
 import 'components/radio_button_page.dart';
+import 'components/segmented_buttons_page.dart';
 import 'components/switch_page.dart';
 import 'home.dart';
 import 'styles/color_page.dart';
@@ -51,6 +55,24 @@ class _CommonScaffoldState extends State<CommonScaffold> {
           title: widget.title,
         ),
         drawer: const AppDrawer(),
+        // floatingActionButton: ExpandableFloatingActionButton(
+        //   primaryFab: ExpandableFloatingActionButtonEntry(
+        //     icon: const Icon(Icons.navigation_outlined),
+        //     label: const Text('Navigate'),
+        //     onPressed: (){},
+        //   ),
+        //   supportingFabs: [
+        //     ExpandableFloatingActionButtonEntry(
+        //       icon: const Icon(Icons.location_searching_outlined),
+        //       onPressed: (){},
+        //     ),
+        //     ExpandableFloatingActionButtonEntry(
+        //       icon: const Icon(Icons.search_outlined),
+        //       onPressed: (){},
+        //     ),
+        //   ],
+        //
+        // ),
         body: SizedBox(
           width: double.infinity,
           child: Overlay(
@@ -145,9 +167,17 @@ class AppDrawer extends StatelessWidget {
               navTile(CheckboxPage.label, CheckboxPage.route,
                   isChildPage: true),
               navTile(ChipsPage.label, ChipsPage.route, isChildPage: true),
+              navTile(CommonButtonsPage.label, CommonButtonsPage.route,
+                  isChildPage: true),
+              navTile(IconButtonsPage.label, IconButtonsPage.route,
+                  isChildPage: true),
+              navTile(FloatingActionButtonPage.label, FloatingActionButtonPage.route,
+                  isChildPage: true),
               navTile(ListTilePage.label, ListTilePage.route,
                   isChildPage: true),
               navTile(RadioButtonPage.label, RadioButtonPage.route,
+                  isChildPage: true),
+              navTile(SegmentedButtonsPage.label, SegmentedButtonsPage.route,
                   isChildPage: true),
               navTile(SwitchPage.label, SwitchPage.route, isChildPage: true),
             ],
@@ -169,7 +199,7 @@ class ThemeModeButton extends StatelessWidget {
     final bool useDarkTheme = themeMode.mode == ThemeMode.dark ||
         (themeMode.mode == ThemeMode.system &&
             platformBrightness == ui.Brightness.dark);
-    return IconButton.outlined(
+    return OutlinedIconButton(
       onPressed: () {},
       icon: Icon(
         useDarkTheme ? Icons.sunny : Icons.mood,
@@ -183,7 +213,7 @@ class ColorSeedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton.outlined(
+    return OutlinedIconButton(
       onPressed: () {},
       icon: const Icon(Icons.colorize_outlined),
     );
@@ -196,7 +226,7 @@ class TextDirectionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textDirection = context.watch<TextDirectionNotifier>();
-    return IconButton.outlined(
+    return OutlinedIconButton(
       onPressed: () {
         if (textDirection.direction == TextDirection.ltr) {
           textDirection.direction = TextDirection.rtl;

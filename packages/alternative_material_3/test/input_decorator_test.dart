@@ -1733,7 +1733,7 @@ void main() {
           
           iconButtonTheme: const IconButtonThemeData(
             style: ButtonStyle(
-              foregroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
+              textColor: MaterialStatePropertyAll<Color>(Colors.blue),
             ),
           ),
         );

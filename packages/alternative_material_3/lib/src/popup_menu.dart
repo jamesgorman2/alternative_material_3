@@ -6,12 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
+import 'buttons/icon_button.dart';
 import 'color_scheme.dart';
 import 'constants.dart';
 import 'debug.dart';
 import 'divider.dart';
 import 'elevation.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'list_tile.dart';
@@ -1309,15 +1310,21 @@ class PopupMenuButtonState<T> extends State<PopupMenuButton<T>> {
       );
     }
 
+    final Color? iconButtonColor = widget.color ?? iconTheme.color;
     return IconButton(
       icon: widget.icon ?? Icon(Icons.adaptive.more),
-      padding: widget.padding,
-      splashRadius: widget.splashRadius,
-      iconSize: widget.iconSize ?? iconTheme.size,
-      color: widget.color ?? iconTheme.color,
-      tooltip: widget.tooltip ?? MaterialLocalizations.of(context).showMenuTooltip,
+      // padding: widget.padding, FIXME
+      // splashRadius: widget.splashRadius,
+      tooltipMessage: widget.tooltip ?? MaterialLocalizations.of(context).showMenuTooltip,
       onPressed: widget.enabled ? showButtonMenu : null,
-      enableFeedback: enableFeedback,
+      theme: IconButtonThemeData(
+        style: ButtonStyle(
+          iconSize: widget.iconSize ?? iconTheme.size,
+          labelColor: iconButtonColor != null
+              ? MaterialStateProperty.all(iconButtonColor) : null,
+          enableFeedback: enableFeedback,
+        )
+      ),
     );
   }
 }

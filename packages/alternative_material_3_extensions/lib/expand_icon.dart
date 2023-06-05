@@ -6,12 +6,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import 'colors.dart';
-import 'debug.dart';
-import 'icon_button.dart';
-import 'icons.dart';
-import 'material_localizations.dart';
-import 'theme.dart';
+import '../../alternative_material_3/lib/src/buttons/icon_button.dart';
+import '../../alternative_material_3/lib/src/colors.dart';
+import '../../alternative_material_3/lib/src/debug.dart';
+import '../../alternative_material_3/lib/src/icons.dart';
+import '../../alternative_material_3/lib/src/material_localizations.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
 
 /// A widget representing a rotating expand/collapse button. The icon rotates
 /// 180 degrees when pressed, then reverts the animation on a second press.

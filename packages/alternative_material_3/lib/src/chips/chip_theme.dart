@@ -302,12 +302,12 @@ class ChipThemeData with Diagnosticable {
         _materialTapTargetSize = other._materialTapTargetSize,
         _visualDensity = other._visualDensity;
 
-  /// Copy this ListTileThemeData and set any default values that
+  /// Copy this ChipThemeData and set any default values that
   /// require a [BuildContext] set, such as colors and text themes.
   ChipThemeData withContext(BuildContext context) =>
       _LateResolvingChipThemeData(this, context);
 
-  /// Defines the state layer opacities applied to this checkbox.
+  /// Defines the state layer opacities applied to this chip.
   ///
   /// Default value is [ThemeData.stateTheme] .
   StateThemeData get stateTheme => _stateTheme!;

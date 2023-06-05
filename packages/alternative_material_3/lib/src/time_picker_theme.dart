@@ -7,7 +7,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
+import 'buttons/button_style.dart';
 import 'elevation.dart';
 import 'input_decorator.dart';
 import 'material_state.dart';

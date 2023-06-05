@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/rendering.dart';
 
+import 'buttons/icon_button.dart';
 import 'debug.dart';
 import 'elevation.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'material.dart';
 import 'material_localizations.dart';
@@ -689,7 +689,7 @@ class _TextSelectionToolbarOverflowButton extends StatelessWidget {
         // https://github.com/flutter/flutter/issues/51209
         icon: icon,
         onPressed: onPressed,
-        tooltip: tooltip,
+        tooltipMessage: tooltip,
       ),
     );
   }

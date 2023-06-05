@@ -211,7 +211,7 @@ void main() {
             child: TextButtonTheme(
               data: TextButtonThemeData(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                  textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
                 ),
               ),
               child: Builder(
@@ -283,7 +283,7 @@ void main() {
           body: Center(
             child: TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
               ),
               onPressed: () {},
               focusNode: focusNode,
@@ -351,7 +351,7 @@ void main() {
           body: Center(
             child: TextButton.icon(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
               ),
               key: buttonKey,
               icon: const Icon(Icons.add),
@@ -477,7 +477,7 @@ void main() {
               // Specifying minimumSize to mimic the original minimumSize for
               // RaisedButton so that the semantics tree's rect and transform
               // match the original version of this test.
-              minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+              containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
             ),
             onPressed: () { },
             child: const Text('ABC'),

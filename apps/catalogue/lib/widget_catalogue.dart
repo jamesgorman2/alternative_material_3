@@ -38,10 +38,12 @@ class WidgetCatalogue extends StatelessWidget {
         final ThemeData theme = ThemeData(
           colorScheme: colorScheme,
           typography: Typography.material2021(),
+          visualDensity: VisualDensity.standard,
         );
         final ThemeData darkTheme = ThemeData(
           colorScheme: colorScheme.asDark(),
           typography: Typography.material2021(),
+          visualDensity: VisualDensity.standard,
         );
 
         return MaterialApp(

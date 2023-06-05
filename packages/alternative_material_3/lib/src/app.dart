@@ -9,8 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'arc.dart';
+import 'buttons/floating_action_button.dart';
 import 'colors.dart';
-import 'floating_action_button.dart';
 import 'icons.dart';
 import 'material_localizations.dart';
 import 'page.dart';
@@ -780,12 +780,7 @@ class MaterialApp extends StatefulWidget {
 /// discoverable, so consider adding a Scrollbar in these cases, either directly
 /// or through the [buildScrollbar] method.
 ///
-/// [MaterialScrollBehavior.androidOverscrollIndicator] specifies the
-/// overscroll indicator that is used on [TargetPlatform.android]. When null,
-/// [ThemeData.androidOverscrollIndicator] is used. If also null, the default
-/// overscroll indicator is the [GlowingOverscrollIndicator]. These properties
-/// are deprecated. In order to use the [StretchingOverscrollIndicator], use
-/// the [ThemeData.useMaterial3] flag, or override
+/// In order to use the [StretchingOverscrollIndicator], override
 /// [ScrollBehavior.buildOverscrollIndicator].
 ///
 /// See also:
@@ -795,20 +790,7 @@ class MaterialScrollBehavior extends ScrollBehavior {
   /// Creates a MaterialScrollBehavior that decorates [Scrollable]s with
   /// [GlowingOverscrollIndicator]s and [Scrollbar]s based on the current
   /// platform and provided [ScrollableDetails].
-  ///
-  /// [MaterialScrollBehavior.androidOverscrollIndicator] specifies the
-  /// overscroll indicator that is used on [TargetPlatform.android]. When null,
-  /// [ThemeData.androidOverscrollIndicator] is used. If also null, the default
-  /// overscroll indicator is the [GlowingOverscrollIndicator].
-  const MaterialScrollBehavior({
-    @Deprecated(
-      'Use ThemeData.useMaterial3 or override ScrollBehavior.buildOverscrollIndicator. '
-      'This feature was deprecated after v2.13.0-0.0.pre.'
-    )
-    super.androidOverscrollIndicator,
-  }) : _androidOverscrollIndicator = androidOverscrollIndicator;
-
-  final AndroidOverscrollIndicator? _androidOverscrollIndicator;
+  const MaterialScrollBehavior();
 
   @override
   TargetPlatform getPlatform(BuildContext context) => Theme.of(context).platform;
@@ -854,7 +836,7 @@ class MaterialScrollBehavior extends ScrollBehavior {
           case AndroidOverscrollIndicator.stretch:
             return StretchingOverscrollIndicator(
               axisDirection: details.direction,
-              clipBehavior: details.clipBehavior ?? Clip.hardEdge,
+              clipBehavior: details.decorationClipBehavior ?? Clip.hardEdge,
               child: child,
             );
           case AndroidOverscrollIndicator.glow:
@@ -897,10 +879,9 @@ class _MaterialAppState extends State<MaterialApp> {
   }
 
   Widget _inspectorSelectButtonBuilder(BuildContext context, VoidCallback onPressed) {
-    return FloatingActionButton(
+    return FloatingActionButton.small(
       onPressed: onPressed,
-      mini: true,
-      child: const Icon(Icons.search),
+      icon: const Icon(Icons.search),
     );
   }
 

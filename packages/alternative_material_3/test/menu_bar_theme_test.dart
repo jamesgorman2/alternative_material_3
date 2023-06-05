@@ -223,8 +223,8 @@ List<Widget> createTestMenus({
   final ButtonStyle itemStyle = ButtonStyle(
     padding: itemPadding != null ? MaterialStatePropertyAll<EdgeInsetsGeometry>(itemPadding) : null,
     shape: itemShape != null ? MaterialStatePropertyAll<OutlinedBorder>(itemShape) : null,
-    foregroundColor: itemForeground != null ? MaterialStatePropertyAll<Color>(itemForeground) : null,
-    backgroundColor: itemBackground != null ? MaterialStatePropertyAll<Color>(itemBackground) : null,
+    textColor: itemForeground != null ? MaterialStatePropertyAll<Color>(itemForeground) : null,
+    containerColor: itemBackground != null ? MaterialStatePropertyAll<Color>(itemBackground) : null,
     overlayColor: itemOverlay != null ? MaterialStatePropertyAll<Color>(itemOverlay) : null,
   );
   final List<Widget> result = <Widget>[

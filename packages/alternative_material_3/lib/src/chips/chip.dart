@@ -4,18 +4,17 @@
 
 import 'dart:math' as math;
 
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../constants.dart';
 import '../debug.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
+import '../interaction/hit_detection.dart';
 import '../material.dart';
 import '../material_state.dart';
 import '../material_state_mixin.dart';
 import '../theme.dart';
-import '../theme_data.dart';
 import '../tooltip.dart';
 import 'chip_theme.dart';
 
@@ -103,8 +102,7 @@ class Chip extends StatefulWidget {
   });
 
   /// {@template alternative_material_3.chip.theme}
-  /// Defines the defaults for the chip properties if
-  /// they are not specified elsewhere.
+  /// Override chip theme properties.
   /// {@endtemplate}
   final ChipThemeData? theme;
 
@@ -478,7 +476,7 @@ class _ChipState extends State<Chip>
 
       return Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: chipTheme.iconPadding,
+          horizontal: chipTheme.iconPadding,
           vertical: (chipTheme.containerHeight - chipTheme.iconSize) / 2.0,
         ),
         child: SizedBox(
@@ -679,19 +677,11 @@ class _ChipState extends State<Chip>
       },
     );
 
-    final Offset densityAdjustment = chipTheme.visualDensity.baseSizeAdjustment;
-    result = _ChipRedirectingHitDetectionWidget(
+    result = RedirectingHitDetectionWidget(
+      visualDensity: chipTheme.visualDensity,
       materialTapTargetSize: chipTheme.materialTapTargetSize,
-      containerHeight: chipTheme.containerHeight,
-      minHitBox: BoxConstraints(
-        minWidth: kMinInteractiveDimension + densityAdjustment.dx,
-        minHeight: kMinInteractiveDimension + densityAdjustment.dy,
-      ),
-      child: Center(
-        widthFactor: 1.0,
-        heightFactor: 1.0,
-        child: result,
-      ),
+      widgetBox: Size(double.infinity, chipTheme.containerHeight),
+      child: result,
     );
     return Semantics(
       button: widget.tapEnabled,
@@ -699,111 +689,6 @@ class _ChipState extends State<Chip>
       selected: widget.isSelected,
       enabled: widget.tapEnabled ? canTap : null,
       child: result,
-    );
-  }
-}
-
-/// Redirects the [buttonRect.dy] passed to [RenderBox.hitTest] to the vertical
-/// center of the widget.
-///
-/// The primary purpose of this widget is to allow padding around the [Chip]
-/// to trigger the child ink feature without increasing the size of the material.
-class _ChipRedirectingHitDetectionWidget extends SingleChildRenderObjectWidget {
-  const _ChipRedirectingHitDetectionWidget({
-    required this.materialTapTargetSize,
-    required this.minHitBox,
-    required this.containerHeight,
-    required super.child,
-  });
-
-  final MaterialTapTargetSize materialTapTargetSize;
-
-  // real container height
-  final double containerHeight;
-
-  // hit box size
-  final BoxConstraints minHitBox;
-
-  @override
-  RenderObject createRenderObject(BuildContext context) {
-    return _RenderChipRedirectingHitDetection(
-        minHitBox, materialTapTargetSize, containerHeight);
-  }
-
-  @override
-  void updateRenderObject(BuildContext context,
-      covariant _RenderChipRedirectingHitDetection renderObject) {
-    renderObject.additionalConstraints = minHitBox;
-    renderObject.containerHeight = containerHeight;
-    renderObject.materialTapTargetSize = materialTapTargetSize;
-  }
-}
-
-class _RenderChipRedirectingHitDetection extends RenderConstrainedBox {
-  _RenderChipRedirectingHitDetection(
-    BoxConstraints minHitBox,
-    MaterialTapTargetSize materialTapTargetSize,
-    double containerHeight,
-  )   : _materialTapTargetSize = materialTapTargetSize,
-        _containerHeight = containerHeight,
-        super(additionalConstraints: minHitBox);
-
-  MaterialTapTargetSize get materialTapTargetSize => _materialTapTargetSize;
-  MaterialTapTargetSize _materialTapTargetSize;
-
-  set materialTapTargetSize(MaterialTapTargetSize value) {
-    if (value != _materialTapTargetSize) {
-      _materialTapTargetSize = value;
-      markNeedsLayout();
-    }
-  }
-
-  double get containerHeight => _containerHeight;
-  double _containerHeight;
-
-  set containerHeight(double value) {
-    if (value != containerHeight) {
-      _containerHeight = value;
-      markNeedsLayout();
-    }
-  }
-
-  @override
-  bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    if (!size.contains(position)) {
-      return false;
-    }
-    // Redirect hit detection which occurs above and below the
-    // render object to the nearest edge if not shrink wrapped.
-
-    final padding = (size.height - containerHeight) / 2.0;
-    if (materialTapTargetSize == MaterialTapTargetSize.shrinkWrap) {
-      if (position.dy >= padding && position.dy < size.height - padding) {
-        // inside the container itself
-        return child!.hitTest(result, position: position);
-      }
-      return false;
-    }
-
-    double nearestEdge() {
-      if (position.dy < padding) {
-        return padding;
-      } else if (position.dy >= size.height - padding) {
-        // bottom hit target is exclusively matched so we need
-        // a small adjustment
-        return size.height - padding - 0.01;
-      }
-      return position.dy;
-    }
-
-    final Offset updatedPosition = Offset(position.dx, nearestEdge());
-    return result.addWithRawTransform(
-      transform: MatrixUtils.forceToPoint(updatedPosition),
-      position: position,
-      hitTest: (BoxHitTestResult result, Offset position) {
-        assert(position == updatedPosition);
-        return child!.hitTest(result, position: updatedPosition);
-      },
     );
   }
 }

@@ -8,16 +8,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
-import 'color_scheme.dart';
-import 'constants.dart';
-import 'elevation.dart';
-import 'ink_ripple.dart';
-import 'material_state.dart';
-import 'text_button.dart';
-import 'theme.dart';
-import 'theme_data.dart';
-import 'toggle_buttons_theme.dart';
+import '../../alternative_material_3/lib/src/buttons/button_style.dart';
+import '../../alternative_material_3/lib/src/buttons/text_button.dart';
+import '../../alternative_material_3/lib/src/color_scheme.dart';
+import '../../alternative_material_3/lib/src/constants.dart';
+import '../../alternative_material_3/lib/src/elevation.dart';
+import '../../alternative_material_3/lib/src/ink_ripple.dart';
+import '../../alternative_material_3/lib/src/material_state.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
+import '../../alternative_material_3/lib/src/theme_data.dart';
+import '../../alternative_material_3/lib/src/toggle_buttons_theme.dart';
 
 // Examples can assume:
 // List<bool> isSelected = <bool>[];
@@ -737,8 +737,8 @@ class ToggleButtons extends StatelessWidget {
           child: TextButton(
             focusNode: focusNodes != null ? focusNodes![index] : null,
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color?>(effectiveFillColor),
-              foregroundColor: MaterialStatePropertyAll<Color?>(currentColor),
+              containerColor: MaterialStatePropertyAll<Color?>(effectiveFillColor),
+              textColor: MaterialStatePropertyAll<Color?>(currentColor),
               overlayColor: _ToggleButtonDefaultOverlay(
                 selected:  onPressed != null && isSelected[index],
                 unselected: onPressed != null && !isSelected[index],
@@ -754,7 +754,7 @@ class ToggleButtons extends StatelessWidget {
                 color: currentColor,
               )),
               padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.zero),
-              minimumSize: MaterialStatePropertyAll<Size?>(minimumSize),
+              containerHeight: MaterialStatePropertyAll<Size?>(minimumSize),
               maximumSize: MaterialStatePropertyAll<Size?>(maximumSize),
               shape: const MaterialStatePropertyAll<OutlinedBorder>(RoundedRectangleBorder()),
               mouseCursor: MaterialStatePropertyAll<MouseCursor?>(mouseCursor),

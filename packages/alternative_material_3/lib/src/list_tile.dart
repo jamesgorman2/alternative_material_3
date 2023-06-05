@@ -7,10 +7,9 @@ import 'dart:math' as math;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'buttons/button.dart';
 import 'constants.dart';
 import 'debug.dart';
-import 'icon_button.dart';
-import 'icon_button_theme.dart';
 import 'ink_decoration.dart';
 import 'ink_well.dart';
 import 'list_tile_element.dart';
@@ -462,7 +461,7 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: leadingColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: IconButton.styleFrom(foregroundColor: leadingColor),
+            style: ButtonStyle(labelColor: MaterialStateProperty.all(leadingColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.leadingTextStyle.copyWith(color: leadingColor),
@@ -483,7 +482,7 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: overlineColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: IconButton.styleFrom(foregroundColor: overlineColor),
+            style: ButtonStyle(labelColor: MaterialStateProperty.all(overlineColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.overlineTextStyle.copyWith(
@@ -506,7 +505,7 @@ class ListTile extends StatelessWidget {
       data: IconThemeData(color: headlineColor),
       child: IconButtonTheme(
         data: IconButtonThemeData(
-          style: IconButton.styleFrom(foregroundColor: headlineColor),
+          style: ButtonStyle(labelColor: MaterialStateProperty.all(headlineColor)),
         ),
         child: AnimatedDefaultTextStyle(
           style: tileTheme.headlineTextStyle.copyWith(
@@ -533,7 +532,7 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: supportingTextColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: IconButton.styleFrom(foregroundColor: supportingTextColor),
+            style: ButtonStyle(labelColor: MaterialStateProperty.all(supportingTextColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.supportingTextTextStyle.copyWith(
@@ -558,7 +557,7 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: trailingColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: IconButton.styleFrom(foregroundColor: trailingColor),
+            style: ButtonStyle(labelColor: MaterialStateProperty.all(trailingColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.leadingTextStyle.copyWith(color: trailingColor),

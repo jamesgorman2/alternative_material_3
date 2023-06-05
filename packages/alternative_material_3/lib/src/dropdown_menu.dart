@@ -8,9 +8,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
 import 'dropdown_menu_theme.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'input_border.dart';
 import 'input_decorator.dart';
@@ -403,15 +403,15 @@ class _DropdownMenuState<T> extends State<DropdownMenu<T>> {
     for (int i = 0; i < filteredEntries.length; i++) {
       final DropdownMenuEntry<T> entry = filteredEntries[i];
       ButtonStyle effectiveStyle = entry.style ?? defaultStyle;
-      final Color focusedBackgroundColor = effectiveStyle.foregroundColor?.resolve(<MaterialState>{MaterialState.focused})
-        ?? Theme.of(context).colorScheme.onSurface;
+      final Color focusedBackgroundColor =
+          effectiveStyle.labelColor.resolve(<MaterialState>{MaterialState.focused});
 
       // Simulate the focused state because the text field should always be focused
       // during traversal. If the menu item has a custom foreground color, the "focused"
       // color will also change to foregroundColor.withOpacity(0.12).
       effectiveStyle = entry.enabled && i == focusedIndex
         ? effectiveStyle.copyWith(
-            backgroundColor: MaterialStatePropertyAll<Color>(focusedBackgroundColor.withOpacity(0.12))
+            containerColor: MaterialStatePropertyAll<Color>(focusedBackgroundColor.withOpacity(0.12))
           )
         : effectiveStyle;
 

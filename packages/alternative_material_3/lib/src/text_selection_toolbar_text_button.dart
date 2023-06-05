@@ -4,9 +4,10 @@
 
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
+import 'buttons/text_button.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'text_button.dart';
 import 'theme.dart';
 
 enum _TextSelectionToolbarItemPosition {
@@ -134,19 +135,18 @@ class TextSelectionToolbarTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO(hansmuller): Should be colorScheme.onSurface
     final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.colorScheme.brightness == Brightness.dark;
-    final Color foregroundColor = isDark ? Colors.white : Colors.black87;
 
     return TextButton(
-      style: TextButton.styleFrom(
-        foregroundColor: foregroundColor,
-        shape: const RoundedRectangleBorder(),
-        minimumSize: const Size(kMinInteractiveDimension, kMinInteractiveDimension),
-        padding: padding,
+      theme: TextButtonThemeData(style: ButtonStyle(
+        labelColor: MaterialStateProperty.all(theme.colorScheme.onSurface),
+        containerShape: const RoundedRectangleBorder(),
+        containerHeight: kMinInteractiveDimension,
+        minimumContainerWidth: MaterialStateProperty.all(kMinInteractiveDimension),
+        labelPadding: padding.left, // FIXME
         alignment: alignment,
-      ),
+      ),),
       onPressed: onPressed,
-      child: child,
+      label: child,
     );
   }
 }

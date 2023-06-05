@@ -160,7 +160,7 @@ void main() {
       home: Scaffold(
         floatingActionButton: FloatingActionButton.small(
           onPressed: () { },
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
       ),
     ));

@@ -9,12 +9,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
+import 'buttons/icon_button.dart';
 import 'color_scheme.dart';
 import 'date.dart';
 import 'date_picker_theme.dart';
 import 'debug.dart';
 import 'divider.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'material_localizations.dart';
@@ -392,7 +393,7 @@ class _DatePickerModeToggleButtonState extends State<_DatePickerModeToggleButton
                           child: Text(
                             widget.title,
                             overflow: TextOverflow.ellipsis,
-                            style: textTheme.titleSmall?.copyWith(
+                            style: textTheme.titleSmall.copyWith(
                               color: controlColor,
                             ),
                           ),
@@ -745,14 +746,22 @@ class _MonthPickerState extends State<_MonthPicker> {
                 const Spacer(),
                 IconButton(
                   icon: const Icon(Icons.chevron_left),
-                  color: controlColor,
-                  tooltip: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
+                  theme: IconButtonThemeData(
+                      style: ButtonStyle(
+                        labelColor: MaterialStateProperty.all(controlColor),
+                      )
+                  ),
+                  tooltipMessage: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
                   onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
                 ),
                 IconButton(
                   icon: const Icon(Icons.chevron_right),
-                  color: controlColor,
-                  tooltip: _isDisplayingLastMonth ? null : _localizations.nextMonthTooltip,
+                  theme: IconButtonThemeData(
+                    style: ButtonStyle(
+                      labelColor: MaterialStateProperty.all(controlColor),
+                    )
+                  ),
+                  tooltipMessage: _isDisplayingLastMonth ? null : _localizations.nextMonthTooltip,
                   onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
                 ),
               ],

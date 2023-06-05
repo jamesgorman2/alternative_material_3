@@ -3,8 +3,12 @@ import 'package:alternative_material_3/material.dart';
 import '../common_scaffold.dart';
 import 'checkbox_page.dart';
 import 'chips_page.dart';
+import 'common_buttons_page.dart';
+import 'floating_action_button_page.dart';
+import 'icon_buttons_page.dart';
 import 'list_tile_page.dart';
 import 'radio_button_page.dart';
+import 'segmented_buttons_page.dart';
 import 'switch_page.dart';
 
 class ComponentsOverview extends StatelessWidget {
@@ -20,9 +24,13 @@ class ComponentsOverview extends StatelessWidget {
     ComponentsOverview.route: (context) => const ComponentsOverview(),
     CheckboxPage.route: (context) => const CheckboxPage(),
     ChipsPage.route: (context) => const ChipsPage(),
-    SwitchPage.route: (context) => const SwitchPage(),
-    RadioButtonPage.route: (context) => const RadioButtonPage(),
+    CommonButtonsPage.route: (context) => const CommonButtonsPage(),
+    FloatingActionButtonPage.route: (context) => const FloatingActionButtonPage(),
+    IconButtonsPage.route: (context) => const IconButtonsPage(),
     ListTilePage.route: (context) => const ListTilePage(),
+    RadioButtonPage.route: (context) => const RadioButtonPage(),
+    SegmentedButtonsPage.route: (context) => const SegmentedButtonsPage(),
+    SwitchPage.route: (context) => const SwitchPage(),
   };
 
   @override

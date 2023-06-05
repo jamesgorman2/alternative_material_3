@@ -403,7 +403,7 @@ void main() {
                 menuChildren: <Widget>[
                   MenuItemButton(
                     style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all<Size>(
+                      containerHeight: MaterialStateProperty.all<Size>(
                         const Size.fromHeight(1000),
                       ),
                     ),
@@ -451,7 +451,7 @@ void main() {
                   menuChildren: <Widget>[
                     MenuItemButton(
                       style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all<Size>(
+                        containerHeight: MaterialStateProperty.all<Size>(
                           const Size.fromHeight(1000),
                         ),
                       ),
@@ -2069,7 +2069,7 @@ void main() {
       final ButtonStyle style = ButtonStyle(
         shape: MaterialStateProperty.all<OutlinedBorder?>(const StadiumBorder()),
         elevation: MaterialStateProperty.all<Elevation?>(const Elevation(10.0)),
-        backgroundColor: const MaterialStatePropertyAll<Color>(Colors.red),
+        containerColor: const MaterialStatePropertyAll<Color>(Colors.red),
       );
       final MenuStyle menuStyle = MenuStyle(
         shape: MaterialStateProperty.all<OutlinedBorder?>(const RoundedRectangleBorder()),

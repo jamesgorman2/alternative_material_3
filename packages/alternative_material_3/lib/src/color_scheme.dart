@@ -364,8 +364,10 @@ class ColorScheme with Diagnosticable {
   final Color outline;
   final Color outlineVariant;
   final Color shadow;
-  final Color surfaceTint;
   final Color scrim;
+
+  @Deprecated('Legacy tint')
+  final Color surfaceTint;
 
   @Deprecated('Legacy transparency')
   Color get focusColor => brightness == Brightness.light

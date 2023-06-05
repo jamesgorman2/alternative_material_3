@@ -7,7 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import 'scaffold.dart';
+import '../scaffold.dart';
 
 /// The margin that a [FloatingActionButton] should leave between it and the
 /// edge of the screen.

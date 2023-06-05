@@ -55,7 +55,11 @@ enum ElevationLevel {
   level5(12.0, 'Level 5');
 
   const ElevationLevel(this.height, this.label);
+
+  /// The height of this [ElevationLevel] in dps.
   final double height;
+
+  /// The standard text label.
   final String label;
 
   /// Compare two ElevationLevels based on their level number.
@@ -68,7 +72,7 @@ enum ElevationLevel {
   ElevationLevel operator +(ElevationLevel other) {
     return ElevationLevel.values.elementAt(
       math.min(
-        4,
+        5,
         ElevationLevel.values.indexOf(this) +
             ElevationLevel.values.indexOf(other),
       ),
@@ -190,6 +194,30 @@ class Elevation {
 
   /// Return a human readable label of the elevation's level.
   String get label => level.label;
+
+  /// Returns a new Elevation whose level is one greater.
+  ///
+  /// The result is capped at [Elevation.level5].
+  ///
+  /// See also:
+  ///
+  /// * [addLevel]
+  /// * [ElevationLevel.+]
+  Elevation incr() {
+    return addLevel(level1);
+  }
+
+  /// Returns a new Elevation whose level is one lower.
+  ///
+  /// The result has a floor of [Elevation.level0].
+  ///
+  /// See also:
+  ///
+  /// * [subtractLevel]
+  /// * [ElevationLevel.-]
+  Elevation decr() {
+    return subtractLevel(level1);
+  }
 
   /// Returns a new Elevation whose level is the sum of the levels of this
   /// and the other Elevation, discarding any height

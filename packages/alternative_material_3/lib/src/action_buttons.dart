@@ -6,11 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import 'action_icons_theme.dart';
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
 import 'debug.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'material_localizations.dart';
+import 'material_state.dart';
 import 'scaffold.dart';
 import 'theme.dart';
 
@@ -59,11 +60,19 @@ abstract class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
+    final ButtonStyle? s;
+    if (color != null) {
+      s = (style ?? const ButtonStyle())
+          .copyWith(labelColor: MaterialStateProperty.all(color!));
+    } else {
+      s = style;
+    }
     return IconButton(
       icon: icon,
-      style: style,
-      color: color,
-      tooltip: _getTooltip(context),
+      theme: IconButtonThemeData(
+        style: s,
+      ),
+      tooltipMessage: _getTooltip(context),
       onPressed: () {
         if (onPressed != null) {
           onPressed!();
@@ -176,7 +185,7 @@ class BackButtonIcon extends StatelessWidget {
 ///
 /// In Material Design 3, both [style]'s [ButtonStyle.iconColor] and [color] are
 /// used to override the default icon color of [BackButton]. If both exist, the [ButtonStyle.iconColor]
-/// will override [color] for states where [ButtonStyle.foregroundColor] resolves to non-null.
+/// will override [color] for states where [ButtonStyle.textColor] resolves to non-null.
 ///
 /// When deciding to display a [BackButton], consider using
 /// `ModalRoute.of(context)?.canPop` to check whether the current route can be
@@ -258,7 +267,7 @@ class CloseButtonIcon extends StatelessWidget {
 ///
 /// In Material Design 3, both [style]'s [ButtonStyle.iconColor] and [color] are
 /// used to override the default icon color of [CloseButton]. If both exist, the [ButtonStyle.iconColor]
-/// will override [color] for states where [ButtonStyle.foregroundColor] resolves to non-null.
+/// will override [color] for states where [ButtonStyle.textColor] resolves to non-null.
 ///
 /// Use a [CloseButton] instead of a [BackButton] on fullscreen dialogs or
 /// pages that may solicit additional actions to close.

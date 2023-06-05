@@ -24,14 +24,14 @@ void main() {
   test('ButtonStyle defaults', () {
     const ButtonStyle style = ButtonStyle();
     expect(style.textStyle, null);
-    expect(style.backgroundColor, null);
-    expect(style.foregroundColor, null);
+    expect(style.containerColor, null);
+    expect(style.textColor, null);
     expect(style.overlayColor, null);
     expect(style.shadowColor, null);
     expect(style.surfaceTintColor, null);
     expect(style.elevation, null);
     expect(style.padding, null);
-    expect(style.minimumSize, null);
+    expect(style.containerHeight, null);
     expect(style.fixedSize, null);
     expect(style.maximumSize, null);
     expect(style.iconColor, null);
@@ -61,14 +61,14 @@ void main() {
     final DiagnosticPropertiesBuilder builder = DiagnosticPropertiesBuilder();
     const ButtonStyle(
       textStyle: MaterialStatePropertyAll<TextStyle>(TextStyle(fontSize: 10.0)),
-      backgroundColor: MaterialStatePropertyAll<Color>(Color(0xfffffff1)),
-      foregroundColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
+      containerColor: MaterialStatePropertyAll<Color>(Color(0xfffffff1)),
+      textColor: MaterialStatePropertyAll<Color>(Color(0xfffffff2)),
       overlayColor: MaterialStatePropertyAll<Color>(Color(0xfffffff3)),
       shadowColor: MaterialStatePropertyAll<Color>(Color(0xfffffff4)),
       surfaceTintColor: MaterialStatePropertyAll<Color>(Color(0xfffffff5)),
       elevation: MaterialStatePropertyAll<Elevation>(Elevation.level1),
       padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(1.0)),
-      minimumSize: MaterialStatePropertyAll<Size>(Size(1.0, 2.0)),
+      containerHeight: MaterialStatePropertyAll<Size>(Size(1.0, 2.0)),
       side: MaterialStatePropertyAll<BorderSide>(BorderSide(width: 4.0, color: Color(0xfffffff6))),
       maximumSize: MaterialStatePropertyAll<Size>(Size(100.0, 200.0)),
       iconColor: MaterialStatePropertyAll<Color>(Color(0xfffffff6)),
@@ -131,14 +131,14 @@ void main() {
 
     const ButtonStyle style = ButtonStyle(
       textStyle: textStyle,
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
+      containerColor: backgroundColor,
+      textColor: foregroundColor,
       overlayColor: overlayColor,
       shadowColor: shadowColor,
       surfaceTintColor: surfaceTintColor,
       elevation: elevation,
       padding: padding,
-      minimumSize: minimumSize,
+      containerHeight: minimumSize,
       fixedSize: fixedSize,
       maximumSize: maximumSize,
       iconColor: iconColor,

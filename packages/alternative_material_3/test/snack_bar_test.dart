@@ -873,9 +873,9 @@ void main() {
     final Widget textButton = actionTextButton.widget;
     if (textButton is TextButton) {
       final ButtonStyle buttonStyle = textButton.style!;
-      if (buttonStyle.foregroundColor is MaterialStateColor) {
+      if (buttonStyle.textColor is MaterialStateColor) {
         // Same color when resolved
-        expect(buttonStyle.foregroundColor!.resolve(<MaterialState>{}), usedColor);
+        expect(buttonStyle.textColor!.resolve(<MaterialState>{}), usedColor);
       } else {
         expect(false, true);
       }
@@ -925,9 +925,9 @@ void main() {
     final Widget textButton = actionTextButton.widget;
     if (textButton is TextButton) {
       final ButtonStyle buttonStyle = textButton.style!;
-      if (buttonStyle.foregroundColor is MaterialStateColor) {
+      if (buttonStyle.textColor is MaterialStateColor) {
         // Exactly the same object
-        expect(buttonStyle.foregroundColor, usedColor);
+        expect(buttonStyle.textColor, usedColor);
       } else {
         expect(false, true);
       }

@@ -2,10 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'colors.dart';
 import 'constants.dart';
 import 'elevation.dart';
 import 'elevation_overlay.dart';
@@ -469,7 +473,10 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     final Color? backgroundColor = _getBackgroundColor(context);
     final Color modelShadowColor = widget.shadowColor ?? theme.colorScheme.shadow;
     // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
-    final Elevation modelElevation = widget.elevation;
+    final Elevation shadowElevation =
+      widget.shadowColor == null || widget.shadowColor == Colors.transparent
+        ? Elevation.level0
+        : widget.elevation;
     assert(
       backgroundColor != null || widget.type == MaterialType.transparency,
       'If Material type is not MaterialType.transparency, a color must '
@@ -509,15 +516,21 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     // specified rectangles (e.g shape RoundedRectangleBorder with radius 0, but
     // we choose not to as we want the change from the fast-path to the
     // slow-path to be noticeable in the construction site of Material.
-    if (widget.type == MaterialType.canvas && widget.shape == null && widget.borderRadius == null) {
-      final Color color = ElevationOverlay.applySurfaceTint(backgroundColor!, widget.surfaceTintColor, widget.elevation.height);
+    if (widget.type == MaterialType.canvas &&
+        widget.shape == null &&
+        widget.borderRadius == null) {
+      final Color color = ElevationOverlay.applySurfaceTint(
+        backgroundColor!,
+        widget.surfaceTintColor,
+        widget.elevation.height,
+      );
 
       return AnimatedPhysicalModel(
         curve: Curves.fastOutSlowIn,
         duration: widget.animationDuration,
         shape: BoxShape.rectangle,
         clipBehavior: widget.clipBehavior,
-        elevation: modelElevation.height,
+        elevation: shadowElevation.height,
         color: color,
         shadowColor: modelShadowColor,
         animateColor: false,
@@ -919,6 +932,7 @@ class _MaterialInterior extends ImplicitlyAnimatedWidget {
 
 class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> {
   ElevationTween? _elevation;
+  ColorTween? _containerColor;
   ColorTween? _surfaceTintColor;
   ColorTween? _shadowColor;
   ShapeBorderTween? _border;
@@ -937,11 +951,16 @@ class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> 
           (dynamic value) => ColorTween(begin: value as Color),
         ) as ColorTween?
       : null;
+    _containerColor = visitor(
+      _containerColor,
+      widget.color,
+      (dynamic value) => ColorTween(begin: value as Color),
+    ) as ColorTween?;
     _surfaceTintColor = widget.surfaceTintColor != null
       ? visitor(
           _surfaceTintColor,
           widget.surfaceTintColor,
-              (dynamic value) => ColorTween(begin: value as Color),
+          (dynamic value) => ColorTween(begin: value as Color),
         ) as ColorTween?
       : null;
     _border = visitor(
@@ -955,27 +974,62 @@ class _MaterialInteriorState extends AnimatedWidgetBaseState<_MaterialInterior> 
   Widget build(BuildContext context) {
     final ShapeBorder shape = _border!.evaluate(animation)!;
     final Elevation elevation = _elevation!.evaluate(animation)!;
-    final Color color = ElevationOverlay.applySurfaceTint(widget.color, _surfaceTintColor?.evaluate(animation), elevation.height);
+    final Color color = ElevationOverlay.applySurfaceTint(
+      _containerColor?.evaluate(animation) ?? Colors.transparent,
+      _surfaceTintColor?.evaluate(animation),
+      elevation.height,
+    );
     // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
-    final double modelElevation = widget.shadowColor != null ? elevation.height : 0;
-    final Color shadowColor = _shadowColor?.evaluate(animation) ?? const Color(0x00000000);
-    return PhysicalShape(
-      clipper: ShapeBorderClipper(
-        shape: shape,
-        textDirection: Directionality.maybeOf(context),
-      ),
-      clipBehavior: widget.clipBehavior,
-      elevation: modelElevation,
-      color: color,
-      shadowColor: shadowColor,
-      child: _ShapeBorderPaint(
-        shape: shape,
-        borderOnForeground: widget.borderOnForeground,
-        child: widget.child,
+    final double shadowElevation =
+        widget.shadowColor == null || widget.shadowColor == Colors.transparent
+            ? 0.0
+            : elevation.height;
+    final Color shadowColor =
+        _shadowColor?.evaluate(animation) ?? const Color(0x00000000);
+
+    Widget deepShadow({required Widget child}) {
+      if (shadowElevation == 0.0) {
+        return child;
+      }
+      final double elevationT =
+          math.min(shadowElevation / Elevation.level5.height, 1.0);
+      final radius = lerpDouble(1.0, 4.0, elevationT) ?? 0.0;
+      return Container(
+        decoration: ShapeDecoration(
+          shape: shape,
+          shadows: [
+            BoxShadow(
+              color: shadowColor.withOpacity(0.3),
+              blurRadius: radius,
+              // spreadRadius: radius,
+              offset: Offset(0.0, lerpDouble(1.0, 4.0, elevationT) ?? 0.0),
+            ),
+          ],
+        ),
+        child: child,
+      );
+    }
+
+    return deepShadow(
+      child: PhysicalShape(
+        clipper: ShapeBorderClipper(
+          shape: shape,
+          textDirection: Directionality.maybeOf(context),
+        ),
+        clipBehavior: widget.clipBehavior,
+        elevation: shadowElevation,
+        color: color,
+        shadowColor: shadowColor,
+        child: _ShapeBorderPaint(
+          shape: shape,
+          borderOnForeground: widget.borderOnForeground,
+          child: widget.child,
+        ),
       ),
     );
   }
 }
+
 
 class _ShapeBorderPaint extends StatelessWidget {
   const _ShapeBorderPaint({

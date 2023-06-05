@@ -7,7 +7,7 @@ import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button.dart';
+import 'raw_material_button.dart';
 import 'button_theme.dart';
 import 'constants.dart';
 import 'elevation.dart';

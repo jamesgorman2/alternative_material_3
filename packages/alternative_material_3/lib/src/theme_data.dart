@@ -15,8 +15,10 @@ import 'banner_theme.dart';
 import 'bottom_app_bar_theme.dart';
 import 'bottom_navigation_bar_theme.dart';
 import 'bottom_sheet_theme.dart';
-import 'button_bar_theme.dart';
 import 'button_theme.dart';
+import 'buttons/button_style.dart';
+import 'buttons/expandable_floating_action_button_theme.dart';
+import 'buttons/floating_action_button_theme.dart';
 import 'card_theme.dart';
 import 'checkbox_theme.dart';
 import 'chips/chip_theme.dart';
@@ -28,11 +30,7 @@ import 'dialog_theme.dart';
 import 'divider_theme.dart';
 import 'drawer_theme.dart';
 import 'dropdown_menu_theme.dart';
-import 'elevated_button_theme.dart';
 import 'expansion_tile_theme.dart';
-import 'filled_button_theme.dart';
-import 'floating_action_button_theme.dart';
-import 'icon_button_theme.dart';
 import 'ink_ripple.dart';
 import 'ink_sparkle.dart';
 import 'ink_splash.dart';
@@ -46,7 +44,6 @@ import 'menu_theme.dart';
 import 'navigation_bar_theme.dart';
 import 'navigation_drawer_theme.dart';
 import 'navigation_rail_theme.dart';
-import 'outlined_button_theme.dart';
 import 'page_transitions_theme.dart';
 import 'popup_menu_theme.dart';
 import 'progress_indicator_theme.dart';
@@ -54,17 +51,14 @@ import 'radio_theme.dart';
 import 'scrollbar_theme.dart';
 import 'search_bar_theme.dart';
 import 'search_view_theme.dart';
-import 'segmented_button_theme.dart';
 import 'slider_theme.dart';
 import 'snack_bar_theme.dart';
 import 'state_theme.dart';
 import 'switch_theme.dart';
 import 'tab_bar_theme.dart';
-import 'text_button_theme.dart';
 import 'text_selection_theme.dart';
 import 'text_theme.dart';
 import 'time_picker_theme.dart';
-import 'toggle_buttons_theme.dart';
 import 'tooltip_theme.dart';
 import 'typography.dart';
 
@@ -105,10 +99,12 @@ abstract class ThemeExtension<T extends ThemeExtension<T>> {
   ThemeExtension<T> lerp(covariant ThemeExtension<T>? other, double t);
 }
 
+/// {@template alternative_material_3.MaterialTapTargetSize}
 /// Configures the tap target and layout size of certain Material widgets.
 ///
 /// Changing the value in [ThemeData.materialTapTargetSize] will affect the
 /// accessibility experience.
+/// {@endtemplate}
 ///
 /// Some of the impacted widgets include:
 ///
@@ -281,6 +277,8 @@ class ThemeData with Diagnosticable {
     Iterable<ThemeExtension<dynamic>>? extensions,
     InputDecorationTheme? inputDecorationTheme,
     MaterialTapTargetSize? materialTapTargetSize,
+    double? minInteractiveDimension,
+    bool? alwaysPadTapTarget,
     PageTransitionsTheme? pageTransitionsTheme,
     TargetPlatform? platform,
     ScrollbarThemeData? scrollbarTheme,
@@ -304,7 +302,6 @@ class ThemeData with Diagnosticable {
     BottomAppBarTheme? bottomAppBarTheme,
     BottomNavigationBarThemeData? bottomNavigationBarTheme,
     BottomSheetThemeData? bottomSheetTheme,
-    ButtonBarThemeData? buttonBarTheme,
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
@@ -314,8 +311,12 @@ class ThemeData with Diagnosticable {
     DrawerThemeData? drawerTheme,
     DropdownMenuThemeData? dropdownMenuTheme,
     ElevatedButtonThemeData? elevatedButtonTheme,
+    ExpandableFloatingActionButtonThemeData? expandableFloatingActionButtonTheme,
     ExpansionTileThemeData? expansionTileTheme,
     FilledButtonThemeData? filledButtonTheme,
+    FilledIconButtonThemeData? filledIconButtonTheme,
+    FilledTonalButtonThemeData? filledTonalButtonTheme,
+    FilledTonalIconButtonThemeData? filledTonalIconButtonTheme,
     FloatingActionButtonThemeData? floatingActionButtonTheme,
     IconButtonThemeData? iconButtonTheme,
     ListTileThemeData? listTileTheme,
@@ -326,6 +327,7 @@ class ThemeData with Diagnosticable {
     NavigationDrawerThemeData? navigationDrawerTheme,
     NavigationRailThemeData? navigationRailTheme,
     OutlinedButtonThemeData? outlinedButtonTheme,
+    OutlinedIconButtonThemeData? outlinedIconButtonTheme,
     PopupMenuThemeData? popupMenuTheme,
     ProgressIndicatorThemeData? progressIndicatorTheme,
     RadioThemeData? radioTheme,
@@ -334,12 +336,12 @@ class ThemeData with Diagnosticable {
     SegmentedButtonThemeData? segmentedButtonTheme,
     SliderThemeData? sliderTheme,
     SnackBarThemeData? snackBarTheme,
+    IconButtonThemeData? standardIconButtonTheme,
     SwitchThemeData? switchTheme,
     TabBarTheme? tabBarTheme,
     TextButtonThemeData? textButtonTheme,
     TextSelectionThemeData? textSelectionTheme,
     TimePickerThemeData? timePickerTheme,
-    ToggleButtonsThemeData? toggleButtonsTheme,
     TooltipThemeData? tooltipTheme,
  }) {
     // GENERAL CONFIGURATION
@@ -350,13 +352,19 @@ class ThemeData with Diagnosticable {
     switch (platform) {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
+        materialTapTargetSize ??= MaterialTapTargetSize.padded;
+        minInteractiveDimension ??= kMinInteractiveDimension;
       case TargetPlatform.iOS:
         materialTapTargetSize ??= MaterialTapTargetSize.padded;
+        minInteractiveDimension ??= 44.0;
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-         materialTapTargetSize ??= MaterialTapTargetSize.shrinkWrap;
+        materialTapTargetSize ??= MaterialTapTargetSize.shrinkWrap;
+        minInteractiveDimension ??= 0.0;
     }
+    alwaysPadTapTarget ??= false;
+
     pageTransitionsTheme ??= const PageTransitionsTheme();
     scrollbarTheme ??= const ScrollbarThemeData();
     visualDensity ??= VisualDensity.defaultDensityForPlatform(platform);
@@ -387,7 +395,6 @@ class ThemeData with Diagnosticable {
     bottomAppBarTheme ??= const BottomAppBarTheme();
     bottomNavigationBarTheme ??= const BottomNavigationBarThemeData();
     bottomSheetTheme ??= const BottomSheetThemeData();
-    buttonBarTheme ??= const ButtonBarThemeData();
     cardTheme ??= const CardTheme();
     checkboxTheme ??= const CheckboxThemeData();
     chipTheme ??= const ChipThemeData();
@@ -397,8 +404,12 @@ class ThemeData with Diagnosticable {
     drawerTheme ??= const DrawerThemeData();
     dropdownMenuTheme ??= const DropdownMenuThemeData();
     elevatedButtonTheme ??= const ElevatedButtonThemeData();
+    expandableFloatingActionButtonTheme ??= const ExpandableFloatingActionButtonThemeData();
     expansionTileTheme ??= const ExpansionTileThemeData();
     filledButtonTheme ??= const FilledButtonThemeData();
+    filledIconButtonTheme ??= const FilledIconButtonThemeData();
+    filledTonalButtonTheme ??= const FilledTonalButtonThemeData();
+    filledTonalIconButtonTheme ??= const FilledTonalIconButtonThemeData();
     floatingActionButtonTheme ??= const FloatingActionButtonThemeData();
     iconButtonTheme ??= const IconButtonThemeData();
     listTileTheme ??= const ListTileThemeData();
@@ -409,6 +420,7 @@ class ThemeData with Diagnosticable {
     navigationDrawerTheme ??= const NavigationDrawerThemeData();
     navigationRailTheme ??= const NavigationRailThemeData();
     outlinedButtonTheme ??= const OutlinedButtonThemeData();
+    outlinedIconButtonTheme ??= const OutlinedIconButtonThemeData();
     popupMenuTheme ??= const PopupMenuThemeData();
     progressIndicatorTheme ??= const ProgressIndicatorThemeData();
     radioTheme ??= const RadioThemeData();
@@ -417,12 +429,12 @@ class ThemeData with Diagnosticable {
     segmentedButtonTheme ??= const SegmentedButtonThemeData();
     sliderTheme ??= const SliderThemeData();
     snackBarTheme ??= const SnackBarThemeData();
+    standardIconButtonTheme ??= const IconButtonThemeData();
     switchTheme ??= const SwitchThemeData();
     tabBarTheme ??= const TabBarTheme();
     textButtonTheme ??= const TextButtonThemeData();
     textSelectionTheme ??= const TextSelectionThemeData();
     timePickerTheme ??= const TimePickerThemeData();
-    toggleButtonsTheme ??= const ToggleButtonsThemeData();
     tooltipTheme ??= const TooltipThemeData();
 
     return ThemeData.raw(
@@ -436,6 +448,8 @@ class ThemeData with Diagnosticable {
       extensions: _themeExtensionIterableToMap(extensions),
       inputDecorationTheme: inputDecorationTheme,
       materialTapTargetSize: materialTapTargetSize,
+      minInteractiveDimension: minInteractiveDimension,
+      alwaysPadTapTarget: alwaysPadTapTarget,
       pageTransitionsTheme: pageTransitionsTheme,
       platform: platform,
       scrollbarTheme: scrollbarTheme,
@@ -456,7 +470,6 @@ class ThemeData with Diagnosticable {
       bottomAppBarTheme: bottomAppBarTheme,
       bottomNavigationBarTheme: bottomNavigationBarTheme,
       bottomSheetTheme: bottomSheetTheme,
-      buttonBarTheme: buttonBarTheme,
       cardTheme: cardTheme,
       checkboxTheme: checkboxTheme,
       chipTheme: chipTheme,
@@ -466,8 +479,12 @@ class ThemeData with Diagnosticable {
       drawerTheme: drawerTheme,
       dropdownMenuTheme: dropdownMenuTheme,
       elevatedButtonTheme: elevatedButtonTheme,
+      expandableFloatingActionButtonTheme: expandableFloatingActionButtonTheme,
       expansionTileTheme: expansionTileTheme,
       filledButtonTheme: filledButtonTheme,
+      filledIconButtonTheme: filledIconButtonTheme,
+      filledTonalButtonTheme: filledTonalButtonTheme,
+      filledTonalIconButtonTheme: filledTonalIconButtonTheme,
       floatingActionButtonTheme: floatingActionButtonTheme,
       iconButtonTheme: iconButtonTheme,
       listTileTheme: listTileTheme,
@@ -478,6 +495,7 @@ class ThemeData with Diagnosticable {
       navigationDrawerTheme: navigationDrawerTheme,
       navigationRailTheme: navigationRailTheme,
       outlinedButtonTheme: outlinedButtonTheme,
+      outlinedIconButtonTheme: outlinedIconButtonTheme,
       popupMenuTheme: popupMenuTheme,
       progressIndicatorTheme: progressIndicatorTheme,
       radioTheme: radioTheme,
@@ -486,12 +504,12 @@ class ThemeData with Diagnosticable {
       segmentedButtonTheme: segmentedButtonTheme,
       sliderTheme: sliderTheme,
       snackBarTheme: snackBarTheme,
+      standardIconButtonTheme: standardIconButtonTheme,
       switchTheme: switchTheme,
       tabBarTheme: tabBarTheme,
       textButtonTheme: textButtonTheme,
       textSelectionTheme: textSelectionTheme,
       timePickerTheme: timePickerTheme,
-      toggleButtonsTheme: toggleButtonsTheme,
       tooltipTheme: tooltipTheme,
     );
   }
@@ -514,6 +532,8 @@ class ThemeData with Diagnosticable {
     required this.extensions,
     required this.inputDecorationTheme,
     required this.materialTapTargetSize,
+    required this.minInteractiveDimension,
+    required this.alwaysPadTapTarget,
     required this.pageTransitionsTheme,
     required this.platform,
     required this.scrollbarTheme,
@@ -534,7 +554,6 @@ class ThemeData with Diagnosticable {
     required this.bottomAppBarTheme,
     required this.bottomNavigationBarTheme,
     required this.bottomSheetTheme,
-    required this.buttonBarTheme,
     required this.cardTheme,
     required this.checkboxTheme,
     required this.chipTheme,
@@ -544,8 +563,12 @@ class ThemeData with Diagnosticable {
     required this.drawerTheme,
     required this.dropdownMenuTheme,
     required this.elevatedButtonTheme,
+    required this.expandableFloatingActionButtonTheme,
     required this.expansionTileTheme,
     required this.filledButtonTheme,
+    required this.filledIconButtonTheme,
+    required this.filledTonalButtonTheme,
+    required this.filledTonalIconButtonTheme,
     required this.floatingActionButtonTheme,
     required this.iconButtonTheme,
     required this.listTileTheme,
@@ -556,6 +579,7 @@ class ThemeData with Diagnosticable {
     required this.navigationDrawerTheme,
     required this.navigationRailTheme,
     required this.outlinedButtonTheme,
+    required this.outlinedIconButtonTheme,
     required this.popupMenuTheme,
     required this.progressIndicatorTheme,
     required this.radioTheme,
@@ -564,12 +588,12 @@ class ThemeData with Diagnosticable {
     required this.segmentedButtonTheme,
     required this.sliderTheme,
     required this.snackBarTheme,
+    required this.standardIconButtonTheme,
     required this.switchTheme,
     required this.tabBarTheme,
     required this.textButtonTheme,
     required this.textSelectionTheme,
     required this.timePickerTheme,
-    required this.toggleButtonsTheme,
     required this.tooltipTheme,
   });
 
@@ -741,6 +765,39 @@ class ThemeData with Diagnosticable {
   /// platforms.
   final MaterialTapTargetSize materialTapTargetSize;
 
+  /// The minimum dimension of any interactive region according to Material
+  /// guidelines. This may add padding to widgets as needed, depending on the
+  /// value of [alwaysPadTapTarget].
+  ///
+  /// This is used to avoid small regions that are hard for the user to interact
+  /// with. It applies to both dimensions of a region, so a square of size
+  /// kMinInteractiveDimension x kMinInteractiveDimension is the smallest
+  /// acceptable region that should respond to gestures.
+  ///
+  /// The defaults are
+  ///  * 48dp for Android and Fuchsia
+  ///  * 44dp fro iOS
+  ///  * 0dp for desktop
+  ///
+  /// See also:
+  ///
+  ///  * [kMinInteractiveDimensionCupertino]
+  ///  * The Material spec on touch targets at <https://material.io/design/usability/accessibility.html#layout-typography>.
+  final double minInteractiveDimension;
+
+  /// If true, always apply [minInteractiveDimension] to when laying out widgets
+  /// and only apply [materialTapTargetSize] to the interaction. This will
+  /// result in consistently padded widgets across platforms.
+  ///
+  /// If false, apply [materialTapTargetSize] when laying out widgets.
+  /// This will result in platform dependent padding.
+  final bool alwaysPadTapTarget;
+
+  /// The
+  double get effectiveMinInteractiveDimension =>
+      materialTapTargetSize == MaterialTapTargetSize.padded || alwaysPadTapTarget
+      ? minInteractiveDimension : 0.0;
+
   /// Default [MaterialPageRoute] transitions per [TargetPlatform].
   ///
   /// [MaterialPageRoute.buildTransitions] delegates to a [platform] specific
@@ -877,9 +934,6 @@ class ThemeData with Diagnosticable {
   /// A theme for customizing the color, elevation, and shape of a bottom sheet.
   final BottomSheetThemeData bottomSheetTheme;
 
-  /// A theme for customizing the appearance and layout of [ButtonBar] widgets.
-  final ButtonBarThemeData buttonBarTheme;
-
   /// The colors and styles used to render [Card].
   ///
   /// This is the value returned from [CardTheme.of].
@@ -914,12 +968,28 @@ class ThemeData with Diagnosticable {
   /// [ElevatedButton]s.
   final ElevatedButtonThemeData elevatedButtonTheme;
 
+  /// A theme for customizing the shape of an
+  /// [ExpandableFloatingActionButton].
+  final ExpandableFloatingActionButtonThemeData expandableFloatingActionButtonTheme;
+
   /// A theme for customizing the visual properties of [ExpansionTile]s.
   final ExpansionTileThemeData expansionTileTheme;
 
   /// A theme for customizing the appearance and internal layout of
   /// [FilledButton]s.
   final FilledButtonThemeData filledButtonTheme;
+
+  /// A theme for customizing the appearance and internal layout of
+  /// [FilledIconButton]s.
+  final FilledIconButtonThemeData filledIconButtonTheme;
+
+  /// A theme for customizing the appearance and internal layout of
+  /// [FilledTonalButton]s.
+  final FilledTonalButtonThemeData filledTonalButtonTheme;
+
+  /// A theme for customizing the appearance and internal layout of
+  /// [FilledTonalIconButton]s.
+  final FilledTonalIconButtonThemeData filledTonalIconButtonTheme;
 
   /// A theme for customizing the shape, elevation, and color of a
   /// [FloatingActionButton].
@@ -960,6 +1030,10 @@ class ThemeData with Diagnosticable {
   /// [OutlinedButton]s.
   final OutlinedButtonThemeData outlinedButtonTheme;
 
+  /// A theme for customizing the appearance and internal layout of
+  /// [OutlinedIconButton]s.
+  final OutlinedIconButtonThemeData outlinedIconButtonTheme;
+
   /// A theme for customizing the color, shape, elevation, and text style of
   /// popup menus.
   final PopupMenuThemeData popupMenuTheme;
@@ -987,6 +1061,10 @@ class ThemeData with Diagnosticable {
   /// A theme for customizing colors, shape, elevation, and behavior of a [SnackBar].
   final SnackBarThemeData snackBarTheme;
 
+  /// A theme for customizing the appearance and internal layout of
+  /// standard [IconButton]s.
+  final IconButtonThemeData standardIconButtonTheme;
+
   /// A theme for customizing the appearance and layout of [Switch] widgets.
   final SwitchThemeData switchTheme;
 
@@ -1002,9 +1080,6 @@ class ThemeData with Diagnosticable {
 
   /// A theme for customizing the appearance and layout of time picker widgets.
   final TimePickerThemeData timePickerTheme;
-
-  /// Defines the default configuration of [ToggleButtons] widgets.
-  final ToggleButtonsThemeData toggleButtonsTheme;
 
   /// A theme for customizing the visual properties of [Tooltip]s.
   ///
@@ -1032,6 +1107,8 @@ class ThemeData with Diagnosticable {
     Iterable<ThemeExtension<dynamic>>? extensions,
     InputDecorationTheme? inputDecorationTheme,
     MaterialTapTargetSize? materialTapTargetSize,
+    double? minInteractiveDimension,
+    bool? alwaysPadTapTarget,
     PageTransitionsTheme? pageTransitionsTheme,
     TargetPlatform? platform,
     ScrollbarThemeData? scrollbarTheme,
@@ -1054,7 +1131,6 @@ class ThemeData with Diagnosticable {
     BottomAppBarTheme? bottomAppBarTheme,
     BottomNavigationBarThemeData? bottomNavigationBarTheme,
     BottomSheetThemeData? bottomSheetTheme,
-    ButtonBarThemeData? buttonBarTheme,
     ButtonThemeData? buttonTheme,
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
@@ -1065,8 +1141,12 @@ class ThemeData with Diagnosticable {
     DrawerThemeData? drawerTheme,
     DropdownMenuThemeData? dropdownMenuTheme,
     ElevatedButtonThemeData? elevatedButtonTheme,
+    ExpandableFloatingActionButtonThemeData? expandableFloatingActionButtonTheme,
     ExpansionTileThemeData? expansionTileTheme,
     FilledButtonThemeData? filledButtonTheme,
+    FilledIconButtonThemeData? filledIconButtonTheme,
+    FilledTonalButtonThemeData? filledTonalButtonTheme,
+    FilledTonalIconButtonThemeData? filledTonalIconButtonTheme,
     FloatingActionButtonThemeData? floatingActionButtonTheme,
     IconButtonThemeData? iconButtonTheme,
     ListTileThemeData? listTileTheme,
@@ -1077,6 +1157,7 @@ class ThemeData with Diagnosticable {
     NavigationDrawerThemeData? navigationDrawerTheme,
     NavigationRailThemeData? navigationRailTheme,
     OutlinedButtonThemeData? outlinedButtonTheme,
+    OutlinedIconButtonThemeData? outlinedIconButtonTheme,
     PopupMenuThemeData? popupMenuTheme,
     ProgressIndicatorThemeData? progressIndicatorTheme,
     RadioThemeData? radioTheme,
@@ -1085,12 +1166,12 @@ class ThemeData with Diagnosticable {
     SegmentedButtonThemeData? segmentedButtonTheme,
     SliderThemeData? sliderTheme,
     SnackBarThemeData? snackBarTheme,
+    IconButtonThemeData? standardIconButtonTheme,
     SwitchThemeData? switchTheme,
     TabBarTheme? tabBarTheme,
     TextButtonThemeData? textButtonTheme,
     TextSelectionThemeData? textSelectionTheme,
     TimePickerThemeData? timePickerTheme,
-    ToggleButtonsThemeData? toggleButtonsTheme,
     TooltipThemeData? tooltipTheme,
   }) {
     cupertinoOverrideTheme = cupertinoOverrideTheme?.noDefault();
@@ -1105,6 +1186,8 @@ class ThemeData with Diagnosticable {
       extensions: (extensions != null) ? _themeExtensionIterableToMap(extensions) : this.extensions,
       inputDecorationTheme: inputDecorationTheme ?? this.inputDecorationTheme,
       materialTapTargetSize: materialTapTargetSize ?? this.materialTapTargetSize,
+      minInteractiveDimension: minInteractiveDimension ?? this.minInteractiveDimension,
+      alwaysPadTapTarget: alwaysPadTapTarget ?? this.alwaysPadTapTarget,
       pageTransitionsTheme: pageTransitionsTheme ?? this.pageTransitionsTheme,
       platform: platform ?? this.platform,
       scrollbarTheme: scrollbarTheme ?? this.scrollbarTheme,
@@ -1125,7 +1208,6 @@ class ThemeData with Diagnosticable {
       bottomAppBarTheme: bottomAppBarTheme ?? this.bottomAppBarTheme,
       bottomNavigationBarTheme: bottomNavigationBarTheme ?? this.bottomNavigationBarTheme,
       bottomSheetTheme: bottomSheetTheme ?? this.bottomSheetTheme,
-      buttonBarTheme: buttonBarTheme ?? this.buttonBarTheme,
       cardTheme: cardTheme ?? this.cardTheme,
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
       chipTheme: chipTheme ?? this.chipTheme,
@@ -1135,8 +1217,12 @@ class ThemeData with Diagnosticable {
       drawerTheme: drawerTheme ?? this.drawerTheme,
       dropdownMenuTheme: dropdownMenuTheme ?? this.dropdownMenuTheme,
       elevatedButtonTheme: elevatedButtonTheme ?? this.elevatedButtonTheme,
+      expandableFloatingActionButtonTheme: expandableFloatingActionButtonTheme ?? this.expandableFloatingActionButtonTheme,
       expansionTileTheme: expansionTileTheme ?? this.expansionTileTheme,
       filledButtonTheme: filledButtonTheme ?? this.filledButtonTheme,
+      filledIconButtonTheme: filledIconButtonTheme ?? this.filledIconButtonTheme,
+      filledTonalButtonTheme: filledTonalButtonTheme ?? this.filledTonalButtonTheme,
+      filledTonalIconButtonTheme: filledTonalIconButtonTheme ?? this.filledTonalIconButtonTheme,
       floatingActionButtonTheme: floatingActionButtonTheme ?? this.floatingActionButtonTheme,
       iconButtonTheme: iconButtonTheme ?? this.iconButtonTheme,
       listTileTheme: listTileTheme ?? this.listTileTheme,
@@ -1147,6 +1233,7 @@ class ThemeData with Diagnosticable {
       navigationDrawerTheme: navigationDrawerTheme ?? this.navigationDrawerTheme,
       navigationRailTheme: navigationRailTheme ?? this.navigationRailTheme,
       outlinedButtonTheme: outlinedButtonTheme ?? this.outlinedButtonTheme,
+      outlinedIconButtonTheme: outlinedIconButtonTheme ?? this.outlinedIconButtonTheme,
       popupMenuTheme: popupMenuTheme ?? this.popupMenuTheme,
       progressIndicatorTheme: progressIndicatorTheme ?? this.progressIndicatorTheme,
       radioTheme: radioTheme ?? this.radioTheme,
@@ -1155,12 +1242,12 @@ class ThemeData with Diagnosticable {
       segmentedButtonTheme: segmentedButtonTheme ?? this.segmentedButtonTheme,
       sliderTheme: sliderTheme ?? this.sliderTheme,
       snackBarTheme: snackBarTheme ?? this.snackBarTheme,
+      standardIconButtonTheme: standardIconButtonTheme ?? this.standardIconButtonTheme,
       switchTheme: switchTheme ?? this.switchTheme,
       tabBarTheme: tabBarTheme ?? this.tabBarTheme,
       textButtonTheme: textButtonTheme ?? this.textButtonTheme,
       textSelectionTheme: textSelectionTheme ?? this.textSelectionTheme,
       timePickerTheme: timePickerTheme ?? this.timePickerTheme,
-      toggleButtonsTheme: toggleButtonsTheme ?? this.toggleButtonsTheme,
       tooltipTheme: tooltipTheme ?? this.tooltipTheme,
     );
   }
@@ -1265,11 +1352,13 @@ class ThemeData with Diagnosticable {
       // alphabetical by symbol name.
 
       // GENERAL CONFIGURATION
-      cupertinoOverrideTheme:t < 0.5 ? a.cupertinoOverrideTheme : b.cupertinoOverrideTheme,
+      cupertinoOverrideTheme: t < 0.5 ? a.cupertinoOverrideTheme : b.cupertinoOverrideTheme,
       extensions: _lerpThemeExtensions(a, b, t),
-      inputDecorationTheme:t < 0.5 ? a.inputDecorationTheme : b.inputDecorationTheme,
-      materialTapTargetSize:t < 0.5 ? a.materialTapTargetSize : b.materialTapTargetSize,
-      pageTransitionsTheme:t < 0.5 ? a.pageTransitionsTheme : b.pageTransitionsTheme,
+      inputDecorationTheme: t < 0.5 ? a.inputDecorationTheme : b.inputDecorationTheme,
+      materialTapTargetSize: t < 0.5 ? a.materialTapTargetSize : b.materialTapTargetSize,
+      minInteractiveDimension: lerpDouble(a.minInteractiveDimension, b.minInteractiveDimension, t)!,
+      alwaysPadTapTarget: t < 0.5 ? a.alwaysPadTapTarget : b.alwaysPadTapTarget,
+      pageTransitionsTheme: t < 0.5 ? a.pageTransitionsTheme : b.pageTransitionsTheme,
       platform: t < 0.5 ? a.platform : b.platform,
       scrollbarTheme: ScrollbarThemeData.lerp(a.scrollbarTheme, b.scrollbarTheme, t),
       splashFactory: t < 0.5 ? a.splashFactory : b.splashFactory,
@@ -1289,7 +1378,6 @@ class ThemeData with Diagnosticable {
       bottomAppBarTheme: BottomAppBarTheme.lerp(a.bottomAppBarTheme, b.bottomAppBarTheme, t),
       bottomNavigationBarTheme: BottomNavigationBarThemeData.lerp(a.bottomNavigationBarTheme, b.bottomNavigationBarTheme, t),
       bottomSheetTheme: BottomSheetThemeData.lerp(a.bottomSheetTheme, b.bottomSheetTheme, t)!,
-      buttonBarTheme: ButtonBarThemeData.lerp(a.buttonBarTheme, b.buttonBarTheme, t)!,
       cardTheme: CardTheme.lerp(a.cardTheme, b.cardTheme, t),
       checkboxTheme: CheckboxThemeData.lerp(a.checkboxTheme, b.checkboxTheme, t),
       chipTheme: ChipThemeData.lerp(a.chipTheme, b.chipTheme, t)!,
@@ -1299,8 +1387,12 @@ class ThemeData with Diagnosticable {
       drawerTheme: DrawerThemeData.lerp(a.drawerTheme, b.drawerTheme, t)!,
       dropdownMenuTheme: DropdownMenuThemeData.lerp(a.dropdownMenuTheme, b.dropdownMenuTheme, t),
       elevatedButtonTheme: ElevatedButtonThemeData.lerp(a.elevatedButtonTheme, b.elevatedButtonTheme, t)!,
+      expandableFloatingActionButtonTheme: ExpandableFloatingActionButtonThemeData.lerp(a.expandableFloatingActionButtonTheme, b.expandableFloatingActionButtonTheme, t)!,
       expansionTileTheme: ExpansionTileThemeData.lerp(a.expansionTileTheme, b.expansionTileTheme, t)!,
       filledButtonTheme: FilledButtonThemeData.lerp(a.filledButtonTheme, b.filledButtonTheme, t)!,
+      filledIconButtonTheme: FilledIconButtonThemeData.lerp(a.filledIconButtonTheme, b.filledIconButtonTheme, t)!,
+      filledTonalButtonTheme: FilledTonalButtonThemeData.lerp(a.filledTonalButtonTheme, b.filledTonalButtonTheme, t)!,
+      filledTonalIconButtonTheme: FilledTonalIconButtonThemeData.lerp(a.filledTonalIconButtonTheme, b.filledTonalIconButtonTheme, t)!,
       floatingActionButtonTheme: FloatingActionButtonThemeData.lerp(a.floatingActionButtonTheme, b.floatingActionButtonTheme, t)!,
       iconButtonTheme: IconButtonThemeData.lerp(a.iconButtonTheme, b.iconButtonTheme, t)!,
       listTileTheme: ListTileThemeData.lerp(a.listTileTheme, b.listTileTheme, t)!,
@@ -1311,6 +1403,7 @@ class ThemeData with Diagnosticable {
       navigationDrawerTheme: NavigationDrawerThemeData.lerp(a.navigationDrawerTheme, b.navigationDrawerTheme, t)!,
       navigationRailTheme: NavigationRailThemeData.lerp(a.navigationRailTheme, b.navigationRailTheme, t)!,
       outlinedButtonTheme: OutlinedButtonThemeData.lerp(a.outlinedButtonTheme, b.outlinedButtonTheme, t)!,
+      outlinedIconButtonTheme: OutlinedIconButtonThemeData.lerp(a.outlinedIconButtonTheme, b.outlinedIconButtonTheme, t)!,
       popupMenuTheme: PopupMenuThemeData.lerp(a.popupMenuTheme, b.popupMenuTheme, t)!,
       progressIndicatorTheme: ProgressIndicatorThemeData.lerp(a.progressIndicatorTheme, b.progressIndicatorTheme, t)!,
       radioTheme: RadioThemeData.lerp(a.radioTheme, b.radioTheme, t),
@@ -1319,12 +1412,12 @@ class ThemeData with Diagnosticable {
       segmentedButtonTheme: SegmentedButtonThemeData.lerp(a.segmentedButtonTheme, b.segmentedButtonTheme, t),
       sliderTheme: SliderThemeData.lerp(a.sliderTheme, b.sliderTheme, t),
       snackBarTheme: SnackBarThemeData.lerp(a.snackBarTheme, b.snackBarTheme, t),
+      standardIconButtonTheme: IconButtonThemeData.lerp(a.standardIconButtonTheme, b.standardIconButtonTheme, t)!,
       switchTheme: SwitchThemeData.lerp(a.switchTheme, b.switchTheme, t),
       tabBarTheme: TabBarTheme.lerp(a.tabBarTheme, b.tabBarTheme, t),
       textButtonTheme: TextButtonThemeData.lerp(a.textButtonTheme, b.textButtonTheme, t)!,
       textSelectionTheme: TextSelectionThemeData.lerp(a.textSelectionTheme, b.textSelectionTheme, t)!,
       timePickerTheme: TimePickerThemeData.lerp(a.timePickerTheme, b.timePickerTheme, t),
-      toggleButtonsTheme: ToggleButtonsThemeData.lerp(a.toggleButtonsTheme, b.toggleButtonsTheme, t)!,
       tooltipTheme: TooltipThemeData.lerp(a.tooltipTheme, b.tooltipTheme, t)!,
     );
   }
@@ -1345,6 +1438,8 @@ class ThemeData with Diagnosticable {
         mapEquals(other.extensions, extensions) &&
         other.inputDecorationTheme == inputDecorationTheme &&
         other.materialTapTargetSize == materialTapTargetSize &&
+        other.minInteractiveDimension == minInteractiveDimension &&
+        other.alwaysPadTapTarget == alwaysPadTapTarget &&
         other.pageTransitionsTheme == pageTransitionsTheme &&
         other.platform == platform &&
         other.scrollbarTheme == scrollbarTheme &&
@@ -1365,7 +1460,6 @@ class ThemeData with Diagnosticable {
         other.bottomAppBarTheme == bottomAppBarTheme &&
         other.bottomNavigationBarTheme == bottomNavigationBarTheme &&
         other.bottomSheetTheme == bottomSheetTheme &&
-        other.buttonBarTheme == buttonBarTheme &&
         other.cardTheme == cardTheme &&
         other.checkboxTheme == checkboxTheme &&
         other.chipTheme == chipTheme &&
@@ -1375,8 +1469,12 @@ class ThemeData with Diagnosticable {
         other.drawerTheme == drawerTheme &&
         other.dropdownMenuTheme == dropdownMenuTheme &&
         other.elevatedButtonTheme == elevatedButtonTheme &&
+        other.expandableFloatingActionButtonTheme == expandableFloatingActionButtonTheme &&
         other.expansionTileTheme == expansionTileTheme &&
         other.filledButtonTheme == filledButtonTheme &&
+        other.filledIconButtonTheme == filledIconButtonTheme &&
+        other.filledTonalButtonTheme == filledTonalButtonTheme &&
+        other.filledTonalIconButtonTheme == filledTonalIconButtonTheme &&
         other.floatingActionButtonTheme == floatingActionButtonTheme &&
         other.iconButtonTheme == iconButtonTheme &&
         other.listTileTheme == listTileTheme &&
@@ -1387,6 +1485,7 @@ class ThemeData with Diagnosticable {
         other.navigationDrawerTheme == navigationDrawerTheme &&
         other.navigationRailTheme == navigationRailTheme &&
         other.outlinedButtonTheme == outlinedButtonTheme &&
+        other.outlinedIconButtonTheme == outlinedIconButtonTheme &&
         other.popupMenuTheme == popupMenuTheme &&
         other.progressIndicatorTheme == progressIndicatorTheme &&
         other.radioTheme == radioTheme &&
@@ -1395,12 +1494,12 @@ class ThemeData with Diagnosticable {
         other.segmentedButtonTheme == segmentedButtonTheme &&
         other.sliderTheme == sliderTheme &&
         other.snackBarTheme == snackBarTheme &&
+        other.standardIconButtonTheme == standardIconButtonTheme &&
         other.switchTheme == switchTheme &&
         other.tabBarTheme == tabBarTheme &&
         other.textButtonTheme == textButtonTheme &&
         other.textSelectionTheme == textSelectionTheme &&
         other.timePickerTheme == timePickerTheme &&
-        other.toggleButtonsTheme == toggleButtonsTheme &&
         other.tooltipTheme == tooltipTheme;
   }
 
@@ -1418,6 +1517,8 @@ class ThemeData with Diagnosticable {
       ...extensions.values,
       inputDecorationTheme,
       materialTapTargetSize,
+      minInteractiveDimension,
+      alwaysPadTapTarget,
       pageTransitionsTheme,
       platform,
       scrollbarTheme,
@@ -1438,7 +1539,6 @@ class ThemeData with Diagnosticable {
       bottomAppBarTheme,
       bottomNavigationBarTheme,
       bottomSheetTheme,
-      buttonBarTheme,
       cardTheme,
       checkboxTheme,
       chipTheme,
@@ -1448,8 +1548,12 @@ class ThemeData with Diagnosticable {
       drawerTheme,
       dropdownMenuTheme,
       elevatedButtonTheme,
+      expandableFloatingActionButtonTheme,
       expansionTileTheme,
       filledButtonTheme,
+      filledIconButtonTheme,
+      filledTonalButtonTheme,
+      filledTonalIconButtonTheme,
       floatingActionButtonTheme,
       iconButtonTheme,
       listTileTheme,
@@ -1460,6 +1564,7 @@ class ThemeData with Diagnosticable {
       navigationDrawerTheme,
       navigationRailTheme,
       outlinedButtonTheme,
+      outlinedIconButtonTheme,
       popupMenuTheme,
       progressIndicatorTheme,
       radioTheme,
@@ -1468,12 +1573,12 @@ class ThemeData with Diagnosticable {
       segmentedButtonTheme,
       sliderTheme,
       snackBarTheme,
+      standardIconButtonTheme,
       switchTheme,
       tabBarTheme,
       textButtonTheme,
       textSelectionTheme,
       timePickerTheme,
-      toggleButtonsTheme,
       tooltipTheme,
     ];
     return Object.hashAll(values);
@@ -1493,6 +1598,8 @@ class ThemeData with Diagnosticable {
     properties.add(IterableProperty<ThemeExtension<dynamic>>('extensions', extensions.values, defaultValue: defaultData.extensions.values, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<InputDecorationTheme>('inputDecorationTheme', inputDecorationTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<MaterialTapTargetSize>('materialTapTargetSize', materialTapTargetSize, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<double>('minInteractiveDimension', minInteractiveDimension, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<bool>('alwaysPadTapTarget', alwaysPadTapTarget, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<PageTransitionsTheme>('pageTransitionsTheme', pageTransitionsTheme, level: DiagnosticLevel.debug));
     properties.add(EnumProperty<TargetPlatform>('platform', platform, defaultValue: defaultTargetPlatform, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ScrollbarThemeData>('scrollbarTheme', scrollbarTheme, defaultValue: defaultData.scrollbarTheme, level: DiagnosticLevel.debug));
@@ -1513,7 +1620,6 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<BottomAppBarTheme>('bottomAppBarTheme', bottomAppBarTheme, defaultValue: defaultData.bottomAppBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<BottomNavigationBarThemeData>('bottomNavigationBarTheme', bottomNavigationBarTheme, defaultValue: defaultData.bottomNavigationBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<BottomSheetThemeData>('bottomSheetTheme', bottomSheetTheme, defaultValue: defaultData.bottomSheetTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<ButtonBarThemeData>('buttonBarTheme', buttonBarTheme, defaultValue: defaultData.buttonBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<CardTheme>('cardTheme', cardTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<CheckboxThemeData>('checkboxTheme', checkboxTheme, defaultValue: defaultData.checkboxTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ChipThemeData>('chipTheme', chipTheme, level: DiagnosticLevel.debug));
@@ -1524,7 +1630,11 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<DropdownMenuThemeData>('dropdownMenuTheme', dropdownMenuTheme, defaultValue: defaultData.dropdownMenuTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ElevatedButtonThemeData>('elevatedButtonTheme', elevatedButtonTheme, defaultValue: defaultData.elevatedButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ExpansionTileThemeData>('expansionTileTheme', expansionTileTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<ExpandableFloatingActionButtonThemeData>('expandableFloatingActionButtonTheme', expandableFloatingActionButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<FilledButtonThemeData>('filledButtonTheme', filledButtonTheme, defaultValue: defaultData.filledButtonTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<FilledIconButtonThemeData>('filledIconButtonTheme', filledIconButtonTheme, defaultValue: defaultData.filledIconButtonTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<FilledTonalButtonThemeData>('filledTonalButtonTheme', filledTonalButtonTheme, defaultValue: defaultData.filledTonalButtonTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<FilledTonalIconButtonThemeData>('filledTonalIconButtonTheme', filledTonalIconButtonTheme, defaultValue: defaultData.filledTonalIconButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<FloatingActionButtonThemeData>('floatingActionButtonTheme', floatingActionButtonTheme, defaultValue: defaultData.floatingActionButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<IconButtonThemeData>('iconButtonTheme', iconButtonTheme, defaultValue: defaultData.iconButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ListTileThemeData>('listTileTheme', listTileTheme, defaultValue: defaultData.listTileTheme, level: DiagnosticLevel.debug));
@@ -1535,6 +1645,7 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<NavigationDrawerThemeData>('navigationDrawerTheme', navigationDrawerTheme, defaultValue: defaultData.navigationDrawerTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<NavigationRailThemeData>('navigationRailTheme', navigationRailTheme, defaultValue: defaultData.navigationRailTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<OutlinedButtonThemeData>('outlinedButtonTheme', outlinedButtonTheme, defaultValue: defaultData.outlinedButtonTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<OutlinedIconButtonThemeData>('outlinedIconButtonTheme', outlinedIconButtonTheme, defaultValue: defaultData.outlinedIconButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<PopupMenuThemeData>('popupMenuTheme', popupMenuTheme, defaultValue: defaultData.popupMenuTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ProgressIndicatorThemeData>('progressIndicatorTheme', progressIndicatorTheme, defaultValue: defaultData.progressIndicatorTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<RadioThemeData>('radioTheme', radioTheme, defaultValue: defaultData.radioTheme, level: DiagnosticLevel.debug));
@@ -1543,12 +1654,12 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<SegmentedButtonThemeData>('segmentedButtonTheme', segmentedButtonTheme, defaultValue: defaultData.segmentedButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<SliderThemeData>('sliderTheme', sliderTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<SnackBarThemeData>('snackBarTheme', snackBarTheme, defaultValue: defaultData.snackBarTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<IconButtonThemeData>('standardIconButtonTheme', standardIconButtonTheme, defaultValue: defaultData.standardIconButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<SwitchThemeData>('switchTheme', switchTheme, defaultValue: defaultData.switchTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TabBarTheme>('tabBarTheme', tabBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TextButtonThemeData>('textButtonTheme', textButtonTheme, defaultValue: defaultData.textButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TextSelectionThemeData>('textSelectionTheme', textSelectionTheme, defaultValue: defaultData.textSelectionTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TimePickerThemeData>('timePickerTheme', timePickerTheme, defaultValue: defaultData.timePickerTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<ToggleButtonsThemeData>('toggleButtonsTheme', toggleButtonsTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TooltipThemeData>('tooltipTheme', tooltipTheme, level: DiagnosticLevel.debug));
   }
 }

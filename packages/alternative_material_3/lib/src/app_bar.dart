@@ -11,15 +11,14 @@ import 'package:flutter/widgets.dart';
 
 import 'action_buttons.dart';
 import 'app_bar_theme.dart';
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
 import 'debug.dart';
 import 'elevation.dart';
 import 'flexible_space_bar.dart';
-import 'icon_button.dart';
-import 'icon_button_theme.dart';
 import 'icons.dart';
 import 'material.dart';
 import 'material_state.dart';
@@ -134,7 +133,7 @@ class _PreferredAppBarSize extends Size {
 /// The default app bar [backgroundColor] is the overall theme's
 /// [ColorScheme.primary] if the overall theme's brightness is
 /// [Brightness.light]. Unfortunately this is the same as the default
-/// [ButtonStyle.foregroundColor] for [TextButton] for light themes.
+/// [ButtonStyle.textColor] for [TextButton] for light themes.
 /// In this case a preferable text button foreground color is
 /// [ColorScheme.onPrimary], a color that contrasts nicely with
 /// [ColorScheme.primary]. To remedy the problem, override
@@ -893,7 +892,7 @@ class _AppBarState extends State<AppBar> {
     if (leading == null && widget.automaticallyImplyLeading) {
       if (hasDrawer) {
         leading = DrawerButton(
-          style: IconButton.styleFrom(iconSize: overallIconTheme.size ?? 24),
+          style: ButtonStyle(iconSize: overallIconTheme.size ?? 24),
         );
         // TODO(chunhtai): remove (!hasEndDrawer && canPop) once internal tests
         // are migrated.
@@ -913,15 +912,15 @@ class _AppBarState extends State<AppBar> {
         effectiveIconButtonTheme = iconButtonTheme;
       } else {
         // The [IconButton.styleFrom] method is used to generate a correct [overlayColor] based on the [foregroundColor].
-        final ButtonStyle leadingIconButtonStyle = IconButton.styleFrom(
-          foregroundColor: overallIconTheme.color,
+        final ButtonStyle leadingIconButtonStyle = ButtonStyle(
+          labelColor: overallIconTheme.color != null
+              ? MaterialStateProperty.all(overallIconTheme.color!) : null,
           iconSize: overallIconTheme.size,
         );
 
         effectiveIconButtonTheme = IconButtonThemeData(
-          style: iconButtonTheme.style?.copyWith(
-            foregroundColor: leadingIconButtonStyle.foregroundColor,
-            overlayColor: leadingIconButtonStyle.overlayColor,
+          style: iconButtonTheme.style.copyWith(
+            labelColor: leadingIconButtonStyle.labelColor,
             iconSize: leadingIconButtonStyle.iconSize,
           )
         );
@@ -996,7 +995,7 @@ class _AppBarState extends State<AppBar> {
       );
     } else if (hasEndDrawer) {
       actions = EndDrawerButton(
-        style: IconButton.styleFrom(iconSize: overallIconTheme.size ?? 24),
+        style: ButtonStyle(iconSize: overallIconTheme.size ?? 24),
       );
     }
 
@@ -1006,15 +1005,15 @@ class _AppBarState extends State<AppBar> {
       if (actionsIconTheme == defaults.actionsIconTheme) {
         effectiveActionsIconButtonTheme = iconButtonTheme;
       } else {
-        final ButtonStyle actionsIconButtonStyle = IconButton.styleFrom(
-          foregroundColor: actionsIconTheme.color,
+        final ButtonStyle actionsIconButtonStyle = ButtonStyle(
+          labelColor: actionsIconTheme.color != null
+            ? MaterialStateProperty.all(actionsIconTheme.color!) : null,
           iconSize: actionsIconTheme.size,
         );
 
         effectiveActionsIconButtonTheme = IconButtonThemeData(
-          style: iconButtonTheme.style?.copyWith(
-            foregroundColor: actionsIconButtonStyle.foregroundColor,
-            overlayColor: actionsIconButtonStyle.overlayColor,
+          style: iconButtonTheme.style.copyWith(
+            labelColor: actionsIconButtonStyle.labelColor,
             iconSize: actionsIconButtonStyle.iconSize,
           )
         );

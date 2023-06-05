@@ -5,9 +5,10 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
+import 'buttons/text_button.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'text_button.dart';
 import 'theme.dart';
 
 const TextStyle _kToolbarButtonFontStyle = TextStyle(
@@ -66,17 +67,18 @@ class DesktopTextSelectionToolbarButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: TextButton(
-        style: TextButton.styleFrom(
+        theme: TextButtonThemeData(
+        style: ButtonStyle(
           alignment: Alignment.centerLeft,
-          enabledMouseCursor: SystemMouseCursors.basic,
-          disabledMouseCursor: SystemMouseCursors.basic,
-          foregroundColor: foregroundColor,
-          shape: const RoundedRectangleBorder(),
-          minimumSize: const Size(kMinInteractiveDimension, 36.0),
-          padding: _kToolbarButtonPadding,
+          mouseCursor: MaterialStateProperty.all(SystemMouseCursors.basic),
+          labelColor: MaterialStateProperty.all(foregroundColor),
+          containerShape: const RoundedRectangleBorder(),
+          minimumContainerWidth: MaterialStateProperty.all(36.0),
+          labelPadding: _kToolbarButtonPadding.left,
+        ),
         ),
         onPressed: onPressed,
-        child: child,
+        label: child,
       ),
     );
   }

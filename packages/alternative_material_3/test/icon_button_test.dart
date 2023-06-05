@@ -1566,7 +1566,7 @@ void main() {
               body: Center(
                 child: IconButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.resolveWith<Color>(getIconColor),
+                    textColor: MaterialStateProperty.resolveWith<Color>(getIconColor),
                   ),
                   isSelected: isSelected,
                   onPressed: () {
@@ -1630,7 +1630,7 @@ void main() {
                 // Specifying minimumSize to mimic the original minimumSize for
                 // RaisedButton so that the semantics tree's rect and transform
                 // match the original version of this test.
-                minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+                containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
               ),
               onPressed: () { },
               icon: const Icon(Icons.ac_unit),

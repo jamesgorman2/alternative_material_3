@@ -5,9 +5,9 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button_bar_theme.dart';
-import 'button_theme.dart';
-import 'dialog.dart';
+import '../../alternative_material_3/lib/src/button_bar_theme.dart';
+import '../../alternative_material_3/lib/src/button_theme.dart';
+import '../../alternative_material_3/lib/src/dialog.dart';
 
 /// An end-aligned row of buttons, laying out into a column if there is not
 /// enough horizontal space.

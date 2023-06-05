@@ -7,14 +7,14 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
 import 'divider.dart';
 import 'divider_theme.dart';
 import 'elevation.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'input_border.dart';
@@ -739,7 +739,9 @@ class _ViewContentState extends State<_ViewContent> {
     final Widget defaultLeading = IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () { Navigator.of(context).pop(); },
-      style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+      theme: const IconButtonThemeData(
+        style: ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+      ),
     );
 
     final List<Widget> defaultTrailing = <Widget>[

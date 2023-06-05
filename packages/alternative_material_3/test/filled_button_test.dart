@@ -306,7 +306,7 @@ void main() {
             child: FilledButtonTheme(
               data: FilledButtonThemeData(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                  textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
                 ),
               ),
               child: Builder(
@@ -383,7 +383,7 @@ void main() {
             child: FilledButtonTheme(
               data: FilledButtonThemeData(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                  textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
                 ),
               ),
               child: Builder(
@@ -764,7 +764,7 @@ void main() {
               // Specifying minimumSize to mimic the original minimumSize for
               // RaisedButton so that the semantics tree's rect and transform
               // match the original version of this test.
-              minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+              containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
             ),
             onPressed: () { },
             child: const Text('ABC'),
@@ -804,7 +804,7 @@ void main() {
       // Specifying minimumSize to mimic the original minimumSize for
       // RaisedButton so that the corresponding button size matches
       // the original version of this test.
-      minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+      containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
     );
 
     Widget buildFrame(MaterialTapTargetSize tapTargetSize, Key key) {
@@ -870,7 +870,7 @@ void main() {
                   // Specifying minimumSize to mimic the original minimumSize for
                   // RaisedButton so that the corresponding button size matches
                   // the original version of this test.
-                  minimumSize: const MaterialStatePropertyAll<Size>(Size(88, 36)),
+                  containerHeight: const MaterialStatePropertyAll<Size>(Size(88, 36)),
                 ),
                 key: key,
                 onPressed: () {},

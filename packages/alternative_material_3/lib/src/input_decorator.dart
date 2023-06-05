@@ -9,11 +9,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'buttons/button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'constants.dart';
-import 'icon_button.dart';
-import 'icon_button_theme.dart';
 import 'input_border.dart';
 import 'material.dart';
 import 'material_state.dart';
@@ -2259,8 +2258,8 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
               ),
               child: IconButtonTheme(
                 data: IconButtonThemeData(
-                style: IconButton.styleFrom(
-                  foregroundColor: _getPrefixIconColor(themeData, defaults),
+                style: ButtonStyle(
+                  labelColor: MaterialStateProperty.all(_getPrefixIconColor(themeData, defaults)),
                   iconSize: iconSize,
                   ),
                 ),
@@ -2294,8 +2293,8 @@ class _InputDecoratorState extends State<InputDecorator> with TickerProviderStat
                 ),
                 child: IconButtonTheme(
                   data: IconButtonThemeData(
-                  style: IconButton.styleFrom(
-                    foregroundColor: _getSuffixIconColor(themeData, defaults),
+                  style: ButtonStyle(
+                    labelColor: MaterialStateProperty.all(_getSuffixIconColor(themeData, defaults)),
                     iconSize: iconSize,
                     ),
                   ),

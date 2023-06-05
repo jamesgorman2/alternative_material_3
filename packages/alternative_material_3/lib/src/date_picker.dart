@@ -10,7 +10,9 @@ import 'package:flutter/widgets.dart';
 
 import 'action_buttons.dart' show CloseButton;
 import 'app_bar.dart';
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
+import 'buttons/text_button.dart';
 import 'calendar_date_picker.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
@@ -20,7 +22,6 @@ import 'debug.dart';
 import 'dialog.dart';
 import 'divider.dart';
 import 'elevation.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'input_border.dart';
@@ -30,7 +31,6 @@ import 'material.dart';
 import 'material_localizations.dart';
 import 'material_state.dart';
 import 'scaffold.dart';
-import 'text_button.dart';
 import 'text_field.dart';
 import 'text_theme.dart';
 import 'theme.dart';
@@ -501,11 +501,11 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
         children: <Widget>[
           TextButton(
             onPressed: _handleCancel,
-            child: Text(widget.cancelText ?? localizations.cancelButtonLabel),
+            label: Text(widget.cancelText ?? localizations.cancelButtonLabel),
           ),
           TextButton(
             onPressed: _handleOk,
-            child: Text(widget.confirmText ?? localizations.okButtonLabel),
+            label: Text(widget.confirmText ?? localizations.okButtonLabel),
           ),
         ],
       ),
@@ -565,8 +565,13 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
         picker = calendarDatePicker();
         entryModeButton = IconButton(
           icon:  const Icon(Icons.edit_outlined),
-          color: headerForegroundColor,
-          tooltip: localizations.inputDateModeButtonLabel,
+          theme: headerForegroundColor != null
+              ? IconButtonThemeData(
+              style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(headerForegroundColor),
+              )
+          ) : null,
+          tooltipMessage: localizations.inputDateModeButtonLabel,
           onPressed: _handleEntryModeToggle,
         );
 
@@ -578,8 +583,13 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
         picker = inputDatePicker();
         entryModeButton = IconButton(
           icon: const Icon(Icons.calendar_today),
-          color: headerForegroundColor,
-          tooltip: localizations.calendarModeButtonLabel,
+          theme: headerForegroundColor != null
+              ? IconButtonThemeData(
+              style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(headerForegroundColor),
+              )
+          ) : null,
+          tooltipMessage: localizations.calendarModeButtonLabel,
           onPressed: _handleEntryModeToggle,
         );
 
@@ -1356,8 +1366,8 @@ class _DateRangePickerDialogState extends State<DateRangePickerDialog> with Rest
           entryModeButton: showEntryModeButton
             ? IconButton(
                 icon: const Icon(Icons.edit_outlined),
-                padding: EdgeInsets.zero,
-                tooltip: localizations.inputDateModeButtonLabel,
+                // padding: EdgeInsets.zero, FIXME
+                tooltipMessage: localizations.inputDateModeButtonLabel,
                 onPressed: _handleEntryModeToggle,
               )
             : null,
@@ -1414,8 +1424,8 @@ class _DateRangePickerDialogState extends State<DateRangePickerDialog> with Rest
           entryModeButton: showEntryModeButton
             ? IconButton(
                 icon: const Icon(Icons.calendar_today),
-                padding: EdgeInsets.zero,
-                tooltip: localizations.calendarModeButtonLabel,
+                // padding: EdgeInsets.zero, FIXME
+                tooltipMessage: localizations.calendarModeButtonLabel,
                 onPressed: _handleEntryModeToggle,
               )
             : null,
@@ -1509,10 +1519,19 @@ class _CalendarRangePickerDialog extends StatelessWidget {
     final TextStyle? endDateStyle = headlineStyle?.apply(
         color: selectedEndDate != null ? headerForeground : headerDisabledForeground,
     );
-    final ButtonStyle buttonStyle = TextButton.styleFrom(
-      foregroundColor: headerForeground,
-      disabledForegroundColor: headerDisabledForeground
-    );
+    final TextButtonThemeData? buttonStyle = headerForeground != null &&
+        headerDisabledForeground != null
+          ? TextButtonThemeData(style:
+              ButtonStyle(
+                labelColor: MaterialStateProperty.resolveWith((states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return headerDisabledForeground;
+                  }
+                  return headerForeground;
+                })
+              ),
+            )
+          : null;
     final IconThemeData iconTheme = IconThemeData(color: headerForeground);
 
     return SafeArea(
@@ -1533,9 +1552,9 @@ class _CalendarRangePickerDialog extends StatelessWidget {
             if (orientation == Orientation.landscape && entryModeButton != null)
               entryModeButton!,
             TextButton(
-              style: buttonStyle,
+              theme: buttonStyle,
               onPressed: onConfirm,
-              child: Text(confirmText),
+              label: Text(confirmText),
             ),
             const SizedBox(width: 8),
           ],
@@ -2658,11 +2677,11 @@ class _InputDateRangePickerDialog extends StatelessWidget {
         children: <Widget>[
           TextButton(
             onPressed: onCancel,
-            child: Text(cancelText ?? localizations.cancelButtonLabel),
+            label: Text(cancelText ?? localizations.cancelButtonLabel),
           ),
           TextButton(
             onPressed: onConfirm,
-            child: Text(confirmText ?? localizations.okButtonLabel),
+            label: Text(confirmText ?? localizations.okButtonLabel),
           ),
         ],
       ),

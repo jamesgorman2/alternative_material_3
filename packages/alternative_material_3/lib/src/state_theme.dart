@@ -64,8 +64,8 @@ class StateThemeData with Diagnosticable {
 
   /// The opacity to use when drawing hover state layers.
   ///
-  /// The default value is 0.06.
-  double get hoverOpacity => _hoverOpacity ?? 0.06;
+  /// The default value is 0.08.
+  double get hoverOpacity => _hoverOpacity ?? 0.08;
   final double? _hoverOpacity;
 
   /// The opacity to use when drawing focus state layers.

@@ -309,7 +309,7 @@ void main() {
             child: OutlinedButtonTheme(
               data: OutlinedButtonThemeData(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                  textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
                 ),
               ),
               child: Builder(
@@ -381,7 +381,7 @@ void main() {
           body: Center(
             child: OutlinedButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
+                textColor: MaterialStateProperty.resolveWith<Color>(getTextColor),
               ),
               onPressed: () {},
               focusNode: focusNode,
@@ -450,7 +450,7 @@ void main() {
             child: OutlinedButton.icon(
               key: buttonKey,
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(getIconColor),
+                textColor: MaterialStateProperty.resolveWith<Color>(getIconColor),
               ),
               icon: const Icon(Icons.add),
               label: const Text('OutlinedButton'),
@@ -895,7 +895,7 @@ void main() {
               // Specifying minimumSize to mimic the original minimumSize for
               // RaisedButton so that the corresponding button size matches
               // the original version of this test.
-              minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+              containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
             ),
             onPressed: () {},
             child: const Text('ABC'),
@@ -945,7 +945,7 @@ void main() {
                   // Specifying minimumSize to mimic the original minimumSize for
                   // RaisedButton so that the corresponding button size matches
                   // the original version of this test.
-                  minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+                  containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
                 ),
                 onPressed: () {},
                 child: const Text('ABC'),
@@ -974,7 +974,7 @@ void main() {
                   // Specifying minimumSize to mimic the original minimumSize for
                   // RaisedButton so that the corresponding button size matches
                   // the original version of this test.
-                  minimumSize: MaterialStatePropertyAll<Size>(Size(88, 36)),
+                  containerHeight: MaterialStatePropertyAll<Size>(Size(88, 36)),
                 ),
                 onPressed: () {},
                 child: const Text('ABC'),
@@ -1058,7 +1058,7 @@ void main() {
               child: OutlinedButton(
                 style: ButtonStyle(
                   visualDensity: visualDensity,
-                  minimumSize: ButtonStyleButton.allOrNull(const Size(64, 36)),
+                  containerHeight: ButtonStyleButton.allOrNull(const Size(64, 36)),
                 ),
                 key: key,
                 onPressed: () {},

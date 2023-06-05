@@ -2,14 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-
-import 'button_style.dart';
-import 'theme.dart';
-
-// Examples can assume:
-// late BuildContext context;
+part of 'button_style.dart';
 
 /// A [ButtonStyle] that overrides the default appearance of
 /// [TextButton]s when it's used with [TextButtonTheme] or with the
@@ -36,7 +29,13 @@ class TextButtonThemeData with Diagnosticable {
   /// Creates a [TextButtonThemeData].
   ///
   /// The [style] may be null.
-  const TextButtonThemeData({ this.style });
+  const TextButtonThemeData({ButtonStyle? style}) : style = style ?? const ButtonStyle();
+
+  /// Copy this TextButtonThemeData and set any default values that
+  /// require a [BuildContext] set, such as colors and text themes.
+  TextButtonThemeData withContext(BuildContext context) => TextButtonThemeData(
+        style: _LateResolvingTextButtonStyle(style, context),
+      );
 
   /// Overrides for [TextButton]'s default style.
   ///
@@ -45,15 +44,24 @@ class TextButtonThemeData with Diagnosticable {
   /// [TextButton.defaultStyleOf].
   ///
   /// If [style] is null, then this theme doesn't override anything.
-  final ButtonStyle? style;
+  final ButtonStyle style;
 
   /// Linearly interpolate between two text button themes.
-  static TextButtonThemeData? lerp(TextButtonThemeData? a, TextButtonThemeData? b, double t) {
+  static TextButtonThemeData? lerp(
+      TextButtonThemeData? a, TextButtonThemeData? b, double t) {
     if (identical(a, b)) {
       return a;
     }
     return TextButtonThemeData(
-      style: ButtonStyle.lerp(a?.style, b?.style, t),
+      style: ButtonStyle.lerp(a?.style, b?.style, t) ?? const ButtonStyle(),
+    );
+  }
+
+  /// Creates a copy of this object with fields replaced with the
+  /// non-null values from [other].
+  TextButtonThemeData mergeWith(TextButtonThemeData? other) {
+    return TextButtonThemeData(
+      style: style.merge(other?.style),
     );
   }
 
@@ -74,7 +82,8 @@ class TextButtonThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null));
+    properties.add(DiagnosticsProperty<ButtonStyle>('style', style,
+        defaultValue: const ButtonStyle()));
   }
 }
 
@@ -113,8 +122,39 @@ class TextButtonTheme extends InheritedTheme {
   /// TextButtonThemeData theme = TextButtonTheme.of(context);
   /// ```
   static TextButtonThemeData of(BuildContext context) {
-    final TextButtonTheme? buttonTheme = context.dependOnInheritedWidgetOfExactType<TextButtonTheme>();
+    final TextButtonTheme? buttonTheme =
+        context.dependOnInheritedWidgetOfExactType<TextButtonTheme>();
     return buttonTheme?.data ?? Theme.of(context).textButtonTheme;
+  }
+
+  /// Return an [TextButtonThemeData] that merges the nearest ancestor
+  /// [TextButtonThemeData]
+  /// and the [TextButtonThemeData] provided by the nearest [Theme].
+  ///
+  /// A current context theme can also be provided, used when the
+  /// StateThemeData is passed as a parameter to a widget other than
+  /// StateTheme.
+  ///
+  /// See also:
+  ///
+  /// * [BuildContext.dependOnInheritedWidgetOfExactType]
+  static TextButtonThemeData resolve(
+    BuildContext context, [
+    TextButtonThemeData? currentContextTheme,
+  ]) {
+    final ancestorTheme =
+        context.dependOnInheritedWidgetOfExactType<TextButtonTheme>()?.data;
+    final List<TextButtonThemeData> ancestorThemes = [
+      Theme.of(context).textButtonTheme,
+      if (ancestorTheme != null) ancestorTheme,
+      if (currentContextTheme != null) currentContextTheme,
+    ];
+    if (ancestorThemes.length > 1) {
+      return ancestorThemes
+          .reduce((acc, e) => acc.mergeWith(e))
+          .withContext(context);
+    }
+    return ancestorThemes.first.withContext(context);
   }
 
   @override
@@ -124,4 +164,37 @@ class TextButtonTheme extends InheritedTheme {
 
   @override
   bool updateShouldNotify(TextButtonTheme oldWidget) => data != oldWidget.data;
+}
+
+class _LateResolvingTextButtonStyle extends _LateResolvingButtonStyle {
+  _LateResolvingTextButtonStyle(super.other, super.context) : super();
+
+  @override
+  MaterialStateProperty<Color> get labelColor =>
+      _labelColor ??
+      MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return _colors.onSurface.withOpacity(stateTheme.disabledOpacity);
+        }
+        return _colors.primary;
+      });
+
+  @override
+  MaterialStateProperty<Color> get containerColor =>
+      _containerColor ?? MaterialStateProperty.all(Colors.transparent);
+
+  @override
+  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+      _stateLayers ??
+      MaterialStateProperty.all(
+        StateLayerTheme(
+          hoverColor: StateLayer(_colors.primary, stateTheme.hoverOpacity),
+          focusColor: StateLayer(_colors.primary, stateTheme.focusOpacity),
+          pressColor: StateLayer(_colors.primary, stateTheme.pressOpacity),
+        ),
+      );
+
+  @override
+  MaterialStateProperty<Elevation> get elevation =>
+      _elevation ?? MaterialStateProperty.all(Elevation.level0);
 }

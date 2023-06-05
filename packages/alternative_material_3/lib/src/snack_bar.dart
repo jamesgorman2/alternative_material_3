@@ -5,18 +5,17 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
+import 'buttons/text_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'elevation.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'material.dart';
 import 'material_state.dart';
 import 'scaffold.dart';
 import 'snack_bar_theme.dart';
-import 'text_button.dart';
-import 'text_button_theme.dart';
 import 'theme.dart';
 
 // Examples can assume:
@@ -202,12 +201,12 @@ class _SnackBarActionState extends State<SnackBarAction> {
     }
 
     return TextButton(
-      style: ButtonStyle(
-        foregroundColor: resolveForegroundColor(),
-        backgroundColor: resolveBackgroundColor(),
-      ),
+      theme: TextButtonThemeData(style: ButtonStyle(
+        labelColor: resolveForegroundColor(),
+        containerColor: resolveBackgroundColor(),
+      ),),
       onPressed: _haveTriggeredAction ? null : _handlePressed,
-      child: Text(widget.label),
+      label: Text(widget.label),
     );
   }
 }
@@ -596,12 +595,19 @@ class _SnackBarState extends State<SnackBar> {
     );
 
 
+    final Color? iconColor = widget.closeIconColor ??
+        snackBarTheme.closeIconColor ?? defaults.closeIconColor;
     final IconButton? iconButton = showCloseIcon
         ? IconButton(
             icon: const Icon(Icons.close),
-            iconSize: 24.0,
-            color: widget.closeIconColor ?? snackBarTheme.closeIconColor ?? defaults.closeIconColor,
-            onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss),
+                   onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss),
+            theme: IconButtonThemeData(
+              style: ButtonStyle(
+                iconSize: 24.0,
+                labelColor: iconColor != null
+                  ? MaterialStateProperty.all(iconColor) : null
+              )
+            ),
           )
         : null;
 
@@ -616,7 +622,7 @@ class _SnackBarState extends State<SnackBar> {
       ..layout();
     final double actionAndIconWidth = actionTextPainter.size.width +
         (widget.action != null ? actionHorizontalMargin : 0) +
-        (showCloseIcon ? (iconButton?.iconSize ?? 0 + iconHorizontalMargin) : 0);
+        (showCloseIcon ? (iconButton?.theme?.style.iconSize ?? 0 + iconHorizontalMargin) : 0);
 
     final EdgeInsets margin = widget.margin?.resolve(TextDirection.ltr) ?? snackBarTheme.insetPadding ?? defaults.insetPadding!;
 
@@ -633,9 +639,9 @@ class _SnackBarState extends State<SnackBar> {
           padding: EdgeInsets.symmetric(horizontal: actionHorizontalMargin),
           child: TextButtonTheme(
             data: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: buttonColor,
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(buttonColor),
+                labelPadding: horizontalPadding,
               ),
             ),
             child: widget.action!,

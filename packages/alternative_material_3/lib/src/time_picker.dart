@@ -10,7 +10,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'button_style.dart';
+import 'buttons/button_style.dart';
+import 'buttons/icon_button.dart';
+import 'buttons/text_button.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
 import 'curves.dart';
@@ -18,7 +20,6 @@ import 'debug.dart';
 import 'dialog.dart';
 import 'elevation.dart';
 import 'feedback.dart';
-import 'icon_button.dart';
 import 'icons.dart';
 import 'ink_well.dart';
 import 'input_border.dart';
@@ -26,7 +27,6 @@ import 'input_decorator.dart';
 import 'material.dart';
 import 'material_localizations.dart';
 import 'material_state.dart';
-import 'text_button.dart';
 import 'text_form_field.dart';
 import 'text_theme.dart';
 import 'theme.dart';
@@ -2314,10 +2314,12 @@ class _TimePickerDialogState extends State<TimePickerDialog> with RestorationMix
       children: <Widget>[
         if (_entryMode.value == TimePickerEntryMode.dial || _entryMode.value == TimePickerEntryMode.input)
           IconButton(
-            style: IconButton.styleFrom(foregroundColor: entryModeIconColor),
+            theme: IconButtonThemeData(
+              style: ButtonStyle(labelColor: MaterialStateProperty.all(entryModeIconColor)),
+            ),
             onPressed: _toggleEntryMode,
             icon: Icon(_entryMode.value == TimePickerEntryMode.dial ? Icons.keyboard_outlined : Icons.access_time),
-            tooltip: _entryMode.value == TimePickerEntryMode.dial
+            tooltipMessage: _entryMode.value == TimePickerEntryMode.dial
                 ? MaterialLocalizations.of(context).inputTimeModeButtonLabel
                 : MaterialLocalizations.of(context).dialModeButtonLabel,
           ),
@@ -2331,11 +2333,11 @@ class _TimePickerDialogState extends State<TimePickerDialog> with RestorationMix
               children: <Widget>[
                 TextButton(
                   onPressed: _handleCancel,
-                  child: Text(widget.cancelText ?? localizations.cancelButtonLabel),
+                  label: Text(widget.cancelText ?? localizations.cancelButtonLabel),
                 ),
                 TextButton(
                   onPressed: _handleOk,
-                  child: Text(widget.confirmText ?? localizations.okButtonLabel),
+                  label: Text(widget.confirmText ?? localizations.okButtonLabel),
                 ),
               ],
             ),
@@ -3036,12 +3038,12 @@ class _TimePickerDefaultsM3 extends _TimePickerDefaults {
 
   @override
   ButtonStyle get cancelButtonStyle {
-    return TextButton.styleFrom();
+    return const TextButtonThemeData().style;
   }
 
   @override
   ButtonStyle get confirmButtonStyle {
-    return TextButton.styleFrom();
+    return const TextButtonThemeData().style;
   }
 
   @override
