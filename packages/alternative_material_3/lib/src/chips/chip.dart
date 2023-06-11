@@ -6,7 +6,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../constants.dart';
 import '../debug.dart';
 import '../elevation.dart';
 import '../ink_well.dart';

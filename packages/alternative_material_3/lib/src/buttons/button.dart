@@ -7,19 +7,10 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
-import '../colors.dart';
-import '../constants.dart';
-import '../elevation.dart';
-import '../ink_well.dart';
+import '../../material.dart';
+import '../animation/button_content.dart';
 import '../interaction/hit_detection.dart';
-import '../material.dart';
-import '../material_state.dart';
-import '../state_theme.dart';
-import '../theme.dart';
-import '../theme_data.dart';
-import 'button_style.dart';
 
 export 'button_style.dart';
 export 'elevated_button.dart';
@@ -64,7 +55,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.statesController,
     this.icon,
-    required this.label,
+    this.label,
     this.isSelected = false,
   });
 
@@ -130,7 +121,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
   /// {@template alternative_material_3.button.label}
   /// The button's label.
   /// {@endtemplate}
-  final Widget label;
+  final Widget? label;
 
   /// {@template alternative_material_3.button.isSelected}
   /// Sets [MaterialState.selected].
@@ -238,9 +229,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
 ///  * [FilledButton], a filled ButtonStyleButton that doesn't elevate when pressed.
 ///  * [OutlinedButton], similar to [TextButton], but with an outline.
 ///  * [TextButton], a simple button without a shadow.
-class _ButtonStyleState extends State<ButtonStyleButton>
-    with TickerProviderStateMixin {
-  AnimationController? animationController;
+class _ButtonStyleState extends State<ButtonStyleButton> {
   Elevation? elevation;
   Color? containerColor;
   MaterialStatesController? internalStatesController;
@@ -295,7 +284,6 @@ class _ButtonStyleState extends State<ButtonStyleButton>
   void dispose() {
     statesController.removeListener(handleStatesControllerChange);
     internalStatesController?.dispose();
-    animationController?.dispose();
     super.dispose();
   }
 
@@ -308,10 +296,10 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     final Color iconColor = style.iconColor?.resolve(states) ?? labelColor;
     final double iconSize = style.iconSize;
     final TextStyle textStyle = style.labelStyle.copyWith(color: labelColor);
-    final Color newContainerColor = style.containerColor.resolve(states);
+    final Color containerColor = style.containerColor.resolve(states);
     final Color shadowColor = style.shadowColor;
 
-    final Elevation newElevation = style.elevation.resolve(states);
+    final Elevation elevation = style.elevation.resolve(states);
 
     final double iconPadding = style.iconPadding;
     final double internalPadding = style.internalPadding;
@@ -368,49 +356,24 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     // did, VisualDensity.compact, the default for desktop/web, would
     // reduce the horizontal padding to zero.
     final double dx = math.max(0, densityAdjustment.dx);
-    final double dy = densityAdjustment.dy;
-    final EdgeInsetsGeometry padding = EdgeInsetsDirectional.only(
-      start: scalePadding(widget.icon != null ? iconPadding : labelPadding),
-      end: scalePadding(labelPadding),
-    ).add(EdgeInsets.fromLTRB(dx, dy, dx, dy)).clamp(EdgeInsets.zero,
-        EdgeInsetsGeometry.infinity); // ignore_clamp_double_lint
-
-    // If an opaque button's background is becoming translucent while its
-    // elevation is changing, change the elevation first. Material implicitly
-    // animates its elevation but not its color. SKIA renders non-zero
-    // elevations as a shadow colored fill behind the Material's background.
-    if (animationDuration > Duration.zero &&
-        elevation != null &&
-        containerColor != null &&
-        elevation != newElevation &&
-        containerColor!.value != newContainerColor.value &&
-        containerColor!.opacity == 1 &&
-        newContainerColor.opacity < 1 &&
-        newElevation == Elevation.level0) {
-      if (animationController?.duration != animationDuration) {
-        animationController?.dispose();
-        animationController = AnimationController(
-          duration: animationDuration,
-          vsync: this,
-        )..addStatusListener((AnimationStatus status) {
-            if (status == AnimationStatus.completed) {
-              setState(() {}); // Rebuild with the final background color.
-            }
-          });
-      }
-      animationController!.value = 0;
-      animationController!.forward();
-    } else {
-      containerColor = newContainerColor;
-    }
-    elevation = newElevation;
+    final double startPadding = math.max(
+      0.0,
+      scalePadding(widget.icon != null ? iconPadding : labelPadding) + dx,
+    );
+    final double middlePadding = widget.icon == null || widget.label == null
+        ? 0.0
+        : scalePadding(internalPadding);
+    final double endPadding = math.max(
+      0.0,
+      scalePadding(widget.label == null ? iconPadding : labelPadding) + dx,
+    );
 
     final Widget result = ConstrainedBox(
       constraints: containerConstraints,
       child: SizedBox(
         height: containerHeight,
         child: Material(
-          elevation: elevation!,
+          elevation: elevation,
           textStyle: textStyle,
           shape: containerShape,
           color: containerColor,
@@ -437,44 +400,27 @@ class _ButtonStyleState extends State<ButtonStyleButton>
             splashColor: stateLayers.pressColor,
             child: IconTheme.merge(
               data: IconThemeData(color: iconColor, size: iconSize),
-              child: Padding(
-                padding: padding,
+              child: AnimatedDefaultTextStyle(
+                duration: animationDuration,
+                style: style.labelStyle,
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+                curve: Curves.easeInOut,
                 child: Align(
-                  alignment: alignment,
-                  widthFactor: 1.0,
-                  heightFactor: 1.0,
-                  child: AnimatedSize(
-                    duration: animationDuration,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        widget.icon ?? const SizedBox.shrink(),
-                        SizedBox(
-                          width: widget.icon == null
-                              ? 0.0
-                              : scalePadding(internalPadding),
-                        ),
-                        widget.label,
-                        // AnimatedSize(
-                        //   duration: animationDuration,
-                        //   child: widget.icon ?? const SizedBox.shrink(),
-                        // ),
-                        // AnimatedSize(
-                        //   duration: animationDuration,
-                        //   child: SizedBox(
-                        //     width: widget.icon == null
-                        //         ? 0.0
-                        //         : scalePadding(internalPadding),
-                        //   ),
-                        // ),
-                        // AnimatedSize(
-                        //   duration: animationDuration,
-                        //   child: widget.label,
-                        // ),
-                      ],
-                    ),
-                  ),
-                ),
+                    alignment: alignment,
+                    widthFactor: 1.0,
+                    heightFactor: 1.0,
+                    child: ButtonContent(
+                      startPadding: startPadding,
+                      endLeadingPadding: middlePadding,
+                      startTrailingPadding: 0.0,
+                      endPadding: endPadding,
+                      leadingIcon: widget.icon,
+                      label: widget.label,
+                      trailingIcon: null,
+                      animationDuration: animationDuration,
+                      containerConstraints: containerConstraints,
+                    )),
               ),
             ),
           ),

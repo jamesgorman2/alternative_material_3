@@ -132,7 +132,7 @@ abstract class SelectableIconButton extends StatelessWidget {
         onFocusChange: onFocusChange,
         focusNode: focusNode,
         autofocus: autofocus,
-        label: Builder(builder: (context) {
+        icon: Builder(builder: (context) {
           return AnimatedSwitcher(
             duration: resolveStyle(context).animationDuration,
             switchInCurve: Curves.easeInOut,
@@ -157,7 +157,7 @@ class _IconButton extends ButtonStyleButton {
     required super.onFocusChange,
     required super.focusNode,
     required super.autofocus,
-    required super.label,
+    required super.icon,
     required super.isSelected,
     super.clipBehavior,
     required ButtonStyle Function(BuildContext context) resolveStyle,

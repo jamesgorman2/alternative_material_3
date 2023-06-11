@@ -25,19 +25,11 @@ class FloatingActionButtonPage extends StatelessWidget {
             colorScheme: colorSchemeLight,
           ),
           const SizedBox(height: 24.0),
-          ToggleSample(
-            colorScheme: colorSchemeLight,
-          ),
-          const SizedBox(height: 24.0),
           ExpandingSample(
             colorScheme: colorSchemeLight,
           ),
           const SizedBox(height: 24.0),
           ButtonsSample(
-            colorScheme: colorSchemeDark,
-          ),
-          const SizedBox(height: 24.0),
-          ToggleSample(
             colorScheme: colorSchemeDark,
           ),
           const SizedBox(height: 24.0),
@@ -270,67 +262,6 @@ class ButtonsSample extends StatelessWidget {
                 label: const Text('Extended'),
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ToggleSample extends StatefulWidget {
-  const ToggleSample({
-    super.key,
-    required this.colorScheme,
-  });
-
-  final ColorScheme colorScheme;
-
-  @override
-  State<ToggleSample> createState() => _ToggleSampleState();
-}
-
-class _ToggleSampleState extends State<ToggleSample> {
-  List<bool> selected = List.filled(4, false);
-
-  void handleOnSelected(int i) {
-    setState(() {
-      selected[i] = !selected[i];
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ComponentCard(
-      colorScheme: widget.colorScheme,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FilledIconButton.toggle(
-            onPressed: () => handleOnSelected(0),
-            icon: const Icon(Icons.star_outline),
-            selectedIcon: const Icon(Icons.star),
-            isSelected: selected[0],
-          ),
-          const SizedBox(width: 24),
-          FilledTonalIconButton.toggle(
-            onPressed: () => handleOnSelected(1),
-            icon: const Icon(Icons.star_outline),
-            selectedIcon: const Icon(Icons.star),
-            isSelected: selected[1],
-          ),
-          const SizedBox(width: 24),
-          OutlinedIconButton(
-            onPressed: () => handleOnSelected(2),
-            icon: const Icon(Icons.star_outline),
-            selectedIcon: const Icon(Icons.star),
-            isSelected: selected[2],
-          ),
-          const SizedBox(width: 24),
-          IconButton(
-            onPressed: () => handleOnSelected(3),
-            icon: const Icon(Icons.star_outline),
-            selectedIcon: const Icon(Icons.star),
-            isSelected: selected[3],
           ),
         ],
       ),

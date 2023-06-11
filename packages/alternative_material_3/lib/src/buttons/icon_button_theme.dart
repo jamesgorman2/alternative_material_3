@@ -253,4 +253,7 @@ class _LateResolvingIconButtonStyle extends _LateResolvingButtonStyle {
 
   @override
   double get labelPadding => _labelPadding ?? 0.0;
+
+  @override
+  double get iconPadding => _iconPadding ?? 0.0;
 }
