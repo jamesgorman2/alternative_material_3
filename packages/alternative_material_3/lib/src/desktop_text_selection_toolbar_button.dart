@@ -73,7 +73,7 @@ class DesktopTextSelectionToolbarButton extends StatelessWidget {
           mouseCursor: MaterialStateProperty.all(SystemMouseCursors.basic),
           labelColor: MaterialStateProperty.all(foregroundColor),
           containerShape: const RoundedRectangleBorder(),
-          minimumContainerWidth: MaterialStateProperty.all(36.0),
+          minimumContainerWidth: 36.0,
           labelPadding: _kToolbarButtonPadding.left,
         ),
         ),

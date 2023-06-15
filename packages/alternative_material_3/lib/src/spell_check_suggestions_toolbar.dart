@@ -11,6 +11,7 @@ import 'colors.dart';
 import 'elevation.dart';
 import 'material.dart';
 import 'spell_check_suggestions_toolbar_layout_delegate.dart';
+import 'text_field/widgets/editable_text.dart';
 import 'text_selection_toolbar_text_button.dart';
 
 // The default height of the SpellCheckSuggestionsToolbar, which
@@ -49,7 +50,7 @@ class SpellCheckSuggestionsToolbar extends StatelessWidget {
   ///    but builds an iOS-style toolbar.
   SpellCheckSuggestionsToolbar.editableText({
     super.key,
-    required EditableTextState editableTextState,
+    required EditableTextM3State editableTextState,
   }) : buttonItems = buildButtonItems(editableTextState) ?? <ContextMenuButtonItem>[],
        anchor = getToolbarAnchor(editableTextState.contextMenuAnchors);
 
@@ -77,7 +78,7 @@ class SpellCheckSuggestionsToolbar extends StatelessWidget {
   /// Builds the button items for the toolbar based on the available
   /// spell check suggestions.
   static List<ContextMenuButtonItem>? buildButtonItems(
-    EditableTextState editableTextState,
+    EditableTextM3State editableTextState,
   ) {
     // Determine if composing region is misspelled.
     final SuggestionSpan? spanAtCursorIndex =
@@ -128,7 +129,7 @@ class SpellCheckSuggestionsToolbar extends StatelessWidget {
     return buttonItems;
   }
 
-  static void _replaceText(EditableTextState editableTextState, String text, TextRange replacementRange) {
+  static void _replaceText(EditableTextM3State editableTextState, String text, TextRange replacementRange) {
     // Replacement cannot be performed if the text is read only or obscured.
     assert(!editableTextState.widget.readOnly && !editableTextState.widget.obscureText);
 

@@ -10,7 +10,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../colors.dart';
-import '../constants.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
 import '../interaction/hit_detection.dart';
@@ -137,6 +136,11 @@ abstract class ButtonStyleButton extends StatefulWidget {
   /// {@endtemplate}
   final bool isSelected;
 
+  /// {@template alternative_material_3.button.isSelected}
+  /// True if the button has a focus node and is focussed.
+  /// {@endtemplate}
+  bool get isFocussed => focusNode?.hasFocus ?? false;
+
   /// {@template alternative_material_3.button.resolveStyle}
   /// Returns a non-null [ButtonStyle] that's based primarily on the [Theme]'s
   /// [ThemeData.textTheme] and [ThemeData.colorScheme].
@@ -250,6 +254,10 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     setState(() {});
   }
 
+  void handleFocusChanged() {
+    statesController.update(MaterialState.focused, widget.isFocussed);
+  }
+
   MaterialStatesController get statesController =>
       widget.statesController ?? internalStatesController!;
 
@@ -259,6 +267,7 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     }
     statesController.update(MaterialState.disabled, !widget.enabled);
     statesController.update(MaterialState.selected, widget.isSelected);
+    statesController.update(MaterialState.focused, widget.isFocussed);
     statesController.addListener(handleStatesControllerChange);
   }
 
@@ -266,6 +275,7 @@ class _ButtonStyleState extends State<ButtonStyleButton>
   void initState() {
     super.initState();
     initStatesController();
+    widget.focusNode?.addListener(handleFocusChanged);
   }
 
   @override
@@ -289,6 +299,9 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     if (widget.isSelected != oldWidget.isSelected) {
       statesController.update(MaterialState.selected, widget.isSelected);
     }
+    if (widget.isFocussed != oldWidget.isFocussed) {
+      statesController.update(MaterialState.focused, widget.isFocussed);
+    }
   }
 
   @override
@@ -296,6 +309,7 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     statesController.removeListener(handleStatesControllerChange);
     internalStatesController?.dispose();
     animationController?.dispose();
+    widget.focusNode?.removeListener(handleFocusChanged);
     super.dispose();
   }
 
@@ -318,10 +332,9 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     final double labelPadding = style.labelPadding;
 
     final double containerHeight = style.containerHeight;
-    final double minimumContainerWidth =
-        style.minimumContainerWidth?.resolve(states) ?? 0.0;
+    final double minimumContainerWidth = style.minimumContainerWidth ?? 0.0;
     final double maximumContainerWidth =
-        style.maximumContainerWidth?.resolve(states) ?? double.infinity;
+        style.maximumContainerWidth ?? double.infinity;
 
     final BorderSide? outline = style.outline.resolve(states);
     final OutlinedBorder containerShape =
@@ -344,10 +357,9 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     final BoxConstraints containerConstraints =
         visualDensity.effectiveConstraints(
       BoxConstraints(
-        minWidth: minimumContainerWidth < maximumContainerWidth
-            ? minimumContainerWidth
-            : maximumContainerWidth,
-        maxWidth: maximumContainerWidth,
+        minWidth: minimumContainerWidth,
+        maxWidth: maximumContainerWidth < minimumContainerWidth
+          ? minimumContainerWidth : maximumContainerWidth,
         minHeight: containerHeight,
         maxHeight: containerHeight,
       ),

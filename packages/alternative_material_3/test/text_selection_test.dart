@@ -565,7 +565,7 @@ void main() {
                 child: Material(
                   child: TextField(
                     decoration: const InputDecoration(contentPadding: EdgeInsets.all(8.0)),
-                    style: const TextStyle(fontSize: 32, height: 1),
+                    textStyle: const TextStyle(fontSize: 32, height: 1),
                     maxLines: 2,
                     controller: controller,
                   ),

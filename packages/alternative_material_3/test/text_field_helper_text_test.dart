@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('TextField works correctly when changing helperText', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: Material(child: TextField(decoration: InputDecoration(helperText: 'Awesome')))));
+    await tester.pumpWidget(const MaterialApp(home: Material(child: TextField(decoration: InputDecoration(supportingText: 'Awesome')))));
     expect(find.text('Awesome'), findsNWidgets(1));
     await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('Awesome'), findsNWidgets(1));

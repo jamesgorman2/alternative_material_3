@@ -236,16 +236,10 @@ class _LateResolvingIconButtonStyle extends _LateResolvingButtonStyle {
   double get iconSize => _iconSize ?? 24;
 
   @override
-  MaterialStateProperty<double?>? get minimumContainerWidth =>
-      MaterialStateProperty.resolveWith((states) {
-        return _maximumContainerWidth?.resolve(states) ?? containerHeight;
-      });
+  double? get minimumContainerWidth =>_minimumContainerWidth ?? containerHeight;
 
   @override
-  MaterialStateProperty<double?>? get maximumContainerWidth =>
-      MaterialStateProperty.resolveWith((states) {
-        return _maximumContainerWidth?.resolve(states) ?? containerHeight;
-      });
+  double? get maximumContainerWidth => _maximumContainerWidth ?? containerHeight;
 
   @override
   MaterialStateProperty<Elevation> get elevation =>

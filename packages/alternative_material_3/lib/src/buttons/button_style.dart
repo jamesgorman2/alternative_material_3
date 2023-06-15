@@ -24,14 +24,23 @@ import '../theme.dart';
 import '../theme_data.dart';
 
 part 'elevated_button_theme.dart';
+
 part 'filled_button_theme.dart';
+
 part 'filled_icon_button_theme.dart';
+
 part 'filled_tonal_button_theme.dart';
+
 part 'filled_tonal_icon_button_theme.dart';
+
 part 'icon_button_theme.dart';
+
 part 'outlined_button_theme.dart';
+
 part 'outlined_icon_button_theme.dart';
+
 part 'segmented_button_theme.dart';
+
 part 'text_button_theme.dart';
 
 /// The visual properties that most buttons have in common.
@@ -173,8 +182,8 @@ class ButtonStyle with Diagnosticable {
     OutlinedBorder? containerShape,
     MaterialStateProperty<BorderSide?>? outline,
     double? containerHeight,
-    MaterialStateProperty<double?>? minimumContainerWidth,
-    MaterialStateProperty<double?>? maximumContainerWidth,
+    double? minimumContainerWidth,
+    double? maximumContainerWidth,
     MaterialStateProperty<MouseCursor>? mouseCursor,
     VisualDensity? visualDensity,
     MaterialTapTargetSize? tapTargetSize,
@@ -342,9 +351,8 @@ class ButtonStyle with Diagnosticable {
   ///
   /// If the resolved value is greater than or equal to the resolved value of
   /// [maximumContainerWidth], [minimumContainerWidth] will be ignored.
-  MaterialStateProperty<double?>? get minimumContainerWidth =>
-      _minimumContainerWidth;
-  final MaterialStateProperty<double?>? _minimumContainerWidth;
+  double? get minimumContainerWidth => _minimumContainerWidth;
+  final double? _minimumContainerWidth;
 
   /// The maximum width of the button's container.
   ///
@@ -353,9 +361,8 @@ class ButtonStyle with Diagnosticable {
   ///
   /// If the resolved value is less than or equal to the resolved value of
   /// [minimumContainerWidth], [minimumContainerWidth] will be ignored.
-  MaterialStateProperty<double?>? get maximumContainerWidth =>
-      _maximumContainerWidth;
-  final MaterialStateProperty<double?>? _maximumContainerWidth;
+  double? get maximumContainerWidth => _maximumContainerWidth;
+  final double? _maximumContainerWidth;
 
   /// The cursor for a mouse pointer when it enters or is hovering over
   /// this button's container.
@@ -451,8 +458,8 @@ class ButtonStyle with Diagnosticable {
     OutlinedBorder? containerShape,
     MaterialStateProperty<BorderSide?>? outline,
     double? containerHeight,
-    MaterialStateProperty<double?>? minimumContainerWidth,
-    MaterialStateProperty<double?>? maximumContainerWidth,
+    double? minimumContainerWidth,
+    double? maximumContainerWidth,
     MaterialStateProperty<MouseCursor>? mouseCursor,
     VisualDensity? visualDensity,
     MaterialTapTargetSize? tapTargetSize,
@@ -634,10 +641,10 @@ class ButtonStyle with Diagnosticable {
     properties.add(DiagnosticsProperty<double>(
         'containerHeight', _containerHeight,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<double?>>(
+    properties.add(DiagnosticsProperty<double>(
         'minimumContainerWidth', _minimumContainerWidth,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<double?>>(
+    properties.add(DiagnosticsProperty<double>(
         'maximumContainerWidth', _maximumContainerWidth,
         defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor>>(
@@ -689,7 +696,12 @@ class ButtonStyle with Diagnosticable {
         ColorExtensions.lerpNonNull,
       ),
       stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
-      stateLayers: MaterialStateProperty.lerpNonNull(a?._stateLayers, b?._stateLayers, t, StateLayerTheme.lerp,),
+      stateLayers: MaterialStateProperty.lerpNonNull(
+        a?._stateLayers,
+        b?._stateLayers,
+        t,
+        StateLayerTheme.lerp,
+      ),
       shadowColor: Color.lerp(a?._shadowColor, b?._shadowColor, t),
       elevation: MaterialStateProperty.lerpNonNull(
         a?._elevation,
@@ -704,17 +716,15 @@ class ButtonStyle with Diagnosticable {
           OutlinedBorder.lerp(a?._containerShape, b?._containerShape, t),
       outline: _lerpSides(a?._outline, b?._outline, t),
       containerHeight: lerpDouble(a?._containerHeight, b?._containerHeight, t),
-      minimumContainerWidth: MaterialStateProperty.lerpNonNull(
+      minimumContainerWidth: lerpDouble(
         a?._minimumContainerWidth,
         b?._minimumContainerWidth,
         t,
-        lerpDouble,
       ),
-      maximumContainerWidth: MaterialStateProperty.lerpNonNull(
+      maximumContainerWidth: lerpDouble(
         a?._maximumContainerWidth,
         b?._maximumContainerWidth,
         t,
-        lerpDouble,
       ),
       mouseCursor: t < 0.5 ? a?._mouseCursor : b?._mouseCursor,
       visualDensity:
@@ -782,8 +792,7 @@ class _LerpSides implements MaterialStateProperty<BorderSide?> {
 }
 
 class _LateResolvingButtonStyle extends ButtonStyle {
-  _LateResolvingButtonStyle(super.other, this.context)
-      : super.clone();
+  _LateResolvingButtonStyle(super.other, this.context) : super.clone();
 
   final BuildContext context;
 

@@ -19,23 +19,30 @@ class StateThemeData with Diagnosticable {
   const StateThemeData({
     double? disabledOpacity,
     double? disabledOpacityLight,
+    double? disabledOpacityLightest,
     double? hoverOpacity,
     double? focusOpacity,
     double? pressOpacity,
     double? dragOpacity,
   })  : _disabledOpacity = disabledOpacity,
         _disabledOpacityLight = disabledOpacityLight,
+        _disabledOpacityLightest = disabledOpacityLightest,
         _hoverOpacity = hoverOpacity,
         _focusOpacity = focusOpacity,
         _pressOpacity = pressOpacity,
         _dragOpacity = dragOpacity,
         assert(
-        disabledOpacityLight == null ||
+          disabledOpacity == null ||
+              (disabledOpacity >= 0.0 && disabledOpacity <= 1.0),
+        ),
+        assert(
+          disabledOpacityLight == null ||
               (disabledOpacityLight >= 0.0 && disabledOpacityLight <= 1.0),
         ),
         assert(
-          disabledOpacity == null ||
-              (disabledOpacity >= 0.0 && disabledOpacity <= 1.0),
+          disabledOpacityLightest == null ||
+              (disabledOpacityLightest >= 0.0 &&
+                  disabledOpacityLightest <= 1.0),
         ),
         assert(
           hoverOpacity == null || (hoverOpacity >= 0.0 && hoverOpacity <= 1.0),
@@ -61,6 +68,12 @@ class StateThemeData with Diagnosticable {
   /// The default value is 0.12.
   double get disabledOpacityLight => _disabledOpacityLight ?? 0.12;
   final double? _disabledOpacityLight;
+
+  /// The alternate, lightest opacity to use when drawing disabled widgets.
+  ///
+  /// The default value is 0.04.
+  double get disabledOpacityLightest => _disabledOpacityLightest ?? 0.04;
+  final double? _disabledOpacityLightest;
 
   /// The opacity to use when drawing hover state layers.
   ///
@@ -101,7 +114,7 @@ class StateThemeData with Diagnosticable {
           (disabledOpacity >= 0.0 && disabledOpacity <= 1.0),
     );
     assert(
-    disabledOpacityLight == null ||
+      disabledOpacityLight == null ||
           (disabledOpacityLight >= 0.0 && disabledOpacityLight <= 1.0),
     );
     assert(
@@ -147,7 +160,8 @@ class StateThemeData with Diagnosticable {
 
     return StateThemeData(
       disabledOpacity: lerpDouble(a?.disabledOpacity, b?.disabledOpacity, t),
-      disabledOpacityLight: lerpDouble(a?.disabledOpacityLight, b?.disabledOpacityLight, t),
+      disabledOpacityLight:
+          lerpDouble(a?.disabledOpacityLight, b?.disabledOpacityLight, t),
       hoverOpacity: lerpDouble(a?.hoverOpacity, b?.hoverOpacity, t),
       focusOpacity: lerpDouble(a?.focusOpacity, b?.focusOpacity, t),
       pressOpacity: lerpDouble(a?.pressOpacity, b?.pressOpacity, t),
@@ -185,10 +199,10 @@ class StateThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DoubleProperty('disabledOpacity', _disabledOpacity, defaultValue: 0.38));
-    properties.add(
-        DoubleProperty('disabledOpacityLight', _disabledOpacityLight, defaultValue: 0.12));
+    properties.add(DoubleProperty('disabledOpacity', _disabledOpacity,
+        defaultValue: 0.38));
+    properties.add(DoubleProperty('disabledOpacityLight', _disabledOpacityLight,
+        defaultValue: 0.12));
     properties
         .add(DoubleProperty('hoverOpacity', _hoverOpacity, defaultValue: 0.06));
     properties
@@ -296,7 +310,8 @@ class StateLayer extends Color {
       return a;
     }
     return StateLayer(
-      Color.lerp(a?.stateLayerColor, b?.stateLayerColor, t) ?? Colors.transparent,
+      Color.lerp(a?.stateLayerColor, b?.stateLayerColor, t) ??
+          Colors.transparent,
       lerpDouble(a?.opacity, b?.opacity, t) ?? 0.0,
     );
   }
@@ -339,9 +354,9 @@ class StateLayerTheme with Diagnosticable {
   StateLayerTheme mergeWith(StateLayerTheme? other) {
     return copyWith(
       hoverColor: other?.hoverColor,
-      focusColor:  other?.focusColor,
+      focusColor: other?.focusColor,
       pressColor: other?.pressColor,
-      dragColor:  other?.dragColor,
+      dragColor: other?.dragColor,
     );
   }
 
@@ -376,7 +391,11 @@ class StateLayerTheme with Diagnosticable {
   }
 
   /// Linearly interpolate between two [StateLayerTheme]s.
-  static StateLayerTheme lerp(StateLayerTheme? a, StateLayerTheme? b, double t,) {
+  static StateLayerTheme lerp(
+    StateLayerTheme? a,
+    StateLayerTheme? b,
+    double t,
+  ) {
     if (identical(a, b) && a != null) {
       return a;
     }

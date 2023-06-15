@@ -2,12 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'adaptive_text_selection_toolbar.dart';
-import 'input_decorator.dart';
-import 'text_field.dart';
+import 'text_field/input_decorator.dart';
+import 'text_field/text_field.dart';
+import 'text_field/text_field_theme.dart';
+import 'text_field/widgets/editable_text.dart';
 import 'theme.dart';
 
 export 'package:flutter/services.dart' show SmartDashesType, SmartQuotesType;
@@ -99,85 +102,60 @@ class TextFormField extends FormField<String> {
     super.key,
     this.controller,
     String? initialValue,
+    AutovalidateMode? autovalidateMode,
+    super.onSaved,
+    super.validator,
+    super.restorationId,
+    ValueChanged<String>? onChanged,
+    VoidCallback? onEditingComplete,
+    ValueChanged<String>? onSubmitted,
+    TextFieldThemeData? theme,
+    InputDecoration decoration = const InputDecoration(),
     FocusNode? focusNode,
-    InputDecoration? decoration = const InputDecoration(),
+    UndoHistoryController? undoController,
     TextInputType? keyboardType,
-    TextCapitalization textCapitalization = TextCapitalization.none,
     TextInputAction? textInputAction,
-    TextStyle? style,
-    StrutStyle? strutStyle,
+    TextCapitalization textCapitalization = TextCapitalization.none,
     TextDirection? textDirection,
-    TextAlign textAlign = TextAlign.start,
-    TextAlignVertical? textAlignVertical,
-    bool autofocus = false,
     bool readOnly = false,
-    @Deprecated(
-      'Use `contextMenuBuilder` instead. '
-      'This feature was deprecated after v3.3.0-0.5.pre.',
-    )
-    ToolbarOptions? toolbarOptions,
     bool? showCursor,
-    String obscuringCharacter = '•',
+    bool autofocus = false,
     bool obscureText = false,
     bool autocorrect = true,
-    SmartDashesType? smartDashesType,
-    SmartQuotesType? smartQuotesType,
     bool enableSuggestions = true,
-    MaxLengthEnforcement? maxLengthEnforcement,
-    int? maxLines = 1,
+    int maxLines = 1,
     int? minLines,
     bool expands = false,
     int? maxLength,
-    ValueChanged<String>? onChanged,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    List<TextInputFormatter>? inputFormatters,
+    super.enabled,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
     GestureTapCallback? onTap,
     TapRegionCallback? onTapOutside,
-    VoidCallback? onEditingComplete,
-    ValueChanged<String>? onFieldSubmitted,
-    super.onSaved,
-    super.validator,
-    List<TextInputFormatter>? inputFormatters,
-    bool? enabled,
-    double cursorWidth = 2.0,
-    double? cursorHeight,
-    Radius? cursorRadius,
-    Color? cursorColor,
-    Brightness? keyboardAppearance,
-    EdgeInsets scrollPadding = const EdgeInsets.all(20.0),
-    bool? enableInteractiveSelection,
-    TextSelectionControls? selectionControls,
-    InputCounterWidgetBuilder? buildCounter,
-    ScrollPhysics? scrollPhysics,
-    Iterable<String>? autofillHints,
-    AutovalidateMode? autovalidateMode,
     ScrollController? scrollController,
-    super.restorationId,
-    bool enableIMEPersonalizedLearning = true,
-    MouseCursor? mouseCursor,
-    EditableTextContextMenuBuilder? contextMenuBuilder = _defaultContextMenuBuilder,
-    SpellCheckConfiguration? spellCheckConfiguration,
-    TextMagnifierConfiguration? magnifierConfiguration,
+    Iterable<String> autofillHints = const <String>[],
+    bool canRequestFocus = true,
+    BoxConstraints? constraints,
   }) : assert(initialValue == null || controller == null),
-       assert(obscuringCharacter.length == 1),
-       assert(maxLines == null || maxLines > 0),
+       assert(maxLines > 0),
        assert(minLines == null || minLines > 0),
        assert(
-         (maxLines == null) || (minLines == null) || (maxLines >= minLines),
+         (minLines == null) || (maxLines >= minLines),
          "minLines can't be greater than maxLines",
        ),
        assert(
-         !expands || (maxLines == null && minLines == null),
+         !expands || minLines == null,
          'minLines and maxLines must be null when expands is true.',
        ),
        assert(!obscureText || maxLines == 1, 'Obscured fields cannot be multiline.'),
        assert(maxLength == null || maxLength == TextField.noMaxLength || maxLength > 0),
        super(
          initialValue: controller != null ? controller.text : (initialValue ?? ''),
-         enabled: enabled ?? decoration?.enabled ?? true,
          autovalidateMode: autovalidateMode ?? AutovalidateMode.disabled,
          builder: (FormFieldState<String> field) {
            final _TextFormFieldState state = field as _TextFormFieldState;
-           final InputDecoration effectiveDecoration = (decoration ?? const InputDecoration())
-               .applyDefaults(Theme.of(field.context).inputDecorationTheme);
            void onChangedHandler(String value) {
              field.didChange(value);
              if (onChanged != null) {
@@ -187,29 +165,26 @@ class TextFormField extends FormField<String> {
            return UnmanagedRestorationScope(
              bucket: field.bucket,
              child: TextField(
+               constraints: constraints,
+               theme: theme,
+               dragStartBehavior: dragStartBehavior,
+               onAppPrivateCommand: onAppPrivateCommand,
+               undoController: undoController,
                restorationId: restorationId,
                controller: state._effectiveController,
                focusNode: focusNode,
-               decoration: effectiveDecoration.copyWith(errorText: field.errorText),
+               canRequestFocus: canRequestFocus,
+               decoration: decoration.copyWith(errorText: field.errorText),
                keyboardType: keyboardType,
                textInputAction: textInputAction,
-               style: style,
-               strutStyle: strutStyle,
-               textAlign: textAlign,
-               textAlignVertical: textAlignVertical,
                textDirection: textDirection,
                textCapitalization: textCapitalization,
                autofocus: autofocus,
-               toolbarOptions: toolbarOptions,
                readOnly: readOnly,
                showCursor: showCursor,
-               obscuringCharacter: obscuringCharacter,
                obscureText: obscureText,
                autocorrect: autocorrect,
-               smartDashesType: smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-               smartQuotesType: smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
                enableSuggestions: enableSuggestions,
-               maxLengthEnforcement: maxLengthEnforcement,
                maxLines: maxLines,
                minLines: minLines,
                expands: expands,
@@ -218,26 +193,12 @@ class TextFormField extends FormField<String> {
                onTap: onTap,
                onTapOutside: onTapOutside,
                onEditingComplete: onEditingComplete,
-               onSubmitted: onFieldSubmitted,
+               onSubmitted: onSubmitted,
                inputFormatters: inputFormatters,
-               enabled: enabled ?? decoration?.enabled ?? true,
-               cursorWidth: cursorWidth,
-               cursorHeight: cursorHeight,
-               cursorRadius: cursorRadius,
-               cursorColor: cursorColor,
-               scrollPadding: scrollPadding,
-               scrollPhysics: scrollPhysics,
-               keyboardAppearance: keyboardAppearance,
+               enabled: enabled,
                enableInteractiveSelection: enableInteractiveSelection ?? (!obscureText || !readOnly),
-               selectionControls: selectionControls,
-               buildCounter: buildCounter,
                autofillHints: autofillHints,
                scrollController: scrollController,
-               enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
-               mouseCursor: mouseCursor,
-               contextMenuBuilder: contextMenuBuilder,
-               spellCheckConfiguration: spellCheckConfiguration,
-               magnifierConfiguration: magnifierConfiguration,
              ),
            );
          },
@@ -248,12 +209,6 @@ class TextFormField extends FormField<String> {
   /// If null, this widget will create its own [TextEditingController] and
   /// initialize its [TextEditingController.text] with [initialValue].
   final TextEditingController? controller;
-
-  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
-    return AdaptiveTextSelectionToolbar.editableText(
-      editableTextState: editableTextState,
-    );
-  }
 
   @override
   FormFieldState<String> createState() => _TextFormFieldState();

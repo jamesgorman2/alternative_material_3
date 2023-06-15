@@ -559,8 +559,8 @@ void main() {
 
     expect(hintText.style?.color, delegate.searchFieldStyle?.color);
     expect(hintText.style?.fontSize, delegate.searchFieldStyle?.fontSize);
-    expect(textField.style?.color, delegate.searchFieldStyle?.color);
-    expect(textField.style?.fontSize, delegate.searchFieldStyle?.fontSize);
+    expect(textField.textStyle?.color, delegate.searchFieldStyle?.color);
+    expect(textField.textStyle?.fontSize, delegate.searchFieldStyle?.fontSize);
 
   });
 
@@ -757,8 +757,8 @@ void main() {
     expect(appBarBackground.color, Colors.white);
 
     final TextField textField = tester.widget<TextField>(find.byType(TextField));
-    expect(textField.style!.color, themeData.textTheme.bodyLarge.color);
-    expect(textField.style!.color, isNot(equals(Colors.white)));
+    expect(textField.textStyle!.color, themeData.textTheme.bodyLarge.color);
+    expect(textField.textStyle!.color, isNot(equals(Colors.white)));
   });
 
   // Regression test for: https://github.com/flutter/flutter/issues/66781
@@ -786,8 +786,8 @@ void main() {
     // expect(appBarBackground.color, themeData.colorScheme.primary);
 
     final TextField textField = tester.widget<TextField>(find.byType(TextField));
-    expect(textField.style!.color, themeData.textTheme.bodyLarge.color);
-    expect(textField.style!.color, isNot(equals(themeData.colorScheme.primary)));
+    expect(textField.textStyle!.color, themeData.textTheme.bodyLarge.color);
+    expect(textField.textStyle!.color, isNot(equals(themeData.colorScheme.primary)));
   });
 
   // Regression test for: https://github.com/flutter/flutter/issues/78144

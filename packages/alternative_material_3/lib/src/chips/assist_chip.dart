@@ -1,12 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 import '../color_scheme.dart';
-import '../debug.dart';
 import '../material_state.dart';
-import '../state_theme.dart';
 import '../theme.dart';
 import 'chip.dart';
-import 'chip_theme.dart';
 
 /// Assist chips represent smart or automated actions that can span multiple
 /// apps, such as opening a calendar event from the home screen. Assist

@@ -179,11 +179,11 @@ void main() {
     return boilerplate(
       child: TextField(
         key: textFieldKey,
-        style: const TextStyle(color: Colors.black, fontSize: 34.0),
+        textStyle: const TextStyle(color: Colors.black, fontSize: 34.0),
         maxLines: maxLines,
         minLines: minLines,
         decoration: const InputDecoration(
-          hintText: 'Placeholder',
+          placeholderText: 'Placeholder',
         ),
       ),
     );
@@ -198,7 +198,7 @@ void main() {
               width: 100,
               height: 100,
               child: TextField(
-                decoration: InputDecoration(hintText: 'Placeholder'),
+                decoration: InputDecoration(placeholderText: 'Placeholder'),
               ),
             ),
           ),
@@ -681,7 +681,7 @@ void main() {
         child: TextField(
           key: textFieldKey,
           decoration: const InputDecoration(
-            hintText: 'Placeholder',
+            placeholderText: 'Placeholder',
           ),
           onChanged: (String value) {
             textFieldValue = value;
@@ -720,7 +720,7 @@ void main() {
       overlay(
         child: const TextField(
           decoration: InputDecoration(
-            hintText: 'Placeholder',
+            placeholderText: 'Placeholder',
           ),
         ),
       ),
@@ -918,7 +918,7 @@ void main() {
               child: Opacity(
                 opacity: 0.5,
                 child: TextField(
-                  decoration: InputDecoration(hintText: 'Placeholder'),
+                  decoration: InputDecoration(placeholderText: 'Placeholder'),
                 ),
               ),
             ),
@@ -1151,7 +1151,7 @@ void main() {
         child: const TextField(
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'Placeholder',
+            placeholderText: 'Placeholder',
           ),
         ),
       ),
@@ -1191,7 +1191,7 @@ void main() {
         child: const TextField(
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'Placeholder',
+            placeholderText: 'Placeholder',
           ),
         ),
       ),
@@ -2228,7 +2228,7 @@ void main() {
           child: TextField(
             dragStartBehavior: DragStartBehavior.down,
             controller: controller,
-            style: const TextStyle(fontSize: 10.0),
+            textStyle: const TextStyle(fontSize: 10.0),
           ),
         ),
       ),
@@ -3967,12 +3967,12 @@ void main() {
             Expanded(
               child: TextField(
                 key: textFieldKey,
-                style: const TextStyle(color: Colors.black, fontSize: 34.0),
+                textStyle: const TextStyle(color: Colors.black, fontSize: 34.0),
                 maxLines: maxLines,
                 minLines: minLines,
                 expands: expands,
                 decoration: const InputDecoration(
-                  hintText: 'Placeholder',
+                  placeholderText: 'Placeholder',
                 ),
               ),
             ),
@@ -4110,8 +4110,8 @@ void main() {
             key: textFieldKey,
             maxLines: null,
             decoration: InputDecoration(
-              counter: counter,
-              helperText: helperText,
+              counterText: counter,
+              supportingText: helperText,
               labelText: labelText,
               prefix: prefix,
             ),
@@ -4208,10 +4208,10 @@ void main() {
       return boilerplate(
         child: TextField(
           key: textFieldKey,
-          style: const TextStyle(color: Colors.black, fontSize: 34.0),
+          textStyle: const TextStyle(color: Colors.black, fontSize: 34.0),
           maxLines: maxLines,
           decoration: InputDecoration(
-            hintText: hintMsg,
+            placeholderText: hintMsg,
           ),
         ),
       );
@@ -4246,7 +4246,7 @@ void main() {
         child: TextField(
           dragStartBehavior: DragStartBehavior.down,
           controller: controller,
-          style: const TextStyle(color: Colors.black, fontSize: 34.0),
+          textStyle: const TextStyle(color: Colors.black, fontSize: 34.0),
           maxLines: 3,
         ),
       ),
@@ -4346,7 +4346,7 @@ void main() {
           dragStartBehavior: DragStartBehavior.down,
           key: textFieldKey,
           controller: controller,
-          style: const TextStyle(color: Colors.black, fontSize: 34.0),
+          textStyle: const TextStyle(color: Colors.black, fontSize: 34.0),
           maxLines: 2,
         ),
       ),
@@ -4467,7 +4467,7 @@ void main() {
         child: TextField(
           key: textFieldKey,
           decoration: const InputDecoration(
-            hintText: 'Placeholder',
+            placeholderText: 'Placeholder',
           ),
           onChanged: (String value) { textFieldValue = value; },
         ),
@@ -4494,7 +4494,7 @@ void main() {
         child: const TextField(
           decoration: InputDecoration(
             errorText: 'error text',
-            helperText: 'helper text',
+            supportingText: 'helper text',
           ),
         ),
       ),
@@ -4516,7 +4516,7 @@ void main() {
           data: themeData,
           child: const TextField(
             decoration: InputDecoration(
-              helperText: 'helper text',
+              supportingText: 'helper text',
             ),
           ),
         ),
@@ -4538,7 +4538,7 @@ void main() {
       overlay(
         child: TextField(
           decoration: InputDecoration(
-            helperText: 'helper text',
+            supportingText: 'helper text',
             helperStyle: style,
           ),
         ),
@@ -4564,9 +4564,9 @@ void main() {
           data: themeData,
           child: TextField(
             decoration: const InputDecoration(
-              hintText: 'Placeholder',
+              placeholderText: 'Placeholder',
             ),
-            style: style,
+            textStyle: style,
           ),
         ),
       ),
@@ -4588,7 +4588,7 @@ void main() {
       overlay(
         child: TextField(
           decoration: InputDecoration(
-            hintText: 'Placeholder',
+            placeholderText: 'Placeholder',
             hintStyle: hintStyle,
           ),
         ),
@@ -4747,7 +4747,7 @@ void main() {
             TextField(
               key: secondKey,
               decoration: InputDecoration(
-                hintText: 'Hint',
+                placeholderText: 'Hint',
                 hintStyle: hintStyle,
                 prefixText: 'Prefix',
                 suffixText: 'Suffix',
@@ -4917,7 +4917,7 @@ void main() {
       overlay(
         child: const TextField(
           decoration: InputDecoration.collapsed(
-            hintText: 'hint',
+            placeholderText: 'hint',
           ),
           strutStyle: StrutStyle.disabled,
         ),
@@ -6044,7 +6044,7 @@ void main() {
             child: TextField(
               decoration: InputDecoration(
                 labelText: 'label text',
-                helperText: helperText,
+                supportingText: helperText,
                 counterText: counterText,
                 errorText: hasError ? errorText : null,
                 enabled: enabled,
@@ -6921,7 +6921,7 @@ void main() {
                 controller: controllerA,
                 // The point size of the font must be a multiple of 4 until
                 // https://github.com/flutter/flutter/issues/122066 is resolved.
-                style: const TextStyle(fontFamily: 'FlutterTest', fontSize: 12.0),
+                textStyle: const TextStyle(fontFamily: 'FlutterTest', fontSize: 12.0),
                 strutStyle: StrutStyle.disabled,
               ),
             ),
@@ -6938,7 +6938,7 @@ void main() {
                 controller: controllerB,
                 // The point size of the font must be a multiple of 4 until
                 // https://github.com/flutter/flutter/issues/122066 is resolved.
-                style: const TextStyle(fontFamily: 'FlutterTest', fontSize: 36.0),
+                textStyle: const TextStyle(fontFamily: 'FlutterTest', fontSize: 36.0),
                 strutStyle: StrutStyle.disabled,
               ),
             ),
@@ -6980,7 +6980,7 @@ void main() {
                 controller: controllerA,
                 // The point size of the font must be a multiple of 4 until
                 // https://github.com/flutter/flutter/issues/122066 is resolved.
-                style: const TextStyle(fontFamily: 'FlutterTest', fontSize: 12.0),
+                textStyle: const TextStyle(fontFamily: 'FlutterTest', fontSize: 12.0),
               ),
             ),
             const Text(
@@ -6996,7 +6996,7 @@ void main() {
                 controller: controllerB,
                 // The point size of the font must be a multiple of 4 until
                 // https://github.com/flutter/flutter/issues/122066 is resolved.
-                style: const TextStyle(fontFamily: 'FlutterTest', fontSize: 36.0),
+                textStyle: const TextStyle(fontFamily: 'FlutterTest', fontSize: 36.0),
               ),
             ),
           ],
@@ -7030,7 +7030,7 @@ void main() {
           key: key,
           controller: controller,
           decoration: const InputDecoration(
-            hintText: 'hint',
+            placeholderText: 'hint',
             labelText: 'label',
           ),
         ),
@@ -7062,7 +7062,7 @@ void main() {
           key: key,
           controller: controller,
           decoration: const InputDecoration(
-            hintText: 'hint',
+            placeholderText: 'hint',
             labelText: 'label',
           ),
         ),
@@ -7125,7 +7125,7 @@ void main() {
           key: key,
           controller: controller,
           decoration: const InputDecoration(
-            hintText: 'hint',
+            placeholderText: 'hint',
           ),
         ),
       ),
@@ -7849,8 +7849,8 @@ void main() {
           maxLength: 10,
           decoration: const InputDecoration(
             labelText: 'label',
-            hintText: 'hint',
-            helperText: 'helper',
+            placeholderText: 'hint',
+            supportingText: 'helper',
           ),
         ),
       ),
@@ -7940,8 +7940,8 @@ void main() {
           controller: controller,
           decoration: const InputDecoration(
             labelText: 'label',
-            hintText: 'hint',
-            helperText: 'helper',
+            placeholderText: 'hint',
+            supportingText: 'helper',
             counterText: '0/10',
             semanticCounterText: '0 out of 10',
           ),
@@ -7989,7 +7989,7 @@ void main() {
           controller: controller,
           decoration: const InputDecoration(
             labelText: 'label',
-            hintText: 'hint',
+            placeholderText: 'hint',
             errorText: 'oh no!',
           ),
         ),
@@ -8323,7 +8323,7 @@ void main() {
         home: Material(
           child: Center(
             child: TextField(
-              style: style,
+              textStyle: style,
             ),
           ),
         ),
@@ -8374,7 +8374,7 @@ void main() {
         home: Material(
           child: Center(
             child: TextField(
-              style: style,
+              textStyle: style,
             ),
           ),
         ),
@@ -8416,7 +8416,7 @@ void main() {
       return MaterialApp(
         home: Material(
           child: TextField(
-            style: style,
+            textStyle: style,
           ),
         ),
       );
@@ -12449,7 +12449,7 @@ void main() {
       decoration: InputDecoration(labelText: 'foo'),
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
-      style: TextStyle(color: Color(0xff00ff00)),
+      textStyle: TextStyle(color: Color(0xff00ff00)),
       textAlign: TextAlign.end,
       textDirection: TextDirection.ltr,
       autofocus: true,
@@ -12533,7 +12533,7 @@ void main() {
           home: const Material(
             child: Center(
               child: TextField(
-                style: TextStyle(fontSize: 20),
+                textStyle: TextStyle(fontSize: 20),
               ),
             ),
           ),
@@ -12553,7 +12553,7 @@ void main() {
           home: const Material(
             child: Center(
               child: TextField(
-                style: TextStyle(fontSize: 20),
+                textStyle: TextStyle(fontSize: 20),
                 strutStyle: StrutStyle.disabled,
               ),
             ),
@@ -12692,7 +12692,7 @@ void main() {
             child: Center(
               child: TextField(
                 maxLines: 3,
-                style: TextStyle(fontSize: 10),
+                textStyle: TextStyle(fontSize: 10),
                 strutStyle: StrutStyle(
                   fontSize: 18,
                   forceStrutHeight: true,
@@ -13315,7 +13315,7 @@ void main() {
         home: const Scaffold(
           body: Center(
             child: TextField(
-              style: TextStyle(fontSize: 2.0),
+              textStyle: TextStyle(fontSize: 2.0),
             ),
           ),
         ),
@@ -14208,7 +14208,7 @@ void main() {
           child: Center(
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'placeholder text'
+                placeholderText: 'placeholder text'
               ),
             ),
           ),
@@ -15554,7 +15554,7 @@ void main() {
                     autofocus: true,
                     focusNode: focusNode,
                     decoration: const InputDecoration(
-                      hintText: 'Placeholder',
+                      placeholderText: 'Placeholder',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -15588,7 +15588,7 @@ void main() {
                     autofocus: true,
                     focusNode: focusNode,
                     decoration: const InputDecoration(
-                      hintText: 'Placeholder',
+                      placeholderText: 'Placeholder',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -15623,7 +15623,7 @@ void main() {
                   child: TextField(
                     controller: controller,
                     focusNode: focusNode,
-                    decoration: const InputDecoration(hintText: 'Placeholder'),
+                    decoration: const InputDecoration(placeholderText: 'Placeholder'),
                   ),
                 ),
               ),
@@ -15677,7 +15677,7 @@ void main() {
                     autofocus: true,
                     focusNode: focusNode,
                     decoration: const InputDecoration(
-                      hintText: 'Placeholder',
+                      placeholderText: 'Placeholder',
                       border: OutlineInputBorder(),
                     ),
                   ),

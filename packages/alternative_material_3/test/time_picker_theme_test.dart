@@ -37,7 +37,7 @@ void main() {
     expect(timePickerTheme.hourMinuteShape, null);
     expect(timePickerTheme.dayPeriodShape, null);
     expect(timePickerTheme.dayPeriodBorderSide, null);
-    expect(timePickerTheme.inputDecorationTheme, null);
+    expect(timePickerTheme.textFieldTheme, null);
   });
 
   testWidgets('Default TimePickerThemeData debugFillProperties', (WidgetTester tester) async {
@@ -349,13 +349,13 @@ void main() {
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     final InputDecoration hourDecoration = _textField(tester, '7').decoration!;
-    expect(hourDecoration.filled, timePickerTheme.inputDecorationTheme!.filled);
-    expect(hourDecoration.fillColor, timePickerTheme.inputDecorationTheme!.fillColor);
-    expect(hourDecoration.enabledBorder, timePickerTheme.inputDecorationTheme!.enabledBorder);
-    expect(hourDecoration.errorBorder, timePickerTheme.inputDecorationTheme!.errorBorder);
-    expect(hourDecoration.focusedBorder, timePickerTheme.inputDecorationTheme!.focusedBorder);
-    expect(hourDecoration.focusedErrorBorder, timePickerTheme.inputDecorationTheme!.focusedErrorBorder);
-    expect(hourDecoration.hintStyle, timePickerTheme.inputDecorationTheme!.hintStyle);
+    expect(hourDecoration.filled, timePickerTheme.textFieldTheme!.filled);
+    expect(hourDecoration.fillColor, timePickerTheme.textFieldTheme!.fillColor);
+    expect(hourDecoration.enabledBorder, timePickerTheme.textFieldTheme!.enabledBorder);
+    expect(hourDecoration.errorBorder, timePickerTheme.textFieldTheme!.errorBorder);
+    expect(hourDecoration.focusedBorder, timePickerTheme.textFieldTheme!.focusedBorder);
+    expect(hourDecoration.focusedErrorBorder, timePickerTheme.textFieldTheme!.focusedErrorBorder);
+    expect(hourDecoration.hintStyle, timePickerTheme.textFieldTheme!.hintStyle);
   });
 
   // FIXME
@@ -396,7 +396,7 @@ TimePickerThemeData _timePickerTheme({bool includeInputDecoration = false}) {
     hourMinuteShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
     dayPeriodShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
     dayPeriodBorderSide: const BorderSide(color: Colors.blueAccent),
-    inputDecorationTheme: includeInputDecoration ? const InputDecorationTheme(
+    textFieldTheme: includeInputDecoration ? const InputDecorationTheme(
       filled: true,
       fillColor: Colors.purple,
       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),

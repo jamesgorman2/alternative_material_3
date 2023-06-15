@@ -13,6 +13,7 @@ import 'adaptive_text_selection_toolbar.dart';
 import 'desktop_text_selection.dart';
 import 'feedback.dart';
 import 'magnifier.dart';
+import 'text_field/widgets/editable_text.dart';
 import 'text_selection.dart';
 import 'theme.dart';
 
@@ -421,9 +422,9 @@ class SelectableText extends StatefulWidget {
   final SelectionChangedCallback? onSelectionChanged;
 
   /// {@macro flutter.widgets.EditableText.contextMenuBuilder}
-  final EditableTextContextMenuBuilder? contextMenuBuilder;
+  final EditableTextContextMenuBuilderM3? contextMenuBuilder;
 
-  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
+  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextM3State editableTextState) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -672,7 +673,7 @@ class _SelectableTextState extends State<SelectableText> implements TextSelectio
       effectiveTextStyle = defaultTextStyle.style.merge(widget.style ?? _controller._textSpan.style);
     }
     final Widget child = RepaintBoundary(
-      child: EditableText(
+      child: EditableTextM3(
         key: editableTextKey,
         style: effectiveTextStyle,
         readOnly: true,

@@ -3828,14 +3828,10 @@ class _MenuButtonDefaultsM3 extends ButtonStyle {
   }
 
   @override
-  MaterialStateProperty<double?>? get minimumContainerWidth {
-    return MaterialStateProperty.all(64.0);
-  }
+  double? get minimumContainerWidth => 64.0;
 
   @override
-  MaterialStateProperty<double?>? get maximumContainerWidth {
-    return MaterialStateProperty.all(64.0);
-  }
+  double? get maximumContainerWidth => 64.0;
 
   @override
   double get containerHeight => 48.0;
@@ -4036,12 +4032,10 @@ ButtonStyle _styleFrom({
         ? MaterialStateProperty.all(elevation): null,
     labelPadding: padding != null ? padding.horizontal / 2.0 : null,
     containerHeight: fixedSize?.height,
-    minimumContainerWidth: MaterialStateProperty.all(
+    minimumContainerWidth:
         fixedSize?.width ?? minimumSize?.width,
-    ),
-    maximumContainerWidth: MaterialStateProperty.all(
+    maximumContainerWidth:
       fixedSize?.width ?? maximumSize?.width,
-    ),
     outline: ButtonStyleButton.allOrNull<BorderSide>(side),
     containerShape:shape,
     mouseCursor: mouseCursor,

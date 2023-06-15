@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-import 'input_border.dart';
+import 'text_field/input_border.dart';
 
 // Examples can assume:
 // late BuildContext context;

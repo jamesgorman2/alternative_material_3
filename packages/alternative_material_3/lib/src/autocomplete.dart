@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
+import 'text_field/text_field_theme.dart';
 import 'text_form_field.dart';
 import 'theme.dart';
 
@@ -37,14 +38,18 @@ class Autocomplete<T extends Object> extends StatelessWidget {
   /// Creates an instance of [Autocomplete].
   const Autocomplete({
     super.key,
+    required this.style,
     required this.optionsBuilder,
     this.displayStringForOption = RawAutocomplete.defaultStringForOption,
-    this.fieldViewBuilder = _defaultFieldViewBuilder,
+    AutocompleteFieldViewBuilder? fieldViewBuilder,
     this.onSelected,
     this.optionsMaxHeight = 200.0,
     this.optionsViewBuilder,
     this.initialValue,
-  });
+  }) : _fieldViewBuilder = fieldViewBuilder;
+
+  /// The style of the underlying text field.
+  final TextFieldStyle style;
 
   /// {@macro flutter.widgets.RawAutocomplete.displayStringForOption}
   final AutocompleteOptionToString<T> displayStringForOption;
@@ -53,7 +58,9 @@ class Autocomplete<T extends Object> extends StatelessWidget {
   ///
   /// If not provided, will build a standard Material-style text field by
   /// default.
-  final AutocompleteFieldViewBuilder fieldViewBuilder;
+  AutocompleteFieldViewBuilder get fieldViewBuilder => _fieldViewBuilder
+    ?? _defaultFieldViewBuilder(style);
+  final AutocompleteFieldViewBuilder? _fieldViewBuilder;
 
   /// {@macro flutter.widgets.RawAutocomplete.onSelected}
   final AutocompleteOnSelected<T>? onSelected;
@@ -78,13 +85,19 @@ class Autocomplete<T extends Object> extends StatelessWidget {
   /// {@macro flutter.widgets.RawAutocomplete.initialValue}
   final TextEditingValue? initialValue;
 
-  static Widget _defaultFieldViewBuilder(BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+  static AutocompleteFieldViewBuilder _defaultFieldViewBuilder(TextFieldStyle style) => (
+    BuildContext context,
+    TextEditingController textEditingController,
+    FocusNode focusNode,
+    VoidCallback onFieldSubmitted,
+  ) {
     return _AutocompleteField(
+      style: style,
       focusNode: focusNode,
       textEditingController: textEditingController,
       onFieldSubmitted: onFieldSubmitted,
     );
-  }
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +106,16 @@ class Autocomplete<T extends Object> extends StatelessWidget {
       fieldViewBuilder: fieldViewBuilder,
       initialValue: initialValue,
       optionsBuilder: optionsBuilder,
-      optionsViewBuilder: optionsViewBuilder ?? (BuildContext context, AutocompleteOnSelected<T> onSelected, Iterable<T> options) {
-        return _AutocompleteOptions<T>(
-          displayStringForOption: displayStringForOption,
-          onSelected: onSelected,
-          options: options,
-          maxOptionsHeight: optionsMaxHeight,
-        );
-      },
+      optionsViewBuilder: optionsViewBuilder ??
+          (BuildContext context, AutocompleteOnSelected<T> onSelected,
+              Iterable<T> options) {
+            return _AutocompleteOptions<T>(
+              displayStringForOption: displayStringForOption,
+              onSelected: onSelected,
+              options: options,
+              maxOptionsHeight: optionsMaxHeight,
+            );
+          },
       onSelected: onSelected,
     );
   }
@@ -109,11 +124,13 @@ class Autocomplete<T extends Object> extends StatelessWidget {
 // The default Material-style Autocomplete text field.
 class _AutocompleteField extends StatelessWidget {
   const _AutocompleteField({
+    required this.style,
     required this.focusNode,
     required this.textEditingController,
     required this.onFieldSubmitted,
   });
 
+  final TextFieldStyle style;
   final FocusNode focusNode;
 
   final VoidCallback onFieldSubmitted;
@@ -125,7 +142,7 @@ class _AutocompleteField extends StatelessWidget {
     return TextFormField(
       controller: textEditingController,
       focusNode: focusNode,
-      onFieldSubmitted: (String value) {
+      onSubmitted: (String value) {
         onFieldSubmitted();
       },
     );
@@ -167,21 +184,23 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
                 onTap: () {
                   onSelected(option);
                 },
-                child: Builder(
-                  builder: (BuildContext context) {
-                    final bool highlight = AutocompleteHighlightedOption.of(context) == index;
-                    if (highlight) {
-                      SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
-                        Scrollable.ensureVisible(context, alignment: 0.5);
-                      });
-                    }
-                    return Container(
-                      color: highlight ? Theme.of(context).colorScheme.focusColor : null,
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(displayStringForOption(option)),
-                    );
+                child: Builder(builder: (BuildContext context) {
+                  final bool highlight =
+                      AutocompleteHighlightedOption.of(context) == index;
+                  if (highlight) {
+                    SchedulerBinding.instance
+                        .addPostFrameCallback((Duration timeStamp) {
+                      Scrollable.ensureVisible(context, alignment: 0.5);
+                    });
                   }
-                ),
+                  return Container(
+                    color: highlight
+                        ? Theme.of(context).colorScheme.focusColor
+                        : null,
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(displayStringForOption(option)),
+                  );
+                }),
               );
             },
           ),

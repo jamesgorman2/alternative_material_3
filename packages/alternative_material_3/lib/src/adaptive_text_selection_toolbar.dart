@@ -9,6 +9,7 @@ import 'debug.dart';
 import 'desktop_text_selection_toolbar.dart';
 import 'desktop_text_selection_toolbar_button.dart';
 import 'material_localizations.dart';
+import 'text_field/widgets/editable_text.dart';
 import 'text_selection_toolbar.dart';
 import 'text_selection_toolbar_text_button.dart';
 import 'theme.dart';
@@ -124,7 +125,7 @@ class AdaptiveTextSelectionToolbar extends StatelessWidget {
   /// {@macro flutter.material.AdaptiveTextSelectionToolbar.selectable}
   AdaptiveTextSelectionToolbar.editableText({
     super.key,
-    required EditableTextState editableTextState,
+    required EditableTextM3State editableTextState,
   }) : children = null,
        buttonItems = editableTextState.contextMenuButtonItems,
        anchors = editableTextState.contextMenuAnchors;

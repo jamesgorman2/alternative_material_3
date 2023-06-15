@@ -29,13 +29,13 @@ import 'date_picker_theme.dart';
 import 'dialog_theme.dart';
 import 'divider_theme.dart';
 import 'drawer_theme.dart';
-import 'dropdown_menu_theme.dart';
+// import 'src/dropdown_menu_theme.dart';
 import 'expansion_tile_theme.dart';
 import 'ink_ripple.dart';
 import 'ink_sparkle.dart';
 import 'ink_splash.dart';
 import 'ink_well.dart' show InteractiveInkFeatureFactory;
-import 'input_decorator.dart';
+import 'text_field/input_decorator.dart';
 import 'list_tile.dart';
 import 'list_tile_theme.dart';
 import 'menu_bar_theme.dart';
@@ -56,9 +56,10 @@ import 'snack_bar_theme.dart';
 import 'state_theme.dart';
 import 'switch_theme.dart';
 import 'tab_bar_theme.dart';
+import 'text_field/text_field_theme.dart';
 import 'text_selection_theme.dart';
 import 'text_theme.dart';
-import 'time_picker_theme.dart';
+// import 'src/time_picker_theme.dart';
 import 'tooltip_theme.dart';
 import 'typography.dart';
 
@@ -275,7 +276,6 @@ class ThemeData with Diagnosticable {
     // GENERAL CONFIGURATION
     NoDefaultCupertinoThemeData? cupertinoOverrideTheme,
     Iterable<ThemeExtension<dynamic>>? extensions,
-    InputDecorationTheme? inputDecorationTheme,
     MaterialTapTargetSize? materialTapTargetSize,
     double? minInteractiveDimension,
     bool? alwaysPadTapTarget,
@@ -309,7 +309,7 @@ class ThemeData with Diagnosticable {
     DialogTheme? dialogTheme,
     DividerThemeData? dividerTheme,
     DrawerThemeData? drawerTheme,
-    DropdownMenuThemeData? dropdownMenuTheme,
+    // DropdownMenuThemeData? dropdownMenuTheme,
     ElevatedButtonThemeData? elevatedButtonTheme,
     ExpandableFloatingActionButtonThemeData? expandableFloatingActionButtonTheme,
     ExpansionTileThemeData? expansionTileTheme,
@@ -340,14 +340,14 @@ class ThemeData with Diagnosticable {
     SwitchThemeData? switchTheme,
     TabBarTheme? tabBarTheme,
     TextButtonThemeData? textButtonTheme,
+    TextFieldThemeData? textFieldTheme,
     TextSelectionThemeData? textSelectionTheme,
-    TimePickerThemeData? timePickerTheme,
+    // TimePickerThemeData? timePickerTheme,
     TooltipThemeData? tooltipTheme,
  }) {
     // GENERAL CONFIGURATION
     cupertinoOverrideTheme = cupertinoOverrideTheme?.noDefault();
     extensions ??= <ThemeExtension<dynamic>>[];
-    inputDecorationTheme ??= const InputDecorationTheme();
     platform ??= defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.android:
@@ -402,7 +402,7 @@ class ThemeData with Diagnosticable {
     dialogTheme ??= const DialogTheme();
     dividerTheme ??= const DividerThemeData();
     drawerTheme ??= const DrawerThemeData();
-    dropdownMenuTheme ??= const DropdownMenuThemeData();
+    // dropdownMenuTheme ??= const DropdownMenuThemeData();
     elevatedButtonTheme ??= const ElevatedButtonThemeData();
     expandableFloatingActionButtonTheme ??= const ExpandableFloatingActionButtonThemeData();
     expansionTileTheme ??= const ExpansionTileThemeData();
@@ -433,8 +433,9 @@ class ThemeData with Diagnosticable {
     switchTheme ??= const SwitchThemeData();
     tabBarTheme ??= const TabBarTheme();
     textButtonTheme ??= const TextButtonThemeData();
+    textFieldTheme ??= const TextFieldThemeData();
     textSelectionTheme ??= const TextSelectionThemeData();
-    timePickerTheme ??= const TimePickerThemeData();
+    // timePickerTheme ??= const TimePickerThemeData();
     tooltipTheme ??= const TooltipThemeData();
 
     return ThemeData.raw(
@@ -446,7 +447,6 @@ class ThemeData with Diagnosticable {
       // GENERAL CONFIGURATION
       cupertinoOverrideTheme: cupertinoOverrideTheme,
       extensions: _themeExtensionIterableToMap(extensions),
-      inputDecorationTheme: inputDecorationTheme,
       materialTapTargetSize: materialTapTargetSize,
       minInteractiveDimension: minInteractiveDimension,
       alwaysPadTapTarget: alwaysPadTapTarget,
@@ -477,7 +477,7 @@ class ThemeData with Diagnosticable {
       dialogTheme: dialogTheme,
       dividerTheme: dividerTheme,
       drawerTheme: drawerTheme,
-      dropdownMenuTheme: dropdownMenuTheme,
+      // dropdownMenuTheme: dropdownMenuTheme,
       elevatedButtonTheme: elevatedButtonTheme,
       expandableFloatingActionButtonTheme: expandableFloatingActionButtonTheme,
       expansionTileTheme: expansionTileTheme,
@@ -508,8 +508,9 @@ class ThemeData with Diagnosticable {
       switchTheme: switchTheme,
       tabBarTheme: tabBarTheme,
       textButtonTheme: textButtonTheme,
+      textFieldTheme: textFieldTheme,
       textSelectionTheme: textSelectionTheme,
-      timePickerTheme: timePickerTheme,
+      // timePickerTheme: timePickerTheme,
       tooltipTheme: tooltipTheme,
     );
   }
@@ -530,7 +531,6 @@ class ThemeData with Diagnosticable {
     // GENERAL CONFIGURATION
     required this.cupertinoOverrideTheme,
     required this.extensions,
-    required this.inputDecorationTheme,
     required this.materialTapTargetSize,
     required this.minInteractiveDimension,
     required this.alwaysPadTapTarget,
@@ -561,7 +561,7 @@ class ThemeData with Diagnosticable {
     required this.dialogTheme,
     required this.dividerTheme,
     required this.drawerTheme,
-    required this.dropdownMenuTheme,
+    // required this.dropdownMenuTheme,
     required this.elevatedButtonTheme,
     required this.expandableFloatingActionButtonTheme,
     required this.expansionTileTheme,
@@ -592,8 +592,9 @@ class ThemeData with Diagnosticable {
     required this.switchTheme,
     required this.tabBarTheme,
     required this.textButtonTheme,
+    required this.textFieldTheme,
     required this.textSelectionTheme,
-    required this.timePickerTheme,
+    // required this.timePickerTheme,
     required this.tooltipTheme,
   });
 
@@ -751,12 +752,6 @@ class ThemeData with Diagnosticable {
   ///
   /// See [extensions] for an interactive example.
   T? extension<T>() => extensions[T] as T?;
-
-  /// The default [InputDecoration] values for [InputDecorator], [TextField],
-  /// and [TextFormField] are based on this theme.
-  ///
-  /// See [InputDecoration.applyDefaults].
-  final InputDecorationTheme inputDecorationTheme;
 
   /// Configures the hit test size of certain Material widgets.
   ///
@@ -962,7 +957,7 @@ class ThemeData with Diagnosticable {
   final DrawerThemeData drawerTheme;
 
   /// A theme for customizing the appearance and layout of [DropdownMenu] widgets.
-  final DropdownMenuThemeData dropdownMenuTheme;
+  // final DropdownMenuThemeData dropdownMenuTheme;
 
   /// A theme for customizing the appearance and internal layout of
   /// [ElevatedButton]s.
@@ -1075,11 +1070,15 @@ class ThemeData with Diagnosticable {
   /// [TextButton]s.
   final TextButtonThemeData textButtonTheme;
 
+  /// A theme for customizing the appearance and internal layout of
+  /// [TextField]s.
+  final TextFieldThemeData textFieldTheme;
+
   /// A theme for customizing the appearance and layout of [TextField] widgets.
   final TextSelectionThemeData textSelectionTheme;
 
   /// A theme for customizing the appearance and layout of time picker widgets.
-  final TimePickerThemeData timePickerTheme;
+  // final TimePickerThemeData timePickerTheme;
 
   /// A theme for customizing the visual properties of [Tooltip]s.
   ///
@@ -1105,7 +1104,6 @@ class ThemeData with Diagnosticable {
     bool? applyElevationOverlayColor,
     NoDefaultCupertinoThemeData? cupertinoOverrideTheme,
     Iterable<ThemeExtension<dynamic>>? extensions,
-    InputDecorationTheme? inputDecorationTheme,
     MaterialTapTargetSize? materialTapTargetSize,
     double? minInteractiveDimension,
     bool? alwaysPadTapTarget,
@@ -1139,7 +1137,7 @@ class ThemeData with Diagnosticable {
     DialogTheme? dialogTheme,
     DividerThemeData? dividerTheme,
     DrawerThemeData? drawerTheme,
-    DropdownMenuThemeData? dropdownMenuTheme,
+    // DropdownMenuThemeData? dropdownMenuTheme,
     ElevatedButtonThemeData? elevatedButtonTheme,
     ExpandableFloatingActionButtonThemeData? expandableFloatingActionButtonTheme,
     ExpansionTileThemeData? expansionTileTheme,
@@ -1170,8 +1168,9 @@ class ThemeData with Diagnosticable {
     SwitchThemeData? switchTheme,
     TabBarTheme? tabBarTheme,
     TextButtonThemeData? textButtonTheme,
+    TextFieldThemeData? textFieldTheme,
     TextSelectionThemeData? textSelectionTheme,
-    TimePickerThemeData? timePickerTheme,
+    // TimePickerThemeData? timePickerTheme,
     TooltipThemeData? tooltipTheme,
   }) {
     cupertinoOverrideTheme = cupertinoOverrideTheme?.noDefault();
@@ -1184,7 +1183,6 @@ class ThemeData with Diagnosticable {
       // GENERAL CONFIGURATION
       cupertinoOverrideTheme: cupertinoOverrideTheme ?? this.cupertinoOverrideTheme,
       extensions: (extensions != null) ? _themeExtensionIterableToMap(extensions) : this.extensions,
-      inputDecorationTheme: inputDecorationTheme ?? this.inputDecorationTheme,
       materialTapTargetSize: materialTapTargetSize ?? this.materialTapTargetSize,
       minInteractiveDimension: minInteractiveDimension ?? this.minInteractiveDimension,
       alwaysPadTapTarget: alwaysPadTapTarget ?? this.alwaysPadTapTarget,
@@ -1215,7 +1213,7 @@ class ThemeData with Diagnosticable {
       dialogTheme: dialogTheme ?? this.dialogTheme,
       dividerTheme: dividerTheme ?? this.dividerTheme,
       drawerTheme: drawerTheme ?? this.drawerTheme,
-      dropdownMenuTheme: dropdownMenuTheme ?? this.dropdownMenuTheme,
+      // dropdownMenuTheme: dropdownMenuTheme ?? this.dropdownMenuTheme,
       elevatedButtonTheme: elevatedButtonTheme ?? this.elevatedButtonTheme,
       expandableFloatingActionButtonTheme: expandableFloatingActionButtonTheme ?? this.expandableFloatingActionButtonTheme,
       expansionTileTheme: expansionTileTheme ?? this.expansionTileTheme,
@@ -1246,8 +1244,9 @@ class ThemeData with Diagnosticable {
       switchTheme: switchTheme ?? this.switchTheme,
       tabBarTheme: tabBarTheme ?? this.tabBarTheme,
       textButtonTheme: textButtonTheme ?? this.textButtonTheme,
+      textFieldTheme: textFieldTheme ?? this.textFieldTheme,
       textSelectionTheme: textSelectionTheme ?? this.textSelectionTheme,
-      timePickerTheme: timePickerTheme ?? this.timePickerTheme,
+      // timePickerTheme: timePickerTheme ?? this.timePickerTheme,
       tooltipTheme: tooltipTheme ?? this.tooltipTheme,
     );
   }
@@ -1354,7 +1353,6 @@ class ThemeData with Diagnosticable {
       // GENERAL CONFIGURATION
       cupertinoOverrideTheme: t < 0.5 ? a.cupertinoOverrideTheme : b.cupertinoOverrideTheme,
       extensions: _lerpThemeExtensions(a, b, t),
-      inputDecorationTheme: t < 0.5 ? a.inputDecorationTheme : b.inputDecorationTheme,
       materialTapTargetSize: t < 0.5 ? a.materialTapTargetSize : b.materialTapTargetSize,
       minInteractiveDimension: lerpDouble(a.minInteractiveDimension, b.minInteractiveDimension, t)!,
       alwaysPadTapTarget: t < 0.5 ? a.alwaysPadTapTarget : b.alwaysPadTapTarget,
@@ -1385,7 +1383,7 @@ class ThemeData with Diagnosticable {
       dialogTheme: DialogTheme.lerp(a.dialogTheme, b.dialogTheme, t),
       dividerTheme: DividerThemeData.lerp(a.dividerTheme, b.dividerTheme, t),
       drawerTheme: DrawerThemeData.lerp(a.drawerTheme, b.drawerTheme, t)!,
-      dropdownMenuTheme: DropdownMenuThemeData.lerp(a.dropdownMenuTheme, b.dropdownMenuTheme, t),
+      // dropdownMenuTheme: DropdownMenuThemeData.lerp(a.dropdownMenuTheme, b.dropdownMenuTheme, t),
       elevatedButtonTheme: ElevatedButtonThemeData.lerp(a.elevatedButtonTheme, b.elevatedButtonTheme, t)!,
       expandableFloatingActionButtonTheme: ExpandableFloatingActionButtonThemeData.lerp(a.expandableFloatingActionButtonTheme, b.expandableFloatingActionButtonTheme, t)!,
       expansionTileTheme: ExpansionTileThemeData.lerp(a.expansionTileTheme, b.expansionTileTheme, t)!,
@@ -1416,8 +1414,9 @@ class ThemeData with Diagnosticable {
       switchTheme: SwitchThemeData.lerp(a.switchTheme, b.switchTheme, t),
       tabBarTheme: TabBarTheme.lerp(a.tabBarTheme, b.tabBarTheme, t),
       textButtonTheme: TextButtonThemeData.lerp(a.textButtonTheme, b.textButtonTheme, t)!,
+      textFieldTheme: TextFieldThemeData.lerp(a.textFieldTheme, b.textFieldTheme, t)!,
       textSelectionTheme: TextSelectionThemeData.lerp(a.textSelectionTheme, b.textSelectionTheme, t)!,
-      timePickerTheme: TimePickerThemeData.lerp(a.timePickerTheme, b.timePickerTheme, t),
+      // timePickerTheme: TimePickerThemeData.lerp(a.timePickerTheme, b.timePickerTheme, t),
       tooltipTheme: TooltipThemeData.lerp(a.tooltipTheme, b.tooltipTheme, t)!,
     );
   }
@@ -1436,7 +1435,6 @@ class ThemeData with Diagnosticable {
         // GENERAL CONFIGURATION
         other.cupertinoOverrideTheme == cupertinoOverrideTheme &&
         mapEquals(other.extensions, extensions) &&
-        other.inputDecorationTheme == inputDecorationTheme &&
         other.materialTapTargetSize == materialTapTargetSize &&
         other.minInteractiveDimension == minInteractiveDimension &&
         other.alwaysPadTapTarget == alwaysPadTapTarget &&
@@ -1467,7 +1465,7 @@ class ThemeData with Diagnosticable {
         other.dialogTheme == dialogTheme &&
         other.dividerTheme == dividerTheme &&
         other.drawerTheme == drawerTheme &&
-        other.dropdownMenuTheme == dropdownMenuTheme &&
+        // other.dropdownMenuTheme == dropdownMenuTheme &&
         other.elevatedButtonTheme == elevatedButtonTheme &&
         other.expandableFloatingActionButtonTheme == expandableFloatingActionButtonTheme &&
         other.expansionTileTheme == expansionTileTheme &&
@@ -1497,9 +1495,10 @@ class ThemeData with Diagnosticable {
         other.standardIconButtonTheme == standardIconButtonTheme &&
         other.switchTheme == switchTheme &&
         other.tabBarTheme == tabBarTheme &&
+        other.textFieldTheme == textFieldTheme &&
         other.textButtonTheme == textButtonTheme &&
         other.textSelectionTheme == textSelectionTheme &&
-        other.timePickerTheme == timePickerTheme &&
+        // other.timePickerTheme == timePickerTheme &&
         other.tooltipTheme == tooltipTheme;
   }
 
@@ -1515,7 +1514,6 @@ class ThemeData with Diagnosticable {
       cupertinoOverrideTheme,
       ...extensions.keys,
       ...extensions.values,
-      inputDecorationTheme,
       materialTapTargetSize,
       minInteractiveDimension,
       alwaysPadTapTarget,
@@ -1546,7 +1544,7 @@ class ThemeData with Diagnosticable {
       dialogTheme,
       dividerTheme,
       drawerTheme,
-      dropdownMenuTheme,
+      // dropdownMenuTheme,
       elevatedButtonTheme,
       expandableFloatingActionButtonTheme,
       expansionTileTheme,
@@ -1577,8 +1575,9 @@ class ThemeData with Diagnosticable {
       switchTheme,
       tabBarTheme,
       textButtonTheme,
+      textFieldTheme,
       textSelectionTheme,
-      timePickerTheme,
+      // timePickerTheme,
       tooltipTheme,
     ];
     return Object.hashAll(values);
@@ -1596,7 +1595,6 @@ class ThemeData with Diagnosticable {
     // GENERAL CONFIGURATION
     properties.add(DiagnosticsProperty<NoDefaultCupertinoThemeData>('cupertinoOverrideTheme', cupertinoOverrideTheme, defaultValue: defaultData.cupertinoOverrideTheme, level: DiagnosticLevel.debug));
     properties.add(IterableProperty<ThemeExtension<dynamic>>('extensions', extensions.values, defaultValue: defaultData.extensions.values, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<InputDecorationTheme>('inputDecorationTheme', inputDecorationTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<MaterialTapTargetSize>('materialTapTargetSize', materialTapTargetSize, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<double>('minInteractiveDimension', minInteractiveDimension, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<bool>('alwaysPadTapTarget', alwaysPadTapTarget, level: DiagnosticLevel.debug));
@@ -1627,7 +1625,7 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<DialogTheme>('dialogTheme', dialogTheme, defaultValue: defaultData.dialogTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<DividerThemeData>('dividerTheme', dividerTheme, defaultValue: defaultData.dividerTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<DrawerThemeData>('drawerTheme', drawerTheme, defaultValue: defaultData.drawerTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<DropdownMenuThemeData>('dropdownMenuTheme', dropdownMenuTheme, defaultValue: defaultData.dropdownMenuTheme, level: DiagnosticLevel.debug));
+    // properties.add(DiagnosticsProperty<DropdownMenuThemeData>('dropdownMenuTheme', dropdownMenuTheme, defaultValue: defaultData.dropdownMenuTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ElevatedButtonThemeData>('elevatedButtonTheme', elevatedButtonTheme, defaultValue: defaultData.elevatedButtonTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ExpansionTileThemeData>('expansionTileTheme', expansionTileTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ExpandableFloatingActionButtonThemeData>('expandableFloatingActionButtonTheme', expandableFloatingActionButtonTheme, level: DiagnosticLevel.debug));
@@ -1658,8 +1656,9 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<SwitchThemeData>('switchTheme', switchTheme, defaultValue: defaultData.switchTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TabBarTheme>('tabBarTheme', tabBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TextButtonThemeData>('textButtonTheme', textButtonTheme, defaultValue: defaultData.textButtonTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<TextFieldThemeData>('textFieldTheme', textFieldTheme, defaultValue: defaultData.textFieldTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TextSelectionThemeData>('textSelectionTheme', textSelectionTheme, defaultValue: defaultData.textSelectionTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<TimePickerThemeData>('timePickerTheme', timePickerTheme, defaultValue: defaultData.timePickerTheme, level: DiagnosticLevel.debug));
+    // properties.add(DiagnosticsProperty<TimePickerThemeData>('timePickerTheme', timePickerTheme, defaultValue: defaultData.timePickerTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<TooltipThemeData>('tooltipTheme', tooltipTheme, level: DiagnosticLevel.debug));
   }
 }

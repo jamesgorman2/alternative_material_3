@@ -600,7 +600,7 @@ void main() {
             child: TextFormField(
               decoration: InputDecoration(
                 labelText: 'label text',
-                helperText: helperText,
+                supportingText: helperText,
                 counterText: counterText,
                 errorText: hasError ? errorText : null,
                 enabled: enabled,
@@ -945,7 +945,7 @@ void main() {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Some Label',
-              hintText: 'Some Hint',
+              placeholderText: 'Some Hint',
               hintTextDirection: TextDirection.ltr,
             ),
           ),
@@ -966,7 +966,7 @@ void main() {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Some Label',
-              hintText: 'Some Hint',
+              placeholderText: 'Some Hint',
             ),
           ),
         ),

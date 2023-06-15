@@ -258,10 +258,8 @@ class FloatingActionButton extends StatelessWidget {
       containerShape: fabTheme.shape,
       animationDuration: fabTheme.animationDuration,
       containerHeight: fabTheme.sizeConstraints.minHeight,
-      minimumContainerWidth:
-          MaterialStateProperty.all(fabTheme.sizeConstraints.minWidth),
-      maximumContainerWidth:
-          MaterialStateProperty.all(fabTheme.sizeConstraints.maxWidth),
+      minimumContainerWidth: fabTheme.sizeConstraints.minWidth,
+      maximumContainerWidth: fabTheme.sizeConstraints.maxWidth,
       enableFeedback: fabTheme.enableFeedback,
       mouseCursor: fabTheme.mouseCursor,
       shadowColor: fabTheme.shadowColor,

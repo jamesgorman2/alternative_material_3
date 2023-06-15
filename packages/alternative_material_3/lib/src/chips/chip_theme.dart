@@ -480,8 +480,8 @@ class ChipThemeData with Diagnosticable {
   MaterialTapTargetSize get materialTapTargetSize => _materialTapTargetSize!;
   final MaterialTapTargetSize? _materialTapTargetSize;
 
-  /// {@template flutter.material.checkbox.visualDensity}
-  /// Defines how compact the checkbox's layout will be.
+  /// {@template flutter.material.chip.visualDensity}
+  /// Defines how compact the chip's layout will be.
   /// {@endtemplate}
   ///
   /// {@macro flutter.material.themedata.visualDensity}

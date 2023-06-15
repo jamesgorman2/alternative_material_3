@@ -370,7 +370,7 @@ void main() {
         decoration: const InputDecoration(
           labelText: 'label',
           alignLabelWithHint: true,
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -709,7 +709,7 @@ void main() {
             key: key,
           ),
           alignLabelWithHint: true,
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -785,7 +785,7 @@ void main() {
                   decoration: InputDecoration(
                     labelText: 'label',
                     alignLabelWithHint: alignLabelWithHint,
-                    hintText: 'hint',
+                    placeholderText: 'hint',
                   ),
                   strutStyle: StrutStyle.disabled,
                 ),
@@ -835,7 +835,7 @@ void main() {
                   decoration: InputDecoration(
                     labelText: 'label',
                     alignLabelWithHint: alignLabelWithHint,
-                    hintText: 'hint',
+                    placeholderText: 'hint',
                   ),
                 ),
               ),
@@ -887,7 +887,7 @@ void main() {
                   decoration: InputDecoration(
                     labelText: 'label',
                     alignLabelWithHint: alignLabelWithHint,
-                    hintText: 'hint',
+                    placeholderText: 'hint',
                   ),
                 ),
               ),
@@ -938,7 +938,7 @@ void main() {
                   decoration: InputDecoration(
                     labelText: 'label',
                     alignLabelWithHint: alignLabelWithHint,
-                    hintText: 'hint',
+                    placeholderText: 'hint',
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.zero,
                     ),
@@ -990,7 +990,7 @@ void main() {
         isEmpty: true,
         // isFocused: false (default)
         decoration: const InputDecoration(
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -1015,7 +1015,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -1054,7 +1054,7 @@ void main() {
         isFocused: true,
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -1088,7 +1088,7 @@ void main() {
         isFocused: true,
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -1126,7 +1126,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           isDense: true,
         ),
       ),
@@ -1165,7 +1165,7 @@ void main() {
         isFocused: true,
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           isDense: true,
         ),
       ),
@@ -1204,7 +1204,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
           filled: true,
         ),
@@ -1251,7 +1251,7 @@ void main() {
         decoration: const InputDecoration(
           labelText: 'label',
           errorText: 'error',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
           filled: true,
         ),
@@ -1300,7 +1300,7 @@ void main() {
           isDense: true,
           labelText: 'label',
           errorText: 'error',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
           filled: true,
         ),
@@ -1328,7 +1328,7 @@ void main() {
           isDense: true,
           labelText: 'label',
           errorText: 'error',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
           filled: true,
         ),
@@ -1366,7 +1366,7 @@ void main() {
                   maxLength: maxLength,
                   decoration: InputDecoration(
                     counterText: counterText,
-                    counter: counter,
+                    counterText: counter,
                   ),
                 ),
               ],
@@ -1462,7 +1462,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: 'helper',
+          supportingText: 'helper',
           errorText: kError3,
           errorMaxLines: 3,
           filled: true,
@@ -1494,7 +1494,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: 'helper',
+          supportingText: 'helper',
           errorText: kError2,
           errorMaxLines: 3,
           filled: true,
@@ -1516,7 +1516,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: 'helper',
+          supportingText: 'helper',
           errorText: kError1,
           errorMaxLines: 3,
           filled: true,
@@ -1541,7 +1541,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: kHelper3,
+          supportingText: kHelper3,
           helperMaxLines: 3,
           filled: true,
         ),
@@ -1572,7 +1572,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: kHelper3,
+          supportingText: kHelper3,
           helperMaxLines: 2,
           filled: true,
         ),
@@ -1593,7 +1593,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: kHelper2,
+          supportingText: kHelper2,
           helperMaxLines: 3,
           filled: true,
         ),
@@ -1614,7 +1614,7 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: kHelper1,
+          supportingText: kHelper1,
           helperMaxLines: 3,
           filled: true,
         ),
@@ -2012,7 +2012,7 @@ void main() {
         visualDensity: VisualDensity.compact,
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -2036,7 +2036,7 @@ void main() {
         visualDensity: VisualDensity.compact,
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -2071,7 +2071,7 @@ void main() {
         visualDensity: VisualDensity.compact,
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -2109,7 +2109,7 @@ void main() {
         visualDensity: const VisualDensity(horizontal: 2.0, vertical: 2.0),
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -2133,7 +2133,7 @@ void main() {
         visualDensity: const VisualDensity(horizontal: 2.0, vertical: 2.0),
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -2168,7 +2168,7 @@ void main() {
         visualDensity: const VisualDensity(horizontal: 2.0, vertical: 2.0),
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -3127,7 +3127,7 @@ void main() {
         textDirection: TextDirection.rtl,
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
           filled: true,
         ),
@@ -3162,7 +3162,7 @@ void main() {
         textDirection: TextDirection.rtl,
         decoration: const InputDecoration(
           labelText: 'label',
-          helperText: 'helper',
+          supportingText: 'helper',
           errorText: 'error',
           counterText: 'counter',
           filled: true,
@@ -3219,7 +3219,7 @@ void main() {
         decoration: const InputDecoration(
           contentPadding: EdgeInsetsDirectional.only(start: 40.0, top: 12.0, bottom: 12.0),
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           filled: true,
         ),
       ),
@@ -3239,7 +3239,7 @@ void main() {
         decoration: const InputDecoration(
           contentPadding: EdgeInsetsDirectional.only(start: 40.0, top: 12.0, bottom: 12.0),
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           filled: true,
         ),
       ),
@@ -3329,7 +3329,7 @@ void main() {
           floatingLabelAlignment: alignment,
           icon: hasIcon ? const Icon(Icons.insert_link) : null,
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           filled: true,
           border: borderIsOutline ? const OutlineInputBorder() : null,
         ),
@@ -3604,7 +3604,7 @@ void main() {
         // isEmpty: false (default),
         // isFocused: false (default)
         decoration: const InputDecoration(
-          hintText: 'hint',
+          placeholderText: 'hint',
           contentPadding: EdgeInsets.symmetric(vertical: verticalPadding),
           isDense: true,
         ),
@@ -3629,7 +3629,7 @@ void main() {
         // isEmpty: false (default),
         // isFocused: false (default)
         decoration: const InputDecoration.collapsed(
-          hintText: 'hint',
+          placeholderText: 'hint',
           // InputDecoration.collapsed does not support contentPadding
         ),
       ),
@@ -3653,7 +3653,7 @@ void main() {
         // isEmpty: false (default),
         // isFocused: false (default)
         decoration: const InputDecoration(
-          hintText: 'hint',
+          placeholderText: 'hint',
           contentPadding: EdgeInsets.symmetric(vertical: verticalPadding),
         ),
       ),
@@ -3678,7 +3678,7 @@ void main() {
         // isEmpty: false (default),
         // isFocused: false (default)
         decoration: const InputDecoration.collapsed(
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -3700,7 +3700,7 @@ void main() {
         isEmpty: true,
         isFocused: true,
         decoration: const InputDecoration.collapsed(
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -3724,7 +3724,7 @@ void main() {
         isEmpty: true,
         baseStyle: style,
         decoration: const InputDecoration(
-          hintText: 'hint',
+          placeholderText: 'hint',
           labelText: 'label',
         ),
         child: const Text('text', style: style),
@@ -3764,8 +3764,8 @@ void main() {
         // isFocused: false (default)
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
-          helperText: 'helper',
+          placeholderText: 'hint',
+          supportingText: 'helper',
           counterText: 'counter',
           labelStyle: TextStyle(),
           hintStyle: TextStyle(),
@@ -3911,7 +3911,7 @@ void main() {
         ),
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
         ),
       ),
     );
@@ -3959,10 +3959,10 @@ void main() {
         ),
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           prefixText: 'prefix',
           suffixText: 'suffix',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
         ),
       ),
@@ -4027,10 +4027,10 @@ void main() {
         ),
         decoration: const InputDecoration(
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           prefixText: 'prefix',
           suffixText: 'suffix',
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
         ),
       ),
@@ -4082,12 +4082,12 @@ void main() {
         decoration: const InputDecoration(
           icon: Text('icon'),
           labelText: 'label',
-          hintText: 'hint',
+          placeholderText: 'hint',
           prefixText: 'prefix',
           suffixText: 'suffix',
           prefixIcon: Text('prefixIcon'),
           suffixIcon: Text('suffixIcon'),
-          helperText: 'helper',
+          supportingText: 'helper',
           counterText: 'counter',
         ),
         child: const Text('text'),
@@ -5425,7 +5425,7 @@ void main() {
               decoration: InputDecoration(
                 labelText: 'label',
                 alignLabelWithHint: alignLabelWithHint,
-                hintText: 'hint',
+                placeholderText: 'hint',
                 hintStyle: const TextStyle(
                   fontFamily: 'Cough',
                 ),
@@ -5495,7 +5495,7 @@ void main() {
         isEmpty: true,
         decoration: const InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: 'hint',
+          placeholderText: 'hint',
           labelText: 'label',
         ),
       ),
@@ -5572,7 +5572,7 @@ void main() {
             return InputDecorator(
               textAlignVertical: alignment,
               decoration: const InputDecoration(
-                hintText: hintText,
+                placeholderText: hintText,
               ),
             );
           },
@@ -5875,7 +5875,7 @@ void main() {
                 TextField(
                   decoration: InputDecoration(
                     labelText: 'Label Text',
-                    helperText: 'Helper Text',
+                    supportingText: 'Helper Text',
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
@@ -6119,7 +6119,7 @@ void main() {
       overflow: TextOverflow.fade,
     );
     final InputDecoration decoration = InputDecoration(
-      hintText: hintText,
+      placeholderText: hintText,
       hintStyle: hintStyle,
     );
 

@@ -141,7 +141,7 @@ class TextSelectionToolbarTextButton extends StatelessWidget {
         labelColor: MaterialStateProperty.all(theme.colorScheme.onSurface),
         containerShape: const RoundedRectangleBorder(),
         containerHeight: kMinInteractiveDimension,
-        minimumContainerWidth: MaterialStateProperty.all(kMinInteractiveDimension),
+        minimumContainerWidth: kMinInteractiveDimension,
         labelPadding: padding.left, // FIXME
         alignment: alignment,
       ),),
