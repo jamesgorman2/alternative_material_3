@@ -6,7 +6,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../constants.dart';
 import '../debug.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
@@ -19,6 +18,8 @@ import '../tooltip.dart';
 import 'chip_theme.dart';
 
 export 'assist_chip.dart';
+export 'chip_list.dart';
+export 'chip_list_theme.dart';
 export 'chip_theme.dart';
 export 'filter_chip.dart';
 export 'input_chip.dart';
@@ -655,6 +656,7 @@ class _ChipState extends State<Chip>
               child: SizedBox(
                 height: chipTheme.containerHeight,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     AnimatedSize(
                       duration: _kWidthChangeDuration,

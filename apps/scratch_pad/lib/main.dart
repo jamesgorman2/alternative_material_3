@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        materialTapTargetSize: MaterialTapTargetSize.padded,
+        minInteractiveDimension: 48.0,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -30,56 +33,45 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: 300,
+        color: Colors.black26,
         padding: const EdgeInsets.all(24),
-        child: const Column(
-          children: [
-            // TextField.plain(
-            //   maxLines: 3,
-            // ),
-            // TextField.underlined(
-            //   decoration: InputDecoration(
-            //     label: Text('Label'),
-            //     placeholderText: 'Money',
-            //     prefixIcon: Icon(Icons.search_outlined),
-            //     prefix: Text('\$'),
-            //     suffix: Text('.00'),
-            //     suffixIcon: Icon(Icons.cancel_outlined),
-            //     supportingText: 'You\'re great!',
-            //   ),
-            //   maxLines: 3,
-            // ),
-            // TextField.filled(
-            //   decoration: InputDecoration(
-            //     label: Text('Label'),
-            //     placeholderText: 'Money',
-            //     prefixIcon: Icon(Icons.search_outlined),
-            //     prefix: Text('\$'),
-            //     suffix: Text('.00'),
-            //     suffixIcon: Icon(Icons.cancel_outlined),
-            //     supportingText: 'You\'re great!',
-            //   ),
-            //   maxLines: 3,
-            // ),
-            TextField.filled(
-              theme: TextFieldThemeData(
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                supportingTextMinLines: 2,
-              ),
-              decoration: InputDecoration(
-                label: Text('Label'),
-                placeholderText: 'Money',
-                prefixIcon: Icon(Icons.search_outlined),
-                prefix: Text('\$'),
-                suffix: Text('.00'),
-                suffixIcon: Icon(Icons.cancel_outlined),
-                supportingText: 'You\'re great! ',
-                // errorText: 'You\'re not great!',
-              ),
-              minLines: 1,
-              maxLines: 3,
-              // maxLength: 10,
+        child: Container(
+          color: Colors.white70,
+          child: ChipList(
+            // singleLine: true,
+            theme: const ChipListThemeData(
+              maxLines: 2,
+              overflowLineHeight: 0.5,
             ),
-          ],
+            children: [
+                InputChip(
+                label: const Text('Label 1'),
+                onPressed: () {},
+                onDeletePressed: () {},
+              ),
+              InputChip(
+                label: const Text('Label 2'),
+                onPressed: () {},
+                onDeletePressed: () {},
+              ),
+              InputChip(
+                label: const Text('Label 3'),
+                onPressed: () {},
+                onDeletePressed: () {},
+              ),
+              InputChip(
+                label: const Text('Label 4'),
+                onPressed: () {},
+                onDeletePressed: () {},
+              ),
+              InputChip(
+                label: const Text('Label 5'),
+                onPressed: () {},
+                onDeletePressed: () {},
+              ),
+              const Text('Text'),
+            ],
+          ),
         ),
       ),
     );

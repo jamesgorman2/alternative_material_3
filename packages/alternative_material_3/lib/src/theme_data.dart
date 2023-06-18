@@ -21,6 +21,7 @@ import 'buttons/expandable_floating_action_button_theme.dart';
 import 'buttons/floating_action_button_theme.dart';
 import 'card_theme.dart';
 import 'checkbox_theme.dart';
+import 'chips/chip_list_theme.dart';
 import 'chips/chip_theme.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
@@ -305,6 +306,7 @@ class ThemeData with Diagnosticable {
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
+    ChipListThemeData? chipListTheme,
     DatePickerThemeData? datePickerTheme,
     DialogTheme? dialogTheme,
     DividerThemeData? dividerTheme,
@@ -398,6 +400,7 @@ class ThemeData with Diagnosticable {
     cardTheme ??= const CardTheme();
     checkboxTheme ??= const CheckboxThemeData();
     chipTheme ??= const ChipThemeData();
+    chipListTheme ??= const ChipListThemeData();
     datePickerTheme ??= const DatePickerThemeData();
     dialogTheme ??= const DialogTheme();
     dividerTheme ??= const DividerThemeData();
@@ -473,6 +476,7 @@ class ThemeData with Diagnosticable {
       cardTheme: cardTheme,
       checkboxTheme: checkboxTheme,
       chipTheme: chipTheme,
+      chipListTheme: chipListTheme,
       datePickerTheme: datePickerTheme,
       dialogTheme: dialogTheme,
       dividerTheme: dividerTheme,
@@ -557,6 +561,7 @@ class ThemeData with Diagnosticable {
     required this.cardTheme,
     required this.checkboxTheme,
     required this.chipTheme,
+    required this.chipListTheme,
     required this.datePickerTheme,
     required this.dialogTheme,
     required this.dividerTheme,
@@ -942,6 +947,11 @@ class ThemeData with Diagnosticable {
   /// This is the value returned from [ChipTheme.of].
   final ChipThemeData chipTheme;
 
+  /// The style used o render [ChipLists]s.
+  ///
+  /// This is the value returned from [ChipListTheme.of].
+  final ChipListThemeData chipListTheme;
+
   /// A theme for customizing the appearance and layout of [DatePickerDialog]
   /// widgets.
   final DatePickerThemeData datePickerTheme;
@@ -1133,6 +1143,7 @@ class ThemeData with Diagnosticable {
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
+    ChipListThemeData? chipListTheme,
     DatePickerThemeData? datePickerTheme,
     DialogTheme? dialogTheme,
     DividerThemeData? dividerTheme,
@@ -1209,6 +1220,7 @@ class ThemeData with Diagnosticable {
       cardTheme: cardTheme ?? this.cardTheme,
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
       chipTheme: chipTheme ?? this.chipTheme,
+      chipListTheme: chipListTheme ?? this.chipListTheme,
       datePickerTheme: datePickerTheme ?? this.datePickerTheme,
       dialogTheme: dialogTheme ?? this.dialogTheme,
       dividerTheme: dividerTheme ?? this.dividerTheme,
@@ -1379,6 +1391,7 @@ class ThemeData with Diagnosticable {
       cardTheme: CardTheme.lerp(a.cardTheme, b.cardTheme, t),
       checkboxTheme: CheckboxThemeData.lerp(a.checkboxTheme, b.checkboxTheme, t),
       chipTheme: ChipThemeData.lerp(a.chipTheme, b.chipTheme, t)!,
+      chipListTheme: ChipListThemeData.lerp(a.chipListTheme, b.chipListTheme, t)!,
       datePickerTheme: DatePickerThemeData.lerp(a.datePickerTheme, b.datePickerTheme, t),
       dialogTheme: DialogTheme.lerp(a.dialogTheme, b.dialogTheme, t),
       dividerTheme: DividerThemeData.lerp(a.dividerTheme, b.dividerTheme, t),
@@ -1461,6 +1474,7 @@ class ThemeData with Diagnosticable {
         other.cardTheme == cardTheme &&
         other.checkboxTheme == checkboxTheme &&
         other.chipTheme == chipTheme &&
+        other.chipListTheme == chipListTheme &&
         other.datePickerTheme == datePickerTheme &&
         other.dialogTheme == dialogTheme &&
         other.dividerTheme == dividerTheme &&
@@ -1540,6 +1554,7 @@ class ThemeData with Diagnosticable {
       cardTheme,
       checkboxTheme,
       chipTheme,
+      chipListTheme,
       datePickerTheme,
       dialogTheme,
       dividerTheme,

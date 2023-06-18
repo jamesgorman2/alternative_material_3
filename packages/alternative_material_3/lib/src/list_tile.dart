@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'buttons/button.dart';
 import 'constants.dart';
 import 'debug.dart';
+import 'divider.dart';
 import 'ink_decoration.dart';
 import 'ink_well.dart';
 import 'list_tile_element.dart';
@@ -654,6 +655,39 @@ class ListTile extends StatelessWidget {
     properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode, defaultValue: null));
     properties.add(DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
   }
+
+  /// Add a one pixel border in between each tile. If color isn't specified the
+  /// [ThemeData.dividerColor] of the context's [Theme] is used.
+  ///
+  /// See also:
+  ///
+  ///  * [Divider], which you can use to obtain this effect manually.
+  static Iterable<Widget> divideTiles({ BuildContext? context, required Iterable<Widget> tiles, Color? color }) {
+    assert(color != null || context != null);
+    tiles = tiles.toList();
+
+    if (tiles.isEmpty || tiles.length == 1) {
+      return tiles;
+    }
+
+    Widget wrapTile(Widget tile) {
+      return DecoratedBox(
+        position: DecorationPosition.foreground,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: Divider.createBorderSide(context, color: color),
+          ),
+        ),
+        child: tile,
+      );
+    }
+
+    return <Widget>[
+      ...tiles.take(tiles.length - 1).map(wrapTile),
+      tiles.last,
+    ];
+  }
+
 }
 
 // Identifies the children of a _ListTileM3Element.

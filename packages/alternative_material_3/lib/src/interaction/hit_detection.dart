@@ -42,8 +42,8 @@ class RedirectingHitDetectionWidget extends StatelessWidget {
     return _RedirectingHitDetectionWidget(
       widgetBox: widgetBox,
       minHitBox: BoxConstraints(
-        minWidth: theme.minInteractiveDimension + densityAdjustment.dx,
-        minHeight: theme.minInteractiveDimension + densityAdjustment.dy,
+        minWidth: math.max(theme.minInteractiveDimension + densityAdjustment.dx, 0.0),
+        minHeight: math.max(theme.minInteractiveDimension + densityAdjustment.dy, 0.0),
       ),
       materialTapTargetSize: tapTargetSize,
       child: Center(
@@ -95,7 +95,7 @@ class _RedirectingHitDetectionWidget extends SingleChildRenderObjectWidget {
 ///
 class RenderRedirectingHitDetection extends RenderConstrainedBox {
   ///
-  RenderRedirectingHitDetection({
+    RenderRedirectingHitDetection({
     required super.additionalConstraints,
     required Size widgetBox,
     required MaterialTapTargetSize materialTapTargetSize,
