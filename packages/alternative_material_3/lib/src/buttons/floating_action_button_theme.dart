@@ -677,23 +677,26 @@ class _LateResolvingFABButtonThemeData extends FloatingActionButtonThemeData {
     }
     switch (type) {
       case FloatingActionButtonType.regular:
-        return const BoxConstraints.tightFor(
-          width: 56.0,
-          height: 56.0,
+        return const BoxConstraints(
+          minWidth: 56.0,
+          minHeight: 56.0,
+          maxHeight: 56.0,
         );
       case FloatingActionButtonType.small:
-        return const BoxConstraints.tightFor(
-          width: 40.0,
-          height: 40.0,
+        return const BoxConstraints(
+          minWidth: 40.0,
+          minHeight: 40.0,
+          maxHeight: 40.0,
         );
       case FloatingActionButtonType.large:
-        return const BoxConstraints.tightFor(
-          width: 96.0,
-          height: 96.0,
+        return const BoxConstraints(
+          minWidth: 96.0,
+          minHeight: 96.0,
+          maxHeight: 96.0,
         );
       case FloatingActionButtonType.extended:
         return const BoxConstraints(
-          minWidth: 80.0,
+          minWidth: 56.0,
           minHeight: 56.0,
           maxHeight: 56.0,
         );

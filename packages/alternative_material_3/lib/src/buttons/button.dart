@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../animation/animated_row.dart';
 import '../colors.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
@@ -63,7 +64,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.statesController,
     this.icon,
-    required this.label,
+    this.label,
     this.isSelected = false,
   });
 
@@ -129,7 +130,7 @@ abstract class ButtonStyleButton extends StatefulWidget {
   /// {@template alternative_material_3.button.label}
   /// The button's label.
   /// {@endtemplate}
-  final Widget label;
+  final Widget? label;
 
   /// {@template alternative_material_3.button.isSelected}
   /// Sets [MaterialState.selected].
@@ -244,9 +245,6 @@ abstract class ButtonStyleButton extends StatefulWidget {
 ///  * [TextButton], a simple button without a shadow.
 class _ButtonStyleState extends State<ButtonStyleButton>
     with TickerProviderStateMixin {
-  AnimationController? animationController;
-  Elevation? elevation;
-  Color? containerColor;
   MaterialStatesController? internalStatesController;
 
   void handleStatesControllerChange() {
@@ -308,7 +306,6 @@ class _ButtonStyleState extends State<ButtonStyleButton>
   void dispose() {
     statesController.removeListener(handleStatesControllerChange);
     internalStatesController?.dispose();
-    animationController?.dispose();
     widget.focusNode?.removeListener(handleFocusChanged);
     super.dispose();
   }
@@ -322,10 +319,10 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     final Color iconColor = style.iconColor?.resolve(states) ?? labelColor;
     final double iconSize = style.iconSize;
     final TextStyle textStyle = style.labelStyle.copyWith(color: labelColor);
-    final Color newContainerColor = style.containerColor.resolve(states);
+    final Color containerColor = style.containerColor.resolve(states);
     final Color shadowColor = style.shadowColor;
 
-    final Elevation newElevation = style.elevation.resolve(states);
+    final Elevation elevation = style.elevation.resolve(states);
 
     final double iconPadding = style.iconPadding;
     final double internalPadding = style.internalPadding;
@@ -354,15 +351,13 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     final InteractiveInkFeatureFactory? resolvedSplashFactory =
         style.splashFactory;
 
-    final BoxConstraints containerConstraints =
-        visualDensity.effectiveConstraints(
-      BoxConstraints(
-        minWidth: minimumContainerWidth,
-        maxWidth: maximumContainerWidth < minimumContainerWidth
-          ? minimumContainerWidth : maximumContainerWidth,
-        minHeight: containerHeight,
-        maxHeight: containerHeight,
-      ),
+    final BoxConstraints containerConstraints = BoxConstraints(
+      minWidth: minimumContainerWidth,
+      maxWidth: maximumContainerWidth < minimumContainerWidth
+          ? minimumContainerWidth
+          : maximumContainerWidth,
+      minHeight: containerHeight,
+      maxHeight: containerHeight,
     );
 
     final textScaleFactor = MediaQuery.textScaleFactorOf(context);
@@ -380,49 +375,35 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     // did, VisualDensity.compact, the default for desktop/web, would
     // reduce the horizontal padding to zero.
     final double dx = math.max(0, densityAdjustment.dx);
-    final double dy = densityAdjustment.dy;
-    final EdgeInsetsGeometry padding = EdgeInsetsDirectional.only(
-      start: scalePadding(widget.icon != null ? iconPadding : labelPadding),
-      end: scalePadding(labelPadding),
-    ).add(EdgeInsets.fromLTRB(dx, dy, dx, dy)).clamp(EdgeInsets.zero,
-        EdgeInsetsGeometry.infinity); // ignore_clamp_double_lint
 
-    // If an opaque button's background is becoming translucent while its
-    // elevation is changing, change the elevation first. Material implicitly
-    // animates its elevation but not its color. SKIA renders non-zero
-    // elevations as a shadow colored fill behind the Material's background.
-    if (animationDuration > Duration.zero &&
-        elevation != null &&
-        containerColor != null &&
-        elevation != newElevation &&
-        containerColor!.value != newContainerColor.value &&
-        containerColor!.opacity == 1 &&
-        newContainerColor.opacity < 1 &&
-        newElevation == Elevation.level0) {
-      if (animationController?.duration != animationDuration) {
-        animationController?.dispose();
-        animationController = AnimationController(
-          duration: animationDuration,
-          vsync: this,
-        )..addStatusListener((AnimationStatus status) {
-            if (status == AnimationStatus.completed) {
-              setState(() {}); // Rebuild with the final background color.
-            }
-          });
-      }
-      animationController!.value = 0;
-      animationController!.forward();
-    } else {
-      containerColor = newContainerColor;
-    }
-    elevation = newElevation;
+    // final double startPadding = widget.label == null
+    //     ? 0.0
+    //     : math.max(
+    //         scalePadding(widget.icon != null ? iconPadding : labelPadding) + dx,
+    //         0.0,
+    //       );
+    // final double endPadding = widget.label == null
+    //     ? 0.0
+    //     : math.max(scalePadding(labelPadding) + dx, 0.0);
+
+    final double startPadding = math.max(
+      scalePadding(widget.icon != null ? iconPadding : labelPadding) + dx,
+      0.0,
+    );
+    final double endPadding = math.max(
+      scalePadding(widget.label == null ? iconPadding : labelPadding) + dx,
+      0.0,
+    );
+
+    print('startPadding ${startPadding}');
+    print('endPadding  $endPadding');
 
     final Widget result = ConstrainedBox(
       constraints: containerConstraints,
       child: SizedBox(
         height: containerHeight,
         child: Material(
-          elevation: elevation!,
+          elevation: elevation,
           textStyle: textStyle,
           shape: containerShape,
           color: containerColor,
@@ -449,43 +430,23 @@ class _ButtonStyleState extends State<ButtonStyleButton>
             splashColor: stateLayers.pressColor,
             child: IconTheme.merge(
               data: IconThemeData(color: iconColor, size: iconSize),
-              child: Padding(
-                padding: padding,
-                child: Align(
-                  alignment: alignment,
-                  widthFactor: 1.0,
-                  heightFactor: 1.0,
-                  child: AnimatedSize(
-                    duration: animationDuration,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        widget.icon ?? const SizedBox.shrink(),
-                        SizedBox(
-                          width: widget.icon == null
-                              ? 0.0
-                              : scalePadding(internalPadding),
-                        ),
-                        widget.label,
-                        // AnimatedSize(
-                        //   duration: animationDuration,
-                        //   child: widget.icon ?? const SizedBox.shrink(),
-                        // ),
-                        // AnimatedSize(
-                        //   duration: animationDuration,
-                        //   child: SizedBox(
-                        //     width: widget.icon == null
-                        //         ? 0.0
-                        //         : scalePadding(internalPadding),
-                        //   ),
-                        // ),
-                        // AnimatedSize(
-                        //   duration: animationDuration,
-                        //   child: widget.label,
-                        // ),
-                      ],
+              child: Align(
+                alignment: alignment,
+                widthFactor: 1.0,
+                heightFactor: 1.0,
+                child: AnimatedRow(
+                  duration: animationDuration,
+                  children: [
+                    SizedBox(width: startPadding),
+                    widget.icon ?? const SizedBox.shrink(),
+                    SizedBox(
+                      width: widget.icon == null || widget.label == null
+                          ? 0.0
+                          : scalePadding(internalPadding),
                     ),
-                  ),
+                    widget.label,
+                    SizedBox(width: endPadding),
+                  ],
                 ),
               ),
             ),

@@ -23,10 +23,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  bool showLabel = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,43 +47,28 @@ class MyHomePage extends StatelessWidget {
         width: 300,
         color: Colors.black26,
         padding: const EdgeInsets.all(24),
-        child: Container(
-          color: Colors.white70,
-          child: ChipList(
-            // singleLine: true,
-            theme: const ChipListThemeData(
-              maxLines: 2,
-              overflowLineHeight: 0.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              color: Colors.white70,
+              child: FloatingActionButton.extended(
+                onPressed: () => setState(() {
+                  showLabel = !showLabel;
+                }),
+                icon: const Icon(Icons.add),
+                label: showLabel ? const Text('Label') : null,
+              ),
             ),
-            children: [
-                InputChip(
-                label: const Text('Label 1'),
-                onPressed: () {},
-                onDeletePressed: () {},
-              ),
-              InputChip(
-                label: const Text('Label 2'),
-                onPressed: () {},
-                onDeletePressed: () {},
-              ),
-              InputChip(
-                label: const Text('Label 3'),
-                onPressed: () {},
-                onDeletePressed: () {},
-              ),
-              InputChip(
-                label: const Text('Label 4'),
-                onPressed: () {},
-                onDeletePressed: () {},
-              ),
-              InputChip(
-                label: const Text('Label 5'),
-                onPressed: () {},
-                onDeletePressed: () {},
-              ),
-              const Text('Text'),
-            ],
-          ),
+            SizedBox(height: 24),
+            AnimatedRow(
+              duration: Duration(milliseconds: 300),
+              children: [
+                const Icon(Icons.add),
+                showLabel ? const Text('Label') : null,
+              ],
+            ),
+          ],
         ),
       ),
     );

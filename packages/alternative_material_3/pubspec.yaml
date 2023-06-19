@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   characters: ^1.3.0
+  collection: ^1.17.1
   flutter:
     sdk: flutter
   material_color_utilities:

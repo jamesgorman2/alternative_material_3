@@ -134,7 +134,7 @@ class FloatingActionButton extends StatelessWidget {
   const FloatingActionButton.extended({
     super.key,
     this.icon,
-    required Widget this.label,
+    this.label,
     this.theme,
     this.colorTheme = FloatingActionButtonColorTheme.primary,
     this.height = FloatingActionButtonHeight.regular,
@@ -143,7 +143,10 @@ class FloatingActionButton extends StatelessWidget {
     required this.onPressed,
     this.focusNode,
     this.autofocus = false,
-  }) : _floatingActionButtonType = FloatingActionButtonType.extended;
+  }) : _floatingActionButtonType =
+      label != null
+          ? FloatingActionButtonType.extended
+          : FloatingActionButtonType.regular;
 
   /// Creates a large circular floating action button.
   ///
@@ -252,9 +255,9 @@ class FloatingActionButton extends StatelessWidget {
       stateLayers: MaterialStateProperty.all(fabTheme.stateLayers),
       elevation: fabTheme.elevation,
       iconSize: fabTheme.iconSize,
-      iconPadding: isExtended ? fabTheme.extendedIconPadding : 0.0,
+      iconPadding: fabTheme.extendedIconPadding,
       internalPadding: fabTheme.extendedIconLabelSpacing,
-      labelPadding: isExtended ? fabTheme.extendedLabelPadding : 0.0,
+      labelPadding: fabTheme.extendedLabelPadding,
       containerShape: fabTheme.shape,
       animationDuration: fabTheme.animationDuration,
       containerHeight: fabTheme.sizeConstraints.minHeight,
@@ -269,19 +272,8 @@ class FloatingActionButton extends StatelessWidget {
 
     Widget result = _FabButtonStyleButton(
       onPressed: onPressed,
-      icon: isExtended ? icon : null,
-      label: (isExtended ? label : icon)!,
-      // icon: null,
-      // label: Row(
-      //   children: [
-      //     if (icon != null) icon!,
-      //     if (icon != null && label != null)
-      //       SizedBox(
-      //         width: fabTheme.extendedIconLabelSpacing,
-      //       ),
-      //     if (label != null) label!,
-      //   ],
-      // ),
+      icon: icon,
+      label: label,
       clipBehavior: fabTheme.clipBehavior,
       focusNode: focusNode,
       autofocus: autofocus,

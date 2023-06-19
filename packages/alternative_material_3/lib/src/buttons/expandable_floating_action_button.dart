@@ -152,10 +152,9 @@ class ExpandableFloatingActionButtonState
 
     final totalHeight = primaryFabHeight +
         expandableTheme.primaryPadding +
-                widget.supportingFabs.length * miniFabHeight +
-                (widget.supportingFabs.length - 1) *
-                    expandableTheme.supportingPadding +
-                topOffset;
+        widget.supportingFabs.length * miniFabHeight +
+        (widget.supportingFabs.length - 1) * expandableTheme.supportingPadding +
+        topOffset;
 
     List<Widget> positionSupportingButtons() {
       Widget miniFab(ExpandableFloatingActionButtonEntry e) {
@@ -182,46 +181,28 @@ class ExpandableFloatingActionButtonState
             index * expandableTheme.supportingPadding;
 
         return Positioned(
-          top: lerpDouble(totalHeight - primaryFabHeight, top, _expandAnimation.value),
+          top: lerpDouble(
+            totalHeight - primaryFabHeight,
+            top,
+            _expandAnimation.value,
+          ),
           child: miniFab(e.$2),
         );
       }).toList();
     }
 
     Widget buildPrimaryFab() {
-      return _isOpen && widget.primaryFab.label != null
-          ? FloatingActionButton.extended(
-              icon: widget.primaryFab.icon,
-              label: widget.primaryFab.label!,
-              onPressed: _handleToggleOpen,
-              colorTheme: widget.primaryColorTheme,
-              theme: widget.fabTheme,
-              focusNode: widget.primaryFab.focusNode,
-              heroTag: widget.primaryFab.heroTag,
-              height: _isOpen ? widget.expandedHeight : widget.collapsedHeight,
-              tooltip: widget.primaryFab.tooltip,
-            )
-          : _isOpen
-              ? FloatingActionButton(
-                  icon: widget.primaryFab.icon,
-                  onPressed: _handleToggleOpen,
-                  colorTheme: widget.primaryColorTheme,
-                  theme: widget.fabTheme,
-                  focusNode: widget.primaryFab.focusNode,
-                  heroTag: widget.primaryFab.heroTag,
-                  height: _isOpen ? widget.expandedHeight : widget.collapsedHeight,
-                  tooltip: widget.primaryFab.tooltip,
-                )
-              : FloatingActionButton(
-                  icon: widget.primaryFab.icon,
-                  onPressed: _handleToggleOpen,
-                  colorTheme: widget.primaryColorTheme,
-                  theme: widget.fabTheme,
-                  focusNode: widget.primaryFab.focusNode,
-                  heroTag: widget.primaryFab.heroTag,
-                  height: _isOpen ? widget.expandedHeight : widget.collapsedHeight,
-                  tooltip: widget.primaryFab.tooltip,
-                );
+      return FloatingActionButton.extended(
+        icon: widget.primaryFab.icon,
+        label: _isOpen ? widget.primaryFab.label : null,
+        onPressed: _handleToggleOpen,
+        colorTheme: widget.primaryColorTheme,
+        theme: widget.fabTheme,
+        focusNode: widget.primaryFab.focusNode,
+        heroTag: widget.primaryFab.heroTag,
+        height: _isOpen ? widget.expandedHeight : widget.collapsedHeight,
+        tooltip: widget.primaryFab.tooltip,
+      );
     }
 
     List<Widget> positionedWidgets() {
@@ -233,6 +214,7 @@ class ExpandableFloatingActionButtonState
         ),
       ];
     }
+
     return AnimatedBuilder(
       animation: _expandAnimation,
       builder: (BuildContext context, Widget? child) {
@@ -246,86 +228,5 @@ class ExpandableFloatingActionButtonState
         );
       },
     );
-  }
-}
-
-class _ExpandableFloatingActionButton extends RenderObjectWidget
-    with SlottedMultiChildRenderObjectWidgetMixin<int> {
-  _ExpandableFloatingActionButton({
-    required this.isOpen,
-    required this.primaryFab,
-    required this.supportingFabs,
-  });
-
-  final bool isOpen;
-  final Widget primaryFab;
-  final List<Widget> supportingFabs;
-
-  @override
-  Widget? childForSlot(int slot) {
-    throw UnimplementedError();
-  }
-
-  @override
-  SlottedContainerRenderObjectMixin<int> createRenderObject(
-    BuildContext context,
-  ) {
-    return _RenderExpandableFloatingActionButton();
-  }
-
-  @override
-  void updateRenderObject(BuildContext context,
-      _RenderExpandableFloatingActionButton renderObject) {
-    super.updateRenderObject(context, renderObject);
-  }
-
-  @override
-  Iterable<int> get slots => List.generate(
-        supportingFabs.length + 1,
-        (index) => index,
-      );
-}
-
-class _RenderExpandableFloatingActionButton extends RenderBox
-    with SlottedContainerRenderObjectMixin<int> {
-  @override
-  void performLayout() {
-    // TODO: implement performLayout
-    super.performLayout();
-  }
-
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    void doPaint(RenderBox? child) {
-      if (child != null) {
-        final BoxParentData parentData = child.parentData! as BoxParentData;
-        context.paintChild(child, parentData.offset + offset);
-      }
-    }
-
-    /// Paint highest first so the primary is on top
-    children.toList().reversed.forEach(doPaint);
-  }
-
-  @override
-  bool hitTestSelf(Offset position) => true;
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    for (final RenderBox child in children) {
-      final BoxParentData parentData = child.parentData! as BoxParentData;
-      final bool isHit = result.addWithPaintOffset(
-        offset: parentData.offset,
-        position: position,
-        hitTest: (BoxHitTestResult result, Offset transformed) {
-          assert(transformed == position - parentData.offset);
-          return child.hitTest(result, position: transformed);
-        },
-      );
-      if (isHit) {
-        return true;
-      }
-    }
-    return false;
   }
 }

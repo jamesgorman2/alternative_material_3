@@ -21,6 +21,7 @@ export 'src/action_buttons.dart';
 export 'src/action_icons_theme.dart';
 export 'src/adaptive_text_selection_toolbar.dart';
 export 'src/animated_icons.dart';
+export 'src/animation/animated_row.dart';
 export 'src/app.dart';
 export 'src/app_bar.dart';
 export 'src/app_bar_theme.dart';
