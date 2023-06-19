@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:alternative_material_3/material.dart';
 
 import '../common_scaffold.dart';
@@ -70,24 +72,28 @@ class ButtonsSample extends StatelessWidget {
               FloatingActionButton(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.secondary,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.surface,
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -99,6 +105,7 @@ class ButtonsSample extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 height: FloatingActionButtonHeight.lowered,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
@@ -106,6 +113,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.secondary,
                 height: FloatingActionButtonHeight.lowered,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
@@ -113,6 +121,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
                 height: FloatingActionButtonHeight.lowered,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
@@ -120,6 +129,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.surface,
                 height: FloatingActionButtonHeight.lowered,
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -131,6 +141,7 @@ class ButtonsSample extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 height: FloatingActionButtonHeight.flat,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
@@ -138,6 +149,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.secondary,
                 height: FloatingActionButtonHeight.flat,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
@@ -145,6 +157,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
                 height: FloatingActionButtonHeight.flat,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton(
@@ -152,6 +165,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.surface,
                 height: FloatingActionButtonHeight.flat,
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -162,24 +176,28 @@ class ButtonsSample extends StatelessWidget {
               FloatingActionButton.small(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.small(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.secondary,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.small(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.small(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.surface,
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -190,24 +208,28 @@ class ButtonsSample extends StatelessWidget {
               FloatingActionButton.large(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.large(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.secondary,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.large(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.large(
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.surface,
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -219,6 +241,7 @@ class ButtonsSample extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined),
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.extended(
@@ -226,6 +249,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.secondary,
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.extended(
@@ -233,6 +257,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.extended(
@@ -240,6 +265,7 @@ class ButtonsSample extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined),
                 colorTheme: FloatingActionButtonColorTheme.surface,
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -250,24 +276,28 @@ class ButtonsSample extends StatelessWidget {
               FloatingActionButton.extended(
                 onPressed: () {},
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.extended(
                 onPressed: () {},
                 colorTheme: FloatingActionButtonColorTheme.secondary,
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.extended(
                 onPressed: () {},
                 colorTheme: FloatingActionButtonColorTheme.tertiary,
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
               const SizedBox(width: 24),
               FloatingActionButton.extended(
                 onPressed: () {},
                 colorTheme: FloatingActionButtonColorTheme.surface,
                 label: const Text('Extended'),
+                heroTag: math.Random().nextDouble(),
               ),
             ],
           ),
@@ -360,6 +390,7 @@ class ExpandingSample extends StatelessWidget {
               icon: const Icon(Icons.navigation_outlined),
               label: const Text('Navigate'),
               onPressed: (){},
+              heroTag: math.Random().nextDouble(),
             ),
             supportingFabs: [
               ExpandableFloatingActionButtonEntry(

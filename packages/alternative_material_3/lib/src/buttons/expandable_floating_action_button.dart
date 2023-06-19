@@ -123,6 +123,10 @@ class ExpandableFloatingActionButtonState
     });
   }
 
+  Object _randomTag() {
+    return math.Random().nextDouble();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -166,7 +170,7 @@ class ExpandableFloatingActionButtonState
             colorTheme: widget.supportingColorTheme,
             theme: widget.fabTheme,
             focusNode: e.focusNode,
-            heroTag: e.heroTag,
+            heroTag: e.heroTag ?? _randomTag(),
             height: _isOpen ? widget.expandedHeight : widget.collapsedHeight,
             tooltip: e.tooltip,
           ),

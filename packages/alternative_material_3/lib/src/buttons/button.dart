@@ -395,9 +395,6 @@ class _ButtonStyleState extends State<ButtonStyleButton>
       0.0,
     );
 
-    print('startPadding ${startPadding}');
-    print('endPadding  $endPadding');
-
     final Widget result = ConstrainedBox(
       constraints: containerConstraints,
       child: SizedBox(

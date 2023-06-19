@@ -143,10 +143,9 @@ class FloatingActionButton extends StatelessWidget {
     required this.onPressed,
     this.focusNode,
     this.autofocus = false,
-  }) : _floatingActionButtonType =
-      label != null
-          ? FloatingActionButtonType.extended
-          : FloatingActionButtonType.regular;
+  }) : _floatingActionButtonType = label != null
+            ? FloatingActionButtonType.extended
+            : FloatingActionButtonType.regular;
 
   /// Creates a large circular floating action button.
   ///
@@ -255,7 +254,10 @@ class FloatingActionButton extends StatelessWidget {
       stateLayers: MaterialStateProperty.all(fabTheme.stateLayers),
       elevation: fabTheme.elevation,
       iconSize: fabTheme.iconSize,
-      iconPadding: fabTheme.extendedIconPadding,
+      iconPadding:
+          _floatingActionButtonType != FloatingActionButtonType.extended
+              ? (fabTheme.sizeConstraints.minWidth - fabTheme.iconSize) / 2.0
+              : fabTheme.extendedIconPadding,
       internalPadding: fabTheme.extendedIconLabelSpacing,
       labelPadding: fabTheme.extendedLabelPadding,
       containerShape: fabTheme.shape,
