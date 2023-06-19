@@ -6,6 +6,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
+import '../animation/animated_row.dart';
 import '../debug.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
@@ -570,41 +571,40 @@ class _ChipState extends State<Chip>
       size: chipTheme.iconSize,
     );
 
-    final Widget leading;
+    final Widget startPadding;
+    final Widget? leading;
+    final Widget? endLeadingPadding;
     if (widget.avatar != null) {
-      leading = Padding(
-        padding: EdgeInsetsDirectional.only(
-          start: chipTheme.avatarStartPadding,
-          end: chipTheme.avatarEndPadding,
-        ),
-        child: SizedBox(
-          width: chipTheme.avatarSize,
-          height: chipTheme.avatarSize,
-          child: Opacity(
-            opacity:
-                widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
-            child: widget.avatar,
-          ),
+      startPadding = SizedBox(width: chipTheme.avatarStartPadding);
+      leading = SizedBox(
+        width: chipTheme.avatarSize,
+        height: chipTheme.avatarSize,
+        child: Opacity(
+          opacity:
+              widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
+          child: widget.avatar,
         ),
       );
+      endLeadingPadding = SizedBox(width: chipTheme.avatarEndPadding);
     } else if (widget.leadingIcon != null) {
-      leading = Padding(
-        padding: EdgeInsets.symmetric(horizontal: chipTheme.iconPadding),
-        child: SizedBox(
-          width: chipTheme.iconSize,
-          height: chipTheme.iconSize,
-          child: Opacity(
-            opacity:
-                widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
-            child: IconTheme.merge(
-              data: leadingIconTheme,
-              child: widget.leadingIcon!,
-            ),
+      startPadding = SizedBox(width: chipTheme.iconPadding);
+      leading = SizedBox(
+        width: chipTheme.iconSize,
+        height: chipTheme.iconSize,
+        child: Opacity(
+          opacity:
+              widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
+          child: IconTheme.merge(
+            data: leadingIconTheme,
+            child: widget.leadingIcon!,
           ),
         ),
       );
+      endLeadingPadding = startPadding;
     } else {
-      leading = SizedBox(width: chipTheme.labelStartPadding);
+      startPadding = SizedBox(width: chipTheme.labelStartPadding);
+      leading = null;
+      endLeadingPadding = null;
     }
 
     final Widget label = Opacity(
@@ -655,21 +655,14 @@ class _ChipState extends State<Chip>
               customBorder: containerBorder,
               child: SizedBox(
                 height: chipTheme.containerHeight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                child: AnimatedRow(
+                  duration: _kWidthChangeDuration,
                   children: [
-                    AnimatedSize(
-                      duration: _kWidthChangeDuration,
-                      child: leading,
-                    ),
-                    AnimatedSize(
-                      duration: _kWidthChangeDuration,
-                      child: label,
-                    ),
-                    AnimatedSize(
-                      duration: _kWidthChangeDuration,
-                      child: trailing,
-                    ),
+                    startPadding,
+                    leading,
+                    endLeadingPadding,
+                    label,
+                    trailing,
                   ],
                 ),
               ),
