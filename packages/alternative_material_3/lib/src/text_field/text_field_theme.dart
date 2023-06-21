@@ -1559,17 +1559,31 @@ enum MouseCursorExtent {
 
 /// The Material 3 decoration style.
 enum TextFieldStyle {
+  /// {@template flutter.widgets.textFieldStyle.raw}
   /// A text field with no decoration. These may be collapsed, with
   /// no padding.
+  /// {@endtemplate}
+  raw,
+
+  /// {@template flutter.widgets.textFieldStyle.plain}
+  /// A text field with a transparent container and no border
+  /// or line decoration.
+  /// {@endtemplate}
   plain,
 
+  /// {@template flutter.widgets.textFieldStyle.underlined}
   /// The filled text field, with a transparent container.
+  /// {@endtemplate}
   underlined,
 
+  /// {@template flutter.widgets.textFieldStyle.filled}
   /// The standard Material 3 filled text field.
+  /// {@endtemplate}
   filled,
 
+  /// {@template flutter.widgets.textFieldStyle.outlined}
   /// The standard Material 3 outlined text field.
+  /// {@endtemplate}
   outlined,
 }
 
@@ -1782,6 +1796,7 @@ class _LateResolvingTextFieldThemeData extends TextFieldThemeData {
   MaterialStateProperty<InputBorder> get border =>
       MaterialStateProperty.resolveWith((states) {
         switch (style) {
+          case TextFieldStyle.raw:
           case TextFieldStyle.plain:
             return InputBorder.none;
           case TextFieldStyle.underlined:

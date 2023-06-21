@@ -570,8 +570,8 @@ class EditableTextM3StateProxy implements EditableTextM3State {
   EditableTextM3 get widget => throw UnimplementedError();
 
   @override
-  set spellCheckResults(SpellCheckResults? _spellCheckResults) =>
-      parent.spellCheckResults = _spellCheckResults;
+  set spellCheckResults(SpellCheckResults? spellCheckResults) =>
+      parent.spellCheckResults = spellCheckResults;
 }
 
 class SpellCheckConfigutationProxy implements SpellCheckConfiguration {

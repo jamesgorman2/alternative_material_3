@@ -1,4 +1,5 @@
 import 'package:alternative_material_3/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+
+    // click once to cursor (detector is blocking pass through, but
+    // input is inactive(?) wen chip is focussed).
+    // correct state when clicking to chip (cursor shows if click straight to chip)
+    // input full remaining width (custom wrap?)
+    // row???
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -44,29 +52,41 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: 300,
+        width: 400,
         color: Colors.black26,
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
+              width: 350,
               color: Colors.white70,
-              child: FloatingActionButton.extended(
-                onPressed: () => setState(() {
-                  showLabel = !showLabel;
-                }),
-                icon: const Icon(Icons.add),
-                label: showLabel ? const Text('Label') : null,
+              child: TextField.outlined(
+                decoration: const InputDecoration(
+                  label: Text('Label'),
+                ),
+                chips: TextFieldInputChips<int>(
+                  onDeleted: (value) => print('Deleted $value'),
+                  chips: [
+                    const InputChipData<int>(
+                      value: 0,
+                      label: Text('Label 0'),
+                    ),
+                    const InputChipData<int>(
+                      value: 1,
+                      label: Text('Label 1'),
+                    ),
+                    const InputChipData<int>(
+                      value: 2,
+                      label: Text('Label 2'),
+                    ),
+                    const InputChipData<int>(
+                      value: 3,
+                      label: Text('Label 3'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 24),
-            AnimatedRow(
-              duration: Duration(milliseconds: 300),
-              children: [
-                const Icon(Icons.add),
-                showLabel ? const Text('Label') : null,
-              ],
             ),
           ],
         ),

@@ -45,53 +45,31 @@ class SuggestionChip extends StatelessWidget {
 
   final bool _isElevated;
 
-  /// True if this chip is enabled.
+  /// {@macro alternative_material_3.chip.isEnabled}
   final bool enabled;
-  
-  /// Chip overrides that only apply to this chip.
+
+  /// {@macro alternative_material_3.chip.theme}
   final ChipThemeData? theme;
 
-  /// True if this chip is selected.
+  /// {@macro alternative_material_3.chip.isSelected}
   final bool isSelected;
 
-  /// Text to display in a [Tooltip] when the chip is hovered.
+  /// {@macro alternative_material_3.chip.tooltipMessage}
   final String? tooltip;
 
-  /// The label of the assist chip. This will be constrained
-  /// to one line.
+  /// {@macro alternative_material_3.chip.label}
   final Widget label;
 
-  /// Called when the chip is tapped or otherwise activated.
-  ///
-  /// If this callback and [onLongPress] are null, then the
-  /// chip will be disabled.
-  ///
-  /// See also:
-  ///
-  ///  * [enabled], which is true if the button is enabled.
+  /// {@macro alternative_material_3.chip.onPressed}
   final VoidCallback? onPressed;
 
-  /// Called when the chip is long-pressed.
-  ///
-  /// If this callback and [onPressed] are null, then
-  /// the chip will be disabled.
-  ///
-  /// See also:
-  ///
-  ///  * [enabled], which is true if the button is enabled.
+  /// {@macro alternative_material_3.chip.onLongPress}
   final ValueChanged<bool>? onLongPress;
 
-  /// Called when a pointer enters or exits the chip response area.
-  ///
-  /// The value passed to the callback is true if a pointer has entered this
-  /// part of the material and false if a pointer has exited this part of the
-  /// material.
+  /// {@macro alternative_material_3.chip.onHover}
   final ValueChanged<bool>? onHover;
 
-  /// Handler called when the focus changes.
-  ///
-  /// Called with true if this widget's node gains focus, and false if it loses
-  /// focus.
+  /// {@macro alternative_material_3.chip.onFocusChange}
   final ValueChanged<bool>? onFocusChange;
 
   /// {@macro flutter.widgets.Focus.focusNode}

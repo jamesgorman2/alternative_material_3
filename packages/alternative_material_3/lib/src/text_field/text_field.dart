@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ import '../material_state.dart';
 import '../selectable_text.dart' show iOSHorizontalOffset;
 import '../theme.dart';
 import 'input_decorator.dart';
+import 'text_field_chips.dart';
 import 'text_field_theme.dart';
 import 'widgets/editable_text.dart';
 import 'widgets/text_selection.dart';
@@ -31,11 +33,8 @@ export 'package:flutter/services.dart'
 
 export 'input_border.dart';
 export 'input_decorator.dart';
+export 'text_field_chips.dart';
 export 'text_field_theme.dart';
-
-// Examples can assume:
-// late BuildContext context;
-// late FocusNode myFocusNode;
 
 /// Signature for the [TextField.buildCounter] callback.
 typedef InputCounterWidgetBuilder = Widget? Function(
@@ -252,44 +251,45 @@ class TextField extends StatefulWidget {
   ///
   ///  * [maxLength], which discusses the precise meaning of "number of
   ///    characters" and how it may differ from the intuitive meaning.
-  const TextField(
-      {super.key,
-      this.controller,
-      // chips
-      this.theme,
-      this.decoration = const InputDecoration(),
-      this.focusNode,
-      this.undoController,
-      TextInputType? keyboardType,
-      this.textInputAction,
-      this.textCapitalization = TextCapitalization.none,
-      this.textDirection,
-      this.readOnly = false,
-      this.showCursor,
-      this.autofocus = false,
-      this.obscureText = false,
-      this.autocorrect = true,
-      this.enableSuggestions = true,
-      this.maxLines = 1,
-      this.minLines,
-      this.expands = false,
-      this.maxLength,
-      this.onChanged,
-      this.onEditingComplete,
-      this.onSubmitted,
-      this.onAppPrivateCommand,
-      this.inputFormatters,
-      this.enabled = true,
-      this.dragStartBehavior = DragStartBehavior.start,
-      bool? enableInteractiveSelection,
-      this.onTap,
-      this.onTapOutside,
-      this.scrollController,
-      this.autofillHints = const <String>[],
-      this.restorationId,
-      this.canRequestFocus = true,
-      this.constraints})
-      : assert(maxLines == null || maxLines > 0),
+  const TextField({
+    super.key,
+    this.controller,
+    this.chips,
+    this.theme,
+    this.style,
+    this.decoration = const InputDecoration(),
+    this.focusNode,
+    this.undoController,
+    TextInputType? keyboardType,
+    this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
+    this.textDirection,
+    this.readOnly = false,
+    this.showCursor,
+    this.autofocus = false,
+    this.obscureText = false,
+    this.autocorrect = true,
+    this.enableSuggestions = true,
+    this.maxLines = 1,
+    this.minLines,
+    this.expands = false,
+    this.maxLength,
+    this.onChanged,
+    this.onEditingComplete,
+    this.onSubmitted,
+    this.onAppPrivateCommand,
+    this.inputFormatters,
+    this.enabled = true,
+    this.dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
+    this.onTap,
+    this.onTapOutside,
+    this.scrollController,
+    this.autofillHints = const <String>[],
+    this.restorationId,
+    this.canRequestFocus = true,
+    this.constraints,
+  })  : assert(maxLines == null || maxLines > 0),
         assert(minLines == null || minLines > 0),
         assert(
           (maxLines == null) || (minLines == null) || (maxLines >= minLines),
@@ -316,10 +316,402 @@ class TextField extends StatefulWidget {
         enableInteractiveSelection =
             enableInteractiveSelection ?? (!readOnly || !obscureText);
 
+  /// {@template flutter.widgets.textFieldStyle.raw}
+  const TextField.raw({
+    Key? key,
+    TextEditingController? controller,
+    TextFieldInputChips<dynamic>? chips,
+    TextFieldThemeData? theme,
+    FocusNode? focusNode,
+    UndoHistoryController? undoController,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    TextDirection? textDirection,
+    bool readOnly = false,
+    bool? showCursor,
+    bool autofocus = false,
+    bool obscureText = false,
+    bool autocorrect = true,
+    bool enableSuggestions = true,
+    int maxLines = 1,
+    int? minLines,
+    bool expands = false,
+    int? maxLength,
+    ValueChanged<String>? onChanged,
+    VoidCallback? onEditingComplete,
+    ValueChanged<String>? onSubmitted,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    List<TextInputFormatter>? inputFormatters,
+    bool enabled = true,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
+    VoidCallback? onTap,
+    TapRegionCallback? onTapOutside,
+    ScrollController? scrollController,
+    List<String> autofillHints = const <String>[],
+    String? restorationId,
+    bool canRequestFocus = true,
+    BoxConstraints? constraints,
+  }) : this(
+          key: key,
+          theme: theme,
+          style: TextFieldStyle.raw,
+          decoration: const InputDecoration(),
+          controller: controller,
+          chips: chips,
+          focusNode: focusNode,
+          undoController: undoController,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
+          textDirection: textDirection,
+          readOnly: readOnly,
+          showCursor: showCursor,
+          autofocus: autofocus,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          enableSuggestions: enableSuggestions,
+          maxLines: maxLines,
+          minLines: minLines,
+          expands: expands,
+          maxLength: maxLength,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+          onSubmitted: onSubmitted,
+          onAppPrivateCommand: onAppPrivateCommand,
+          inputFormatters: inputFormatters,
+          enabled: enabled,
+          dragStartBehavior: dragStartBehavior,
+          enableInteractiveSelection: enableInteractiveSelection,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          scrollController: scrollController,
+          autofillHints: autofillHints,
+          restorationId: restorationId,
+          canRequestFocus: canRequestFocus,
+          constraints: constraints,
+        );
+
+  /// {@template flutter.widgets.textFieldStyle.plain}
+  const TextField.plain({
+    Key? key,
+    TextEditingController? controller,
+    TextFieldInputChips<dynamic>? chips,
+    TextFieldThemeData? theme,
+    InputDecoration decoration = const InputDecoration(),
+    FocusNode? focusNode,
+    UndoHistoryController? undoController,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    TextDirection? textDirection,
+    bool readOnly = false,
+    bool? showCursor,
+    bool autofocus = false,
+    bool obscureText = false,
+    bool autocorrect = true,
+    bool enableSuggestions = true,
+    int maxLines = 1,
+    int? minLines,
+    bool expands = false,
+    int? maxLength,
+    ValueChanged<String>? onChanged,
+    VoidCallback? onEditingComplete,
+    ValueChanged<String>? onSubmitted,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    List<TextInputFormatter>? inputFormatters,
+    bool enabled = true,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
+    VoidCallback? onTap,
+    TapRegionCallback? onTapOutside,
+    ScrollController? scrollController,
+    List<String> autofillHints = const <String>[],
+    String? restorationId,
+    bool canRequestFocus = true,
+    BoxConstraints? constraints,
+  }) : this(
+          key: key,
+          theme: theme,
+          style: TextFieldStyle.plain,
+          decoration: decoration,
+          controller: controller,
+          chips: chips,
+          focusNode: focusNode,
+          undoController: undoController,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
+          textDirection: textDirection,
+          readOnly: readOnly,
+          showCursor: showCursor,
+          autofocus: autofocus,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          enableSuggestions: enableSuggestions,
+          maxLines: maxLines,
+          minLines: minLines,
+          expands: expands,
+          maxLength: maxLength,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+          onSubmitted: onSubmitted,
+          onAppPrivateCommand: onAppPrivateCommand,
+          inputFormatters: inputFormatters,
+          enabled: enabled,
+          dragStartBehavior: dragStartBehavior,
+          enableInteractiveSelection: enableInteractiveSelection,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          scrollController: scrollController,
+          autofillHints: autofillHints,
+          restorationId: restorationId,
+          canRequestFocus: canRequestFocus,
+          constraints: constraints,
+        );
+
+  /// {@template flutter.widgets.textFieldStyle.plain}
+  const TextField.underlined({
+    Key? key,
+    TextEditingController? controller,
+    TextFieldInputChips<dynamic>? chips,
+    TextFieldThemeData? theme,
+    InputDecoration decoration = const InputDecoration(),
+    FocusNode? focusNode,
+    UndoHistoryController? undoController,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    TextDirection? textDirection,
+    bool readOnly = false,
+    bool? showCursor,
+    bool autofocus = false,
+    bool obscureText = false,
+    bool autocorrect = true,
+    bool enableSuggestions = true,
+    int maxLines = 1,
+    int? minLines,
+    bool expands = false,
+    int? maxLength,
+    ValueChanged<String>? onChanged,
+    VoidCallback? onEditingComplete,
+    ValueChanged<String>? onSubmitted,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    List<TextInputFormatter>? inputFormatters,
+    bool enabled = true,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
+    VoidCallback? onTap,
+    TapRegionCallback? onTapOutside,
+    ScrollController? scrollController,
+    List<String> autofillHints = const <String>[],
+    String? restorationId,
+    bool canRequestFocus = true,
+    BoxConstraints? constraints,
+  }) : this(
+          key: key,
+          theme: theme,
+          style: TextFieldStyle.underlined,
+          decoration: decoration,
+          controller: controller,
+          chips: chips,
+          focusNode: focusNode,
+          undoController: undoController,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
+          textDirection: textDirection,
+          readOnly: readOnly,
+          showCursor: showCursor,
+          autofocus: autofocus,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          enableSuggestions: enableSuggestions,
+          maxLines: maxLines,
+          minLines: minLines,
+          expands: expands,
+          maxLength: maxLength,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+          onSubmitted: onSubmitted,
+          onAppPrivateCommand: onAppPrivateCommand,
+          inputFormatters: inputFormatters,
+          enabled: enabled,
+          dragStartBehavior: dragStartBehavior,
+          enableInteractiveSelection: enableInteractiveSelection,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          scrollController: scrollController,
+          autofillHints: autofillHints,
+          restorationId: restorationId,
+          canRequestFocus: canRequestFocus,
+          constraints: constraints,
+        );
+
+  /// {@template flutter.widgets.textFieldStyle.plain}
+  const TextField.filled({
+    Key? key,
+    TextEditingController? controller,
+    TextFieldInputChips<dynamic>? chips,
+    TextFieldThemeData? theme,
+    InputDecoration decoration = const InputDecoration(),
+    FocusNode? focusNode,
+    UndoHistoryController? undoController,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    TextDirection? textDirection,
+    bool readOnly = false,
+    bool? showCursor,
+    bool autofocus = false,
+    bool obscureText = false,
+    bool autocorrect = true,
+    bool enableSuggestions = true,
+    int maxLines = 1,
+    int? minLines,
+    bool expands = false,
+    int? maxLength,
+    ValueChanged<String>? onChanged,
+    VoidCallback? onEditingComplete,
+    ValueChanged<String>? onSubmitted,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    List<TextInputFormatter>? inputFormatters,
+    bool enabled = true,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
+    VoidCallback? onTap,
+    TapRegionCallback? onTapOutside,
+    ScrollController? scrollController,
+    List<String> autofillHints = const <String>[],
+    String? restorationId,
+    bool canRequestFocus = true,
+    BoxConstraints? constraints,
+  }) : this(
+          key: key,
+          theme: theme,
+          style: TextFieldStyle.filled,
+          decoration: decoration,
+          controller: controller,
+          chips: chips,
+          focusNode: focusNode,
+          undoController: undoController,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
+          textDirection: textDirection,
+          readOnly: readOnly,
+          showCursor: showCursor,
+          autofocus: autofocus,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          enableSuggestions: enableSuggestions,
+          maxLines: maxLines,
+          minLines: minLines,
+          expands: expands,
+          maxLength: maxLength,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+          onSubmitted: onSubmitted,
+          onAppPrivateCommand: onAppPrivateCommand,
+          inputFormatters: inputFormatters,
+          enabled: enabled,
+          dragStartBehavior: dragStartBehavior,
+          enableInteractiveSelection: enableInteractiveSelection,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          scrollController: scrollController,
+          autofillHints: autofillHints,
+          restorationId: restorationId,
+          canRequestFocus: canRequestFocus,
+          constraints: constraints,
+        );
+
+  /// {@template flutter.widgets.textFieldStyle.plain}
+  const TextField.outlined({
+    Key? key,
+    TextEditingController? controller,
+    TextFieldInputChips<dynamic>? chips,
+    TextFieldThemeData? theme,
+    InputDecoration decoration = const InputDecoration(),
+    FocusNode? focusNode,
+    UndoHistoryController? undoController,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    TextDirection? textDirection,
+    bool readOnly = false,
+    bool? showCursor,
+    bool autofocus = false,
+    bool obscureText = false,
+    bool autocorrect = true,
+    bool enableSuggestions = true,
+    int maxLines = 1,
+    int? minLines,
+    bool expands = false,
+    int? maxLength,
+    ValueChanged<String>? onChanged,
+    VoidCallback? onEditingComplete,
+    ValueChanged<String>? onSubmitted,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    List<TextInputFormatter>? inputFormatters,
+    bool enabled = true,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool? enableInteractiveSelection,
+    VoidCallback? onTap,
+    TapRegionCallback? onTapOutside,
+    ScrollController? scrollController,
+    List<String> autofillHints = const <String>[],
+    String? restorationId,
+    bool canRequestFocus = true,
+    BoxConstraints? constraints,
+  }) : this(
+          key: key,
+          theme: theme,
+          style: TextFieldStyle.outlined,
+          decoration: decoration,
+          controller: controller,
+          chips: chips,
+          focusNode: focusNode,
+          undoController: undoController,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
+          textDirection: textDirection,
+          readOnly: readOnly,
+          showCursor: showCursor,
+          autofocus: autofocus,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          enableSuggestions: enableSuggestions,
+          maxLines: maxLines,
+          minLines: minLines,
+          expands: expands,
+          maxLength: maxLength,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+          onSubmitted: onSubmitted,
+          onAppPrivateCommand: onAppPrivateCommand,
+          inputFormatters: inputFormatters,
+          enabled: enabled,
+          dragStartBehavior: dragStartBehavior,
+          enableInteractiveSelection: enableInteractiveSelection,
+          onTap: onTap,
+          onTapOutside: onTapOutside,
+          scrollController: scrollController,
+          autofillHints: autofillHints,
+          restorationId: restorationId,
+          canRequestFocus: canRequestFocus,
+          constraints: constraints,
+        );
+
   /// Controls the text being edited.
   ///
   /// If null, this widget will create its own [TextEditingController].
   final TextEditingController? controller;
+
+  /// Optional [InputChip]s to place before the input text.
+  final TextFieldInputChips<dynamic>? chips;
 
   /// Defines the keyboard focus for this widget.
   ///
@@ -369,6 +761,9 @@ class TextField extends StatefulWidget {
   /// Specify null to remove the decoration entirely (including the
   /// extra padding introduced by the decoration to save space for the labels).
   final InputDecoration decoration;
+
+  /// Override the style of the theme.
+  final TextFieldStyle? style;
 
   /// Override text field theme properties.
   final TextFieldThemeData? theme;
@@ -655,8 +1050,7 @@ class _TextFieldState extends State<TextField>
   bool _isHovering = false;
 
   bool get needsCounter =>
-      widget.maxLength != null &&
-      widget.decoration.counterText == null;
+      widget.maxLength != null && widget.decoration.counterText == null;
 
   bool _showSelectionHandles = false;
 
@@ -688,12 +1082,22 @@ class _TextFieldState extends State<TextField>
   bool get _hasError =>
       widget.decoration.errorText != null || _hasOverLengthError;
 
+  bool _inputHasFocus = true;
+
+  void handleInputChipListFocusChange(bool inputHasFocus) {
+    if (_inputHasFocus != inputHasFocus) {
+      setState(() {
+        _inputHasFocus = inputHasFocus;
+      });
+    }
+  }
+
   InputDecoration _getDecorationWithCounter(TextFieldThemeData textFieldTheme) {
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
     final InputDecoration effectiveDecoration = widget.decoration;
 
-    if (textFieldTheme.style == TextFieldStyle.plain) {
+    if (textFieldTheme.style == TextFieldStyle.raw) {
       return effectiveDecoration;
     }
 
@@ -834,6 +1238,7 @@ class _TextFieldState extends State<TextField>
     _effectiveFocusNode.removeListener(_handleFocusChanged);
     _focusNode?.dispose();
     _controller?.dispose();
+    _inputPressedStream.close();
     super.dispose();
   }
 
@@ -967,6 +1372,9 @@ class _TextFieldState extends State<TextField>
     };
   }
 
+  final StreamController<void> _inputPressedStream =
+      StreamController(sync: true);
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
@@ -976,7 +1384,10 @@ class _TextFieldState extends State<TextField>
     final theme = Theme.of(context);
     final textFieldTheme = TextFieldTheme.resolve(
       context,
-      widget.theme,
+      widget.theme?.copyWith(style: widget.style) ??
+          (widget.style != null
+              ? TextFieldThemeData(style: widget.style!)
+              : null),
     );
 
     final TextEditingController controller = _effectiveController;
@@ -1041,7 +1452,7 @@ class _TextFieldState extends State<TextField>
         child: EditableTextM3(
           key: editableTextKey,
           readOnly: widget.readOnly || !_isEnabled,
-          showCursor: widget.showCursor,
+          showCursor: _inputHasFocus ? widget.showCursor : false,
           showSelectionHandles: _showSelectionHandles,
           controller: controller,
           focusNode: focusNode,
@@ -1068,6 +1479,7 @@ class _TextFieldState extends State<TextField>
           maxLines: widget.maxLines,
           minLines: widget.minLines,
           expands: widget.expands,
+          forceLine: widget.chips?.chips.isEmpty ?? true,
           // Only show the selection highlight when the text field is focused.
           selectionColor:
               focusNode.hasFocus ? textFieldTheme.selectionColor : null,
@@ -1081,7 +1493,7 @@ class _TextFieldState extends State<TextField>
           onSelectionHandleTapped: _handleSelectionHandleTapped,
           onTapOutside: widget.onTapOutside,
           inputFormatters: formatters,
-          rendererIgnoresPointer: true,
+          rendererIgnoresPointer: textFieldTheme.style != TextFieldStyle.raw,
           mouseCursor: MouseCursor.defer,
           // TextField will handle the cursor
           cursorWidth: textFieldTheme.cursorWidth,
@@ -1112,11 +1524,30 @@ class _TextFieldState extends State<TextField>
           contextMenuBuilder: textFieldTheme.contextMenuBuilder,
           spellCheckConfiguration: textFieldTheme.spellCheckConfiguration,
           magnifierConfiguration: textFieldTheme.magnifierConfiguration,
+          onTap: () {
+            if (!_inputHasFocus) {
+              setState(() {
+                _inputHasFocus = true;
+              });
+            }
+            _inputPressedStream.add(null);
+          },
         ),
       ),
     );
 
-    if (textFieldTheme.style != TextFieldStyle.plain) {
+    if (widget.chips != null) {
+      child = widget.chips!.wrap(
+        input: child,
+        inputFocusNode: focusNode,
+        textDirection: widget.textDirection,
+        textController: controller,
+        onInputFocusChanged: handleInputChipListFocusChange,
+        inputPressed: _inputPressedStream.stream,
+      );
+    }
+
+    if (textFieldTheme.style != TextFieldStyle.raw) {
       child = AnimatedBuilder(
         animation: Listenable.merge(<Listenable>[focusNode, controller]),
         builder: (BuildContext context, Widget? child) {
@@ -1127,10 +1558,11 @@ class _TextFieldState extends State<TextField>
             decoration: _getDecorationWithCounter(textFieldTheme),
             minLines: widget.minLines,
             maxLines: widget.maxLines,
-            isEmpty: controller.value.text.isEmpty,
+            isEmpty: controller.value.text.isEmpty &&
+                (widget.chips?.chips.isEmpty ?? true),
             expands: widget.expands,
             constraints: widget.constraints,
-            child: child,
+            child: child!,
           );
         },
         child: child,

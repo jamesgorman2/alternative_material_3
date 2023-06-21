@@ -161,6 +161,21 @@ class ExpandableFloatingActionButtonState
         topOffset;
 
     List<Widget> positionSupportingButtons() {
+      Widget disableWhenCollapsing(Widget w) {
+        final isCollapsing = _controller.isDismissed ||
+            _controller.status == AnimationStatus.reverse;
+        if (isCollapsing) {
+          return IgnorePointer(
+            child: ExcludeSemantics(
+              child: ExcludeFocus(
+                child: w,
+              ),
+            ),
+          );
+        }
+        return w;
+      }
+
       Widget miniFab(ExpandableFloatingActionButtonEntry e) {
         return Opacity(
           opacity: _opacityAnimation.value,
@@ -190,7 +205,7 @@ class ExpandableFloatingActionButtonState
             top,
             _expandAnimation.value,
           ),
-          child: miniFab(e.$2),
+          child: disableWhenCollapsing(miniFab(e.$2)),
         );
       }).toList();
     }

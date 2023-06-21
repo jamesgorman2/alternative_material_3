@@ -14,7 +14,7 @@ import 'chip.dart';
 /// They enable user input and verify that input by converting text into chips.
 @immutable
 class InputChip extends StatelessWidget {
-  /// Create an outlined assist chip.
+  /// Create an input chip.
   const InputChip({
     super.key,
     this.enabled = true,
@@ -28,6 +28,7 @@ class InputChip extends StatelessWidget {
     this.onPressed,
     this.onLongPress,
     this.onHover,
+    this.onDeleteHover,
     this.onFocusChange,
     this.onDeletePressed,
     this.focusNode,
@@ -36,77 +37,74 @@ class InputChip extends StatelessWidget {
     this.hideDeleteIcon,
   });
 
-  /// Chip overrides that only apply to this chip.
+  /// {@macro alternative_material_3.chip.theme}
   final ChipThemeData? theme;
 
-  /// True if this chip is enabled.
+  /// {@macro alternative_material_3.chip.isEnabled}
   final bool enabled;
 
-  /// True if this chip is selected.
+  /// {@macro alternative_material_3.chip.isSelected}
   final bool isSelected;
 
-  /// Text to display in a [Tooltip] when the chip is hovered.
+  /// {@macro alternative_material_3.chip.tooltipMessage}
   final String? tooltip;
 
-  /// An optional leading icon.
-  ///
-  /// If [avatar] is not null, [avatar] will be displayed instead of [icon].
+  /// {@macro alternative_material_3.chip.leadingIcon}
   final Widget? icon;
 
-  /// An optional leading avatar.
-  ///
-  /// If [avatar] is not null, [avatar] will be displayed instead of [icon].
+  /// {@macro alternative_material_3.chip.avatar}
   final Widget? avatar;
 
-  /// The label of the assist chip. This will be constrained
-  /// to one line.
+  /// {@macro alternative_material_3.chip.label}
   final Widget label;
 
+  /// {@template alternative_material_3.inputChip.deleteIcon}
   /// The trailing delete icon.
   ///
   /// The default value is Icon(Icons.close).
+  /// {@endtemplate}
   final Widget? deleteIcon;
 
+  /// {@template alternative_material_3.inputChip.deleteIconTooltip}
   /// Text to display in a [Tooltip] when the delete icon is hovered.
+  /// {@endtemplate}
   final String? deleteIconTooltip;
 
+  /// {@template alternative_material_3.inputChip.hideDeleteIcon}
   /// If true, do not show the delete button, even if [onDeletePressed]
   /// is not null.
   ///
   /// Tne default is to hide the delete button on mobile only.
+  /// {@endtemplate}
   final bool Function()? hideDeleteIcon;
 
-  /// Called when the chip is tapped or otherwise activated.
-  ///
+  /// {@macro alternative_material_3.chip.onPressed}
   final VoidCallback? onPressed;
 
-  /// Called when the chip is long-pressed.
-  ///
-  /// If this callback and [onPressed] are null, then
-  /// the chip will be disabled.
-  ///
-  /// See also:
-  ///
-  ///  * [enabled], which is true if the button is enabled.
+  /// {@macro alternative_material_3.chip.onLongPress}
   final ValueChanged<bool>? onLongPress;
 
-  /// Called when a pointer enters or exits the chip response area.
+  /// {@macro alternative_material_3.chip.onHover}
+  final ValueChanged<bool>? onHover;
+
+  /// {@template alternative_material_3.inputChip.onDeletePressed}
+  /// Called when the trailing delete icon of the chip is tapped or
+  /// otherwise activated.
+  ///
+  /// If this is null, the delete icon will not be shown.
+  /// {@endtemplate}
+  final VoidCallback? onDeletePressed;
+
+  /// {@template alternative_material_3.inputChip.onDeleteHover}
+  /// Called when a pointer enters or exits the delete icon area.
   ///
   /// The value passed to the callback is true if a pointer has entered this
   /// part of the material and false if a pointer has exited this part of the
   /// material.
-  final ValueChanged<bool>? onHover;
+  /// {@endtemplate}
+  final ValueChanged<bool>? onDeleteHover;
 
-  /// Called when the trailing delate icon of the chip is tapped or
-  /// otherwise activated.
-  ///
-  /// If this is null, the delete icon will not be shown.
-  final VoidCallback? onDeletePressed;
-
-  /// Handler called when the focus changes.
-  ///
-  /// Called with true if this widget's node gains focus, and false if it loses
-  /// focus.
+  /// {@macro alternative_material_3.chip.onFocusChange}
   final ValueChanged<bool>? onFocusChange;
 
   /// {@macro flutter.widgets.Focus.focusNode}
@@ -121,6 +119,7 @@ class InputChip extends StatelessWidget {
     const ChipThemeData defaultInputChipTheme = ChipThemeData(
       labelStartPadding: 12.0,
       labelEndPadding: 12.0,
+
     );
     final bool hideDelete = hideDeleteIcon != null
         ? hideDeleteIcon!()
@@ -139,6 +138,7 @@ class InputChip extends StatelessWidget {
       onPressed: onPressed,
       onLongPress: onLongPress,
       onHover: onHover,
+      onTrailingIconHover: onDeleteHover,
       onFocusChange: onFocusChange,
       onTrailingIconPressed: onDeletePressed,
       trailingIconTooltipMessage: deleteIconTooltip,

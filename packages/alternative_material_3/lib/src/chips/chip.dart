@@ -7,6 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/widgets.dart';
 
 import '../animation/animated_row.dart';
+import '../color_extensions.dart';
 import '../debug.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
@@ -104,7 +105,7 @@ class Chip extends StatefulWidget {
   });
 
   /// {@template alternative_material_3.chip.theme}
-  /// Override chip theme properties.
+  /// Chip overrides that only apply to this chip.
   /// {@endtemplate}
   final ChipThemeData? theme;
 
@@ -551,11 +552,8 @@ class _ChipState extends State<Chip>
           : BorderSide(
               width: chipTheme.outlineSize,
               color: chipTheme.outlineColor
-                  .resolve(materialStates), //_outlineColor(chipTheme),
+                  .resolve(materialStates),
             ),
-    );
-    final ShapeDecoration containerDecoration = ShapeDecoration(
-      shape: containerBorder,
     );
 
     final Elevation elevation = widget.isElevatedChip
@@ -636,35 +634,30 @@ class _ChipState extends State<Chip>
           animationDuration: pressedAnimationDuration,
           shape: containerBorder,
           clipBehavior: Clip.hardEdge,
-          child: DecoratedBox(
-            position: DecorationPosition.foreground,
-            decoration: containerDecoration,
-            child: InkWell(
-              onFocusChange: updateMaterialState(MaterialState.focused),
-              focusNode: widget.focusNode,
-              autofocus: widget.autofocus,
-              canRequestFocus: widget.isEnabled,
-              onTap: canTap ? _handleTap : null,
-              onTapDown: canTap ? _handleTapDown : null,
-              onTapCancel: canTap ? _handleTapCancel : null,
-              onHover:
-                  canTap ? updateMaterialState(MaterialState.hovered) : null,
-              focusColor: stateLayerTheme.focusColor,
-              hoverColor: stateLayerTheme.hoverColor,
-              splashColor: stateLayerTheme.pressColor,
-              customBorder: containerBorder,
-              child: SizedBox(
-                height: chipTheme.containerHeight,
-                child: AnimatedRow(
-                  duration: _kWidthChangeDuration,
-                  children: [
-                    startPadding,
-                    leading,
-                    endLeadingPadding,
-                    label,
-                    trailing,
-                  ],
-                ),
+          child: InkWell(
+            onFocusChange: updateMaterialState(MaterialState.focused),
+            focusNode: widget.focusNode,
+            autofocus: widget.autofocus,
+            canRequestFocus: widget.isEnabled,
+            onTap: canTap ? _handleTap : null,
+            onTapDown: canTap ? _handleTapDown : null,
+            onTapCancel: canTap ? _handleTapCancel : null,
+            onHover:
+                canTap ? updateMaterialState(MaterialState.hovered) : null,
+            focusColor: stateLayerTheme.focusColor,
+            hoverColor: stateLayerTheme.hoverColor,
+            splashColor: stateLayerTheme.pressColor,
+            child: SizedBox(
+              height: chipTheme.containerHeight,
+              child: AnimatedRow(
+                duration: _kWidthChangeDuration,
+                children: [
+                  startPadding,
+                  leading,
+                  endLeadingPadding,
+                  label,
+                  trailing,
+                ],
               ),
             ),
           ),

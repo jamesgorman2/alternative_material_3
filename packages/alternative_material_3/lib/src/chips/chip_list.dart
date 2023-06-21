@@ -20,13 +20,17 @@ class ChipList extends StatelessWidget {
     required this.children,
   });
 
-  /// Override chip list theme properties.
+  /// {@template alternative_material_3.chipList.theme}
+  /// Chip list overrides that only apply to this list.
+  /// {@endtemplate}
   final ChipListThemeData? theme;
 
+  /// {@template alternative_material_3.chipList.singleLine}
   /// If true, this will be rendered as a single, scrollable row.
   /// If false, this will overflow once the available width is filled.
   ///
   /// The default value is false.
+  /// {@endtemplate}
   final bool singleLine;
 
   /// The chips to render as a list.

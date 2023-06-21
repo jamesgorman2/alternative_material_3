@@ -413,6 +413,7 @@ class EditableTextM3 extends StatefulWidget {
     this.onAppPrivateCommand,
     this.onSelectionChanged,
     this.onSelectionHandleTapped,
+    this.onTap,
     this.onTapOutside,
     List<TextInputFormatter>? inputFormatters,
     this.mouseCursor,
@@ -429,6 +430,7 @@ class EditableTextM3 extends StatefulWidget {
     this.keyboardAppearance = Brightness.light,
     this.dragStartBehavior = DragStartBehavior.start,
     bool? enableInteractiveSelection,
+    this.webNativeSelection = false,
     this.scrollController,
     this.scrollPhysics,
     this.autocorrectionTextRectColor,
@@ -1027,6 +1029,9 @@ class EditableTextM3 extends StatefulWidget {
   /// {@macro flutter.widgets.SelectionOverlay.onSelectionHandleTapped}
   final VoidCallback? onSelectionHandleTapped;
 
+  /// Any part of the widget is tapped.
+  final VoidCallback? onTap;
+
   /// {@template flutter.widgets.editableText.onTapOutside}
   /// Called for each tap that occurs outside of the[TextFieldTapRegion] group
   /// when the text field is focused.
@@ -1238,6 +1243,10 @@ class EditableTextM3 extends StatefulWidget {
   /// [RenderEditable.selectionEnabled].
   /// {@endtemplate}
   bool get selectionEnabled => enableInteractiveSelection;
+
+  /// When this and [kIsWeb] are both true, select the whole input text
+  /// when getting focus.
+  final bool webNativeSelection;
 
   /// {@template flutter.widgets.editableText.autofillHints}
   /// A list of strings that helps the autofill service identify the type of this
@@ -2343,6 +2352,14 @@ class EditableTextM3State extends State<EditableTextM3> with AutomaticKeepAliveC
     if (widget.selectionEnabled && pasteEnabled && canPaste) {
       clipboardStatus.update();
     }
+
+    if (oldWidget.showCursor != widget.showCursor) {
+      if (widget.showCursor && !_cursorActive) {
+        _startCursorBlink();
+      } else {
+        _stopCursorBlink();
+      }
+    }
   }
 
   @override
@@ -3366,7 +3383,8 @@ class EditableTextM3State extends State<EditableTextM3> with AutomaticKeepAliveC
       if (!widget.readOnly) {
         _scheduleShowCaretOnScreen(withAnimation: true);
       }
-      final bool shouldSelectAll = widget.selectionEnabled && kIsWeb
+      final bool shouldSelectAll = widget.selectionEnabled
+          && widget.webNativeSelection && kIsWeb
           && !_isMultiline && !_nextFocusChangeIsInternal;
       if (shouldSelectAll) {
         // On native web, single line <input> tags select all when receiving
@@ -4127,6 +4145,13 @@ class EditableTextM3State extends State<EditableTextM3> with AutomaticKeepAliveC
       enabled: _hasInputConnection,
       child: TextFieldTapRegion(
         onTapOutside: widget.onTapOutside ?? _defaultOnTapOutside,
+        onTapInside: widget.onTap != null ? (_) {
+          if (!widget.showCursor) {
+            _cursorBlinkOpacityController.value = 1;
+            _scheduleShowCaretOnScreen(withAnimation: true);
+          }
+          widget.onTap!();
+        } : null,
         debugLabel: kReleaseMode ? null : 'EditableText',
         child: MouseRegion(
           cursor: widget.mouseCursor ?? SystemMouseCursors.text,

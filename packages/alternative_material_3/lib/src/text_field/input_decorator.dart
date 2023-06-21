@@ -18,6 +18,7 @@ import '../material_state.dart';
 import '../text_extensions.dart';
 import '../theme_data.dart';
 import 'input_border.dart';
+import 'text_field_chips.dart';
 import 'text_field_theme.dart';
 
 // The duration value extracted from:
@@ -1065,8 +1066,6 @@ class _RenderDecoration extends RenderBox
     final double inputStart = prefixEnd;
     final double inputEnd = inputStart + inputSize.width;
 
-    if (decoration.style == TextFieldStyle.filled) {}
-
     final double suffixStart = inputEnd;
     final double suffixEnd = suffixStart + suffixSize.width;
 
@@ -1409,7 +1408,7 @@ class InputDecorator extends StatefulWidget {
     this.expands = false,
     this.isEmpty = false,
     this.constraints,
-    this.child,
+    required this.child,
   });
 
   /// The style used to dertermine layout.
@@ -1495,7 +1494,7 @@ class InputDecorator extends StatefulWidget {
   /// The widget below this widget in the tree.
   ///
   /// Typically an [EditableText], [DropdownButton], or [InkWell].
-  final Widget? child;
+  final Widget child;
 
   /// Whether the label needs to get out of the way of the input, either by
   /// floating or disappearing.
@@ -1751,17 +1750,22 @@ class _InputDecoratorState extends State<InputDecorator>
     final bool hasPrefix = decoration.prefix != null;
     final bool hasSuffix = decoration.suffix != null;
 
-    Widget? input = widget.child == null
-        ? null
-        : wrapMouseCursor(
+    Widget input = wrapMouseCursor(
             cursor: inputMouseCursor,
-            child: widget.child!,
+            child: widget.child,
           );
 
     // If at least two out of the three are visible, it needs semantics sort
     // order.
     final bool needsSemanticsSortOrder = widget._labelShouldWithdraw &&
-        (input != null ? (hasPrefix || hasSuffix) : (hasPrefix && hasSuffix));
+        (hasPrefix || hasSuffix);
+
+    if (needsSemanticsSortOrder) {
+      input = Semantics(
+        sortKey: _kInputSemanticsSortOrder,
+        child: input,
+      );
+    }
 
     final Widget? prefix = hasPrefix
         ? wrapMouseCursor(
@@ -1794,13 +1798,6 @@ class _InputDecoratorState extends State<InputDecorator>
             ),
           )
         : null;
-
-    if (input != null && needsSemanticsSortOrder) {
-      input = Semantics(
-        sortKey: _kInputSemanticsSortOrder,
-        child: input,
-      );
-    }
 
     final hasPrefixIcon = decoration.prefixIcon != null;
     final Widget? prefixIcon = !hasPrefixIcon
