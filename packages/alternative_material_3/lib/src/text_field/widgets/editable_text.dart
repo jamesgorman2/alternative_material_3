@@ -413,7 +413,6 @@ class EditableTextM3 extends StatefulWidget {
     this.onAppPrivateCommand,
     this.onSelectionChanged,
     this.onSelectionHandleTapped,
-    this.onTap,
     this.onTapOutside,
     List<TextInputFormatter>? inputFormatters,
     this.mouseCursor,
@@ -1029,9 +1028,6 @@ class EditableTextM3 extends StatefulWidget {
   /// {@macro flutter.widgets.SelectionOverlay.onSelectionHandleTapped}
   final VoidCallback? onSelectionHandleTapped;
 
-  /// Any part of the widget is tapped.
-  final VoidCallback? onTap;
-
   /// {@template flutter.widgets.editableText.onTapOutside}
   /// Called for each tap that occurs outside of the[TextFieldTapRegion] group
   /// when the text field is focused.
@@ -1200,7 +1196,7 @@ class EditableTextM3 extends StatefulWidget {
   /// to appear in the first place.
   ///
   /// Defaults to false, resulting in a typical blinking cursor.
-  static bool debugDeterministicCursor = false;
+  static bool debugDeterministicCursor = true;
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
@@ -2359,6 +2355,12 @@ class EditableTextM3State extends State<EditableTextM3> with AutomaticKeepAliveC
       } else {
         _stopCursorBlink();
       }
+    }
+
+    if (!oldWidget.showCursor && widget.showCursor) {
+      // usually toggling internal focus in a chips list
+      _cursorBlinkOpacityController.value = 1;
+      _scheduleShowCaretOnScreen(withAnimation: true);
     }
   }
 
@@ -4145,13 +4147,6 @@ class EditableTextM3State extends State<EditableTextM3> with AutomaticKeepAliveC
       enabled: _hasInputConnection,
       child: TextFieldTapRegion(
         onTapOutside: widget.onTapOutside ?? _defaultOnTapOutside,
-        onTapInside: widget.onTap != null ? (_) {
-          if (!widget.showCursor) {
-            _cursorBlinkOpacityController.value = 1;
-            _scheduleShowCaretOnScreen(withAnimation: true);
-          }
-          widget.onTap!();
-        } : null,
         debugLabel: kReleaseMode ? null : 'EditableText',
         child: MouseRegion(
           cursor: widget.mouseCursor ?? SystemMouseCursors.text,

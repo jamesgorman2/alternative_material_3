@@ -15,7 +15,6 @@ import 'banner_theme.dart';
 import 'bottom_app_bar_theme.dart';
 import 'bottom_navigation_bar_theme.dart';
 import 'bottom_sheet_theme.dart';
-import 'button_theme.dart';
 import 'buttons/button_style.dart';
 import 'buttons/expandable_floating_action_button_theme.dart';
 import 'buttons/floating_action_button_theme.dart';
@@ -36,7 +35,6 @@ import 'ink_ripple.dart';
 import 'ink_sparkle.dart';
 import 'ink_splash.dart';
 import 'ink_well.dart' show InteractiveInkFeatureFactory;
-import 'text_field/input_decorator.dart';
 import 'list_tile.dart';
 import 'list_tile_theme.dart';
 import 'menu_bar_theme.dart';
@@ -57,6 +55,7 @@ import 'snack_bar_theme.dart';
 import 'state_theme.dart';
 import 'switch_theme.dart';
 import 'tab_bar_theme.dart';
+import 'text_field/input_decorator.dart';
 import 'text_field/text_field_theme.dart';
 import 'text_selection_theme.dart';
 import 'text_theme.dart';
@@ -1139,7 +1138,6 @@ class ThemeData with Diagnosticable {
     BottomAppBarTheme? bottomAppBarTheme,
     BottomNavigationBarThemeData? bottomNavigationBarTheme,
     BottomSheetThemeData? bottomSheetTheme,
-    ButtonThemeData? buttonTheme,
     CardTheme? cardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,

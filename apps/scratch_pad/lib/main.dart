@@ -13,13 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // debugDefaultTargetPlatformOverride = TargetPlatform.windows;
 
-    // click once to cursor (detector is blocking pass through, but
-    // input is inactive(?) wen chip is focussed).
-    // correct state when clicking to chip (cursor shows if click straight to chip)
-    // input full remaining width (custom wrap?)
-    // row???
+    // cursor style between chips still text
 
-    return MaterialApp(
+    return
+      MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         materialTapTargetSize: MaterialTapTargetSize.padded,
@@ -66,11 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   label: Text('Label'),
                 ),
                 chips: TextFieldInputChips<int>(
+                  // singleLine: true,
+                  maxChipWidth: 300,
                   onDeleted: (value) => print('Deleted $value'),
                   chips: [
                     const InputChipData<int>(
                       value: 0,
-                      label: Text('Label 0'),
+                      label: Text('Label 0Label 0Label 0Label 0Label 0Label 0Label 0Label 0Label 0Label 0'),
                     ),
                     const InputChipData<int>(
                       value: 1,

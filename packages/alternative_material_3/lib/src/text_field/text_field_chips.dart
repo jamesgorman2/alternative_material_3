@@ -80,6 +80,7 @@ class TextFieldInputChips<T> {
     this.deleteIconTooltip,
     this.hideDeleteIcon,
     this.singleLine = false,
+    this.maxChipWidth = double.infinity,
     required this.onDeleted,
     this.onFocusChanged,
     required this.chips,
@@ -102,6 +103,9 @@ class TextFieldInputChips<T> {
 
   /// {@macro alternative_material_3.chipList.singleLine}
   final bool singleLine;
+
+  /// {@macro alternative_material_3.chipList.maxChipWidth}
+  final double maxChipWidth;
 
   /// The function that is called when a chip is deleted, either by using its
   /// delete icon or the backspace or delete key.
@@ -170,13 +174,21 @@ typedef _CurrentFocus<T> = Either<T, FocusNode>;
 
 class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
   final FocusNode parentFocusNode = FocusNode(
+    skipTraversal: true,
+    canRequestFocus: false,
+  );
+  final FocusNode noopFocusNode = FocusNode(
     descendantsAreTraversable: false,
+    skipTraversal: true,
+    canRequestFocus: false,
   );
 
   late FocusNode inputFocusNode;
   _CurrentFocus<T>? currentFocus;
 
   late StreamSubscription<void> inputPressed;
+
+  bool awaitingChipTapEvent = false;
 
   @override
   void initState() {
@@ -211,6 +223,7 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
   @override
   void dispose() {
     parentFocusNode.dispose();
+    noopFocusNode.dispose();
     inputFocusNode.removeListener(handleInputFocusChange);
     inputPressed.cancel();
     super.dispose();
@@ -331,7 +344,7 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
   }
 
   void handleInputPressed(void v) {
-    if (!isFocussedOnInput) {
+    if (!isFocussedOnInput && !awaitingChipTapEvent) {
       focusOn(Right(inputFocusNode));
     }
   }
@@ -345,7 +358,8 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
         : LogicalKeyboardKey.arrowLeft;
 
     return (node, event) {
-      if (event is! KeyDownEvent) {
+      if (event is! KeyDownEvent ||
+          event.logicalKey == LogicalKeyboardKey.tab) {
         return KeyEventResult.ignored;
       }
 
@@ -394,8 +408,14 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
   }
 
   VoidCallback handleOnPressed(T value) => () {
+    awaitingChipTapEvent= false;
         focusOn(Left(value));
       };
+
+  void handleChipTapRegion(PointerDownEvent event) {
+    // triggered before the text fields event
+    awaitingChipTapEvent = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -407,23 +427,27 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
 
     final chips = inputChips.chips.map(
       (chip) {
-        return InputChip(
-          key: ValueKey(chip.value),
-          isSelected: isFocussedOn(chip.value),
-          enabled: chip.enabled,
-          theme: inputChips.chipTheme,
-          icon: chip.icon,
-          avatar: chip.avatar,
-          label: chip.label,
-          tooltip: chip.tooltip,
-          deleteIcon: inputChips.deleteIcon,
-          deleteIconTooltip: inputChips.deleteIconTooltip,
-          hideDeleteIcon: inputChips.hideDeleteIcon,
-          onPressed: handleOnPressed(chip.value),
-          onLongPress: chip.onLongPress,
-          onHover: chip.onHover,
-          onDeletePressed: handleDeleted(chip.value),
-          onDeleteHover: chip.onDeleteHover,
+        return _TextFieldChipTapRegion(
+          onTapInside: handleChipTapRegion,
+          child: InputChip(
+            key: ValueKey(chip.value),
+            focusNode: noopFocusNode,
+            isSelected: isFocussedOn(chip.value),
+            enabled: chip.enabled,
+            theme: inputChips.chipTheme,
+            icon: chip.icon,
+            avatar: chip.avatar,
+            label: chip.label,
+            tooltip: chip.tooltip,
+            deleteIcon: inputChips.deleteIcon,
+            deleteIconTooltip: inputChips.deleteIconTooltip,
+            hideDeleteIcon: inputChips.hideDeleteIcon,
+            onPressed: handleOnPressed(chip.value),
+            onLongPress: chip.onLongPress,
+            onHover: chip.onHover,
+            onDeletePressed: handleDeleted(chip.value),
+            onDeleteHover: chip.onDeleteHover,
+          ),
         );
       },
     );
@@ -432,11 +456,12 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
       width: double.infinity,
       child: Focus(
         focusNode: parentFocusNode,
-        onFocusChange: handleParentOnChangeFocus,
+        // onFocusChange: handleParentOnChangeFocus,
         onKeyEvent: handleKeyEvent(textDirection),
         child: ChipList(
           theme: inputChips.chipListTheme,
           singleLine: inputChips.singleLine,
+          maxChipWidth: inputChips.maxChipWidth,
           children: [
             ...chips,
             widget.input,
@@ -445,4 +470,14 @@ class _TextFieldChipListState<T> extends State<_TextFieldChipList<T>> {
       ),
     );
   }
+}
+
+const _TextFieldChipRegion = Object();
+
+@immutable
+class _TextFieldChipTapRegion extends TapRegion {
+  const _TextFieldChipTapRegion({
+    required super.child,
+    super.onTapInside,
+  }) : super(groupId: _TextFieldChipRegion);
 }

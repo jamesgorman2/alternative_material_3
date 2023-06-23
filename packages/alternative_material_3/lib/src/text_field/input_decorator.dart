@@ -18,7 +18,6 @@ import '../material_state.dart';
 import '../text_extensions.dart';
 import '../theme_data.dart';
 import 'input_border.dart';
-import 'text_field_chips.dart';
 import 'text_field_theme.dart';
 
 // The duration value extracted from:
@@ -1750,10 +1749,11 @@ class _InputDecoratorState extends State<InputDecorator>
     final bool hasPrefix = decoration.prefix != null;
     final bool hasSuffix = decoration.suffix != null;
 
-    Widget input = wrapMouseCursor(
-            cursor: inputMouseCursor,
-            child: widget.child,
-          );
+    // Widget input = wrapMouseCursor(
+    //         cursor: inputMouseCursor,
+    //         child: widget.child,
+    //       );
+    Widget input = widget.child;
 
     // If at least two out of the three are visible, it needs semantics sort
     // order.

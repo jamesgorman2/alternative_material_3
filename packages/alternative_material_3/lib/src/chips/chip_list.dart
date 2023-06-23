@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import '../theme.dart';
 import '../theme_data.dart';
 import 'chip.dart';
+import 'widgets/wrap.dart';
 
 /// A padded list of chips that will overflow
 class ChipList extends StatelessWidget {
@@ -17,6 +18,7 @@ class ChipList extends StatelessWidget {
     super.key,
     this.theme,
     this.singleLine = false,
+    this.maxChipWidth = double.infinity,
     required this.children,
   });
 
@@ -33,6 +35,16 @@ class ChipList extends StatelessWidget {
   /// {@endtemplate}
   final bool singleLine;
 
+  /// {@template alternative_material_3.chipList.maxChipWidth}
+  /// Set the maximum width of any single chip.
+  ///
+  /// If [singleLine] is false, the effective value will be the
+  /// minimum of the parent constraint and [maxChipWidth].
+  ///
+  /// The default value is [double.infinity];
+  /// {@endtemplate}
+  final double maxChipWidth;
+
   /// The chips to render as a list.
   final List<Widget> children;
 
@@ -40,13 +52,27 @@ class ChipList extends StatelessWidget {
   Widget build(BuildContext context) {
     final chipListTheme = ChipListTheme.resolve(context, this.theme);
 
+    Widget widthConstraint({required Widget child}) {
+      if (maxChipWidth.isInfinite) {
+        return child;
+      }
+      return ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxChipWidth),
+        child: child,
+      );
+    }
+
     if (singleLine) {
       final List<Widget> paddedChildren = children.isEmpty
           ? children
           : [
               ...children.take(children.length - 1).expand(
-                  (c) => [c, SizedBox(width: chipListTheme.horizontalMargin)]),
-              children.last,
+                    (child) => [
+                      widthConstraint(child: child),
+                      SizedBox(width: chipListTheme.horizontalMargin),
+                    ],
+                  ),
+              widthConstraint(child: children.last),
             ];
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -104,11 +130,11 @@ class ChipList extends StatelessWidget {
         maxHeight: maxHeight,
       ),
       child: SingleChildScrollView(
-        child: Wrap(
+        child: WrapWithTrailing(
           crossAxisAlignment: WrapCrossAlignment.center,
           spacing: chipListTheme.horizontalMargin,
           runSpacing: verticalMargin,
-          children: children,
+          children: children.map((child) => widthConstraint(child: child)).toList(),
         ),
       ),
     );

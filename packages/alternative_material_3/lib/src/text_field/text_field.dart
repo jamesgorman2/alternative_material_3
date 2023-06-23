@@ -1089,6 +1089,7 @@ class _TextFieldState extends State<TextField>
       setState(() {
         _inputHasFocus = inputHasFocus;
       });
+
     }
   }
 
@@ -1494,7 +1495,7 @@ class _TextFieldState extends State<TextField>
           onTapOutside: widget.onTapOutside,
           inputFormatters: formatters,
           rendererIgnoresPointer: textFieldTheme.style != TextFieldStyle.raw,
-          mouseCursor: MouseCursor.defer,
+          mouseCursor: textFieldTheme.mouseCursor.resolve(materialState),
           // TextField will handle the cursor
           cursorWidth: textFieldTheme.cursorWidth,
           cursorHeight: textFieldTheme.cursorHeight,
@@ -1524,14 +1525,6 @@ class _TextFieldState extends State<TextField>
           contextMenuBuilder: textFieldTheme.contextMenuBuilder,
           spellCheckConfiguration: textFieldTheme.spellCheckConfiguration,
           magnifierConfiguration: textFieldTheme.magnifierConfiguration,
-          onTap: () {
-            if (!_inputHasFocus) {
-              setState(() {
-                _inputHasFocus = true;
-              });
-            }
-            _inputPressedStream.add(null);
-          },
         ),
       ),
     );
@@ -1581,6 +1574,7 @@ class _TextFieldState extends State<TextField>
       onEnter: (PointerEnterEvent event) => _handleHover(true),
       onExit: (PointerExitEvent event) => _handleHover(false),
       child: TextFieldTapRegion(
+        onTapInside: (_) => _inputPressedStream.add(null),
         child: IgnorePointer(
           ignoring: !_isEnabled,
           child: AnimatedBuilder(

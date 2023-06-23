@@ -9,9 +9,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'array_distribution.dart';
+
 /// A widget that displays its children in a horizontal array.
+///
+/// {@macro alternative_material_3.animatedLayout}
 @immutable
-class AnimatedColumn extends AnimatedFlex {
+class AnimatedColumn extends AnimatedLayout {
   /// Creates a vertical array of children.
   ///
   /// The [mainAxisAlignment], [mainAxisSize], [crossAxisAlignment], and
@@ -38,8 +42,8 @@ class AnimatedColumn extends AnimatedFlex {
     super.crossAxisAlignment,
     super.textDirection,
     super.verticalDirection,
-    super.textBaseline,
     super.clipBehavior,
+    super.mainAxisFit,
     required super.children,
   }) : super(
           direction: Axis.vertical,
@@ -47,8 +51,10 @@ class AnimatedColumn extends AnimatedFlex {
 }
 
 /// A widget that displays its children in a horizontal array.
+///
+/// {@macro alternative_material_3.animatedLayout}
 @immutable
-class AnimatedRow extends AnimatedFlex {
+class AnimatedRow extends AnimatedLayout {
   /// Creates a horizontal array of children.
   ///
   /// The [mainAxisAlignment], [mainAxisSize], [crossAxisAlignment], and
@@ -75,26 +81,52 @@ class AnimatedRow extends AnimatedFlex {
     super.crossAxisAlignment,
     super.textDirection,
     super.verticalDirection,
-    super.textBaseline,
     super.clipBehavior,
+    super.mainAxisFit,
     required super.children,
   }) : super(
           direction: Axis.horizontal,
         );
 }
 
-/// A [Flex] that will animate the size and opacity of it's elements as they are
-/// changed.
+/// {@template alternative_material_3.MainAxisFit}
+/// Describes how children are distributed.
+/// {@endtemplate}
+enum MainAxisFit {
+  /// Evenly distribute children according to their flex value.
+  /// The first child will be at least its minimum size. Children
+  /// will then be fitted from start to end.
+  start,
+
+  /// Evenly distribute children according to their flex value.
+  /// The last child will be at least its minimum size. Children
+  /// will then be fitted from end top start.
+  end,
+
+  /// Evenly distribute children according to their flex value.
+  /// The first and last children will be at least their minimum size.
+  /// Children will then be fitted by alternating from start and end towards
+  /// the middle.
+  startAndEnd,
+}
+
+/// A [Flex]-like that will animate the size and opacity of it's elements
+/// as they are changed.
 ///
+/// {@template alternative_material_3.animatedLayout}
 /// To reduce complexity and resource consumption it will only allow a single
 /// animation set to play at any time, effectively debouncing rapid changes.
+///
+/// In addition to [mainAxisSize], it will optional constrain it's children
+/// to the parent constraints using the rules in [MainAxisFit].
+/// {@endtemplate}
 ///
 /// See also:
 ///
 /// * [Flex]
-class AnimatedFlex extends StatefulWidget {
+class AnimatedLayout extends StatefulWidget {
   /// create the animated row.
-  const AnimatedFlex({
+  const AnimatedLayout({
     super.key,
     required this.duration,
     this.fadeOutCurve = Curves.easeInOutCirc,
@@ -108,8 +140,8 @@ class AnimatedFlex extends StatefulWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.textDirection,
     this.verticalDirection = VerticalDirection.down,
-    this.textBaseline,
     this.clipBehavior = Clip.none,
+    this.mainAxisFit = MainAxisFit.start,
     required this.children,
   }) : animateFrom = animateFrom ??
             (direction == Axis.horizontal
@@ -151,7 +183,7 @@ class AnimatedFlex extends StatefulWidget {
   /// The direction to use as the main axis.
   ///
   /// If you know the axis in advance, then consider using an [AnimatedRow] (if it's
-  /// horizontal) or [AnimatedColumn] (if it's vertical) instead of an [AnimatedFlex], since that
+  /// horizontal) or [AnimatedColumn] (if it's vertical) instead of an [AnimatedLayout], since that
   /// will be less verbose. (For [AnimatedRow] and [AnimatedColumn] this property is fixed to
   /// the appropriate axis.)
   final Axis direction;
@@ -232,27 +264,25 @@ class AnimatedFlex extends StatefulWidget {
   /// [verticalDirection] must not be null.
   final VerticalDirection verticalDirection;
 
-  /// If aligning items according to their baseline, which baseline to use.
-  ///
-  /// This must be set if using baseline alignment. There is no default because there is no
-  /// way for the framework to know the correct baseline _a priori_.
-  final TextBaseline?
-      textBaseline; // NO DEFAULT: we don't know what the text's baseline should be
-
   /// {@macro flutter.material.Material.clipBehavior}
   ///
   /// Defaults to [Clip.hardEdge].
   final Clip clipBehavior;
 
+  /// {@macro alternative_material_3.MainAxisFit}
+  ///
+  /// Defaults to [MainAxisFit.start].
+  final MainAxisFit mainAxisFit;
+
   /// The widgets below this widget in the tree.
   final List<Widget?> children;
 
   @override
-  State<AnimatedFlex> createState() => _AnimatedFlexState();
+  State<AnimatedLayout> createState() => _AnimatedLayoutState();
 }
 
-class _AnimatedFlexState extends State<AnimatedFlex>
-    with SingleTickerProviderStateMixin<AnimatedFlex> {
+class _AnimatedLayoutState extends State<AnimatedLayout>
+    with SingleTickerProviderStateMixin<AnimatedLayout> {
   late AnimationController animationController;
   late Animation<double> fadeOutAnimation;
   late Animation<double> fadeInAnimation;
@@ -296,7 +326,7 @@ class _AnimatedFlexState extends State<AnimatedFlex>
   }
 
   @override
-  void didUpdateWidget(covariant AnimatedFlex oldWidget) {
+  void didUpdateWidget(covariant AnimatedLayout oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration) {
       animationController.duration = widget.duration;
@@ -362,7 +392,8 @@ class _AnimatedFlexState extends State<AnimatedFlex>
     animationController.addStatusListener(handleAnimationStatusChange);
   }
 
-  List<Widget> animateChildren(TextDirection textDirection) {
+  List<Widget> animateChildren(
+      TextDirection textDirection) {
     if (isFirstBuild) {
       lastToWidgets = withoutNulls(widget.children);
       return lastToWidgets!;
@@ -416,15 +447,14 @@ class _AnimatedFlexState extends State<AnimatedFlex>
     final TextDirection textDirection = widget.textDirection ??
         Directionality.maybeOf(context) ??
         TextDirection.ltr;
-
-    return Flex(
+    return ArrayDistribution(
       direction: widget.direction,
       mainAxisAlignment: widget.mainAxisAlignment,
       mainAxisSize: widget.mainAxisSize,
       crossAxisAlignment: widget.crossAxisAlignment,
       textDirection: textDirection,
-      textBaseline: widget.textBaseline,
       clipBehavior: widget.clipBehavior,
+      mainAxisFit: widget.mainAxisFit,
       children: animateChildren(textDirection),
     );
   }

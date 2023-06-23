@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import '../animation/animated_row.dart';
+import '../animation/animated_layout.dart';
 import '../colors.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
@@ -433,6 +433,7 @@ class _ButtonStyleState extends State<ButtonStyleButton>
                 heightFactor: 1.0,
                 child: AnimatedRow(
                   duration: animationDuration,
+                  mainAxisFit: MainAxisFit.startAndEnd,
                   children: [
                     SizedBox(width: startPadding),
                     widget.icon ?? const SizedBox.shrink(),

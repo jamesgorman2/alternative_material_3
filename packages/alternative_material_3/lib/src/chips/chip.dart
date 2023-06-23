@@ -6,8 +6,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../animation/animated_row.dart';
-import '../color_extensions.dart';
+import '../animation/animated_layout.dart';
 import '../debug.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
@@ -651,6 +650,8 @@ class _ChipState extends State<Chip>
               height: chipTheme.containerHeight,
               child: AnimatedRow(
                 duration: _kWidthChangeDuration,
+                clipBehavior: Clip.hardEdge,
+                mainAxisFit: MainAxisFit.startAndEnd,
                 children: [
                   startPadding,
                   leading,
