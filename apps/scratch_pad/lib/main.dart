@@ -1,5 +1,4 @@
 import 'package:alternative_material_3/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,32 +57,33 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               width: 350,
               color: Colors.white70,
-              child: TextField.outlined(
-                decoration: const InputDecoration(
+              child: const TextField.outlined(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.add),
+                  prefix: Text('\$'),
                   label: Text('Label'),
                 ),
-                chips: TextFieldInputChips<int>(
-                  // singleLine: true,
-                  maxChipWidth: 300,
-                  onDeleted: (value) => print('Deleted $value'),
-                  chips: [
-                    const InputChipData<int>(
-                      value: 0,
-                      label: Text('Label 0Label 0Label 0Label 0Label 0Label 0Label 0Label 0Label 0Label 0'),
-                    ),
-                    const InputChipData<int>(
-                      value: 1,
-                      label: Text('Label 1'),
-                    ),
-                    const InputChipData<int>(
-                      value: 2,
-                      label: Text('Label 2'),
-                    ),
-                    const InputChipData<int>(
-                      value: 3,
-                      label: Text('Label 3'),
-                    ),
-                  ],
+              ),
+            ),
+            Container(
+              width: 350,
+              color: Colors.white70,
+              child: const TextField.outlined(
+                decoration: InputDecoration(
+                  // prefixIcon: Icon(Icons.add),
+                  prefix: Text('\$'),
+                  label: Text('Label'),
+                ),
+              ),
+            ),
+            Container(
+              width: 350,
+              color: Colors.white70,
+              child: const TextField.underlined(
+                decoration: InputDecoration(
+                  // prefixIcon: Icon(Icons.add),
+                  prefix: Text('\$'),
+                  label: Text('Label'),
                 ),
               ),
             ),

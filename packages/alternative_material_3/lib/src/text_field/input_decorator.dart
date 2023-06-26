@@ -1038,21 +1038,33 @@ class _RenderDecoration extends RenderBox
     final double centeredInputTop = paddingAboveContainer +
         (theme.containerHeight - theme.inputTextStyle.heightInDps) / 2.0;
 
+    final labelFloatingStart =
+        _decoration.style == TextFieldStyle.outlined && hasPrefixIcon
+            ? prefixIconStart + _decoration.theme.labelHorizontalPadding
+            : prefixStart;
+
     final double labelTop;
+    final double labelStart;
     switch (theme.floatingLabelBehavior) {
       case FloatingLabelBehavior.always:
         labelTop = labelFloatingTop;
+        labelStart = labelFloatingStart;
       case FloatingLabelBehavior.auto:
         labelTop = lerpDouble(
           centeredInputTop,
           labelFloatingTop,
           decoration.floatingLabelProgress,
         )!;
+        labelStart = lerpDouble(
+          prefixStart,
+          labelFloatingStart,
+          decoration.floatingLabelProgress,
+        )!;
       case FloatingLabelBehavior.never:
         labelTop = centeredInputTop;
+        labelStart = prefixStart;
     }
 
-    final labelStart = prefixStart;
     final labelEnd = labelStart - labelSize.width;
 
     final double inputTop = isOutlined || !hasLabel
@@ -1757,8 +1769,8 @@ class _InputDecoratorState extends State<InputDecorator>
 
     // If at least two out of the three are visible, it needs semantics sort
     // order.
-    final bool needsSemanticsSortOrder = widget._labelShouldWithdraw &&
-        (hasPrefix || hasSuffix);
+    final bool needsSemanticsSortOrder =
+        widget._labelShouldWithdraw && (hasPrefix || hasSuffix);
 
     if (needsSemanticsSortOrder) {
       input = Semantics(
