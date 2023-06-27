@@ -975,8 +975,10 @@ class _RenderDecoration extends RenderBox
     // Container
     //
     // layout fixed elements
-    final paddingAboveContainer =
-        isOutlined ? theme.floatingLabelTextStyle.heightInDps / 2.0 : 0.0;
+    final floatingLabelMiddle = theme.floatingLabelTextStyle.heightInDps / 2.0;
+    final paddingAboveContainer = isOutlined && theme.includeFloatingLabelInSize
+        ? floatingLabelMiddle
+        : 0.0;
 
     final Size prefixIconSize = _layoutBox(prefixIcon, looseConstraints);
     final double prefixIconPaddingAdjustment =
@@ -1034,7 +1036,16 @@ class _RenderDecoration extends RenderBox
       ),
     );
 
-    final double labelFloatingTop = isOutlined ? 0.0 : theme.verticalPadding;
+    final double labelFloatingTop;
+    if (isOutlined) {
+      if (theme.includeFloatingLabelInSize) {
+        labelFloatingTop = 0.0;
+      } else {
+        labelFloatingTop = -floatingLabelMiddle;
+      }
+    } else {
+      labelFloatingTop = theme.verticalPadding;
+    }
     final double centeredInputTop = paddingAboveContainer +
         (theme.containerHeight - theme.inputTextStyle.heightInDps) / 2.0;
 
@@ -1752,6 +1763,8 @@ class _InputDecoratorState extends State<InputDecorator>
                       theme.floatingLabelTextStyle
                           .copyWith(color: theme.labelColor.resolve(states)),
                       _floatingLabelAnimation.value)!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   child: decoration.label!,
                 ),
               ),
@@ -1761,10 +1774,6 @@ class _InputDecoratorState extends State<InputDecorator>
     final bool hasPrefix = decoration.prefix != null;
     final bool hasSuffix = decoration.suffix != null;
 
-    // Widget input = wrapMouseCursor(
-    //         cursor: inputMouseCursor,
-    //         child: widget.child,
-    //       );
     Widget input = widget.child;
 
     // If at least two out of the three are visible, it needs semantics sort

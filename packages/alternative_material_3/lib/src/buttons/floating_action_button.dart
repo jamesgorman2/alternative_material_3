@@ -331,3 +331,151 @@ class _FabButtonStyleButton extends ButtonStyleButton {
     return style;
   }
 }
+
+/// A [FloatingActionButton] that listens to scroll events and
+/// hides the label when the top level scrolls down.
+class ExpandingFloatingActionButton extends StatefulWidget {
+  /// Create a new expanding FAB
+  ///
+  const ExpandingFloatingActionButton({
+    super.key,
+    this.expandAbove = 56,
+    this.icon,
+    this.theme,
+    this.colorTheme = FloatingActionButtonColorTheme.primary,
+    this.height = FloatingActionButtonHeight.regular,
+    this.tooltip,
+    this.heroTag = const _DefaultHeroTag(),
+    required this.onPressed,
+    this.focusNode,
+    this.autofocus = false,
+    required this.label,
+  }) : _floatingActionButtonType = FloatingActionButtonType.extended;
+
+  /// The height above which the FAB is expanded.
+  final double expandAbove;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// Typically an [Icon].
+  final Widget? icon;
+
+  /// Override FAB theme properties.
+  final FloatingActionButtonThemeData? theme;
+
+  /// Defines the default palette for the FAB. Can be overridden
+  /// by specific settings in the theme.
+  ///
+  /// The default is [FloatingActionButtonColorTheme.primary].
+  final FloatingActionButtonColorTheme colorTheme;
+
+  /// The elevation model of the FAB.
+  ///
+  /// Default value is [FloatingActionButtonHeight.regular];
+  final FloatingActionButtonHeight height;
+
+  /// Text that describes the action that will occur when the button is pressed.
+  ///
+  /// This text is displayed when the user long-presses on the button and is
+  /// used for accessibility.
+  final String? tooltip;
+
+  /// The tag to apply to the button's [Hero] widget.
+  ///
+  /// Defaults to a tag that matches other floating action buttons.
+  ///
+  /// Set this to null explicitly if you don't want the floating action button to
+  /// have a hero tag.
+  ///
+  /// If this is not explicitly set, then there can only be one
+  /// [FloatingActionButton] per route (that is, per screen), since otherwise
+  /// there would be a tag conflict (multiple heroes on one route can't have the
+  /// same tag). The Material Design specification recommends only using one
+  /// floating action button per screen.
+  final Object? heroTag;
+
+  /// The callback that is called when the button is tapped or otherwise activated.
+  ///
+  /// If this is set to null, the button will be disabled.
+  final VoidCallback? onPressed;
+
+  /// {@macro flutter.widgets.Focus.focusNode}
+  final FocusNode? focusNode;
+
+  /// {@macro flutter.widgets.Focus.autofocus}
+  final bool autofocus;
+
+  final FloatingActionButtonType _floatingActionButtonType;
+
+  final Widget label;
+
+  @override
+  State<ExpandingFloatingActionButton> createState() =>
+      _ExpandingFloatingActionButtonState();
+}
+
+class _ExpandingFloatingActionButtonState
+    extends State<ExpandingFloatingActionButton> {
+  ScrollNotificationObserverState? _scrollNotificationObserver;
+  bool isExtended = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
+    _scrollNotificationObserver = ScrollNotificationObserver.maybeOf(context);
+    _scrollNotificationObserver?.addListener(_handleScrollNotification);
+  }
+
+  @override
+  void dispose() {
+    if (_scrollNotificationObserver != null) {
+      _scrollNotificationObserver!.removeListener(_handleScrollNotification);
+      _scrollNotificationObserver = null;
+    }
+    super.dispose();
+  }
+
+  void _handleScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollUpdateNotification &&
+        defaultScrollNotificationPredicate(notification)) {
+      final bool oldIsExtended = isExtended;
+      final ScrollMetrics metrics = notification.metrics;
+      switch (metrics.axisDirection) {
+        case AxisDirection.up:
+        // Scroll view is reversed
+          isExtended = metrics.extentAfter <= widget.expandAbove;
+        case AxisDirection.down:
+          isExtended = metrics.extentBefore <= widget.expandAbove;
+        case AxisDirection.right:
+        case AxisDirection.left:
+        // Scrolled under is only supported in the vertical axis, and should
+        // not be altered based on horizontal notifications of the same
+        // predicate since it could be a 2D scroller.
+          break;
+      }
+
+      if (isExtended != oldIsExtended) {
+        setState(() {
+          // React to a change in MaterialState.scrolledUnder
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      icon: widget.icon,
+      theme: widget.theme,
+      colorTheme: widget.colorTheme,
+      height: widget.height,
+      tooltip: widget.tooltip,
+      heroTag: widget.heroTag,
+      onPressed: widget.onPressed,
+      focusNode: widget.focusNode,
+      autofocus: widget.autofocus,
+      label: isExtended ? widget.label : null,
+    );
+  }
+}

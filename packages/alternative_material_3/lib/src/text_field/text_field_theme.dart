@@ -174,6 +174,7 @@ class TextFieldThemeData with Diagnosticable {
     double? supportingTextTopPadding,
     double? supportingTextPadding,
     double? labelHorizontalPadding,
+    bool? includeFloatingLabelInSize,
     ui.BoxHeightStyle? selectionHeightStyle,
     ui.BoxWidthStyle? selectionWidthStyle,
     Color? selectionColor,
@@ -241,6 +242,7 @@ class TextFieldThemeData with Diagnosticable {
         _supportingTextTopPadding = supportingTextTopPadding,
         _supportingTextPadding = supportingTextPadding,
         _labelHorizontalPadding = labelHorizontalPadding,
+        _includeFloatingLabelInSize = includeFloatingLabelInSize,
         _selectionHeightStyle = selectionHeightStyle,
         _selectionWidthStyle = selectionWidthStyle,
         _selectionColor = selectionColor,
@@ -311,6 +313,7 @@ class TextFieldThemeData with Diagnosticable {
         _supportingTextTopPadding = other._supportingTextTopPadding,
         _supportingTextPadding = other._supportingTextPadding,
         _labelHorizontalPadding = other._labelHorizontalPadding,
+        _includeFloatingLabelInSize = other._includeFloatingLabelInSize,
         _selectionHeightStyle = other._selectionHeightStyle,
         _selectionWidthStyle = other._selectionWidthStyle,
         _selectionColor = other._selectionColor,
@@ -669,6 +672,18 @@ class TextFieldThemeData with Diagnosticable {
   double get labelHorizontalPadding => _labelHorizontalPadding ?? 4.0;
   final double? _labelHorizontalPadding;
 
+  /// If true, include additional height for the floating label
+  /// when [style] is [TextFieldStyle.outlined].
+  ///
+  /// When false, the top of the widget is the outline and the floating
+  /// label will be rendered above this. When true, an additional
+  /// [floatingLabelTextStyle.heightInDps] / 2.0 will be included above
+  /// the outline.
+  ///
+  /// The default value is false
+  bool get includeFloatingLabelInSize => _includeFloatingLabelInSize ?? false;
+  final bool? _includeFloatingLabelInSize;
+
   /// Controls how tall the selection highlight boxes are computed to be.
   ///
   /// See [ui.BoxHeightStyle] for details on available styles.
@@ -883,6 +898,7 @@ class TextFieldThemeData with Diagnosticable {
     double? supportingTextTopPadding,
     double? supportingTextPadding,
     double? labelHorizontalPadding,
+    bool? includeFloatingLabelInSize,
     ui.BoxHeightStyle? selectionHeightStyle,
     ui.BoxWidthStyle? selectionWidthStyle,
     Color? selectionColor,
@@ -956,6 +972,8 @@ class TextFieldThemeData with Diagnosticable {
           supportingTextTopPadding ?? _supportingTextTopPadding,
       supportingTextPadding: supportingTextPadding ?? _supportingTextPadding,
       labelHorizontalPadding: labelHorizontalPadding ?? _labelHorizontalPadding,
+      includeFloatingLabelInSize:
+          includeFloatingLabelInSize ?? _includeFloatingLabelInSize,
       selectionHeightStyle: selectionHeightStyle ?? _selectionHeightStyle,
       selectionWidthStyle: selectionWidthStyle ?? _selectionWidthStyle,
       selectionColor: selectionColor ?? _selectionColor,
@@ -1027,6 +1045,7 @@ class TextFieldThemeData with Diagnosticable {
       supportingTextTopPadding: other?._supportingTextTopPadding,
       supportingTextPadding: other?._supportingTextPadding,
       labelHorizontalPadding: other?._labelHorizontalPadding,
+      includeFloatingLabelInSize: other?._includeFloatingLabelInSize,
       activityIndicatorHeight: other?._activityIndicatorHeight,
       activityIndicatorColor: other?._activityIndicatorColor,
       borderWidth: other?._borderWidth,
@@ -1161,6 +1180,9 @@ class TextFieldThemeData with Diagnosticable {
           lerpDouble(a?._supportingTextPadding, b?._supportingTextPadding, t),
       labelHorizontalPadding:
           lerpDouble(a?._labelHorizontalPadding, b?._labelHorizontalPadding, t),
+      includeFloatingLabelInSize: t < 0.5
+          ? a?._includeFloatingLabelInSize
+          : b?._includeFloatingLabelInSize,
       selectionHeightStyle:
           t < 0.5 ? a?._selectionHeightStyle : b?._selectionHeightStyle,
       selectionWidthStyle:
@@ -1247,6 +1269,7 @@ class TextFieldThemeData with Diagnosticable {
         other._supportingTextTopPadding == _supportingTextTopPadding &&
         other._supportingTextPadding == _supportingTextPadding &&
         other._labelHorizontalPadding == _labelHorizontalPadding &&
+        other._includeFloatingLabelInSize == _includeFloatingLabelInSize &&
         other._activityIndicatorHeight == _activityIndicatorHeight &&
         other._activityIndicatorColor == _activityIndicatorColor &&
         other._borderWidth == _borderWidth &&
@@ -1327,6 +1350,7 @@ class TextFieldThemeData with Diagnosticable {
         _supportingTextTopPadding,
         _supportingTextPadding,
         _labelHorizontalPadding,
+        _includeFloatingLabelInSize,
         _selectionHeightStyle,
         _selectionWidthStyle,
         _selectionColor,
@@ -1477,6 +1501,9 @@ class TextFieldThemeData with Diagnosticable {
         defaultValue: null));
     properties.add(DiagnosticsProperty<double>(
         'labelHorizontalPadding', _labelHorizontalPadding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<bool>(
+        'includeFloatingLabelInSize', _includeFloatingLabelInSize,
         defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<double>>(
         'activityIndicatorHeight', _activityIndicatorHeight,

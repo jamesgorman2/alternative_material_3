@@ -23,8 +23,6 @@ import 'button_style.dart';
 
 export 'button_style.dart';
 export 'elevated_button.dart';
-export 'expandable_floating_action_button.dart';
-export 'expandable_floating_action_button_theme.dart';
 export 'filled_button.dart';
 export 'filled_icon_button.dart';
 export 'filled_tonal_button.dart';

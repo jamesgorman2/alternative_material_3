@@ -599,37 +599,35 @@ class ListTile extends StatelessWidget {
             shape: tileTheme.customBorder,
             color: tileTheme.tileColor,
           ),
-          child: SafeArea(
-            child: _ListTile(
-              layout: layout,
-              padding: tileTheme.padding,
-              internalHorizontalPadding: tileTheme.internalHorizontalPadding,
-              tallVerticalPadding: tileTheme.tallVerticalPadding,
-              leading: leadingElement,
-              headline: headlineText,
-              overline: overlineText,
-              supportingText: supportingTextWidget,
-              trailing: trailingElement,
-              visualDensity: tileTheme.visualDensity,
-              textDirection: Directionality.of(context),
-              leadingPaddingCorrection: leading?.paddingCorrection,
-              leadingTargetSize: leading?.targetSize,
-              trailingPaddingCorrection: trailing?.paddingCorrection,
-              trailingTargetSize: trailing?.targetSize,
-              maxOverlineHeight: tileTheme.strict
-                  ? tileTheme.overlineTextStyle.heightInDps
-                  : double.infinity,
-              maxHeadlineHeight: tileTheme.strict
-                  ? tileTheme.headlineTextStyle.heightInDps
-                  : double.infinity,
-              maxSupportingTextHeight: tileTheme.strict
-                  ? (overline != null || layout == ListTileLayout.twoLine
-                      ? tileTheme.supportingTextTextStyle.heightInDps
-                      : tileTheme.supportingTextTextStyle.heightInDps * 2)
-                  : double.infinity,
-              supportingTextSingleLineHeight:
-                  tileTheme.supportingTextTextStyle.heightInDps,
-            ),
+          child: _ListTile(
+            layout: layout,
+            padding: tileTheme.padding,
+            internalHorizontalPadding: tileTheme.internalHorizontalPadding,
+            tallVerticalPadding: tileTheme.tallVerticalPadding,
+            leading: leadingElement,
+            headline: headlineText,
+            overline: overlineText,
+            supportingText: supportingTextWidget,
+            trailing: trailingElement,
+            visualDensity: tileTheme.visualDensity,
+            textDirection: Directionality.of(context),
+            leadingPaddingCorrection: leading?.paddingCorrection,
+            leadingTargetSize: leading?.targetSize,
+            trailingPaddingCorrection: trailing?.paddingCorrection,
+            trailingTargetSize: trailing?.targetSize,
+            maxOverlineHeight: tileTheme.strict
+                ? tileTheme.overlineTextStyle.heightInDps
+                : double.infinity,
+            maxHeadlineHeight: tileTheme.strict
+                ? tileTheme.headlineTextStyle.heightInDps
+                : double.infinity,
+            maxSupportingTextHeight: tileTheme.strict
+                ? (overline != null || layout == ListTileLayout.twoLine
+                    ? tileTheme.supportingTextTextStyle.heightInDps
+                    : tileTheme.supportingTextTextStyle.heightInDps * 2)
+                : double.infinity,
+            supportingTextSingleLineHeight:
+                tileTheme.supportingTextTextStyle.heightInDps,
           ),
         ),
       ),

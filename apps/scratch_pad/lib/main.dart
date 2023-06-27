@@ -1,4 +1,6 @@
 import 'package:alternative_material_3/material.dart';
+import 'package:device_frame/device_frame.dart';
+import 'package:flutter/gestures.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,15 +16,17 @@ class MyApp extends StatelessWidget {
 
     // cursor style between chips still text
 
-    return
-      MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        materialTapTargetSize: MaterialTapTargetSize.padded,
-        minInteractiveDimension: 48.0,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          materialTapTargetSize: MaterialTapTargetSize.padded,
+          minInteractiveDimension: 48.0,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: DeviceFrame(
+          device: Devices.android.mediumPhone,
+          screen: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -54,38 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: 350,
-              color: Colors.white70,
-              child: const TextField.outlined(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.add),
-                  prefix: Text('\$'),
-                  label: Text('Label'),
-                ),
-              ),
-            ),
-            Container(
-              width: 350,
-              color: Colors.white70,
-              child: const TextField.outlined(
-                decoration: InputDecoration(
-                  // prefixIcon: Icon(Icons.add),
-                  prefix: Text('\$'),
-                  label: Text('Label'),
-                ),
-              ),
-            ),
-            Container(
-              width: 350,
-              color: Colors.white70,
-              child: const TextField.underlined(
-                decoration: InputDecoration(
-                  // prefixIcon: Icon(Icons.add),
-                  prefix: Text('\$'),
-                  label: Text('Label'),
-                ),
-              ),
+            SwitchListTile(
+              value: true,
+              onChanged: (_) {},
+              headline: Text('Foo'),
             ),
           ],
         ),
