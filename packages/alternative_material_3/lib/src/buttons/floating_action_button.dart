@@ -233,6 +233,7 @@ class FloatingActionButton extends StatelessWidget {
 
   final FloatingActionButtonType _floatingActionButtonType;
 
+  /// {@macro alternative_material_3.button.label}
   final Widget? label;
 
   @override
@@ -336,10 +337,10 @@ class _FabButtonStyleButton extends ButtonStyleButton {
 /// hides the label when the top level scrolls down.
 class ExpandingFloatingActionButton extends StatefulWidget {
   /// Create a new expanding FAB
-  ///
   const ExpandingFloatingActionButton({
     super.key,
-    this.expandAbove = 56,
+    this.expandAbove = 56.0,
+    this.expandAndContractVelocity = 200.0,
     this.icon,
     this.theme,
     this.colorTheme = FloatingActionButtonColorTheme.primary,
@@ -350,10 +351,21 @@ class ExpandingFloatingActionButton extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     required this.label,
-  }) : _floatingActionButtonType = FloatingActionButtonType.extended;
+  });
 
-  /// The height above which the FAB is expanded.
+  /// The height above which the FAB must be expanded.
+  ///
+  /// The default value is 56;
   final double expandAbove;
+
+  /// The when this scroll velocity in dps per seconds
+  /// is exceeded in the downwards direction
+  /// the FAB will contract if the scroll is below [expandAbove].
+  /// The when this scroll velocity is exceeded in the upwards direction
+  /// the FAB will expand.
+  ///
+  /// The default value is 150.
+  final double expandAndContractVelocity;
 
   /// The widget below this widget in the tree.
   ///
@@ -405,8 +417,7 @@ class ExpandingFloatingActionButton extends StatefulWidget {
   /// {@macro flutter.widgets.Focus.autofocus}
   final bool autofocus;
 
-  final FloatingActionButtonType _floatingActionButtonType;
-
+  /// The label to display when the FAB is expanded
   final Widget label;
 
   @override
@@ -418,6 +429,9 @@ class _ExpandingFloatingActionButtonState
     extends State<ExpandingFloatingActionButton> {
   ScrollNotificationObserverState? _scrollNotificationObserver;
   bool isExtended = true;
+
+  double? lastScrollPixels;
+  DateTime? lastScrollNotificationTimestamp;
 
   @override
   void didChangeDependencies() {
@@ -436,30 +450,70 @@ class _ExpandingFloatingActionButtonState
     super.dispose();
   }
 
-  void _handleScrollNotification(ScrollNotification notification) {
-    if (notification is ScrollUpdateNotification &&
-        defaultScrollNotificationPredicate(notification)) {
-      final bool oldIsExtended = isExtended;
-      final ScrollMetrics metrics = notification.metrics;
-      switch (metrics.axisDirection) {
-        case AxisDirection.up:
-        // Scroll view is reversed
-          isExtended = metrics.extentAfter <= widget.expandAbove;
-        case AxisDirection.down:
-          isExtended = metrics.extentBefore <= widget.expandAbove;
-        case AxisDirection.right:
-        case AxisDirection.left:
-        // Scrolled under is only supported in the vertical axis, and should
-        // not be altered based on horizontal notifications of the same
-        // predicate since it could be a 2D scroller.
-          break;
-      }
+  double _velocityOf(ScrollNotification notification) {
+    final ScrollMetrics metrics = notification.metrics;
+    final timestamp = DateTime.timestamp();
 
-      if (isExtended != oldIsExtended) {
-        setState(() {
-          // React to a change in MaterialState.scrolledUnder
-        });
+    final double? startPixels = lastScrollPixels;
+    final double endPixels = metrics.extentBefore;
+    final DateTime? startTimestamp = lastScrollNotificationTimestamp;
+    final DateTime endTimestamp = timestamp;
+
+    if (notification is ScrollUpdateNotification) {
+      if (startPixels == null || startTimestamp == null) {
+        lastScrollPixels = endPixels;
+        lastScrollNotificationTimestamp = endTimestamp;
+      } else {
+        final double seconds =
+            endTimestamp.difference(startTimestamp).inMicroseconds / 1000000.0;
+        final double pixels = endPixels - startPixels;
+        if (seconds > 0) {
+          lastScrollPixels = endPixels;
+          lastScrollNotificationTimestamp = endTimestamp;
+          return pixels / seconds;
+        } else {
+          return 0.0;
+        }
       }
+    }
+    return 0.0;
+  }
+
+  void _handleScrollNotification(ScrollNotification notification) {
+    final isTopLevelScroll = defaultScrollNotificationPredicate(notification);
+    final ScrollMetrics metrics = notification.metrics;
+    if (!isTopLevelScroll ||
+        (notification is! ScrollStartNotification &&
+            notification is! ScrollUpdateNotification &&
+            notification is! ScrollEndNotification) ||
+        metrics.axisDirection == AxisDirection.right ||
+        metrics.axisDirection == AxisDirection.left) {
+      // Scrolled under is only supported in the vertical axis, and should
+      // not be altered based on horizontal notifications of the same
+      // predicate since it could be a 2D scroller.
+      return;
+    }
+
+    bool isInForcedExpansionRange = metrics.axisDirection == AxisDirection.up
+        ? metrics.extentAfter <= widget.expandAbove
+        : metrics.extentBefore <= widget.expandAbove;
+    final bool oldIsExtended = isExtended;
+
+    if (isInForcedExpansionRange) {
+      isExtended = true;
+    } else {
+      final double velocity = _velocityOf(notification);
+      if (velocity > widget.expandAndContractVelocity) {
+        isExtended = false;
+      } else if (velocity < -widget.expandAndContractVelocity) {
+        isExtended = true;
+      }
+    }
+
+    if (isExtended != oldIsExtended) {
+      setState(() {
+        // React to a change in MaterialState.scrolledUnder
+      });
     }
   }
 

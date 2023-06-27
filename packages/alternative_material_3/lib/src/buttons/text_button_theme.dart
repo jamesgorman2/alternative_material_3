@@ -197,4 +197,10 @@ class _LateResolvingTextButtonStyle extends _LateResolvingButtonStyle {
   @override
   MaterialStateProperty<Elevation> get elevation =>
       _elevation ?? MaterialStateProperty.all(Elevation.level0);
+
+  @override
+  double get iconPadding => 12.0;
+
+  @override
+  double get labelPadding => 12.0;
 }
