@@ -469,6 +469,9 @@ class _WidgetEquality implements Equality<Widget?> {
     if (identical(e1, e2)) {
       return true;
     }
+    if (e1?.key == e2?.key && e1?.key != null) {
+      return true;
+    }
     if (e1 == null || e2 == null) {
       return false;
     }
@@ -479,10 +482,12 @@ class _WidgetEquality implements Equality<Widget?> {
       return e1.data == e2.data && e1.textSpan == e2.textSpan;
     }
     if (e1 is SizedBox && e2 is SizedBox) {
-      return e1.width == e2.width && e1.height == e2.height;
+      return e1.width == e2.width && e1.height == e2.height &&
+          equals(e1.child, e2.child);
     }
     if (e1 is ConstrainedBox && e2 is ConstrainedBox) {
-      return e1.constraints == e2.constraints;
+      return e1.constraints == e2.constraints &&
+        equals(e1.child, e2.child);
     }
     return e1 == e2;
   }
