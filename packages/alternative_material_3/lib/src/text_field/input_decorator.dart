@@ -1223,14 +1223,14 @@ class _RenderDecoration extends RenderBox
     // Size this
     final double overallWidth = containerEnd;
     final double overallHeight = hasSupportingTextBox
-        ? supportingTextTop +
-            math.max(
-              supportingTextSize.height,
-              math.max(
-                counterSize.height,
-                supportingTextMinHeight,
-              ),
-            )
+        ? math.max(
+            supportingTextTop +
+                math.max(
+                  supportingTextSize.height,
+                  counterSize.height,
+                ),
+            supportingTextMinHeight,
+          )
         : containerBottom + supportingTextMinHeight;
 
     size = constraints.constrain(Size(overallWidth, overallHeight));

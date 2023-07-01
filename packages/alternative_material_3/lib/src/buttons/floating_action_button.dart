@@ -455,7 +455,9 @@ class _ExpandingFloatingActionButtonState
     final timestamp = DateTime.timestamp();
 
     final double? startPixels = lastScrollPixels;
-    final double endPixels = metrics.extentBefore;
+    final double endPixels = metrics.axisDirection == AxisDirection.up
+        ? metrics.extentAfter
+        : metrics.extentBefore;
     final DateTime? startTimestamp = lastScrollNotificationTimestamp;
     final DateTime endTimestamp = timestamp;
 
@@ -467,7 +469,8 @@ class _ExpandingFloatingActionButtonState
         final double seconds =
             endTimestamp.difference(startTimestamp).inMicroseconds / 1000000.0;
         final double pixels = endPixels - startPixels;
-        if (seconds > 0) {
+        if (seconds > 0.005) {
+          // longer sample time to reduce jitter
           lastScrollPixels = endPixels;
           lastScrollNotificationTimestamp = endTimestamp;
           return pixels / seconds;
@@ -483,9 +486,7 @@ class _ExpandingFloatingActionButtonState
     final isTopLevelScroll = defaultScrollNotificationPredicate(notification);
     final ScrollMetrics metrics = notification.metrics;
     if (!isTopLevelScroll ||
-        (notification is! ScrollStartNotification &&
-            notification is! ScrollUpdateNotification &&
-            notification is! ScrollEndNotification) ||
+        notification is! ScrollUpdateNotification ||
         metrics.axisDirection == AxisDirection.right ||
         metrics.axisDirection == AxisDirection.left) {
       // Scrolled under is only supported in the vertical axis, and should
