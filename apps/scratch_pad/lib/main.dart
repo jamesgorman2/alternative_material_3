@@ -55,17 +55,37 @@ class _MyHomePageState extends State<MyHomePage> {
         width: 400,
         color: Colors.black26,
         padding: const EdgeInsets.all(24),
-        child: Column(
+        child: AnimatedColumn(
+          duration: Duration(milliseconds: 100),
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SwitchListTile(
-              value: true,
-              onChanged: (_) {},
-              headline: Text('Foo'),
-            ),
+            _StateGuy(),
           ],
         ),
       ),
     );
+  }
+}
+
+class _StateGuy extends StatefulWidget {
+  const _StateGuy({super.key});
+
+  @override
+  State<_StateGuy> createState() => _StateGuyState();
+}
+
+class _StateGuyState extends State<_StateGuy> {
+  @override
+  void initState() {
+    print('initState');
+    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+      setState((){print('setState');});
+    });
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    print('build');
+    return SizedBox(width:100,height: 100,child: const Placeholder());
   }
 }

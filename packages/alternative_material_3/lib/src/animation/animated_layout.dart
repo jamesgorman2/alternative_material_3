@@ -289,8 +289,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
   late Animation<double> sizeAnimation;
   late Animation<double> reverseSizeAnimation;
 
-  List<Widget>? lastToWidgets;
-  List<Widget>? currentAnimations;
+  List<_CrossFade> currentAnimations = [];
 
   @override
   void initState() {
@@ -298,8 +297,10 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
 
     animationController = AnimationController(
       duration: widget.duration,
+      value: 1.0,
       vsync: this,
     );
+    animationController.addStatusListener(handleAnimationStatusChange);
 
     fadeOutAnimation = CurvedAnimation(
       parent: Animation.fromValueListenable(
@@ -360,7 +361,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
     super.dispose();
   }
 
-  bool get isFirstBuild => lastToWidgets == null;
+  bool isFirstBuild = true;
 
   bool get isAnimating => animationController.isAnimating;
 
@@ -373,73 +374,110 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
   List<Widget> withoutNulls(List<Widget?> l) =>
       l.map((e) => e ?? empty).toList(growable: false);
 
-  void handleAnimationChange() {
-    // setState(() {});
-  }
-
   void handleAnimationStatusChange(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      currentAnimations = null;
       setState(() {});
     }
   }
 
+  _CrossFade updateCrossFade({
+    _CrossFade? oldCrossFade,
+    required Widget newWidget,
+    required TextDirection textDirection,
+  }) {
+    const equality = _WidgetEquality();
+    if (oldCrossFade != null) {
+      switch (oldCrossFade.direction) {
+        case _CrossFadeDirection.aToB:
+          if (equality.equals(newWidget, oldCrossFade.b)) {
+            return oldCrossFade;
+          }
+          return _CrossFade(
+            a: newWidget,
+            b: oldCrossFade.b,
+            direction: _CrossFadeDirection.bToA,
+            doNotAnimate: null,
+            animationController: animationController,
+            fadeOutAnimation: fadeOutAnimation,
+            fadeInAnimation: fadeInAnimation,
+            sizeAnimation: sizeAnimation,
+            alignment: widget.animateFrom,
+            clipBehaviour: widget.animationClipBehaviour,
+            textDirection: textDirection,
+          );
+        case _CrossFadeDirection.bToA:
+          if (equality.equals(newWidget, oldCrossFade.a)) {
+            return oldCrossFade;
+          }
+          return _CrossFade(
+            a: oldCrossFade.a,
+            b: newWidget,
+            direction: _CrossFadeDirection.aToB,
+            doNotAnimate: null,
+            animationController: animationController,
+            fadeOutAnimation: fadeOutAnimation,
+            fadeInAnimation: fadeInAnimation,
+            sizeAnimation: sizeAnimation,
+            alignment: widget.animateFrom,
+            clipBehaviour: widget.animationClipBehaviour,
+            textDirection: textDirection,
+          );
+      }
+    } else {
+      return _CrossFade(
+        a: newWidget,
+        b: empty,
+        direction: _CrossFadeDirection.bToA,
+        doNotAnimate: null,
+        animationController: animationController,
+        fadeOutAnimation: fadeOutAnimation,
+        fadeInAnimation: fadeInAnimation,
+        sizeAnimation: sizeAnimation,
+        alignment: widget.animateFrom,
+        clipBehaviour: widget.animationClipBehaviour,
+        textDirection: textDirection,
+      );
+    }
+  }
   void setUpAnimation() {
-    animationController.removeListener(handleAnimationChange);
     animationController.removeStatusListener(handleAnimationStatusChange);
     animationController.reset();
-    animationController.addListener(handleAnimationChange);
     animationController.addStatusListener(handleAnimationStatusChange);
   }
 
-  List<Widget> animateChildren(
-      TextDirection textDirection) {
+  List<Widget> animateChildren(TextDirection textDirection) {
     if (isFirstBuild) {
-      lastToWidgets = withoutNulls(widget.children);
-      return lastToWidgets!;
+      isFirstBuild = false;
+      currentAnimations = withoutNulls(widget.children)
+          .map((newWidget) => updateCrossFade(
+                newWidget: newWidget,
+                textDirection: textDirection,
+              ))
+          .toList();
+      return currentAnimations;
     }
-    if (isAnimating) {
-      return currentAnimations!;
-    } else {
-      currentAnimations = null;
-    }
-    if (hasChanges) {
-      setUpAnimation();
-      final length = math.max(lastToWidgets!.length, widget.children.length);
-      currentAnimations = [];
-      final fromWidgets = lastToWidgets!;
+    if (!isAnimating && hasChanges) {
+      final length = math.max(currentAnimations.length, widget.children.length);
+      final List<_CrossFade> newCurrentAnimations = [];
       final toWidgets = withoutNulls(widget.children);
-      lastToWidgets = toWidgets;
       for (int i = 0; i < length; ++i) {
-        final Widget from = i < fromWidgets.length ? fromWidgets[i] : empty;
-        final Widget to = (i < toWidgets.length ? toWidgets[i] : empty);
-        if (from == to) {
-          currentAnimations!.add(to);
-        } else {
-          final crossAxis = widget.direction == Axis.horizontal
-              ? Axis.vertical
-              : Axis.horizontal;
-          currentAnimations!.add(
-            _CrossFade(
-              from: from,
-              to: to,
-              doNotAnimate: from == empty || to == empty ? crossAxis : null,
-              animationController: animationController,
-              fadeOutAnimation: fadeOutAnimation,
-              fadeInAnimation: fadeInAnimation,
-              sizeAnimation: sizeAnimation,
-              alignment: widget.animateFrom,
-              clipBehaviour: widget.animationClipBehaviour,
-              textDirection: textDirection,
-            ),
-          );
-        }
+        final _CrossFade? oldCrossFace =
+            i < currentAnimations.length ? currentAnimations[i] : null;
+        final Widget newWidget = i < toWidgets.length ? toWidgets[i] : empty;
+        newCurrentAnimations.add(
+          updateCrossFade(
+            oldCrossFade: oldCrossFace,
+            newWidget: newWidget,
+            textDirection: textDirection,
+          ),
+        );
       }
+      setUpAnimation();
       animationController.forward();
+      currentAnimations = newCurrentAnimations;
       hasChanges = false;
-      return currentAnimations!;
     }
-    return lastToWidgets!;
+    return currentAnimations;
   }
 
   @override
@@ -482,12 +520,12 @@ class _WidgetEquality implements Equality<Widget?> {
       return e1.data == e2.data && e1.textSpan == e2.textSpan;
     }
     if (e1 is SizedBox && e2 is SizedBox) {
-      return e1.width == e2.width && e1.height == e2.height &&
+      return e1.width == e2.width &&
+          e1.height == e2.height &&
           equals(e1.child, e2.child);
     }
     if (e1 is ConstrainedBox && e2 is ConstrainedBox) {
-      return e1.constraints == e2.constraints &&
-        equals(e1.child, e2.child);
+      return e1.constraints == e2.constraints && equals(e1.child, e2.child);
     }
     return e1 == e2;
   }
@@ -508,11 +546,17 @@ enum _CrossFadeSlot {
   to,
 }
 
+enum _CrossFadeDirection {
+  aToB,
+  bToA,
+}
+
 class _CrossFade extends RenderObjectWidget
     with SlottedMultiChildRenderObjectWidgetMixin<_CrossFadeSlot> {
   const _CrossFade({
-    required this.from,
-    required this.to,
+    required this.a,
+    required this.b,
+    required this.direction,
     required this.doNotAnimate,
     required this.animationController,
     required this.fadeOutAnimation,
@@ -523,8 +567,9 @@ class _CrossFade extends RenderObjectWidget
     required this.textDirection,
   });
 
-  final Widget from;
-  final Widget to;
+  final Widget a;
+  final Widget b;
+  final _CrossFadeDirection direction;
   final Axis? doNotAnimate;
   final AnimationController animationController;
   final Animation<double> fadeOutAnimation;
@@ -536,8 +581,9 @@ class _CrossFade extends RenderObjectWidget
 
   @override
   Widget? childForSlot(_CrossFadeSlot slot) {
-    Widget animatedOpacity(Widget w, Animation<double> a) {
+    Widget animatedOpacity(Widget w, Animation<double> a, [Key? key]) {
       return AnimatedBuilder(
+        key: key,
         animation: a,
         builder: (context, child) => Opacity(
           opacity: a.value,
@@ -547,9 +593,27 @@ class _CrossFade extends RenderObjectWidget
       );
     }
 
+    final Widget from;
+    final Widget to;
+    final Key fromKey;
+    final Key toKey;
+    switch (direction) {
+      case _CrossFadeDirection.aToB:
+        from = a;
+        fromKey = const Key('a');
+        to = b;
+        toKey = const Key('b');
+      case _CrossFadeDirection.bToA:
+        from = b;
+        fromKey = const Key('b');
+        to = a;
+        toKey = const Key('a');
+    }
+
     switch (slot) {
       case _CrossFadeSlot.from:
         return IgnorePointer(
+          key: fromKey,
           child: ExcludeSemantics(
             child: ExcludeFocus(
               child: animatedOpacity(from, fadeOutAnimation),
@@ -557,7 +621,7 @@ class _CrossFade extends RenderObjectWidget
           ),
         );
       case _CrossFadeSlot.to:
-        return animatedOpacity(to, fadeInAnimation);
+        return animatedOpacity(to, fadeInAnimation, toKey);
     }
   }
 
