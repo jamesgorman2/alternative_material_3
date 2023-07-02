@@ -1080,7 +1080,7 @@ class _TextFieldState extends State<TextField>
       _effectiveController.value.text.characters.length > widget.maxLength!;
 
   bool get _hasError =>
-      widget.decoration.errorText != null || _hasOverLengthError;
+      widget.decoration.hasError || _hasOverLengthError;
 
   bool _inputHasFocus = true;
 

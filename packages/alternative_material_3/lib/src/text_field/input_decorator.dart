@@ -1877,8 +1877,8 @@ class _InputDecoratorState extends State<InputDecorator>
             ),
           );
 
-    final hasSupportingText =
-        decoration.placeholderText != null || decoration.errorText != null;
+    final hasSupportingText = decoration.placeholderText != null ||
+        (decoration.hasError && decoration.errorText != null);
     final Widget? supportingText = hasSupportingText
         ? _SupportingText(
             textAlign: textAlign,
@@ -1888,8 +1888,8 @@ class _InputDecoratorState extends State<InputDecorator>
             supportingTextMaxLines: theme.supportingTextMaxLines,
             errorText: decoration.errorText,
             errorStyle: theme.supportingTextStyle.copyWith(
-                color:
-                    theme.supportingTextColor.resolve({MaterialState.error})),
+              color: theme.supportingTextColor.resolve({MaterialState.error}),
+            ),
             errorMaxLines: theme.errorTextMaxLines,
           )
         : null;
@@ -2045,6 +2045,7 @@ class InputDecoration {
     this.label,
     this.supportingText,
     this.placeholderText,
+    bool? hasError,
     this.errorText,
     this.isCollapsed = false,
     this.isDense,
@@ -2056,7 +2057,7 @@ class InputDecoration {
     this.counter,
     this.counterText,
     this.semanticCounterText,
-  });
+  }) : _hasError = hasError;
 
   /// Defines an [InputDecorator] that is the same size as the input field.
   ///
@@ -2067,6 +2068,7 @@ class InputDecoration {
     required this.placeholderText,
   })  : label = null,
         supportingText = null,
+        _hasError = null,
         errorText = null,
         isDense = false,
         isCollapsed = true,
@@ -2118,6 +2120,16 @@ class InputDecoration {
   /// when the input [isEmpty] and either (a) [labelText] is null or (b) the
   /// input has the focus.
   final String? placeholderText;
+
+  /// If true, the border's color animates to red and the error text is shown.
+  ///
+  /// Used to show an error in a set a text fields where only one will show
+  /// the message, for a password and compare password pair.
+  ///
+  /// The default value is true if [errorText] is not null, otherwise
+  /// false.
+  bool get hasError => _hasError ?? errorText != null;
+  final bool? _hasError;
 
   /// Text that appears below the [InputDecorator.child] and the border.
   ///
@@ -2293,6 +2305,7 @@ class InputDecoration {
     Widget? label,
     String? supportingText,
     String? placeholderText,
+    bool? hasError,
     String? errorText,
     bool? isCollapsed,
     bool? isDense,
@@ -2308,6 +2321,7 @@ class InputDecoration {
       label: label ?? this.label,
       supportingText: supportingText ?? this.supportingText,
       placeholderText: placeholderText ?? this.placeholderText,
+      hasError: hasError ?? _hasError,
       errorText: errorText ?? this.errorText,
       isCollapsed: isCollapsed ?? this.isCollapsed,
       isDense: isDense ?? this.isDense,
@@ -2333,6 +2347,7 @@ class InputDecoration {
         other.label == label &&
         other.supportingText == supportingText &&
         other.placeholderText == placeholderText &&
+        other._hasError == _hasError &&
         other.errorText == errorText &&
         other.isDense == isDense &&
         other.isCollapsed == isCollapsed &&
@@ -2350,6 +2365,7 @@ class InputDecoration {
       label,
       supportingText,
       placeholderText,
+      _hasError,
       errorText,
       isDense,
       isCollapsed,
@@ -2369,6 +2385,7 @@ class InputDecoration {
       if (label != null) 'label: $label',
       if (supportingText != null) 'helperText: "$supportingText"',
       if (placeholderText != null) 'hintText: "$placeholderText"',
+      if (errorText != null) 'hasError: "$_hasError"',
       if (errorText != null) 'errorText: "$errorText"',
       if (isDense ?? false) 'isDense: $isDense',
       if (isCollapsed) 'isCollapsed: $isCollapsed',
