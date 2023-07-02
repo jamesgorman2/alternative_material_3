@@ -702,7 +702,7 @@ class _RenderDecoration extends RenderBox
 
   bool get hasPrefixIcon => prefixIcon != null;
 
-  bool get hasSuffixIcon => prefixIcon != null;
+  bool get hasSuffixIcon => suffixIcon != null;
 
   bool get hasLabel => label != null;
 
@@ -995,7 +995,7 @@ class _RenderDecoration extends RenderBox
     final double endPrefixIconPadding =
         hasPrefixIcon ? theme.inputPadding - prefixIconPaddingAdjustment : 0.0;
     final double startSuffixIconPadding =
-        hasPrefixIcon ? theme.inputPadding - suffixIconPaddingAdjustment : 0.0;
+        hasSuffixIcon ? theme.inputPadding - suffixIconPaddingAdjustment : 0.0;
     final double endPadding = hasSuffixIcon
         ? theme.iconPadding - suffixIconPaddingAdjustment
         : theme.inputPadding;
