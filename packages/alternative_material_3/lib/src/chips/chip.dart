@@ -573,13 +573,15 @@ class _ChipState extends State<Chip>
     final Widget? endLeadingPadding;
     if (widget.avatar != null) {
       startPadding = SizedBox(width: chipTheme.avatarStartPadding);
-      leading = SizedBox(
-        width: chipTheme.avatarSize,
-        height: chipTheme.avatarSize,
-        child: Opacity(
-          opacity:
-              widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
-          child: widget.avatar,
+      leading = ExcludeSemantics(
+        child: SizedBox(
+          width: chipTheme.avatarSize,
+          height: chipTheme.avatarSize,
+          child: Opacity(
+            opacity:
+                widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
+            child: widget.avatar,
+          ),
         ),
       );
       endLeadingPadding = SizedBox(width: chipTheme.avatarEndPadding);

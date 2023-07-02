@@ -6,9 +6,11 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'always_complete_animation_controller.dart';
 import 'array_distribution.dart';
 
 /// A widget that displays its children in a horizontal array.
@@ -366,6 +368,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
   bool get isAnimating => animationController.isAnimating;
 
   bool hasChanges = false;
+  bool animationCompleteWidgetNotUpdated = false;
 
   static const Widget empty = SizedBox.shrink();
   static const ListEquality<Widget?> listEquality =
@@ -376,7 +379,9 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
 
   void handleAnimationStatusChange(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      setState(() {});
+      setState(() {
+        animationCompleteWidgetNotUpdated = true;
+      });
     }
   }
 
@@ -386,17 +391,33 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
     required TextDirection textDirection,
   }) {
     const equality = _WidgetEquality();
+    final crossAxis =
+        widget.direction == Axis.horizontal ? Axis.vertical : Axis.horizontal;
     if (oldCrossFade != null) {
       switch (oldCrossFade.direction) {
         case _CrossFadeDirection.aToB:
           if (equality.equals(newWidget, oldCrossFade.b)) {
-            return oldCrossFade;
+            return _CrossFade(
+              a: empty,
+              b: newWidget,
+              direction: _CrossFadeDirection.aToB,
+              doNotAnimate: null,
+              animationController: kAlwaysCompleteAnimationController,
+              fadeOutAnimation: kAlwaysDismissedAnimation,
+              fadeInAnimation: kAlwaysCompleteAnimation,
+              sizeAnimation: kAlwaysCompleteAnimation,
+              alignment: widget.animateFrom,
+              clipBehaviour: widget.animationClipBehaviour,
+              textDirection: textDirection,
+            );
           }
           return _CrossFade(
             a: newWidget,
             b: oldCrossFade.b,
             direction: _CrossFadeDirection.bToA,
-            doNotAnimate: null,
+            doNotAnimate: newWidget == empty || oldCrossFade.b == empty
+                ? crossAxis
+                : null,
             animationController: animationController,
             fadeOutAnimation: fadeOutAnimation,
             fadeInAnimation: fadeInAnimation,
@@ -407,13 +428,27 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
           );
         case _CrossFadeDirection.bToA:
           if (equality.equals(newWidget, oldCrossFade.a)) {
-            return oldCrossFade;
+            return _CrossFade(
+              a: newWidget,
+              b: empty,
+              direction: _CrossFadeDirection.bToA,
+              doNotAnimate: null,
+              animationController: kAlwaysCompleteAnimationController,
+              fadeOutAnimation: kAlwaysDismissedAnimation,
+              fadeInAnimation: kAlwaysCompleteAnimation,
+              sizeAnimation: kAlwaysCompleteAnimation,
+              alignment: widget.animateFrom,
+              clipBehaviour: widget.animationClipBehaviour,
+              textDirection: textDirection,
+            );
           }
           return _CrossFade(
             a: oldCrossFade.a,
             b: newWidget,
             direction: _CrossFadeDirection.aToB,
-            doNotAnimate: null,
+            doNotAnimate: oldCrossFade.a == empty || newWidget == empty
+                ? crossAxis
+                : null,
             animationController: animationController,
             fadeOutAnimation: fadeOutAnimation,
             fadeInAnimation: fadeInAnimation,
@@ -439,6 +474,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
       );
     }
   }
+
   void setUpAnimation() {
     animationController.removeStatusListener(handleAnimationStatusChange);
     animationController.reset();
@@ -451,6 +487,19 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
       currentAnimations = withoutNulls(widget.children)
           .map((newWidget) => updateCrossFade(
                 newWidget: newWidget,
+                textDirection: textDirection,
+              ))
+          .toList();
+      return currentAnimations;
+    }
+    if (animationCompleteWidgetNotUpdated) {
+      animationCompleteWidgetNotUpdated = false;
+      currentAnimations = currentAnimations
+          .map((crossFade) => updateCrossFade(
+                oldCrossFade: crossFade,
+                newWidget: crossFade.direction == _CrossFadeDirection.aToB
+                    ? crossFade.b
+                    : crossFade.a,
                 textDirection: textDirection,
               ))
           .toList();
@@ -510,6 +559,9 @@ class _WidgetEquality implements Equality<Widget?> {
     if (e1?.key == e2?.key && e1?.key != null) {
       return true;
     }
+    if (e1?.key != e2?.key && (e1?.key != null || e2?.key != null)) {
+      return false;
+    }
     if (e1 == null || e2 == null) {
       return false;
     }
@@ -527,6 +579,37 @@ class _WidgetEquality implements Equality<Widget?> {
     if (e1 is ConstrainedBox && e2 is ConstrainedBox) {
       return e1.constraints == e2.constraints && equals(e1.child, e2.child);
     }
+
+    if (e1 is SingleChildScrollView && e2 is SingleChildScrollView) {
+      return equals(e1.child, e2.child);
+    }
+    if (e1 is SingleChildRenderObjectWidget &&
+        e2 is SingleChildRenderObjectWidget) {
+      return equals(e1.child, e2.child);
+    }
+    if (e1 is ParentDataWidget && e2 is ParentDataWidget) {
+      return equals(e1.child, e2.child);
+    }
+    if (e1 is ProxyWidget && e2 is ProxyWidget) {
+      return equals(e1.child, e2.child);
+    }
+    if (e1 is Container && e2 is Container) {
+      return equals(e1.child, e2.child);
+    }
+
+    if (e1 is MultiChildRenderObjectWidget &&
+        e2 is MultiChildRenderObjectWidget) {
+      return _AnimatedLayoutState.listEquality.equals(e1.children, e2.children);
+    }
+
+    if (e1 is SlottedMultiChildRenderObjectWidgetMixin &&
+        e2 is SlottedMultiChildRenderObjectWidgetMixin) {
+      return _AnimatedLayoutState.listEquality.equals(
+        e1.slots.map(e1.childForSlot).toList(),
+        e2.slots.map(e1.childForSlot).toList(),
+      );
+    }
+
     return e1 == e2;
   }
 
@@ -620,6 +703,7 @@ class _CrossFade extends RenderObjectWidget
             ),
           ),
         );
+      // return animatedOpacity(from, fadeOutAnimation, fromKey);
       case _CrossFadeSlot.to:
         return animatedOpacity(to, fadeInAnimation, toKey);
     }
@@ -754,6 +838,23 @@ class _RenderCrossFade extends RenderBox
       // already, to resume interrupted resizing animation.
       markNeedsLayout();
     }
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    if (to == null) {
+      return false;
+    }
+
+    final BoxParentData parentData = to!.parentData! as BoxParentData;
+    return result.addWithPaintOffset(
+      offset: parentData.offset,
+      position: position,
+      hitTest: (BoxHitTestResult result, Offset transformed) {
+        assert(transformed == position - parentData.offset);
+        return to!.hitTest(result, position: transformed);
+      },
+    );
   }
 
   void handleAnimationChange() {
