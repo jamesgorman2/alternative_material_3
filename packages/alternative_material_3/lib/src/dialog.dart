@@ -1432,9 +1432,6 @@ class _DialogDefaultsM3 extends DialogTheme {
   Color? get shadowColor => Colors.transparent;
 
   @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
-
-  @override
   TextStyle? get titleTextStyle => _textTheme.headlineSmall;
 
   @override

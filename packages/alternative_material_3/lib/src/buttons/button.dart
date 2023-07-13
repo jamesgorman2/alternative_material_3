@@ -334,12 +334,13 @@ class _ButtonStyleState extends State<ButtonStyleButton>
         style.maximumContainerWidth ?? double.infinity;
 
     final BorderSide? outline = style.outline.resolve(states);
+    // TODO copying outline to material and inkwell
     final OutlinedBorder containerShape =
         style.containerShape.copyWith(side: outline);
 
     final MouseCursor mouseCursor = style.mouseCursor.resolve(states);
 
-    final StateLayerTheme stateLayers = style.stateLayers.resolve(states);
+    final StateLayerColors stateLayers = style.stateLayers.resolve(states);
 
     final VisualDensity visualDensity = style.visualDensity;
     final Offset densityAdjustment = visualDensity.baseSizeAdjustment;
@@ -376,16 +377,6 @@ class _ButtonStyleState extends State<ButtonStyleButton>
     // reduce the horizontal padding to zero.
     final double dx = math.max(0, densityAdjustment.dx);
 
-    // final double startPadding = widget.label == null
-    //     ? 0.0
-    //     : math.max(
-    //         scalePadding(widget.icon != null ? iconPadding : labelPadding) + dx,
-    //         0.0,
-    //       );
-    // final double endPadding = widget.label == null
-    //     ? 0.0
-    //     : math.max(scalePadding(labelPadding) + dx, 0.0);
-
     final double startPadding = math.max(
       scalePadding(widget.icon != null ? iconPadding : labelPadding) + dx,
       0.0,
@@ -419,12 +410,9 @@ class _ButtonStyleState extends State<ButtonStyleButton>
             onFocusChange: widget.onFocusChange,
             autofocus: widget.autofocus,
             splashFactory: resolvedSplashFactory,
-            highlightColor: Colors.transparent,
-            customBorder: containerShape.copyWith(side: outline),
+            customBorder: containerShape,//.copyWith(side: outline),
             statesController: statesController,
-            hoverColor: stateLayers.hoverColor,
-            focusColor: stateLayers.focusColor,
-            splashColor: stateLayers.pressColor,
+            overlayColor: stateLayers,
             child: IconTheme.merge(
               data: IconThemeData(color: iconColor, size: iconSize),
               child: Align(

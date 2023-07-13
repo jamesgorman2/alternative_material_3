@@ -16,6 +16,7 @@ import 'ink_well.dart';
 import 'material.dart';
 import 'material_localizations.dart';
 import 'material_state.dart';
+import 'state_theme.dart';
 import 'theme.dart';
 import 'tooltip.dart';
 
@@ -524,6 +525,7 @@ class _BottomNavigationTile extends StatelessWidget {
       onTap: onTap,
       mouseCursor: mouseCursor,
       enableFeedback: enableFeedback,
+      overlayColor: StateLayerColors.none,
       child: Padding(
         padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
         child: _Tile(

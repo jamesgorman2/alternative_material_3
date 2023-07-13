@@ -54,7 +54,7 @@ class ListTileThemeData with Diagnosticable {
     Color? tileColor,
     Color? selectedTileColor,
     StateThemeData? stateTheme,
-    StateLayerTheme? stateLayers,
+    StateLayerColors? stateLayers,
     Color? selectedLeadingColor,
     Color? selectedOverlineColor,
     Color? selectedHeadlineColor,
@@ -190,8 +190,8 @@ class ListTileThemeData with Diagnosticable {
   ///
   /// Default color values are [ColorScheme.onSurface] and the
   /// opacities are from [ListTileThemeData.stateThemeData].
-  StateLayerTheme get stateLayers => _stateLayers!;
-  final StateLayerTheme? _stateLayers;
+  StateLayerColors get stateLayers => _stateLayers!;
+  final StateLayerColors? _stateLayers;
 
   /// Defines the color used for text and icons in [ListTile.leading]
   /// when the list tile is selected.
@@ -377,7 +377,7 @@ class ListTileThemeData with Diagnosticable {
     Color? tileColor,
     Color? selectedTileColor,
     StateThemeData? stateTheme,
-    StateLayerTheme? stateLayers,
+    StateLayerColors? stateLayers,
     Color? selectedLeadingColor,
     Color? selectedOverlineColor,
     Color? selectedHeadlineColor,
@@ -481,7 +481,7 @@ class ListTileThemeData with Diagnosticable {
       selectedTileColor:
           Color.lerp(a?._selectedTileColor, b?._selectedTileColor, t),
       stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
-      stateLayers: StateLayerTheme.lerp(a?._stateLayers, b?._stateLayers, t),
+      stateLayers: StateLayerColors.lerp(a?._stateLayers, b?._stateLayers, t),
       selectedLeadingColor:
           Color.lerp(a?._selectedLeadingColor, b?._selectedLeadingColor, t),
       selectedOverlineColor:
@@ -605,7 +605,7 @@ class ListTileThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<StateThemeData?>(
         'stateTheme', _stateTheme,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<StateLayerTheme?>(
+    properties.add(DiagnosticsProperty<StateLayerColors?>(
         'stateLayers', _stateLayers,
         defaultValue: null));
     properties.add(DiagnosticsProperty<Color?>(
@@ -683,18 +683,14 @@ class _LateResolvingListTileThemeData extends ListTileThemeData {
   StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
 
   @override
-  StateLayerTheme get stateLayers {
-    final defaultStateLayerTheme = StateLayerTheme(
-      hoverColor: StateLayer(_colors.onSurface, stateTheme.hoverOpacity),
-      focusColor: StateLayer(_colors.onSurface, stateTheme.focusOpacity),
-      pressColor: StateLayer(_colors.onSurface, stateTheme.pressOpacity),
-      dragColor: StateLayer(_colors.onSurface, stateTheme.dragOpacity),
-    );
-    if (_stateLayers != null) {
-      _stateLayers!.mergeWith(defaultStateLayerTheme);
-    }
-    return defaultStateLayerTheme;
-  }
+  StateLayerColors get stateLayers => _stateLayers != null
+      ? _stateLayers!
+      : StateLayerColors(
+          hoverColor: StateLayer(_colors.onSurface, stateTheme.hoverOpacity),
+          focusColor: StateLayer(_colors.onSurface, stateTheme.focusOpacity),
+          pressColor: StateLayer(_colors.onSurface, stateTheme.pressOpacity),
+          dragColor: StateLayer(_colors.onSurface, stateTheme.dragOpacity),
+        );
 
   @override
   Color get leadingColor => _leadingColor ?? _colors.onSurfaceVariant;

@@ -12,9 +12,9 @@ import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/widgets.dart';
 
 import 'app_bar.dart';
-import 'banner.dart';
-import 'banner_theme.dart';
 import 'bottom_sheet.dart';
+import 'buttons/floating_action_button.dart';
+import 'buttons/floating_action_button_location.dart';
 import 'colors.dart';
 import 'curves.dart';
 import 'debug.dart';
@@ -22,8 +22,6 @@ import 'divider.dart';
 import 'drawer.dart';
 import 'elevation.dart';
 import 'flexible_space_bar.dart';
-import 'buttons/floating_action_button.dart';
-import 'buttons/floating_action_button_location.dart';
 import 'material.dart';
 import 'snack_bar.dart';
 import 'snack_bar_theme.dart';
@@ -52,7 +50,6 @@ enum _ScaffoldSlot {
   bodyScrim,
   bottomSheet,
   snackBar,
-  materialBanner,
   persistentFooter,
   bottomNavigationBar,
   floatingActionButton,
@@ -61,17 +58,16 @@ enum _ScaffoldSlot {
   statusBar,
 }
 
-/// Manages [SnackBar]s and [MaterialBanner]s for descendant [Scaffold]s.
+/// Manages [SnackBar]sfor descendant [Scaffold]s.
 ///
 /// {@youtube 560 315 https://www.youtube.com/watch?v=lytQi-slT5Y}
 ///
-/// This class provides APIs for showing snack bars and material banners at the
+/// This class provides APIs for showing snack bars at the
 /// bottom and top of the screen, respectively.
 ///
 /// To display one of these notifications, obtain the [ScaffoldMessengerState]
 /// for the current [BuildContext] via [ScaffoldMessenger.of] and use the
-/// [ScaffoldMessengerState.showSnackBar] or the
-/// [ScaffoldMessengerState.showMaterialBanner] functions.
+/// [ScaffoldMessengerState.showSnackBar] functions.
 ///
 /// When the [ScaffoldMessenger] has nested [Scaffold] descendants, the
 /// ScaffoldMessenger will only present the notification to the root Scaffold of
@@ -91,8 +87,6 @@ enum _ScaffoldSlot {
 ///
 ///  * [SnackBar], which is a temporary notification typically shown near the
 ///    bottom of the app using the [ScaffoldMessengerState.showSnackBar] method.
-///  * [MaterialBanner], which is a temporary notification typically shown at the
-///    top of the app using the [ScaffoldMessengerState.showMaterialBanner] method.
 ///  * [debugCheckHasScaffoldMessenger], which asserts that the given context
 ///    has a [ScaffoldMessenger] ancestor.
 ///  * Cookbook: [Display a SnackBar](https://flutter.dev/docs/cookbook/design/snackbars)
@@ -172,17 +166,15 @@ class ScaffoldMessenger extends StatefulWidget {
 
 /// State for a [ScaffoldMessenger].
 ///
-/// A [ScaffoldMessengerState] object can be used to [showSnackBar] or
-/// [showMaterialBanner] for every registered [Scaffold] that is a descendant of
+/// A [ScaffoldMessengerState] object can be used to [showSnackBar] for
+/// every registered [Scaffold] that is a descendant of
 /// the associated [ScaffoldMessenger]. Scaffolds will register to receive
-/// [SnackBar]s and [MaterialBanner]s from their closest ScaffoldMessenger
+/// [SnackBar]s from their closest ScaffoldMessenger
 /// ancestor.
 ///
 /// Typically obtained via [ScaffoldMessenger.of].
 class ScaffoldMessengerState extends State<ScaffoldMessenger> with TickerProviderStateMixin {
   final LinkedHashSet<ScaffoldState> _scaffolds = LinkedHashSet<ScaffoldState>();
-  final Queue<ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>> _materialBanners = Queue<ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>>();
-  AnimationController? _materialBannerController;
   final Queue<ScaffoldFeatureController<SnackBar, SnackBarClosedReason>> _snackBars = Queue<ScaffoldFeatureController<SnackBar, SnackBarClosedReason>>();
   AnimationController? _snackBarController;
   Timer? _snackBarTimer;
@@ -212,10 +204,6 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger> with TickerProvide
       if (_snackBars.isNotEmpty) {
         scaffold._updateSnackBar();
       }
-
-      if (_materialBanners.isNotEmpty) {
-        scaffold._updateMaterialBanner();
-      }
     }
   }
 
@@ -229,13 +217,12 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger> with TickerProvide
     for (final ScaffoldState scaffold in _scaffolds) {
       if (_isRoot(scaffold)) {
         scaffold._updateSnackBar();
-        scaffold._updateMaterialBanner();
       }
     }
   }
 
   // Nested Scaffolds are handled by the ScaffoldMessenger by only presenting a
-  // MaterialBanner or SnackBar in the root Scaffold of the nested set.
+  // SnackBar in the root Scaffold of the nested set.
   bool _isRoot(ScaffoldState scaffold) {
     final ScaffoldState? parent = scaffold.context.findAncestorStateOfType<ScaffoldState>();
     return parent == null || !_scaffolds.contains(parent);
@@ -428,134 +415,6 @@ class ScaffoldMessengerState extends State<ScaffoldMessenger> with TickerProvide
     hideCurrentSnackBar();
   }
 
-  // MATERIAL BANNER API
-
-  /// Shows a [MaterialBanner] across all registered [Scaffold]s. Scaffolds register
-  /// to receive material banners from their closest [ScaffoldMessenger] ancestor.
-  /// If there are several registered scaffolds the material banner is shown
-  /// simultaneously on all of them.
-  ///
-  /// A scaffold can show at most one material banner at a time. If this function is
-  /// called while another material banner is already visible, the given material banner
-  /// will be added to a queue and displayed after the earlier material banners have
-  /// closed.
-  ///
-  /// To remove the [MaterialBanner] with an exit animation, use [hideCurrentMaterialBanner]
-  /// or call [ScaffoldFeatureController.close] on the returned
-  /// [ScaffoldFeatureController]. To remove a [MaterialBanner] suddenly (without an
-  /// animation), use [removeCurrentMaterialBanner].
-  ///
-  /// See [ScaffoldMessenger.of] for information about how to obtain the
-  /// [ScaffoldMessengerState].
-  ///
-  /// {@tool dartpad}
-  /// Here is an example of showing a [MaterialBanner] when the user presses a button.
-  ///
-  /// ** See code in examples/api/lib/material/scaffold/scaffold_messenger_state.show_material_banner.0.dart **
-  /// {@end-tool}
-  ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason> showMaterialBanner(MaterialBanner materialBanner) {
-    assert(
-      _scaffolds.isNotEmpty,
-      'ScaffoldMessenger.showMaterialBanner was called, but there are currently no '
-      'descendant Scaffolds to present to.',
-    );
-    _materialBannerController ??= MaterialBanner.createAnimationController(vsync: this)
-      ..addStatusListener(_handleMaterialBannerStatusChanged);
-    if (_materialBanners.isEmpty) {
-      assert(_materialBannerController!.isDismissed);
-      _materialBannerController!.forward();
-    }
-    late ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason> controller;
-    controller = ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>._(
-      // We provide a fallback key so that if back-to-back material banners happen to
-      // match in structure, material ink splashes and highlights don't survive
-      // from one to the next.
-      materialBanner.withAnimation(_materialBannerController!, fallbackKey: UniqueKey()),
-      Completer<MaterialBannerClosedReason>(),
-          () {
-        assert(_materialBanners.first == controller);
-        hideCurrentMaterialBanner();
-      },
-      null, // MaterialBanner doesn't use a builder function so setState() wouldn't rebuild it
-    );
-    setState(() {
-      _materialBanners.addLast(controller);
-    });
-    _updateScaffolds();
-    return controller;
-  }
-
-  void _handleMaterialBannerStatusChanged(AnimationStatus status) {
-    switch (status) {
-      case AnimationStatus.dismissed:
-        assert(_materialBanners.isNotEmpty);
-        setState(() {
-          _materialBanners.removeFirst();
-        });
-        _updateScaffolds();
-        if (_materialBanners.isNotEmpty) {
-          _materialBannerController!.forward();
-        }
-      case AnimationStatus.completed:
-        _updateScaffolds();
-      case AnimationStatus.forward:
-        break;
-      case AnimationStatus.reverse:
-        break;
-    }
-  }
-
-  /// Removes the current [MaterialBanner] (if any) immediately from registered
-  /// [Scaffold]s.
-  ///
-  /// The removed material banner does not run its normal exit animation. If there are
-  /// any queued material banners, they begin their entrance animation immediately.
-  void removeCurrentMaterialBanner({ MaterialBannerClosedReason reason = MaterialBannerClosedReason.remove }) {
-    if (_materialBanners.isEmpty) {
-      return;
-    }
-    final Completer<MaterialBannerClosedReason> completer = _materialBanners.first._completer;
-    if (!completer.isCompleted) {
-      completer.complete(reason);
-    }
-
-    // This will trigger the animation's status callback.
-    _materialBannerController!.value = 0.0;
-  }
-
-  /// Removes the current [MaterialBanner] by running its normal exit animation.
-  ///
-  /// The closed completer is called after the animation is complete.
-  void hideCurrentMaterialBanner({ MaterialBannerClosedReason reason = MaterialBannerClosedReason.hide }) {
-    if (_materialBanners.isEmpty || _materialBannerController!.status == AnimationStatus.dismissed) {
-      return;
-    }
-    final Completer<MaterialBannerClosedReason> completer = _materialBanners.first._completer;
-    if (_accessibleNavigation!) {
-      _materialBannerController!.value = 0.0;
-      completer.complete(reason);
-    } else {
-      _materialBannerController!.reverse().then<void>((void value) {
-        assert(mounted);
-        if (!completer.isCompleted) {
-          completer.complete(reason);
-        }
-      });
-    }
-  }
-
-  /// Removes all the [MaterialBanner]s currently in queue by clearing the queue
-  /// and running normal exit animation on the current [MaterialBanner].
-  void clearMaterialBanners() {
-    if (_materialBanners.isEmpty || _materialBannerController!.status == AnimationStatus.dismissed) {
-      return;
-    }
-    final ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason> currentMaterialBanner = _materialBanners.first;
-    _materialBanners.clear();
-    _materialBanners.add(currentMaterialBanner);
-    hideCurrentMaterialBanner();
-  }
-
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
@@ -630,7 +489,6 @@ class ScaffoldPrelayoutGeometry {
     required this.minViewPadding,
     required this.scaffoldSize,
     required this.snackBarSize,
-    required this.materialBannerSize,
     required this.textDirection,
   });
 
@@ -713,11 +571,6 @@ class ScaffoldPrelayoutGeometry {
   ///
   /// If the [Scaffold] is not showing a [SnackBar], this will be [Size.zero].
   final Size snackBarSize;
-
-  /// The [Size] of the [Scaffold]'s [MaterialBanner].
-  ///
-  /// If the [Scaffold] is not showing a [MaterialBanner], this will be [Size.zero].
-  final Size materialBannerSize;
 
   /// The [TextDirection] of the [Scaffold]'s [BuildContext].
   final TextDirection textDirection;
@@ -869,14 +722,11 @@ class _BodyBoxConstraints extends BoxConstraints {
     super.maxHeight,
     required this.bottomWidgetsHeight,
     required this.appBarHeight,
-    required this.materialBannerHeight,
   }) : assert(bottomWidgetsHeight >= 0),
-       assert(appBarHeight >= 0),
-       assert(materialBannerHeight >= 0);
+       assert(appBarHeight >= 0);
 
   final double bottomWidgetsHeight;
   final double appBarHeight;
-  final double materialBannerHeight;
 
   // RenderObject.layout() will only short-circuit its call to its performLayout
   // method if the new layout constraints are not == to the current constraints.
@@ -888,13 +738,12 @@ class _BodyBoxConstraints extends BoxConstraints {
       return false;
     }
     return other is _BodyBoxConstraints
-        && other.materialBannerHeight == materialBannerHeight
         && other.bottomWidgetsHeight == bottomWidgetsHeight
         && other.appBarHeight == appBarHeight;
   }
 
   @override
-  int get hashCode => Object.hash(super.hashCode, materialBannerHeight, bottomWidgetsHeight, appBarHeight);
+  int get hashCode => Object.hash(super.hashCode, bottomWidgetsHeight, appBarHeight);
 }
 
 // Used when Scaffold.extendBody is true to wrap the scaffold's body in a MediaQuery
@@ -931,7 +780,7 @@ class _BodyBuilder extends StatelessWidget {
 
         final double top = extendBodyBehindAppBar
           ? math.max(metrics.padding.top,
-              bodyConstraints.appBarHeight + bodyConstraints.materialBannerHeight)
+              bodyConstraints.appBarHeight)
           : metrics.padding.top;
 
         return MediaQuery(
@@ -963,7 +812,6 @@ class _ScaffoldLayout extends MultiChildLayoutDelegate {
     required this.snackBarWidth,
     required this.extendBody,
     required this.extendBodyBehindAppBar,
-    required this.extendBodyBehindMaterialBanner,
   });
 
   final bool extendBody;
@@ -980,8 +828,6 @@ class _ScaffoldLayout extends MultiChildLayoutDelegate {
 
   final bool isSnackBarFloating;
   final double? snackBarWidth;
-
-  final bool extendBodyBehindMaterialBanner;
 
   @override
   void performLayout(Size size) {
@@ -1022,17 +868,6 @@ class _ScaffoldLayout extends MultiChildLayoutDelegate {
       positionChild(_ScaffoldSlot.persistentFooter, Offset(0.0, math.max(0.0, bottom - bottomWidgetsHeight)));
     }
 
-    Size materialBannerSize = Size.zero;
-    if (hasChild(_ScaffoldSlot.materialBanner)) {
-      materialBannerSize = layoutChild(_ScaffoldSlot.materialBanner, fullWidthConstraints);
-      positionChild(_ScaffoldSlot.materialBanner, Offset(0.0, appBarHeight));
-
-      // Push content down only if elevation is 0.
-      if (!extendBodyBehindMaterialBanner) {
-        contentTop += materialBannerSize.height;
-      }
-    }
-
     // Set the content bottom to account for the greater of the height of any
     // bottom-anchored material widgets or of the keyboard or other
     // bottom-anchored system UI.
@@ -1050,7 +885,6 @@ class _ScaffoldLayout extends MultiChildLayoutDelegate {
       final BoxConstraints bodyConstraints = _BodyBoxConstraints(
         maxWidth: fullWidthConstraints.maxWidth,
         maxHeight: bodyMaxHeight,
-        materialBannerHeight: materialBannerSize.height,
         bottomWidgetsHeight: extendBody ? bottomWidgetsHeight : 0.0,
         appBarHeight: appBarHeight,
       );
@@ -1112,7 +946,6 @@ class _ScaffoldLayout extends MultiChildLayoutDelegate {
         minInsets: minInsets,
         scaffoldSize: size,
         snackBarSize: snackBarSize,
-        materialBannerSize: materialBannerSize,
         textDirection: textDirection,
         minViewPadding: minViewPadding,
       );
@@ -1543,9 +1376,6 @@ class _FloatingActionButtonTransitionState extends State<_FloatingActionButtonTr
 ///  * [SnackBar], which is a lightweight message with an optional action which
 ///    briefly displays at the bottom of the screen. Use the
 ///    [ScaffoldMessengerState.showSnackBar] method to show snack bars.
-///  * [MaterialBanner], which displays an important, succinct message, at the
-///    top of the screen, below the app bar. Use the
-///    [ScaffoldMessengerState.showMaterialBanner] method to show material banners.
 ///  * [ScaffoldState], which is the state associated with this widget.
 ///  * <https://material.io/design/layout/responsive-layout-grid.html>
 ///  * Cookbook: [Add a Drawer to a screen](https://flutter.dev/docs/cookbook/design/drawer)
@@ -2111,7 +1941,7 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
     _endDrawerKey.currentState?.open();
   }
 
-  // Used for both the snackbar and material banner APIs
+  // Used for the snackbar API
   ScaffoldMessengerState? _scaffoldMessenger;
 
   // SNACKBAR API
@@ -2126,25 +1956,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
     if (_messengerSnackBar != messengerSnackBar) {
       setState(() {
         _messengerSnackBar = messengerSnackBar;
-      });
-    }
-  }
-
-  // MATERIAL BANNER API
-
-  // The _messengerMaterialBanner represents the current MaterialBanner being managed by
-  // the ScaffoldMessenger, instead of the Scaffold.
-  ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>? _messengerMaterialBanner;
-
-  // This is used to update the _messengerMaterialBanner by the ScaffoldMessenger.
-  void _updateMaterialBanner() {
-    final ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>? messengerMaterialBanner = _scaffoldMessenger!._materialBanners.isNotEmpty
-        ? _scaffoldMessenger!._materialBanners.first
-        : null;
-
-    if (_messengerMaterialBanner != messengerMaterialBanner) {
-      setState(() {
-        _messengerMaterialBanner = messengerMaterialBanner;
       });
     }
   }
@@ -2826,25 +2637,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
       );
     }
 
-    bool extendBodyBehindMaterialBanner = false;
-    // MaterialBanner set by ScaffoldMessenger
-    if (_messengerMaterialBanner != null) {
-      final MaterialBannerThemeData bannerTheme = MaterialBannerTheme.of(context);
-      final Elevation elevation = _messengerMaterialBanner?._widget.elevation ?? bannerTheme.elevation ?? Elevation.level0;
-      extendBodyBehindMaterialBanner = elevation > Elevation.level0;
-
-      _addIfNonNull(
-        children,
-        _messengerMaterialBanner?._widget,
-        _ScaffoldSlot.materialBanner,
-        removeLeftPadding: false,
-        removeTopPadding: widget.appBar != null,
-        removeRightPadding: false,
-        removeBottomPadding: true,
-        maintainBottomViewPadding: !_resizeToAvoidBottomInset,
-      );
-    }
-
     if (widget.persistentFooterButtons != null) {
       _addIfNonNull(
         children,
@@ -2977,7 +2769,6 @@ class ScaffoldState extends State<Scaffold> with TickerProviderStateMixin, Resto
                   previousFloatingActionButtonLocation: _previousFloatingActionButtonLocation!,
                   textDirection: textDirection,
                   isSnackBarFloating: isSnackBarFloating,
-                  extendBodyBehindMaterialBanner: extendBodyBehindMaterialBanner,
                   snackBarWidth: snackBarWidth,
                 ),
                 children: children,
@@ -3019,7 +2810,7 @@ class ScaffoldFeatureController<T extends Widget, U> {
   /// Completes when the feature controlled by this object is no longer visible.
   Future<U> get closed => _completer.future;
 
-  /// Remove the feature (e.g., bottom sheet, snack bar, or material banner) from the scaffold.
+  /// Remove the feature (e.g., bottom sheet, snack bar) from the scaffold.
   final VoidCallback close;
 
   /// Mark the feature (e.g., bottom sheet or snack bar) as needing to rebuild.

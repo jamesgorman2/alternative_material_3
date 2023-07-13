@@ -569,7 +569,9 @@ class _PopupMenu<T> extends StatelessWidget {
       Widget item = route.items[i];
       if (route.initialValue != null && route.items[i].represents(route.initialValue)) {
         item = ColoredBox(
-          color: Theme.of(context).colorScheme.highlightColor,
+          color: Theme.of(context).colorScheme.brightness == Brightness.light
+              ? const Color(0x66BCBCBC)
+              : const Color(0x40CCCCCC),
           child: item,
         );
       }
@@ -1382,9 +1384,6 @@ class _PopupMenuDefaultsM3 extends PopupMenuThemeData {
 
   @override
   Color? get shadowColor => _colors.shadow;
-
-  @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
 
   @override
   ShapeBorder? get shape => const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));

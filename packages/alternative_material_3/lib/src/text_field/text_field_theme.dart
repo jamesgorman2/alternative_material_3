@@ -32,8 +32,6 @@ import 'widgets/spell_check.dart';
 /// Applies a text field theme to descendant [TextField]s.
 class TextFieldTheme extends InheritedTheme {
   /// Applies the given theme [data] to [child].
-  ///
-  /// The [data] and [child] arguments must not be null.
   const TextFieldTheme({
     super.key,
     required this.data,
@@ -125,7 +123,7 @@ class TextFieldThemeData with Diagnosticable {
   const TextFieldThemeData({
     this.style = TextFieldStyle.filled,
     StateThemeData? stateTheme,
-    StateLayerTheme? stateLayers,
+    StateLayerColors? stateLayers,
     TextMagnifierConfiguration? magnifierConfiguration,
     TextStyle? textStyle,
     TextStyle? misspelledTextStyle,
@@ -351,8 +349,8 @@ class TextFieldThemeData with Diagnosticable {
   ///
   /// Default color values are [ColorScheme.onSurface] and the
   /// opacities are from [ListTileThemeData.stateThemeData].
-  StateLayerTheme get stateLayers => _stateLayers!;
-  final StateLayerTheme? _stateLayers;
+  StateLayerColors get stateLayers => _stateLayers!;
+  final StateLayerColors? _stateLayers;
 
   /// {@macro flutter.widgets.magnifier.TextMagnifierConfiguration.intro}
   ///
@@ -849,7 +847,7 @@ class TextFieldThemeData with Diagnosticable {
   TextFieldThemeData copyWith({
     TextFieldStyle? style,
     StateThemeData? stateTheme,
-    StateLayerTheme? stateLayers,
+    StateLayerColors? stateLayers,
     TextMagnifierConfiguration? magnifierConfiguration,
     TextStyle? textStyle,
     TextStyle? misspelledTextStyle,
@@ -1082,7 +1080,7 @@ class TextFieldThemeData with Diagnosticable {
     return TextFieldThemeData(
       style: (t < 0.5 ? a?.style : b?.style) ?? TextFieldStyle.filled,
       stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
-      stateLayers: StateLayerTheme.lerp(a?._stateLayers, b?._stateLayers, t),
+      stateLayers: StateLayerColors.lerp(a?._stateLayers, b?._stateLayers, t),
       magnifierConfiguration:
           t < 0.5 ? a?._magnifierConfiguration : b?._magnifierConfiguration,
       textStyle: TextStyle.lerp(a?._inputTextStyle, b?._inputTextStyle, t),
@@ -1378,7 +1376,7 @@ class TextFieldThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<StateThemeData>(
         'stateTheme', _stateTheme,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<StateLayerTheme>(
+    properties.add(DiagnosticsProperty<StateLayerColors>(
         'stateLayers', _stateLayers,
         defaultValue: null));
     properties.add(DiagnosticsProperty<TextMagnifierConfiguration>(
@@ -1630,11 +1628,11 @@ class _LateResolvingTextFieldThemeData extends TextFieldThemeData {
   StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
 
   @override
-  StateLayerTheme get stateLayers =>
+  StateLayerColors get stateLayers =>
       _stateLayers ??
       (style == TextFieldStyle.outlined
-          ? StateLayerTheme()
-          : StateLayerTheme(
+          ? StateLayerColors.none
+          : StateLayerColors.only(
               hoverColor: StateLayer(
                 _colors.onSurface,
                 stateTheme.hoverOpacity,

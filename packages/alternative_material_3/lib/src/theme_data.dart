@@ -7,18 +7,18 @@ import 'dart:ui' show Color, lerpDouble;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
+import '../material.dart';
 import 'action_buttons.dart';
 import 'action_icons_theme.dart';
 import 'app_bar_theme.dart';
 import 'badge_theme.dart';
-import 'banner_theme.dart';
 import 'bottom_app_bar_theme.dart';
 import 'bottom_navigation_bar_theme.dart';
 import 'bottom_sheet_theme.dart';
 import 'buttons/button_style.dart';
 import 'buttons/expandable_floating_action_button_theme.dart';
 import 'buttons/floating_action_button_theme.dart';
-import 'card_theme.dart';
+import 'cards/card_theme.dart';
 import 'checkbox_theme.dart';
 import 'chips/chip_list_theme.dart';
 import 'chips/chip_theme.dart';
@@ -298,11 +298,12 @@ class ThemeData with Diagnosticable {
     ActionIconThemeData? actionIconTheme,
     AppBarTheme? appBarTheme,
     BadgeThemeData? badgeTheme,
-    MaterialBannerThemeData? bannerTheme,
     BottomAppBarTheme? bottomAppBarTheme,
     BottomNavigationBarThemeData? bottomNavigationBarTheme,
     BottomSheetThemeData? bottomSheetTheme,
-    CardTheme? cardTheme,
+    CardThemeData? elevatedCardTheme,
+    CardThemeData? filledCardTheme,
+    CardThemeData? outlinedCardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
     ChipListThemeData? chipListTheme,
@@ -392,11 +393,12 @@ class ThemeData with Diagnosticable {
     // COMPONENT THEMES
     appBarTheme ??= const AppBarTheme();
     badgeTheme ??= const BadgeThemeData();
-    bannerTheme ??= const MaterialBannerThemeData();
     bottomAppBarTheme ??= const BottomAppBarTheme();
     bottomNavigationBarTheme ??= const BottomNavigationBarThemeData();
     bottomSheetTheme ??= const BottomSheetThemeData();
-    cardTheme ??= const CardTheme();
+    elevatedCardTheme ??= const CardThemeData();
+    filledCardTheme ??= const CardThemeData();
+    outlinedCardTheme ??= const CardThemeData();
     checkboxTheme ??= const CheckboxThemeData();
     chipTheme ??= const ChipThemeData();
     chipListTheme ??= const ChipListThemeData();
@@ -468,11 +470,12 @@ class ThemeData with Diagnosticable {
       actionIconTheme: actionIconTheme,
       appBarTheme: appBarTheme,
       badgeTheme: badgeTheme,
-      bannerTheme: bannerTheme,
       bottomAppBarTheme: bottomAppBarTheme,
       bottomNavigationBarTheme: bottomNavigationBarTheme,
       bottomSheetTheme: bottomSheetTheme,
-      cardTheme: cardTheme,
+      elevatedCardTheme: elevatedCardTheme,
+      filledCardTheme: filledCardTheme,
+      outlinedCardTheme: outlinedCardTheme,
       checkboxTheme: checkboxTheme,
       chipTheme: chipTheme,
       chipListTheme: chipListTheme,
@@ -553,11 +556,12 @@ class ThemeData with Diagnosticable {
     required this.actionIconTheme,
     required this.appBarTheme,
     required this.badgeTheme,
-    required this.bannerTheme,
     required this.bottomAppBarTheme,
     required this.bottomNavigationBarTheme,
     required this.bottomSheetTheme,
-    required this.cardTheme,
+    required this.elevatedCardTheme,
+    required this.filledCardTheme,
+    required this.outlinedCardTheme,
     required this.checkboxTheme,
     required this.chipTheme,
     required this.chipListTheme,
@@ -920,9 +924,6 @@ class ThemeData with Diagnosticable {
   /// A theme for customizing the color of [Badge]s.
   final BadgeThemeData badgeTheme;
 
-  /// A theme for customizing the color and text style of a [MaterialBanner].
-  final MaterialBannerThemeData bannerTheme;
-
   /// A theme for customizing the shape, elevation, and color of a [BottomAppBar].
   final BottomAppBarTheme bottomAppBarTheme;
 
@@ -933,10 +934,20 @@ class ThemeData with Diagnosticable {
   /// A theme for customizing the color, elevation, and shape of a bottom sheet.
   final BottomSheetThemeData bottomSheetTheme;
 
-  /// The colors and styles used to render [Card].
+  /// The colors and styles used to render [ElevatedCard].
   ///
-  /// This is the value returned from [CardTheme.of].
-  final CardTheme cardTheme;
+  /// This is the value returned from [ElevatedCardTheme.of].
+  final CardThemeData elevatedCardTheme;
+
+  /// The colors and styles used to render [FilledCard].
+  ///
+  /// This is the value returned from [FilledCardTheme.of].
+  final CardThemeData filledCardTheme;
+
+  /// The colors and styles used to render [OutlineCard].
+  ///
+  /// This is the value returned from [OutlineCardTheme.of].
+  final CardThemeData outlinedCardTheme;
 
   /// A theme for customizing the appearance and layout of [Checkbox] widgets.
   final CheckboxThemeData checkboxTheme;
@@ -1134,11 +1145,12 @@ class ThemeData with Diagnosticable {
     ActionIconThemeData? actionIconTheme,
     AppBarTheme? appBarTheme,
     BadgeThemeData? badgeTheme,
-    MaterialBannerThemeData? bannerTheme,
     BottomAppBarTheme? bottomAppBarTheme,
     BottomNavigationBarThemeData? bottomNavigationBarTheme,
     BottomSheetThemeData? bottomSheetTheme,
-    CardTheme? cardTheme,
+    CardThemeData? elevatedCardTheme,
+    CardThemeData? filledCardTheme,
+    CardThemeData? outlinedCardTheme,
     CheckboxThemeData? checkboxTheme,
     ChipThemeData? chipTheme,
     ChipListThemeData? chipListTheme,
@@ -1211,11 +1223,12 @@ class ThemeData with Diagnosticable {
       actionIconTheme: actionIconTheme ?? this.actionIconTheme,
       appBarTheme: appBarTheme ?? this.appBarTheme,
       badgeTheme: badgeTheme ?? this.badgeTheme,
-      bannerTheme: bannerTheme ?? this.bannerTheme,
       bottomAppBarTheme: bottomAppBarTheme ?? this.bottomAppBarTheme,
       bottomNavigationBarTheme: bottomNavigationBarTheme ?? this.bottomNavigationBarTheme,
       bottomSheetTheme: bottomSheetTheme ?? this.bottomSheetTheme,
-      cardTheme: cardTheme ?? this.cardTheme,
+      elevatedCardTheme: elevatedCardTheme ?? this.elevatedCardTheme,
+      filledCardTheme: filledCardTheme ?? this.filledCardTheme,
+      outlinedCardTheme: outlinedCardTheme ?? this.outlinedCardTheme,
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
       chipTheme: chipTheme ?? this.chipTheme,
       chipListTheme: chipListTheme ?? this.chipListTheme,
@@ -1382,11 +1395,12 @@ class ThemeData with Diagnosticable {
       actionIconTheme: ActionIconThemeData.lerp(a.actionIconTheme, b.actionIconTheme, t),
       appBarTheme: AppBarTheme.lerp(a.appBarTheme, b.appBarTheme, t),
       badgeTheme: BadgeThemeData.lerp(a.badgeTheme, b.badgeTheme, t),
-      bannerTheme: MaterialBannerThemeData.lerp(a.bannerTheme, b.bannerTheme, t),
       bottomAppBarTheme: BottomAppBarTheme.lerp(a.bottomAppBarTheme, b.bottomAppBarTheme, t),
       bottomNavigationBarTheme: BottomNavigationBarThemeData.lerp(a.bottomNavigationBarTheme, b.bottomNavigationBarTheme, t),
       bottomSheetTheme: BottomSheetThemeData.lerp(a.bottomSheetTheme, b.bottomSheetTheme, t)!,
-      cardTheme: CardTheme.lerp(a.cardTheme, b.cardTheme, t),
+      elevatedCardTheme: CardThemeData.lerp(a.elevatedCardTheme, b.elevatedCardTheme, t),
+      filledCardTheme: CardThemeData.lerp(a.filledCardTheme, b.filledCardTheme, t),
+      outlinedCardTheme: CardThemeData.lerp(a.outlinedCardTheme, b.outlinedCardTheme, t),
       checkboxTheme: CheckboxThemeData.lerp(a.checkboxTheme, b.checkboxTheme, t),
       chipTheme: ChipThemeData.lerp(a.chipTheme, b.chipTheme, t)!,
       chipListTheme: ChipListThemeData.lerp(a.chipListTheme, b.chipListTheme, t)!,
@@ -1465,11 +1479,12 @@ class ThemeData with Diagnosticable {
         other.actionIconTheme == actionIconTheme &&
         other.appBarTheme == appBarTheme &&
         other.badgeTheme == badgeTheme &&
-        other.bannerTheme == bannerTheme &&
         other.bottomAppBarTheme == bottomAppBarTheme &&
         other.bottomNavigationBarTheme == bottomNavigationBarTheme &&
         other.bottomSheetTheme == bottomSheetTheme &&
-        other.cardTheme == cardTheme &&
+        other.elevatedCardTheme == elevatedCardTheme &&
+        other.filledCardTheme == filledCardTheme &&
+        other.outlinedCardTheme == outlinedCardTheme &&
         other.checkboxTheme == checkboxTheme &&
         other.chipTheme == chipTheme &&
         other.chipListTheme == chipListTheme &&
@@ -1545,11 +1560,12 @@ class ThemeData with Diagnosticable {
       actionIconTheme,
       appBarTheme,
       badgeTheme,
-      bannerTheme,
       bottomAppBarTheme,
       bottomNavigationBarTheme,
       bottomSheetTheme,
-      cardTheme,
+      elevatedCardTheme,
+      filledCardTheme,
+      outlinedCardTheme,
       checkboxTheme,
       chipTheme,
       chipListTheme,
@@ -1627,11 +1643,12 @@ class ThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<ActionIconThemeData>('actionIconTheme', actionIconTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<AppBarTheme>('appBarTheme', appBarTheme, defaultValue: defaultData.appBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<BadgeThemeData>('badgeTheme', badgeTheme, defaultValue: defaultData.badgeTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<MaterialBannerThemeData>('bannerTheme', bannerTheme, defaultValue: defaultData.bannerTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<BottomAppBarTheme>('bottomAppBarTheme', bottomAppBarTheme, defaultValue: defaultData.bottomAppBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<BottomNavigationBarThemeData>('bottomNavigationBarTheme', bottomNavigationBarTheme, defaultValue: defaultData.bottomNavigationBarTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<BottomSheetThemeData>('bottomSheetTheme', bottomSheetTheme, defaultValue: defaultData.bottomSheetTheme, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<CardTheme>('cardTheme', cardTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<CardThemeData>('elevatedCardTheme', elevatedCardTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<CardThemeData>('filledCardTheme', filledCardTheme, level: DiagnosticLevel.debug));
+    properties.add(DiagnosticsProperty<CardThemeData>('outlinedCardTheme', outlinedCardTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<CheckboxThemeData>('checkboxTheme', checkboxTheme, defaultValue: defaultData.checkboxTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<ChipThemeData>('chipTheme', chipTheme, level: DiagnosticLevel.debug));
     properties.add(DiagnosticsProperty<DatePickerThemeData>('datePickerTheme', datePickerTheme, defaultValue: defaultData.datePickerTheme, level: DiagnosticLevel.debug));

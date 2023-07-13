@@ -315,6 +315,7 @@ class ListTile extends StatelessWidget {
     this.headline,
     this.overline,
     this.supportingText,
+    this.chip,
     this.trailing,
     this.enabled = true,
     this.onTap,
@@ -323,11 +324,13 @@ class ListTile extends StatelessWidget {
     this.selected = false,
     this.focusNode,
     this.autofocus = false,
-  }) : assert(
-    layout == null || layout == ListTileLayout.threeLine ||
-    (layout == ListTileLayout.oneLine && overline == null && supportingText == null) ||
-    (layout == ListTileLayout.twoLine && (overline == null || supportingText == null))
-  );
+  }) : assert(layout == null ||
+            layout == ListTileLayout.threeLine ||
+            (layout == ListTileLayout.oneLine &&
+                overline == null &&
+                supportingText == null) ||
+            (layout == ListTileLayout.twoLine &&
+                (overline == null || supportingText == null)));
 
   /// ListTileThemeData overrides that only apply to this list tile.
   final ListTileThemeData? theme;
@@ -380,6 +383,16 @@ class ListTile extends StatelessWidget {
   /// if it's not null and to [TextTheme.bodySmall]'s color if [ListTileM3Theme.expandedHeadlineColor]
   /// is null.
   final Widget? supportingText;
+
+  /// An optional widget to display between the headline and the trailing.
+  /// This widget will reduce the available space for the headline. It will
+  /// be placed with its start at the end of the headline, overline or
+  /// supporting text.
+  ///
+  /// This should have a constrained width.
+  ///
+  ///
+  final Widget? chip;
 
   /// A widget to display after the headline.
   ///
@@ -462,7 +475,8 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: leadingColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: ButtonStyle(labelColor: MaterialStateProperty.all(leadingColor)),
+            style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(leadingColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.leadingTextStyle.copyWith(color: leadingColor),
@@ -483,7 +497,8 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: overlineColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: ButtonStyle(labelColor: MaterialStateProperty.all(overlineColor)),
+            style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(overlineColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.overlineTextStyle.copyWith(
@@ -506,7 +521,8 @@ class ListTile extends StatelessWidget {
       data: IconThemeData(color: headlineColor),
       child: IconButtonTheme(
         data: IconButtonThemeData(
-          style: ButtonStyle(labelColor: MaterialStateProperty.all(headlineColor)),
+          style:
+              ButtonStyle(labelColor: MaterialStateProperty.all(headlineColor)),
         ),
         child: AnimatedDefaultTextStyle(
           style: tileTheme.headlineTextStyle.copyWith(
@@ -533,7 +549,8 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: supportingTextColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: ButtonStyle(labelColor: MaterialStateProperty.all(supportingTextColor)),
+            style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(supportingTextColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.supportingTextTextStyle.copyWith(
@@ -558,7 +575,8 @@ class ListTile extends StatelessWidget {
         data: IconThemeData(color: trailingColor),
         child: IconButtonTheme(
           data: IconButtonThemeData(
-            style: ButtonStyle(labelColor: MaterialStateProperty.all(trailingColor)),
+            style: ButtonStyle(
+                labelColor: MaterialStateProperty.all(trailingColor)),
           ),
           child: AnimatedDefaultTextStyle(
             style: tileTheme.leadingTextStyle.copyWith(color: trailingColor),
@@ -586,9 +604,7 @@ class ListTile extends StatelessWidget {
       mouseCursor: effectiveMouseCursor,
       canRequestFocus: enabled,
       focusNode: focusNode,
-      focusColor: tileTheme.stateLayers.focusColor,
-      hoverColor: tileTheme.stateLayers.hoverColor,
-      splashColor: tileTheme.stateLayers.pressColor,
+      overlayColor: tileTheme.stateLayers,
       autofocus: autofocus,
       enableFeedback: tileTheme.enableFeedback,
       child: Semantics(
@@ -608,6 +624,7 @@ class ListTile extends StatelessWidget {
             headline: headlineText,
             overline: overlineText,
             supportingText: supportingTextWidget,
+            chip: chip,
             trailing: trailingElement,
             visualDensity: tileTheme.visualDensity,
             textDirection: Directionality.of(context),
@@ -638,20 +655,35 @@ class ListTile extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Key>('key', key, defaultValue: null));
-    properties.add(DiagnosticsProperty<ListTileThemeData>('theme', theme, defaultValue: null));
-    properties.add(DiagnosticsProperty<ListTileLayout>('layout', layout, defaultValue: null));
-    properties.add(DiagnosticsProperty<Widget?>('leading', leading, defaultValue: null));
-    properties.add(DiagnosticsProperty<Widget?>('headline', headline, defaultValue: null));
-    properties.add(DiagnosticsProperty<Widget?>('overline', overline, defaultValue: null));
-    properties.add(DiagnosticsProperty<Widget?>('supportingText', supportingText, defaultValue: null));
-    properties.add(DiagnosticsProperty<Widget?>('trailing', trailing, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('enabled', enabled, defaultValue: true));
-    properties.add(DiagnosticsProperty<Function>('onTap', onTap, defaultValue: null));
-    properties.add(DiagnosticsProperty<Function>('onLongPress', onLongPress, defaultValue: null));
-    properties.add(DiagnosticsProperty<Function>('onFocusChange', onFocusChange, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('selected', selected, defaultValue: false));
-    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
+    properties.add(DiagnosticsProperty<ListTileThemeData>('theme', theme,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<ListTileLayout>('layout', layout,
+        defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<Widget?>('leading', leading, defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<Widget?>('headline', headline, defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<Widget?>('overline', overline, defaultValue: null));
+    properties.add(DiagnosticsProperty<Widget?>(
+        'supportingText', supportingText,
+        defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<Widget?>('trailing', trailing, defaultValue: null));
+    properties
+        .add(DiagnosticsProperty<bool>('enabled', enabled, defaultValue: true));
+    properties
+        .add(DiagnosticsProperty<Function>('onTap', onTap, defaultValue: null));
+    properties.add(DiagnosticsProperty<Function>('onLongPress', onLongPress,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Function>('onFocusChange', onFocusChange,
+        defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<bool>('selected', selected, defaultValue: false));
+    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode,
+        defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
   }
 
   /// Add a one pixel border in between each tile. If color isn't specified the
@@ -660,7 +692,8 @@ class ListTile extends StatelessWidget {
   /// See also:
   ///
   ///  * [Divider], which you can use to obtain this effect manually.
-  static Iterable<Widget> divideTiles({ BuildContext? context, required Iterable<Widget> tiles, Color? color }) {
+  static Iterable<Widget> divideTiles(
+      {BuildContext? context, required Iterable<Widget> tiles, Color? color}) {
     assert(color != null || context != null);
     tiles = tiles.toList();
 
@@ -685,7 +718,6 @@ class ListTile extends StatelessWidget {
       tiles.last,
     ];
   }
-
 }
 
 // Identifies the children of a _ListTileM3Element.
@@ -694,6 +726,7 @@ enum _ListTileSlot {
   overline,
   headline,
   supportingText,
+  chip,
   trailing,
 }
 
@@ -709,6 +742,7 @@ class _ListTile extends RenderObjectWidget
     required this.headline,
     this.overline,
     this.supportingText,
+    this.chip,
     this.trailing,
     required this.visualDensity,
     required this.textDirection,
@@ -732,6 +766,7 @@ class _ListTile extends RenderObjectWidget
   final Widget headline;
   final Widget? overline;
   final Widget? supportingText;
+  final Widget? chip;
   final Widget? trailing;
   final VisualDensity visualDensity;
   final TextDirection textDirection;
@@ -759,6 +794,8 @@ class _ListTile extends RenderObjectWidget
         return headline;
       case _ListTileSlot.supportingText:
         return supportingText;
+      case _ListTileSlot.chip:
+        return chip;
       case _ListTileSlot.trailing:
         return trailing;
     }
@@ -844,6 +881,8 @@ class _RenderListTile extends RenderBox
 
   RenderBox? get supportingText => childForSlot(_ListTileSlot.supportingText);
 
+  RenderBox? get chip => childForSlot(_ListTileSlot.chip);
+
   RenderBox? get trailing => childForSlot(_ListTileSlot.trailing);
 
   // The returned list is ordered for hit testing.
@@ -854,6 +893,7 @@ class _RenderListTile extends RenderBox
       if (headline != null) headline!,
       if (overline != null) overline!,
       if (supportingText != null) supportingText!,
+      if (chip != null) chip!,
       if (trailing != null) trailing!,
     ];
   }
@@ -903,6 +943,8 @@ class _RenderListTile extends RenderBox
   bool get hasOverline => overline != null;
 
   bool get hasSupportingText => supportingText != null;
+
+  bool get hasChip => chip != null;
 
   bool get hasLeading => leading != null;
 
@@ -1019,8 +1061,8 @@ class _RenderListTile extends RenderBox
   double get maxContentHeight => math.min(
         64.0, // 88 - 12 - 12
         (overline != null ? maxOverlineHeight : 0) +
-        (headline != null ? maxHeadlineHeight : 0) +
-        (supportingText != null ? maxSupportingTextHeight : 0),
+            (headline != null ? maxHeadlineHeight : 0) +
+            (supportingText != null ? maxSupportingTextHeight : 0),
       );
 
   @override
@@ -1058,6 +1100,8 @@ class _RenderListTile extends RenderBox
         _minWidth(supportingText, height),
       ),
     );
+    final double chipWidth = _minWidth(chip, height);
+    final double chipPadding = _effectiveChipHorizontalPadding;
     final double trailingPadding = _effectiveInternalHorizontalPadding;
     final double trailingWidth = _minWidth(leading, height);
     final double endPadding = _padding.end;
@@ -1074,6 +1118,8 @@ class _RenderListTile extends RenderBox
         leadingWidth +
         leadingPadding +
         textWidth +
+        chipPadding +
+        chipWidth +
         trailingPadding +
         trailingWidth +
         endPadding -
@@ -1101,6 +1147,8 @@ class _RenderListTile extends RenderBox
         _maxWidth(supportingText, height),
       ),
     );
+    final double chipWidth = _maxWidth(chip, height);
+    final double chipPadding = _effectiveChipHorizontalPadding;
     final double trailingPadding = _effectiveInternalHorizontalPadding;
     final double trailingWidth = _maxWidth(leading, height);
     final double endPadding = padding.end;
@@ -1117,6 +1165,8 @@ class _RenderListTile extends RenderBox
         leadingWidth +
         leadingPadding +
         textWidth +
+        chipPadding +
+        chipWidth +
         trailingPadding +
         trailingWidth +
         endPadding -
@@ -1132,15 +1182,16 @@ class _RenderListTile extends RenderBox
         _minHeight(overline, width) +
             _minHeight(headline, width) +
             _minHeight(supportingText, width),
-        _minHeight(trailing, width),
+        math.max(
+          _minHeight(chip, width),
+          _minHeight(trailing, width),
+        ),
       ),
     );
-    return _tileHeight(
-      math.min(
-        maxElementHeight,
-        maxContentHeight, // clamp if strict
-      )
-    );
+    return _tileHeight(math.min(
+      maxElementHeight,
+      maxContentHeight, // clamp if strict
+    ));
   }
 
   @override
@@ -1171,12 +1222,16 @@ class _RenderListTile extends RenderBox
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
+    // TODO
     assert(debugCannotComputeDryLayout(
       reason:
           'Layout requires baseline metrics, which are only available after a full layout.',
     ));
     return Size.zero;
   }
+
+  double get _effectiveChipHorizontalPadding =>
+      _internalHorizontalPadding + visualDensity.horizontal * 2.0;
 
   double get _effectiveInternalHorizontalPadding =>
       _internalHorizontalPadding + visualDensity.horizontal * 2.0;
@@ -1192,11 +1247,10 @@ class _RenderListTile extends RenderBox
   static const double _maxWidthBeforeRemovingStartPadding = 102.0;
 
   double _tileHeight(double maxElementHeight) {
-    if (
-        (_layout == null || _layout == ListTileLayout.oneLine) &&
+    if ((_layout == null || _layout == ListTileLayout.oneLine) &&
         maxElementHeight <= _avatarHeight &&
-        overline == null && supportingText == null
-    ) {
+        overline == null &&
+        supportingText == null) {
       return _avatarHeight + 2.0 * _padding.top;
     } else if (_layout != ListTileLayout.threeLine &&
         maxElementHeight <= _imageHeight) {
@@ -1221,6 +1275,7 @@ class _RenderListTile extends RenderBox
     }
     return _padding.start;
   }
+
   double _endPadding(double leadingElementWidth) {
     if (leadingElementWidth > _maxWidthBeforeRemovingStartPadding) {
       return _videoTilePaddingStart;
@@ -1292,34 +1347,82 @@ class _RenderListTile extends RenderBox
         : tileWidth - endPadding;
     final double trailingStart = trailingEnd - trailingSize.width;
 
-    final double textStart =
-        hasLeading ? effectiveLeadingEnd + leadingInternalPadding : startPadding;
-    final double textEnd = hasTrailing
-        ? trailingStart -
-            math.max(trailingInternalPadding - trailingPaddingCorrection_.start, 0.0)
-        : tileWidth - endPadding;
+    final Size chipSize;
+    if (hasChip) {
+      final double chipAvailableSpaceStart = hasLeading
+          ? effectiveLeadingEnd + leadingInternalPadding
+          : startPadding;
+      final double chipAvailableSpaceEnd = hasTrailing
+          ? trailingStart -
+              math.max(
+                  trailingInternalPadding - trailingPaddingCorrection_.start,
+                  0.0)
+          : tileWidth - endPadding;
+      final BoxConstraints chipConstraints = looseConstraints.copyWith(
+        maxWidth: chipAvailableSpaceEnd - chipAvailableSpaceStart,
+      );
+      chipSize = _layoutBox(chip, chipConstraints);
+    } else {
+      chipSize = Size.zero;
+    }
 
-    final BoxConstraints overlineConstraints = looseConstraints.tighten(
-      width: textEnd - textStart,
-    ).copyWith(maxHeight: maxOverlineHeight);
-    final BoxConstraints headlineConstraints = looseConstraints.tighten(
-      width: textEnd - textStart,
-    ).copyWith(maxHeight: maxHeadlineHeight);
-    final BoxConstraints supportingTextConstraints = looseConstraints.tighten(
-      width: textEnd - textStart, // height: maxSupportingTextHeight, // infinite if not strict
-    ).copyWith(maxHeight: maxSupportingTextHeight);
+    final double chipWidthAllocation =
+        hasChip ? chipSize.width + _effectiveChipHorizontalPadding : 0.0;
+
+    final double textStart = hasLeading
+        ? effectiveLeadingEnd + leadingInternalPadding
+        : startPadding;
+    final double textMaxEnd = hasTrailing
+        ? trailingStart -
+            math.max(
+              trailingInternalPadding - trailingPaddingCorrection_.start,
+              0.0,
+            ) -
+            chipWidthAllocation
+        : tileWidth - endPadding - chipWidthAllocation;
+
+    final BoxConstraints overlineConstraints = looseConstraints.copyWith(
+      maxWidth: textMaxEnd - textStart,
+      maxHeight: maxOverlineHeight,
+    );
+    final BoxConstraints headlineConstraints = looseConstraints.copyWith(
+      maxWidth: textMaxEnd - textStart,
+      maxHeight: maxHeadlineHeight,
+    );
+    final BoxConstraints supportingTextConstraints = looseConstraints.copyWith(
+      maxWidth: textMaxEnd - textStart,
+      maxHeight: maxSupportingTextHeight,
+    );
     final Size overlineSize = _layoutBox(overline, overlineConstraints);
     final Size headlineSize = _layoutBox(headline, headlineConstraints);
-    final Size supportingTextSize = _layoutBox(supportingText, supportingTextConstraints);
+    final Size supportingTextSize =
+        _layoutBox(supportingText, supportingTextConstraints);
+
+    final double textEnd = textStart +
+        math.max(
+          overlineSize.width,
+          math.max(
+            headlineSize.width,
+            supportingTextSize.width,
+          ),
+        );
+
+    final double chipStart = textEnd + _effectiveChipHorizontalPadding;
+    final double chipEnd = chipStart + chipSize.width;
 
     final double totalLabelHeight =
         overlineSize.height + headlineSize.height + supportingTextSize.height;
 
-
     final double tileHeight = _tileHeight(
       math.max(
         totalLabelHeight,
-        math.max(leadingSize.height, trailingSize.height),
+        math.max(
+          chipSize.height,
+          math.max(
+            leadingSize.height,
+            trailingSize.height,
+          ),
+        ),
       ),
     );
 
@@ -1330,14 +1433,14 @@ class _RenderListTile extends RenderBox
     final double? overlineY;
     final double headlineY;
     final double? supportingTextY;
+    final double? chipY;
     final double trailingY;
     // Material 3 treats the text elements as a single block with
     // 0 padding between individual text blocks.
     if (_layout == ListTileLayout.threeLine ||
         tileHeight > _tallTileHeight ||
         (overline != null && supportingText != null) ||
-        supportingTextSize.height > supportingTextSingleLineHeight
-    ) {
+        supportingTextSize.height > supportingTextSingleLineHeight) {
       // Top align
       // There is an inconsistency in the spec. In the written component
       // it is tileHeight >= 88, but this conflicts with the one and two line
@@ -1346,6 +1449,7 @@ class _RenderListTile extends RenderBox
       headlineY = overlineY + overlineSize.height;
       supportingTextY = headlineY + headlineSize.height;
       leadingY = math.max(verticalPadding - leadingPaddingCorrection_.top, 0.0);
+      chipY = verticalPadding;
       trailingY =
           math.max(verticalPadding - trailingPaddingCorrection_.top, 0.0);
     } else {
@@ -1357,6 +1461,7 @@ class _RenderListTile extends RenderBox
               leadingSize.height +
               leadingPaddingCorrection_.offsetY) /
           2.0;
+      chipY = (tileHeight - chipSize.height) / 2.0;
       trailingY = (tileHeight -
               trailingSize.height +
               trailingPaddingCorrection_.offsetY) /
@@ -1378,6 +1483,9 @@ class _RenderListTile extends RenderBox
             _positionBox(
                 supportingText!, Offset(tileWidth - textEnd, supportingTextY));
           }
+          if (hasChip) {
+            _positionBox(chip!, Offset(tileWidth - chipEnd, chipY));
+          }
           if (hasTrailing) {
             _positionBox(trailing!, Offset(tileWidth - trailingEnd, trailingY));
           }
@@ -1394,6 +1502,9 @@ class _RenderListTile extends RenderBox
           _positionBox(headline!, Offset(textStart, headlineY));
           if (hasSupportingText) {
             _positionBox(supportingText!, Offset(textStart, supportingTextY));
+          }
+          if (hasChip) {
+            _positionBox(chip!, Offset(chipStart, chipY));
           }
           if (hasTrailing) {
             _positionBox(trailing!, Offset(trailingStart, trailingY));
@@ -1420,6 +1531,7 @@ class _RenderListTile extends RenderBox
     doPaint(overline);
     doPaint(headline);
     doPaint(supportingText);
+    doPaint(chip);
     doPaint(trailing);
   }
 

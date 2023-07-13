@@ -192,39 +192,13 @@ class _LateResolvingToggleableIconButtonStyle
       _containerColor ?? MaterialStateProperty.all(Colors.transparent);
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
-          return StateLayerTheme(
-            hoverColor: StateLayer(
-              _colors.primary,
-              stateTheme.hoverOpacity,
-            ),
-            focusColor: StateLayer(
-              _colors.primary,
-              stateTheme.focusOpacity,
-            ),
-            pressColor: StateLayer(
-              _colors.primary,
-              stateTheme.pressOpacity,
-            ),
-          );
+          return StateLayerColors.from(_colors.primary, stateTheme);
         }
-        return StateLayerTheme(
-          hoverColor: StateLayer(
-            _colors.onSurfaceVariant,
-            stateTheme.hoverOpacity,
-          ),
-          focusColor: StateLayer(
-            _colors.onSurfaceVariant,
-            stateTheme.focusOpacity,
-          ),
-          pressColor: StateLayer(
-            _colors.onSurfaceVariant,
-            stateTheme.pressOpacity,
-          ),
-        );
+        return StateLayerColors.from( _colors.onSurfaceVariant, stateTheme);
       });
 }
 

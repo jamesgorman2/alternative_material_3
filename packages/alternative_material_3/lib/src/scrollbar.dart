@@ -309,14 +309,18 @@ class _MaterialScrollbarState extends RawScrollbarState<_MaterialScrollbar> {
       case Brightness.light:
         dragColor = onSurface.withOpacity(0.6);
         hoverColor = onSurface.withOpacity(0.5);
-        idleColor = _useAndroidScrollbar
-          ? Theme.of(context).colorScheme.highlightColor.withOpacity(1.0)
+        idleColor = _useAndroidScrollbar // TODO make const
+          ? (Theme.of(context).colorScheme.brightness == Brightness.light
+            ? const Color(0x66BCBCBC)
+            : const Color(0x40CCCCCC)).withOpacity(1.0)
           : onSurface.withOpacity(0.1);
       case Brightness.dark:
         dragColor = onSurface.withOpacity(0.75);
         hoverColor = onSurface.withOpacity(0.65);
         idleColor = _useAndroidScrollbar
-          ? Theme.of(context).colorScheme.highlightColor.withOpacity(1.0)
+          ? (Theme.of(context).colorScheme.brightness == Brightness.light
+            ? const Color(0x66BCBCBC)
+            : const Color(0x40CCCCCC)).withOpacity(1.0)
           : onSurface.withOpacity(0.3);
     }
 

@@ -232,6 +232,7 @@ class ExpansionTile extends StatefulWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.onExpansionChangeStart,
     this.onExpansionChangeComplete,
     required this.child,
@@ -272,6 +273,8 @@ class ExpansionTile extends StatefulWidget {
   ///
   /// Typically a [Text] widget.
   final Widget? supportingText;
+
+  final Widget? chip;
 
   /// Called when the tile expands or collapses.
   ///
@@ -488,6 +491,7 @@ class _ExpansionTileState extends State<ExpansionTile>
                 overline: widget.overline,
                 headline: widget.headline,
                 supportingText: widget.supportingText,
+                chip: widget.chip,
                 trailing: trailing,
               ),
             ),

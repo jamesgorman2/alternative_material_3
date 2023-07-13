@@ -68,7 +68,6 @@ class ColorScheme with Diagnosticable {
     required this.outline,
     required this.outlineVariant,
     required this.shadow,
-    required this.surfaceTint,
     required this.scrim,
   });
 
@@ -116,7 +115,6 @@ class ColorScheme with Diagnosticable {
       outline: Color(palette.neutralVariant.get(light ? 50 : 60)),
       outlineVariant: Color(palette.neutralVariant.get(light ? 80 : 30)),
       shadow: Color(palette.neutral.get(0)),
-      surfaceTint: Color(palette.primary.get(light ? 40 : 80)),
       scrim: Color(palette.neutral.get(0)),
       primaryFixed: Color(palette.primary.get(90)),
       primaryFixedDim: Color(palette.primary.get(80)),
@@ -231,7 +229,6 @@ class ColorScheme with Diagnosticable {
     outline: const Color(0Xff79747E),
     outlineVariant: const Color(0XffC4C7C5),
     shadow: const Color(0Xff000000),
-    surfaceTint: const Color(0Xff6750A4),
     scrim: const Color(0Xff000000),
 
     primaryFixed: const Color(0xffEADDFf),
@@ -296,7 +293,6 @@ class ColorScheme with Diagnosticable {
     outline: const Color(0Xff938F99),
     outlineVariant: const Color(0Xff444746),
     shadow: const Color(0Xff000000),
-    surfaceTint: const Color(0XffD0BCFF),
     scrim: const Color(0Xff000000),
 
     primaryFixed: const Color(0xffEADDFf),
@@ -366,30 +362,6 @@ class ColorScheme with Diagnosticable {
   final Color shadow;
   final Color scrim;
 
-  @Deprecated('Legacy tint')
-  final Color surfaceTint;
-
-  @Deprecated('Legacy transparency')
-  Color get focusColor => brightness == Brightness.light
-      ? Colors.black.withOpacity(0.12)
-      : Colors.white.withOpacity(0.12);
-  @Deprecated('Legacy transparency')
-  Color get highlightColor => brightness == Brightness.light
-      ? const Color(0x66BCBCBC)
-      : const Color(0x40CCCCCC);
-  @Deprecated('Legacy transparency')
-  Color get hoverColor => brightness == Brightness.light
-      ? Colors.black.withOpacity(0.04)
-      : Colors.white.withOpacity(0.04);
-  @Deprecated('Legacy transparency')
-  Color get splashColor => brightness == Brightness.light
-      ? const Color(0x66C8C8C8)
-      : const Color(0x40CCCCCC);
-  @Deprecated('Legacy transparency')
-  Color get disabledColor => brightness == Brightness.light
-    ? Colors.black38
-    : Colors.white38;
-
   ///
   ColorScheme asDark() {
     if (brightness == Brightness.dark) {
@@ -452,7 +424,7 @@ class ColorScheme with Diagnosticable {
       scrim: scrim,
       secondaryContainer: secondaryContainer,
       shadow: shadow,
-      surfaceTint: surfaceTint,
+      surfaceTint: Color(palette.primary.get(brightness == Brightness.light ? 40 : 80)),
       tertiaryContainer: tertiaryContainer,
       // not supported:
       // primaryVariant: ,
@@ -529,7 +501,6 @@ class ColorScheme with Diagnosticable {
       outline: Color.lerp(a.outline, b.outline, t)!,
       outlineVariant: Color.lerp(a.outlineVariant, b.outlineVariant, t)!,
       shadow: Color.lerp(a.shadow, b.shadow, t)!,
-      surfaceTint: Color.lerp(a.surfaceTint, b.surfaceTint, t)!,
       scrim: Color.lerp(a.scrim, b.scrim, t)!,
     );
   }
@@ -642,7 +613,6 @@ class ColorScheme with Diagnosticable {
       outline: outline ?? this.outline,
       outlineVariant: outlineVariant ?? this.outlineVariant,
       shadow: shadow ?? this.shadow,
-      surfaceTint: surfaceTint ?? this.surfaceTint,
       scrim: scrim ?? this.scrim,
     );
   }
@@ -705,7 +675,6 @@ class ColorScheme with Diagnosticable {
         other.outline == outline &&
         other.outlineVariant == outlineVariant &&
         other.shadow == shadow &&
-        other.surfaceTint == surfaceTint &&
         other.scrim == scrim;
   }
 
@@ -760,7 +729,6 @@ class ColorScheme with Diagnosticable {
         outline,
         outlineVariant,
         shadow,
-        surfaceTint,
         scrim,
       ]);
 
@@ -870,8 +838,6 @@ class ColorScheme with Diagnosticable {
         defaultValue: defaultScheme.outlineVariant));
     properties.add(
         ColorProperty('shadow', shadow, defaultValue: defaultScheme.shadow));
-    properties.add(ColorProperty('surfaceTint', surfaceTint,
-        defaultValue: defaultScheme.surfaceTint));
     properties
         .add(ColorProperty('scrim', scrim, defaultValue: defaultScheme.scrim));
   }

@@ -52,16 +52,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: 400,
-        color: Colors.black26,
-        padding: const EdgeInsets.all(24),
-        child: AnimatedColumn(
-          duration: Duration(milliseconds: 100),
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _StateGuy(),
-          ],
-        ),
+        // width: 400,
+        // color: Colors.black26,
+        // padding: const EdgeInsets.all(24),
+        child: ListTile(
+          headline: Text("List"),
+          chip: SuggestionChip(label: Text('Chip')),
+        )
       ),
     );
   }
@@ -78,7 +75,7 @@ class _StateGuyState extends State<_StateGuy> {
   @override
   void initState() {
     print('initState');
-    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
       setState((){print('setState');});
     });
     super.initState();
@@ -86,6 +83,6 @@ class _StateGuyState extends State<_StateGuy> {
   @override
   Widget build(BuildContext context) {
     print('build');
-    return SizedBox(width:100,height: 100,child: const Placeholder());
+    return const SizedBox(width:100,height: 100,child: Placeholder());
   }
 }

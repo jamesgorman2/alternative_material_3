@@ -406,9 +406,7 @@ class _MultiSelectFilterChipState<T> extends State<MultiSelectFilterChip<T>>
       (filter) {
         final stateLayerTheme = chipTheme.stateLayers.resolve(states);
         return InkWell(
-          focusColor: stateLayerTheme.focusColor,
-          hoverColor: stateLayerTheme.hoverColor,
-          splashColor: stateLayerTheme.pressColor,
+          overlayColor: stateLayerTheme,
           onTap: () => _handleFilterSelected(filter.value),
           child: SizedBox(
             height: _isMobile

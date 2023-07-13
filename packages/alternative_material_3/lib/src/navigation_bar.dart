@@ -507,7 +507,6 @@ class _IndicatorInkWell extends InkResponse {
     super.child,
   }) : super(
     containedInkWell: true,
-    highlightColor: Colors.transparent,
   );
 
   final GlobalKey iconKey;
@@ -1336,8 +1335,6 @@ class _NavigationBarDefaultsM3 extends NavigationBarThemeData {
   @override Color? get backgroundColor => _colors.surface;
 
   @override Color? get shadowColor => Colors.transparent;
-
-  @override Color? get surfaceTintColor => _colors.surfaceTint;
 
   @override MaterialStateProperty<IconThemeData?>? get iconTheme {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {

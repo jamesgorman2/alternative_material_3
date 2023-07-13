@@ -14,6 +14,7 @@ import 'feedback.dart';
 import 'ink_highlight.dart';
 import 'material.dart';
 import 'material_state.dart';
+import 'state_theme.dart';
 import 'theme.dart';
 
 // Examples can assume:
@@ -319,11 +320,7 @@ class InkResponse extends StatelessWidget {
     this.radius,
     this.borderRadius,
     this.customBorder,
-    this.focusColor,
-    this.hoverColor,
-    this.highlightColor,
     this.overlayColor,
-    this.splashColor,
     this.splashFactory,
     this.enableFeedback = true,
     this.excludeFromSemantics = false,
@@ -468,47 +465,6 @@ class InkResponse extends StatelessWidget {
   /// If this is null, the ink response will not clip its content.
   final ShapeBorder? customBorder;
 
-  /// The color of the ink response when the parent widget is focused. If this
-  /// property is null then the focus color of the theme,
-  /// [ThemeData.focusColor], will be used.
-  ///
-  /// See also:
-  ///
-  ///  * [highlightShape], the shape of the focus, hover, and pressed
-  ///    highlights.
-  ///  * [hoverColor], the color of the hover highlight.
-  ///  * [splashColor], the color of the splash.
-  ///  * [splashFactory], which defines the appearance of the splash.
-  final Color? focusColor;
-
-  /// The color of the ink response when a pointer is hovering over it. If this
-  /// property is null then the hover color of the theme,
-  /// [ThemeData.hoverColor], will be used.
-  ///
-  /// See also:
-  ///
-  ///  * [highlightShape], the shape of the focus, hover, and pressed
-  ///    highlights.
-  ///  * [highlightColor], the color of the pressed highlight.
-  ///  * [focusColor], the color of the focus highlight.
-  ///  * [splashColor], the color of the splash.
-  ///  * [splashFactory], which defines the appearance of the splash.
-  final Color? hoverColor;
-
-  /// The highlight color of the ink response when pressed. If this property is
-  /// null then the highlight color of the theme, [ThemeData.highlightColor],
-  /// will be used.
-  ///
-  /// See also:
-  ///
-  ///  * [hoverColor], the color of the hover highlight.
-  ///  * [focusColor], the color of the focus highlight.
-  ///  * [highlightShape], the shape of the focus, hover, and pressed
-  ///    highlights.
-  ///  * [splashColor], the color of the splash.
-  ///  * [splashFactory], which defines the appearance of the splash.
-  final Color? highlightColor;
-
   /// Defines the ink response focus, hover, and splash colors.
   ///
   /// This default null property can be used as an alternative to
@@ -533,17 +489,7 @@ class InkResponse extends StatelessWidget {
   ///  * The Material Design specification for overlay colors and how they
   ///    match a component's state:
   ///    <https://material.io/design/interaction/states.html#anatomy>.
-  final MaterialStateProperty<Color?>? overlayColor;
-
-  /// The splash color of the ink response. If this property is null then the
-  /// splash color of the theme, [ThemeData.splashColor], will be used.
-  ///
-  /// See also:
-  ///
-  ///  * [splashFactory], which defines the appearance of the splash.
-  ///  * [radius], the (maximum) size of the ink splash.
-  ///  * [highlightColor], the color of the highlight.
-  final Color? splashColor;
+  final StateLayerColors? overlayColor;
 
   /// Defines the appearance of the splash.
   ///
@@ -643,11 +589,7 @@ class InkResponse extends StatelessWidget {
       radius: radius,
       borderRadius: borderRadius,
       customBorder: customBorder,
-      focusColor: focusColor,
-      hoverColor: hoverColor,
-      highlightColor: highlightColor,
-      overlayColor: overlayColor,
-      splashColor: splashColor,
+      overlayColor: overlayColor ?? StateLayerColors.none,
       splashFactory: splashFactory,
       enableFeedback: enableFeedback,
       excludeFromSemantics: excludeFromSemantics,
@@ -699,11 +641,7 @@ class _InkResponseStateWidget extends StatefulWidget {
     this.radius,
     this.borderRadius,
     this.customBorder,
-    this.focusColor,
-    this.hoverColor,
-    this.highlightColor,
-    this.overlayColor,
-    this.splashColor,
+    required this.overlayColor,
     this.splashFactory,
     this.enableFeedback = true,
     this.excludeFromSemantics = false,
@@ -736,11 +674,7 @@ class _InkResponseStateWidget extends StatefulWidget {
   final double? radius;
   final BorderRadius? borderRadius;
   final ShapeBorder? customBorder;
-  final Color? focusColor;
-  final Color? hoverColor;
-  final Color? highlightColor;
-  final MaterialStateProperty<Color?>? overlayColor;
-  final Color? splashColor;
+  final StateLayerColors overlayColor;
   final InteractiveInkFeatureFactory? splashFactory;
   final bool enableFeedback;
   final bool excludeFromSemantics;
@@ -789,6 +723,7 @@ enum _HighlightType {
   pressed,
   hover,
   focus,
+  drag,
 }
 
 class _InkResponseState extends State<_InkResponseStateWidget>
@@ -920,6 +855,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
         return const Duration(milliseconds: 200);
       case _HighlightType.hover:
       case _HighlightType.focus:
+      case _HighlightType.drag:
         return const Duration(milliseconds: 50);
     }
   }
@@ -939,6 +875,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
         if (callOnHover) {
           statesController.update(MaterialState.hovered, value);
         }
+      case _HighlightType.drag:
       case _HighlightType.focus:
         // see handleFocusUpdate()
         break;
@@ -953,22 +890,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
 
     if (value) {
       if (highlight == null) {
-        Color? resolvedOverlayColor = widget.overlayColor?.resolve(statesController.value);
-        if (resolvedOverlayColor == null) {
-          // Use the backwards compatible defaults
-          final ThemeData theme = Theme.of(context);
-          switch (type) {
-            case _HighlightType.pressed:
-              resolvedOverlayColor = widget.highlightColor
-                  ?? theme.colorScheme.highlightColor;
-            case _HighlightType.focus:
-              resolvedOverlayColor = widget.focusColor
-                  ?? theme.colorScheme.focusColor;
-            case _HighlightType.hover:
-              resolvedOverlayColor = widget.hoverColor
-                  ?? theme.colorScheme.hoverColor;
-          }
-        }
+        Color resolvedOverlayColor = widget.overlayColor.resolve(statesController.value);
         final RenderBox referenceBox = context.findRenderObject()! as RenderBox;
         _highlights[type] = InkHighlight(
           controller: Material.of(context),
@@ -1000,6 +922,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
           widget.onHover?.call(value);
         }
       case _HighlightType.focus:
+      case _HighlightType.drag:
         break;
     }
   }
@@ -1024,7 +947,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
     final MaterialInkController inkController = Material.of(context);
     final RenderBox referenceBox = context.findRenderObject()! as RenderBox;
     final Offset position = referenceBox.globalToLocal(globalPosition);
-    final Color color =  widget.overlayColor?.resolve(statesController.value) ?? widget.splashColor ?? Theme.of(context).colorScheme.splashColor;
+    final Color color =  widget.overlayColor.resolve(statesController.value);
     final RectCallback? rectCallback = widget.containedInkWell ? widget.getRectCallback!(referenceBox) : null;
     final BorderRadius? borderRadius = widget.borderRadius;
     final ShapeBorder? customBorder = widget.customBorder;
@@ -1263,28 +1186,25 @@ class _InkResponseState extends State<_InkResponseStateWidget>
     super.build(context); // See AutomaticKeepAliveClientMixin.
 
     Color getHighlightColorForType(_HighlightType type) {
-      const Set<MaterialState> pressed = <MaterialState>{MaterialState.pressed};
-      const Set<MaterialState> focused = <MaterialState>{MaterialState.focused};
-      const Set<MaterialState> hovered = <MaterialState>{MaterialState.hovered};
-
-      final ThemeData theme = Theme.of(context);
       switch (type) {
         // The pressed state triggers a ripple (ink splash), per the current
         // Material Design spec. A separate highlight is no longer used.
         // See https://material.io/design/interaction/states.html#pressed
         case _HighlightType.pressed:
-          return widget.overlayColor?.resolve(pressed) ?? widget.highlightColor ?? theme.colorScheme.highlightColor;
+          return widget.overlayColor.pressColor;
         case _HighlightType.focus:
-          return widget.overlayColor?.resolve(focused) ?? widget.focusColor ?? theme.colorScheme.focusColor;
+          return widget.overlayColor.focusColor;
         case _HighlightType.hover:
-          return widget.overlayColor?.resolve(hovered) ?? widget.hoverColor ?? theme.colorScheme.hoverColor;
+          return widget.overlayColor.hoverColor;
+        case _HighlightType.drag:
+          return widget.overlayColor.dragColor;
       }
     }
     for (final _HighlightType type in _highlights.keys) {
       _highlights[type]?.color = getHighlightColorForType(type);
     }
 
-    _currentSplash?.color = widget.overlayColor?.resolve(statesController.value) ?? widget.splashColor ?? Theme.of(context).colorScheme.splashColor;
+    _currentSplash?.color = widget.overlayColor.resolve(statesController.value);
 
     final MouseCursor effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor>(
       widget.mouseCursor ?? MaterialStateMouseCursor.clickable,
@@ -1431,11 +1351,7 @@ class InkWell extends InkResponse {
     super.onHighlightChanged,
     super.onHover,
     super.mouseCursor,
-    super.focusColor,
-    super.hoverColor,
-    super.highlightColor,
     super.overlayColor,
-    super.splashColor,
     super.splashFactory,
     super.radius,
     super.borderRadius,

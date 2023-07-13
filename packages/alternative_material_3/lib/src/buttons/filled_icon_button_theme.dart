@@ -220,14 +220,10 @@ class _LateResolvingFilledIconButtonStyle
       });
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.all(
-        StateLayerTheme(
-          hoverColor: StateLayer(_colors.onPrimary, stateTheme.hoverOpacity),
-          focusColor: StateLayer(_colors.onPrimary, stateTheme.focusOpacity),
-          pressColor: StateLayer(_colors.onPrimary, stateTheme.pressOpacity),
-        ),
+        StateLayerColors.from(_colors.onPrimary, stateTheme),
       );
 }
 
@@ -263,20 +259,12 @@ class _LateResolvingToggleableFilledIconButtonStyle
       });
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
-          return StateLayerTheme(
-            hoverColor: StateLayer(_colors.onPrimary, stateTheme.hoverOpacity),
-            focusColor: StateLayer(_colors.onPrimary, stateTheme.focusOpacity),
-            pressColor: StateLayer(_colors.onPrimary, stateTheme.pressOpacity),
-          );
+          return StateLayerColors.from(_colors.onPrimary, stateTheme);
         }
-        return StateLayerTheme(
-          hoverColor: StateLayer(_colors.primary, stateTheme.hoverOpacity),
-          focusColor: StateLayer(_colors.primary, stateTheme.focusOpacity),
-          pressColor: StateLayer(_colors.primary, stateTheme.pressOpacity),
-        );
+        return StateLayerColors.from(_colors.primary, stateTheme);
       });
 }

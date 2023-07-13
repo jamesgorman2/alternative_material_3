@@ -14,10 +14,12 @@ import '../color_extensions.dart';
 import '../color_scheme.dart';
 import '../colors.dart';
 import '../constants.dart';
+import '../core/duration.dart';
 import '../elevation.dart';
 import '../icons.dart';
 import '../ink_well.dart';
 import '../material_state.dart';
+import '../panting/borders.dart';
 import '../state_theme.dart';
 import '../text_theme.dart';
 import '../theme.dart';
@@ -173,7 +175,7 @@ class ButtonStyle with Diagnosticable {
     MaterialStateProperty<Color>? labelColor,
     MaterialStateProperty<Color>? containerColor,
     StateThemeData? stateTheme,
-    MaterialStateProperty<StateLayerTheme>? stateLayers,
+    MaterialStateProperty<StateLayerColors>? stateLayers,
     Color? shadowColor,
     MaterialStateProperty<Elevation>? elevation,
     double? iconPadding,
@@ -287,12 +289,10 @@ class ButtonStyle with Diagnosticable {
   StateThemeData get stateTheme => _stateTheme!;
   final StateThemeData? _stateTheme;
 
-  /// Defines the state layers applied to this list tile.
+  /// Defines the state layers applied to this button.
   ///
-  /// Default color values are [ColorScheme.onSurface] and the
-  /// opacities are from [ListTileThemeData.stateThemeData].
-  MaterialStateProperty<StateLayerTheme> get stateLayers => _stateLayers!;
-  final MaterialStateProperty<StateLayerTheme>? _stateLayers;
+  MaterialStateProperty<StateLayerColors> get stateLayers => _stateLayers!;
+  final MaterialStateProperty<StateLayerColors>? _stateLayers;
 
   /// The shadow color of the button's [Material].
   Color get shadowColor => _shadowColor!;
@@ -448,7 +448,7 @@ class ButtonStyle with Diagnosticable {
     TextStyle? labelStyle,
     MaterialStateProperty<Color>? labelColor,
     MaterialStateProperty<Color>? containerColor,
-    MaterialStateProperty<StateLayerTheme>? stateLayers,
+    MaterialStateProperty<StateLayerColors>? stateLayers,
     StateThemeData? stateTheme,
     Color? shadowColor,
     MaterialStateProperty<Elevation>? elevation,
@@ -617,7 +617,7 @@ class ButtonStyle with Diagnosticable {
     properties.add(DiagnosticsProperty<StateThemeData>(
         'stateTheme', _stateTheme,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<StateLayerTheme>>(
+    properties.add(DiagnosticsProperty<MaterialStateProperty<StateLayerColors>>(
         'stateLayers', _stateLayers,
         defaultValue: null));
     properties.add(DiagnosticsProperty<Color>('shadowColor', _shadowColor,
@@ -700,7 +700,7 @@ class ButtonStyle with Diagnosticable {
         a?._stateLayers,
         b?._stateLayers,
         t,
-        StateLayerTheme.lerp,
+        StateLayerColors.lerp,
       ),
       shadowColor: Color.lerp(a?._shadowColor, b?._shadowColor, t),
       elevation: MaterialStateProperty.lerpNonNull(
@@ -714,7 +714,7 @@ class ButtonStyle with Diagnosticable {
       labelPadding: lerpDouble(a?._labelPadding, b?._labelPadding, t),
       containerShape:
           OutlinedBorder.lerp(a?._containerShape, b?._containerShape, t),
-      outline: _lerpSides(a?._outline, b?._outline, t),
+      outline: BorderSideExtensions.lerpNull(a?._outline, b?._outline, t),
       containerHeight: lerpDouble(a?._containerHeight, b?._containerHeight, t),
       minimumContainerWidth: lerpDouble(
         a?._minimumContainerWidth,
@@ -731,63 +731,11 @@ class ButtonStyle with Diagnosticable {
           VisualDensity.lerp(a?._visualDensity, b?._visualDensity, t),
       tapTargetSize: t < 0.5 ? a?._tapTargetSize : b?._tapTargetSize,
       animationDuration:
-          _lerpDuration(a?._animationDuration, b?._animationDuration, t),
+        DurationExtensions.lerp(a?._animationDuration, b?._animationDuration, t),
       enableFeedback: t < 0.5 ? a?._enableFeedback : b?._enableFeedback,
       alignment: t < 0.5 ? a?._alignment : b?._alignment,
       splashFactory: t < 0.5 ? a?._splashFactory : b?._splashFactory,
     );
-  }
-
-  static Duration? _lerpDuration(Duration? a, Duration? b, double t) {
-    if (a == b) {
-      return a;
-    } else if (a == null || b == null) {
-      return t < 0.5 ? a : b;
-    }
-
-    return Duration(
-      microseconds:
-          lerpDouble(a.inMicroseconds, b.inMicroseconds, t)?.round() ?? 0,
-    );
-  }
-
-  // Special case because BorderSide.lerp() doesn't support null arguments
-  static MaterialStateProperty<BorderSide?>? _lerpSides(
-      MaterialStateProperty<BorderSide?>? a,
-      MaterialStateProperty<BorderSide?>? b,
-      double t) {
-    if (a == null && b == null) {
-      return null;
-    }
-    return _LerpSides(a, b, t);
-  }
-}
-
-class _LerpSides implements MaterialStateProperty<BorderSide?> {
-  const _LerpSides(this.a, this.b, this.t);
-
-  final MaterialStateProperty<BorderSide?>? a;
-  final MaterialStateProperty<BorderSide?>? b;
-  final double t;
-
-  @override
-  BorderSide? resolve(Set<MaterialState> states) {
-    final BorderSide? resolvedA = a?.resolve(states);
-    final BorderSide? resolvedB = b?.resolve(states);
-    if (resolvedA == null && resolvedB == null) {
-      return null;
-    }
-    if (resolvedA == null) {
-      return BorderSide.lerp(
-          BorderSide(width: 0, color: resolvedB!.color.withAlpha(0)),
-          resolvedB,
-          t);
-    }
-    if (resolvedB == null) {
-      return BorderSide.lerp(resolvedA,
-          BorderSide(width: 0, color: resolvedA.color.withAlpha(0)), t);
-    }
-    return BorderSide.lerp(resolvedA, resolvedB, t);
   }
 }
 

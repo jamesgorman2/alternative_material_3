@@ -258,17 +258,10 @@ class _LateResolvingSegmentedButtonStyle extends _LateResolvingButtonStyle {
       });
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.all(
-        StateLayerTheme(
-          hoverColor:
-              StateLayer(_colors.onSecondaryContainer, stateTheme.hoverOpacity),
-          focusColor:
-              StateLayer(_colors.onSecondaryContainer, stateTheme.focusOpacity),
-          pressColor:
-              StateLayer(_colors.onSecondaryContainer, stateTheme.pressOpacity),
-        ),
+        StateLayerColors.from(_colors.onSecondaryContainer, stateTheme),
       );
 
   @override

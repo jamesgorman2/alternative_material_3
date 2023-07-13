@@ -98,7 +98,7 @@ class FloatingActionButtonThemeData with Diagnosticable {
     Color? backgroundColor,
     Color? shadowColor,
     StateThemeData? stateTheme,
-    StateLayerTheme? stateLayers,
+    StateLayerColors? stateLayers,
     MaterialStateProperty<Elevation>? elevation,
     OutlinedBorder? shape,
     Clip? clipBehavior,
@@ -229,8 +229,8 @@ class FloatingActionButtonThemeData with Diagnosticable {
   ///
   /// Default color values are [ColorScheme.onSurface] and the
   /// opacities are from [ListTileThemeData.stateThemeData].
-  StateLayerTheme get stateLayers => _stateLayers!;
-  final StateLayerTheme? _stateLayers;
+  StateLayerColors get stateLayers => _stateLayers!;
+  final StateLayerColors? _stateLayers;
 
   /// The z-coordinate at which to place this button relative to its parent.
   ///
@@ -328,7 +328,7 @@ class FloatingActionButtonThemeData with Diagnosticable {
     Color? foregroundColor,
     Color? backgroundColor,
     StateThemeData? stateTheme,
-    StateLayerTheme? stateLayers,
+    StateLayerColors? stateLayers,
     MaterialStateProperty<Elevation>? elevation,
     OutlinedBorder? shape,
     Clip? clipBehavior,
@@ -403,7 +403,7 @@ class FloatingActionButtonThemeData with Diagnosticable {
       foregroundColor: Color.lerp(a?._foregroundColor, b?._foregroundColor, t),
       backgroundColor: Color.lerp(a?._backgroundColor, b?._backgroundColor, t),
       stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
-      stateLayers: StateLayerTheme.lerp(a?._stateLayers, b?._stateLayers, t),
+      stateLayers: StateLayerColors.lerp(a?._stateLayers, b?._stateLayers, t),
       elevation: MaterialStateProperty.lerpNonNull(
           a?._elevation, b?._elevation, t, Elevation.lerp),
       shape: OutlinedBorder.lerp(a?._shape, b?._shape, t),
@@ -492,7 +492,7 @@ class FloatingActionButtonThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<StateThemeData>(
         'stateTheme', _stateTheme,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<StateLayerTheme>(
+    properties.add(DiagnosticsProperty<StateLayerColors>(
         'stateLayers', _stateLayers,
         defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<Elevation>>(
@@ -601,13 +601,9 @@ class _LateResolvingFABButtonThemeData extends FloatingActionButtonThemeData {
   Color get shadowColor => _shadowColor ?? _colors.shadow;
 
   @override
-  StateLayerTheme get stateLayers =>
+  StateLayerColors get stateLayers =>
       _stateLayers ??
-      StateLayerTheme(
-        pressColor: StateLayer(_onContainerColor, stateTheme.pressOpacity),
-        hoverColor: StateLayer(_onContainerColor, stateTheme.hoverOpacity),
-        focusColor: StateLayer(_onContainerColor, stateTheme.focusOpacity),
-      );
+      StateLayerColors.from(_onContainerColor, stateTheme);
 
   @override
   MaterialStateProperty<Elevation> get elevation =>

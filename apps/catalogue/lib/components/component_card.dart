@@ -69,7 +69,7 @@ class ComponentCard extends StatelessWidget {
             maxWidth: 800,
             minHeight: 200,
           ),
-          child: Card(
+          child: ElevatedCard(
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Center(child: child),

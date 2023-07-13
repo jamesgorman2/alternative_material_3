@@ -1132,8 +1132,7 @@ class _AppBarState extends State<AppBar> {
             ?? appBarTheme.shadowColor
             ?? defaults.shadowColor,
           surfaceTintColor: widget.surfaceTintColor
-            ?? appBarTheme.surfaceTintColor
-            ?? defaults.surfaceTintColor,
+            ?? appBarTheme.surfaceTintColor,
           shape: widget.shape ?? appBarTheme.shape ?? defaults.shape,
           child: Semantics(
             explicitChildNodes: true,
@@ -2244,9 +2243,6 @@ class _AppBarDefaultsM3 extends AppBarTheme {
 
   @override
   Color? get shadowColor => Colors.transparent;
-
-  @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
 
   @override
   IconThemeData? get iconTheme => IconThemeData(

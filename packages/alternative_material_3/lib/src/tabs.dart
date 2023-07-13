@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
 import 'app_bar.dart';
 import 'color_scheme.dart';
 import 'colors.dart';
@@ -933,7 +934,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
   /// If the overlay color is null or resolves to null, then the default values
   /// for [InkResponse.focusColor], [InkResponse.hoverColor], [InkResponse.splashColor],
   /// and [InkResponse.highlightColor] will be used instead.
-  final MaterialStateProperty<Color?>? overlayColor;
+  final MaterialStateProperty<Color>? overlayColor;
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
@@ -1455,17 +1456,19 @@ class _TabBarState extends State<TabBar> {
         ?? tabBarTheme.mouseCursor?.resolve(selectedState)
         ?? MaterialStateMouseCursor.clickable.resolve(selectedState);
 
-      final MaterialStateProperty<Color?> defaultOverlay = MaterialStateProperty.resolveWith<Color?>(
+      final MaterialStateProperty<Color> defaultOverlay = MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {
           final Set<MaterialState> effectiveStates = selectedState..addAll(states);
-          return _defaults.overlayColor?.resolve(effectiveStates);
+          return _defaults.overlayColor?.resolve(effectiveStates) ?? Colors.transparent;
         },
       );
       wrappedTabs[index] = InkWell(
         mouseCursor: effectiveMouseCursor,
         onTap: () { _handleTap(index); },
         enableFeedback: widget.enableFeedback ?? true,
-        overlayColor: widget.overlayColor ?? tabBarTheme.overlayColor ?? defaultOverlay,
+        overlayColor: StateLayerColors.maybeFromMaterialStateProperty(
+          widget.overlayColor ?? tabBarTheme.overlayColor ?? defaultOverlay,
+        ),
         splashFactory: widget.splashFactory ?? tabBarTheme.splashFactory ?? _defaults.splashFactory,
         borderRadius: widget.splashBorderRadius,
         child: Padding(
@@ -2054,7 +2057,7 @@ class _TabsPrimaryDefaultsM3 extends TabBarTheme {
   TextStyle? get unselectedLabelStyle => _textTheme.titleSmall;
 
   @override
-  MaterialStateProperty<Color?> get overlayColor {
+  MaterialStateProperty<Color> get overlayColor {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.selected)) {
         if (states.contains(MaterialState.hovered)) {
@@ -2066,7 +2069,7 @@ class _TabsPrimaryDefaultsM3 extends TabBarTheme {
         if (states.contains(MaterialState.pressed)) {
           return _colors.primary.withOpacity(0.12);
         }
-        return null;
+        return Colors.transparent;
       }
       if (states.contains(MaterialState.hovered)) {
         return _colors.onSurface.withOpacity(0.08);
@@ -2077,7 +2080,7 @@ class _TabsPrimaryDefaultsM3 extends TabBarTheme {
       if (states.contains(MaterialState.pressed)) {
         return _colors.primary.withOpacity(0.12);
       }
-      return null;
+      return Colors.transparent;
     });
   }
 
@@ -2112,7 +2115,7 @@ class _TabsSecondaryDefaultsM3 extends TabBarTheme {
   TextStyle? get unselectedLabelStyle => _textTheme.titleSmall;
 
   @override
-  MaterialStateProperty<Color?> get overlayColor {
+  MaterialStateProperty<Color> get overlayColor {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.selected)) {
         if (states.contains(MaterialState.hovered)) {
@@ -2124,7 +2127,7 @@ class _TabsSecondaryDefaultsM3 extends TabBarTheme {
         if (states.contains(MaterialState.pressed)) {
           return _colors.onSurface.withOpacity(0.12);
         }
-        return null;
+        return Colors.transparent;
       }
       if (states.contains(MaterialState.hovered)) {
         return _colors.onSurface.withOpacity(0.08);
@@ -2135,7 +2138,7 @@ class _TabsSecondaryDefaultsM3 extends TabBarTheme {
       if (states.contains(MaterialState.pressed)) {
         return _colors.onSurface.withOpacity(0.12);
       }
-      return null;
+      return Colors.transparent;
     });
   }
 

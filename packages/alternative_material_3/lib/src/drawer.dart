@@ -815,9 +815,6 @@ class _DrawerDefaultsM3 extends DrawerThemeData {
   Color? get backgroundColor => Theme.of(context).colorScheme.surface;
 
   @override
-  Color? get surfaceTintColor => Theme.of(context).colorScheme.surfaceTint;
-
-  @override
   Color? get shadowColor => Colors.transparent;
 
   // There isn't currently a token for this value, but it is shown in the spec,

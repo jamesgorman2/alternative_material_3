@@ -236,6 +236,15 @@ abstract class MaterialStateMouseCursor extends MouseCursor implements MaterialS
   @override
   MouseCursor resolve(Set<MaterialState> states);
 
+  /// A mouse cursor for non-clickable material widgets. This is used for
+  /// widgets are not always clickable when enabled, such as [Card]s.
+  ///
+  /// This cursor always resolves to [SystemMouseCursors.basic].
+  static const MaterialStateMouseCursor basic = _MouseCursor(
+    cursor: SystemMouseCursors.basic,
+    name: 'basic',
+  );
+
   /// A mouse cursor for clickable material widgets, which resolves differently
   /// when the widget is disabled.
   ///
@@ -280,6 +289,24 @@ class _EnabledAndDisabledMouseCursor extends MaterialStateMouseCursor {
       return disabledCursor;
     }
     return enabledCursor;
+  }
+
+  @override
+  String get debugDescription => 'MaterialStateMouseCursor($name)';
+}
+
+class _MouseCursor extends MaterialStateMouseCursor {
+  const _MouseCursor({
+    required this.cursor,
+    required this.name,
+  });
+
+  final MouseCursor cursor;
+  final String name;
+
+  @override
+  MouseCursor resolve(Set<MaterialState> states) {
+    return cursor;
   }
 
   @override

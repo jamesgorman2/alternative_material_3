@@ -222,38 +222,12 @@ class _LateResolvingToggleableOutlinedIconButtonStyle
       });
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
-          return StateLayerTheme(
-            hoverColor: StateLayer(
-              _colors.inverseOnSurface,
-              stateTheme.hoverOpacity,
-            ),
-            focusColor: StateLayer(
-              _colors.inverseOnSurface,
-              stateTheme.focusOpacity,
-            ),
-            pressColor: StateLayer(
-              _colors.inverseOnSurface,
-              stateTheme.pressOpacity,
-            ),
-          );
+          return StateLayerColors.from(_colors.inverseOnSurface, stateTheme);
         }
-        return StateLayerTheme(
-          hoverColor: StateLayer(
-            _colors.onSurfaceVariant,
-            stateTheme.hoverOpacity,
-          ),
-          focusColor: StateLayer(
-            _colors.onSurfaceVariant,
-            stateTheme.focusOpacity,
-          ),
-          pressColor: StateLayer(
-            _colors.onSurfaceVariant,
-            stateTheme.pressOpacity,
-          ),
-        );
+        return StateLayerColors.from(_colors.onSurfaceVariant, stateTheme);
       });
 }

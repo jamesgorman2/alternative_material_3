@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
 import 'colors.dart';
 import 'theme.dart';
 
@@ -296,6 +297,17 @@ class StateLayer extends Color {
   StateLayer(this.stateLayerColor, double opacity)
       : super(stateLayerColor.withOpacity(opacity).value);
 
+  StateLayer.of(this.stateLayerColor) : super(stateLayerColor.value);
+
+  static StateLayer? maybeOf(Color? color) {
+    if (color != null) {
+      return StateLayer.of(color);
+    }
+    return null;
+  }
+
+  static final StateLayer none = StateLayer(Colors.transparent, 0.0);
+
   /// The base color of this state layer.
   final Color stateLayerColor;
 
@@ -305,13 +317,12 @@ class StateLayer extends Color {
   }
 
   /// Linearly interpolate between two [StateLayer]s.
-  static StateLayer? lerp(StateLayer? a, StateLayer? b, double t) {
+  static StateLayer lerp(StateLayer? a, StateLayer? b, double t) {
     if (identical(a, b) && a != null) {
       return a;
     }
     return StateLayer(
-      Color.lerp(a?.stateLayerColor, b?.stateLayerColor, t) ??
-          Colors.transparent,
+      ColorExtensions.lerpNonNull(a?.stateLayerColor, b?.stateLayerColor, t),
       lerpDouble(a?.opacity, b?.opacity, t) ?? 0.0,
     );
   }
@@ -319,29 +330,78 @@ class StateLayer extends Color {
 
 /// The state layers for a widget.
 @immutable
-class StateLayerTheme with Diagnosticable {
+class StateLayerColors extends MaterialStateProperty<Color>
+    with Diagnosticable {
   ///
-  StateLayerTheme({
-    this.hoverColor,
-    this.focusColor,
-    this.pressColor,
-    this.dragColor,
+  StateLayerColors({
+    required this.hoverColor,
+    required this.focusColor,
+    required this.pressColor,
+    required this.dragColor,
   });
 
-  final StateLayer? hoverColor;
-  final StateLayer? focusColor;
-  final StateLayer? pressColor;
-  final StateLayer? dragColor;
+  StateLayerColors.from(Color color, StateThemeData stateTheme)
+      : hoverColor = StateLayer(color, stateTheme.hoverOpacity),
+        focusColor = StateLayer(color, stateTheme.focusOpacity),
+        pressColor = StateLayer(color, stateTheme.pressOpacity),
+        dragColor = StateLayer(color, stateTheme.dragOpacity);
+
+  factory StateLayerColors.fromMaterialStateProperty(
+    MaterialStateProperty<Color?> color,
+  ) {
+    return StateLayerColors.only(
+      hoverColor: StateLayer.maybeOf(color.resolve({MaterialState.hovered})),
+      focusColor: StateLayer.maybeOf(color.resolve({MaterialState.focused})),
+      pressColor: StateLayer.maybeOf(color.resolve({MaterialState.pressed})),
+      dragColor: StateLayer.maybeOf(color.resolve({MaterialState.dragged})),
+    );
+  }
+
+  StateLayerColors.only({
+    StateLayer? hoverColor,
+    StateLayer? focusColor,
+    StateLayer? pressColor,
+    StateLayer? dragColor,
+  })  : hoverColor = hoverColor ?? StateLayer.none,
+        focusColor = focusColor ?? StateLayer.none,
+        pressColor = pressColor ?? StateLayer.none,
+        dragColor = dragColor ?? StateLayer.none;
+
+  static StateLayerColors? maybeFromMaterialStateProperty(
+    MaterialStateProperty<Color?>? color,
+  ) {
+    if (color != null) {
+      return StateLayerColors.only(
+        hoverColor: StateLayer.maybeOf(color.resolve({MaterialState.hovered})),
+        focusColor: StateLayer.maybeOf(color.resolve({MaterialState.focused})),
+        pressColor: StateLayer.maybeOf(color.resolve({MaterialState.pressed})),
+        dragColor: StateLayer.maybeOf(color.resolve({MaterialState.dragged})),
+      );
+    }
+    return null;
+  }
+
+  static final StateLayerColors none = StateLayerColors(
+    hoverColor: StateLayer.none,
+    focusColor: StateLayer.none,
+    pressColor: StateLayer.none,
+    dragColor: StateLayer.none,
+  );
+
+  final StateLayer hoverColor;
+  final StateLayer focusColor;
+  final StateLayer pressColor;
+  final StateLayer dragColor;
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values provided.
-  StateLayerTheme copyWith({
+  StateLayerColors copyWith({
     StateLayer? hoverColor,
     StateLayer? focusColor,
     StateLayer? pressColor,
     StateLayer? dragColor,
   }) {
-    return StateLayerTheme(
+    return StateLayerColors(
       hoverColor: hoverColor ?? this.hoverColor,
       focusColor: focusColor ?? this.focusColor,
       pressColor: pressColor ?? this.pressColor,
@@ -351,7 +411,7 @@ class StateLayerTheme with Diagnosticable {
 
   /// Creates a copy of this object with fields replaced with the
   /// non-null values from [other].
-  StateLayerTheme mergeWith(StateLayerTheme? other) {
+  StateLayerColors mergeWith(StateLayerColors? other) {
     return copyWith(
       hoverColor: other?.hoverColor,
       focusColor: other?.focusColor,
@@ -362,7 +422,7 @@ class StateLayerTheme with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    return other is StateLayerTheme &&
+    return other is StateLayerColors &&
         other.hoverColor == hoverColor &&
         other.focusColor == focusColor &&
         other.pressColor == pressColor &&
@@ -390,20 +450,37 @@ class StateLayerTheme with Diagnosticable {
         defaultValue: null));
   }
 
-  /// Linearly interpolate between two [StateLayerTheme]s.
-  static StateLayerTheme lerp(
-    StateLayerTheme? a,
-    StateLayerTheme? b,
+  /// Linearly interpolate between two [StateLayerColors]s.
+  static StateLayerColors lerp(
+    StateLayerColors? a,
+    StateLayerColors? b,
     double t,
   ) {
     if (identical(a, b) && a != null) {
       return a;
     }
-    return StateLayerTheme(
+    return StateLayerColors(
       hoverColor: StateLayer.lerp(a?.hoverColor, b?.hoverColor, t),
       focusColor: StateLayer.lerp(a?.focusColor, b?.focusColor, t),
       pressColor: StateLayer.lerp(a?.pressColor, b?.pressColor, t),
       dragColor: StateLayer.lerp(a?.dragColor, b?.dragColor, t),
     );
+  }
+
+  @override
+  Color resolve(Set<MaterialState> states) {
+    if (states.contains(MaterialState.dragged)) {
+      return dragColor;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return pressColor;
+    }
+    if (states.contains(MaterialState.hovered)) {
+      return hoverColor;
+    }
+    if (states.contains(MaterialState.focused)) {
+      return focusColor;
+    }
+    return Colors.transparent;
   }
 }

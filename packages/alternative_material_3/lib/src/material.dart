@@ -94,6 +94,25 @@ abstract class MaterialInkController {
   void markNeedsPaint();
 }
 
+/// {@template flutter.material.elevationStyle}
+/// The style of elevation to use. M3 introduces a new flat elevation
+/// model that uses color. Instead of applying shadows by default to all
+/// levels, use shadows only
+/// when required to create additional protection against a background or
+/// to encourage interaction.
+///
+/// See also
+///
+/// * https://m3.material.io/styles/elevation/overview
+/// {@endtemplate}
+enum ElevationStyle {
+  /// Only use color to distinguish elevation.
+  flat,
+
+  /// Use color and shadow to distinguish elevation.
+  shadow,
+}
+
 /// A piece of material.
 ///
 /// The Material widget is responsible for:
@@ -192,6 +211,7 @@ class Material extends StatefulWidget {
     this.type = MaterialType.canvas,
     this.elevation = Elevation.level0,
     this.color,
+    this.elevationStyle = ElevationStyle.shadow,
     this.shadowColor,
     this.surfaceTintColor,
     this.textStyle,
@@ -276,6 +296,9 @@ class Material extends StatefulWidget {
   /// on or off for dark themes.
   /// {@endtemplate}
   final Color? shadowColor;
+
+  /// {@macro flutter.material.elevationStyle}
+  final ElevationStyle elevationStyle;
 
   /// The color of the surface tint overlay applied to the material color
   /// to indicate elevation.
@@ -486,11 +509,13 @@ class _MaterialState extends State<Material> with TickerProviderStateMixin {
     final Color? backgroundColor = _getBackgroundColor(context);
     final Color modelShadowColor =
         widget.shadowColor ?? theme.colorScheme.shadow;
-    // If no shadow color is specified, use 0 for elevation in the model so a drop shadow won't be painted.
-    final Elevation shadowElevation =
-        widget.shadowColor == null || widget.shadowColor == Colors.transparent
-            ? Elevation.level0
-            : widget.elevation;
+    // If no shadow color is specified, use 0 for elevation in the model
+    // so a drop shadow won't be painted.
+    final Elevation shadowElevation = widget.shadowColor == null ||
+            identical(widget.shadowColor, Colors.transparent) ||
+            widget.elevationStyle == ElevationStyle.flat
+        ? Elevation.level0
+        : widget.elevation;
     assert(
       backgroundColor != null || widget.type == MaterialType.transparency,
       'If Material type is not MaterialType.transparency, a color must '
@@ -1010,6 +1035,7 @@ class _MaterialInteriorState
         ColorExtensions.nonNullTransparency(_shadowColor?.evaluate(animation));
 
     Widget deepShadow({required Widget child}) {
+      //TODO disable from theme
       if (shadowElevation == 0.0) {
         return child;
       }

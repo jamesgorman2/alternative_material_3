@@ -221,7 +221,7 @@ class _SelectableIconButtonState extends State<SelectableIconButton> {
 
     final MouseCursor mouseCursor = style.mouseCursor.resolve(states);
 
-    final StateLayerTheme stateLayers = style.stateLayers.resolve(states);
+    final StateLayerColors stateLayers = style.stateLayers.resolve(states);
 
     final Duration animationDuration = style.animationDuration;
     final bool enableFeedback = style.enableFeedback;
@@ -268,12 +268,9 @@ class _SelectableIconButtonState extends State<SelectableIconButton> {
             onFocusChange: widget.onFocusChange,
             autofocus: widget.autofocus,
             splashFactory: resolvedSplashFactory,
-            highlightColor: Colors.transparent,
             customBorder: containerShape.copyWith(side: outline),
             statesController: statesController,
-            hoverColor: stateLayers.hoverColor,
-            focusColor: stateLayers.focusColor,
-            splashColor: stateLayers.pressColor,
+            overlayColor: stateLayers,
             child: IconTheme.merge(
               data: IconThemeData(color: iconColor, size: iconSize),
               child: Align(

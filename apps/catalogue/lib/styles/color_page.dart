@@ -45,7 +45,7 @@ class TonalPalettesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
+    return ElevatedCard(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -153,26 +153,30 @@ class ThemeCardLight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme.asLight();
-    return Card(
-      color: colorScheme.surfaceContainerLowest,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Light Theme',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium.copyWith(color: colorScheme.onSurface),
-            ),
-            const SizedBox(height: 16.0),
-            const TopRowLight(),
-            const SizedBox(height: 16.0),
-            const FixedRow(),
-            const SizedBox(height: 16.0),
-            const BottomRowLight()
-          ],
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: colorScheme,
+      ),
+      child: ElevatedCard(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Light Theme',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium.copyWith(color: colorScheme.onSurface),
+              ),
+              const SizedBox(height: 16.0),
+              const TopRowLight(),
+              const SizedBox(height: 16.0),
+              const FixedRow(),
+              const SizedBox(height: 16.0),
+              const BottomRowLight()
+            ],
+          ),
         ),
       ),
     );
@@ -187,26 +191,30 @@ class ThemeCardDark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme.asDark();
-    return Card(
-      color: colorScheme.surfaceContainerLowest,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Dark Theme',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium.copyWith(color: colorScheme.onSurface),
-            ),
-            const SizedBox(height: 16.0),
-            const TopRowDark(),
-            const SizedBox(height: 16.0),
-            const FixedRow(),
-            const SizedBox(height: 16.0),
-            const BottomRowDark()
-          ],
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: colorScheme,
+      ),
+      child: ElevatedCard(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Dark Theme',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium.copyWith(color: colorScheme.onSurface),
+              ),
+              const SizedBox(height: 16.0),
+              const TopRowDark(),
+              const SizedBox(height: 16.0),
+              const FixedRow(),
+              const SizedBox(height: 16.0),
+              const BottomRowDark()
+            ],
+          ),
         ),
       ),
     );

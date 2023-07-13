@@ -3743,11 +3743,6 @@ class _MenuBarDefaultsM3 extends MenuStyle {
   }
 
   @override
-  MaterialStateProperty<Color?>? get surfaceTintColor {
-    return MaterialStatePropertyAll<Color?>(_colors.surfaceTint);
-  }
-
-  @override
   MaterialStateProperty<EdgeInsetsGeometry?>? get padding {
     return const MaterialStatePropertyAll<EdgeInsetsGeometry>(
       EdgeInsetsDirectional.symmetric(
@@ -3849,12 +3844,10 @@ class _MenuButtonDefaultsM3 extends ButtonStyle {
   }
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
-      MaterialStateProperty.all(StateLayerTheme(
-        pressColor: StateLayer(_colors.onSurface, stateTheme.pressOpacity),
-        hoverColor: StateLayer(_colors.onSurface, stateTheme.hoverOpacity),
-        focusColor: StateLayer(_colors.onSurface, stateTheme.focusOpacity),
-      ));
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
+      MaterialStateProperty.all(StateLayerColors.from(
+        _colors.onSurface, stateTheme,
+      ),);
 
   // No default side
 
@@ -3897,11 +3890,6 @@ class _MenuDefaultsM3 extends MenuStyle {
   @override
   MaterialStateProperty<Color?> get backgroundColor {
     return MaterialStatePropertyAll<Color?>(_colors.surface);
-  }
-
-  @override
-  MaterialStateProperty<Color?>? get surfaceTintColor {
-    return MaterialStatePropertyAll<Color?>(_colors.surfaceTint);
   }
 
   @override
@@ -4001,9 +3989,9 @@ ButtonStyle _styleFrom({
           ? ButtonStyleButton.allOrNull<Color>(backgroundColor)
           : _TextButtonDefaultColor(backgroundColor, disabledBackgroundColor))
       : null;
-  final MaterialStateProperty<StateLayerTheme>? overlayColor =
+  final MaterialStateProperty<StateLayerColors>? overlayColor =
       (foreground == null) ? null : MaterialStateProperty.all(
-        StateLayerTheme(
+        StateLayerColors.only(
           pressColor: StateLayer(foreground, 0.12),
           hoverColor: StateLayer(foreground, 0.08),
           focusColor: StateLayer(foreground, 0.12),

@@ -175,6 +175,7 @@ class SwitchListTile extends StatelessWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
@@ -215,6 +216,7 @@ class SwitchListTile extends StatelessWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
@@ -293,6 +295,8 @@ class SwitchListTile extends StatelessWidget {
   ///
   /// Typically a [Text] widget.
   final Widget? supportingText;
+
+  final Widget? chip;
 
   /// A widget to display on the opposite side of the tile from the switch.
   ///
@@ -373,6 +377,7 @@ class SwitchListTile extends StatelessWidget {
         overline: overline,
         headline: headline,
         supportingText: supportingText,
+        chip: chip,
         trailing: trailing,
         enabled: onChanged != null,
         onTap: onChanged != null

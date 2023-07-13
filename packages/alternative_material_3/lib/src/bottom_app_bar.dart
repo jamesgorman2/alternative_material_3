@@ -290,9 +290,6 @@ class _BottomAppBarDefaultsM3 extends BottomAppBarTheme {
   Color? get color => _colors.surfaceContainer;
 
   @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
-
-  @override
   Color? get shadowColor => Colors.transparent;
 }
 

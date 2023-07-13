@@ -184,14 +184,10 @@ class _LateResolvingTextButtonStyle extends _LateResolvingButtonStyle {
       _containerColor ?? MaterialStateProperty.all(Colors.transparent);
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.all(
-        StateLayerTheme(
-          hoverColor: StateLayer(_colors.primary, stateTheme.hoverOpacity),
-          focusColor: StateLayer(_colors.primary, stateTheme.focusOpacity),
-          pressColor: StateLayer(_colors.primary, stateTheme.pressOpacity),
-        ),
+        StateLayerColors.from(_colors.primary, stateTheme),
       );
 
   @override

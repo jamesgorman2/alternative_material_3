@@ -469,6 +469,7 @@ class _ChipState extends State<Chip>
     BuildContext context,
     ThemeData theme,
     ChipThemeData chipTheme,
+    Set<MaterialState> states,
   ) {
     Widget wrapIcon(Widget icon) {
       final IconThemeData trailingIconTheme = IconThemeData(
@@ -524,9 +525,7 @@ class _ChipState extends State<Chip>
               _UnconstrainedInkSplashFactory(Theme.of(context).splashFactory),
           onTap: widget.isEnabled ? widget.onTrailingIconPressed : null,
           onHover: _handleTrailingHover,
-          focusColor: chipTheme.stateLayers.resolve(materialStates).focusColor,
-          hoverColor: chipTheme.stateLayers.resolve(materialStates).hoverColor,
-          splashColor: chipTheme.stateLayers.resolve(materialStates).pressColor,
+          overlayColor: chipTheme.stateLayers.resolve(states),
           child: wrapIcon(widget.trailingIcon!),
         ),
       ),
@@ -550,8 +549,7 @@ class _ChipState extends State<Chip>
           ? BorderSide.none
           : BorderSide(
               width: chipTheme.outlineSize,
-              color: chipTheme.outlineColor
-                  .resolve(materialStates),
+              color: chipTheme.outlineColor.resolve(materialStates),
             ),
     );
 
@@ -618,7 +616,12 @@ class _ChipState extends State<Chip>
       ),
     );
 
-    final Widget trailing = _buildTrailingIcon(context, theme, chipTheme);
+    final Widget trailing = _buildTrailingIcon(
+      context,
+      theme,
+      chipTheme,
+      materialStates,
+    );
 
     Widget result = AnimatedBuilder(
       animation: Listenable.merge(
@@ -643,11 +646,8 @@ class _ChipState extends State<Chip>
             onTap: canTap ? _handleTap : null,
             onTapDown: canTap ? _handleTapDown : null,
             onTapCancel: canTap ? _handleTapCancel : null,
-            onHover:
-                canTap ? updateMaterialState(MaterialState.hovered) : null,
-            focusColor: stateLayerTheme.focusColor,
-            hoverColor: stateLayerTheme.hoverColor,
-            splashColor: stateLayerTheme.pressColor,
+            onHover: canTap ? updateMaterialState(MaterialState.hovered) : null,
+            overlayColor: stateLayerTheme,
             child: SizedBox(
               height: chipTheme.containerHeight,
               child: AnimatedRow(

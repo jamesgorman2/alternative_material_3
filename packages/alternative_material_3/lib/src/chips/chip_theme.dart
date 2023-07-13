@@ -216,7 +216,7 @@ class ChipThemeData with Diagnosticable {
   /// create intermediate themes based on two themes.
   const ChipThemeData({
     StateThemeData? stateTheme,
-    MaterialStateProperty<StateLayerTheme>? stateLayers,
+    MaterialStateProperty<StateLayerColors>? stateLayers,
     MaterialStateProperty<Elevation>? outlinedElevation,
     MaterialStateProperty<Elevation>? elevatedElevation,
     double? outlineSize,
@@ -317,8 +317,8 @@ class ChipThemeData with Diagnosticable {
   ///
   /// Default color values are [ColorScheme.onSurface] and the
   /// opacities are from [ListTileThemeData.stateThemeData].
-  MaterialStateProperty<StateLayerTheme> get stateLayers => _stateLayers!;
-  final MaterialStateProperty<StateLayerTheme>? _stateLayers;
+  MaterialStateProperty<StateLayerColors> get stateLayers => _stateLayers!;
+  final MaterialStateProperty<StateLayerColors>? _stateLayers;
 
   /// The elevation of this chip based on the material state.
   MaterialStateProperty<Elevation> get outlinedElevation => _outlinedElevation!;
@@ -499,7 +499,7 @@ class ChipThemeData with Diagnosticable {
   /// new values.
   ChipThemeData copyWith({
     StateThemeData? stateTheme,
-    MaterialStateProperty<StateLayerTheme>? stateLayers,
+    MaterialStateProperty<StateLayerColors>? stateLayers,
     MaterialStateProperty<Elevation>? outlinedElevation,
     MaterialStateProperty<Elevation>? elevatedElevation,
     double? outlineSize,
@@ -607,7 +607,7 @@ class ChipThemeData with Diagnosticable {
     return ChipThemeData(
       stateTheme: StateThemeData.lerp(a?._stateTheme, b?._stateTheme, t),
       stateLayers: MaterialStateProperty.lerpNonNull(
-          a?._stateLayers, b?._stateLayers, t, StateLayerTheme.lerp),
+          a?._stateLayers, b?._stateLayers, t, StateLayerColors.lerp),
       outlinedElevation: MaterialStateProperty.lerpNonNull(
           a?._outlinedElevation, b?._outlinedElevation, t, Elevation.lerp),
       elevatedElevation: MaterialStateProperty.lerpNonNull(
@@ -742,7 +742,7 @@ class ChipThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<StateThemeData>(
         'stateTheme', _stateTheme,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<MaterialStateProperty<StateLayerTheme>>(
+    properties.add(DiagnosticsProperty<MaterialStateProperty<StateLayerColors>>(
         'stateLayers', _stateLayers,
         defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<Elevation>>(
@@ -835,11 +835,11 @@ class _LateResolvingChipThemeData extends ChipThemeData {
   StateThemeData get stateTheme => _stateTheme ?? _theme.stateTheme;
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
-          return StateLayerTheme(
+          return StateLayerColors(
             dragColor: StateLayer(
                 _colors.onSecondaryContainer, stateTheme.dragOpacity),
             pressColor: StateLayer(
@@ -850,7 +850,7 @@ class _LateResolvingChipThemeData extends ChipThemeData {
                 _colors.onSecondaryContainer, stateTheme.focusOpacity),
           );
         }
-        return StateLayerTheme(
+        return StateLayerColors(
           dragColor:
               StateLayer(_colors.onSurfaceVariant, stateTheme.dragOpacity),
           pressColor:

@@ -4,14 +4,14 @@
 
 import 'package:flutter/widgets.dart';
 
-import 'banner_theme.dart';
-import 'color_scheme.dart';
-import 'divider.dart';
-import 'elevation.dart';
-import 'material.dart';
-import 'scaffold.dart';
-import 'text_theme.dart';
-import 'theme.dart';
+import '../../alternative_material_3/lib/src/banner_theme.dart';
+import '../../alternative_material_3/lib/src/color_scheme.dart';
+import '../../alternative_material_3/lib/src/divider.dart';
+import '../../alternative_material_3/lib/src/elevation.dart';
+import '../../alternative_material_3/lib/src/material.dart';
+import '../../alternative_material_3/lib/src/scaffold.dart';
+import '../../alternative_material_3/lib/src/text_theme.dart';
+import '../../alternative_material_3/lib/src/theme.dart';
 
 // Examples can assume:
 // late BuildContext context;

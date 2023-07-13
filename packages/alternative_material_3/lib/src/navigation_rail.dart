@@ -6,6 +6,7 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
+import '../material.dart';
 import 'color_scheme.dart';
 import 'elevation.dart';
 import 'ink_well.dart';
@@ -751,8 +752,10 @@ class _RailDestination extends StatelessWidget {
             child: _IndicatorInkWell(
               onTap: onTap,
               customBorder: indicatorShape,
-              splashColor: colors.primary.withOpacity(0.12),
-              hoverColor: colors.primary.withOpacity(0.04),
+              overlayColor: StateLayerColors.only(
+                pressColor: StateLayer(colors.primary, 0.12),
+                hoverColor: StateLayer(colors.primary, 0.04),
+              ),
               indicatorOffset: indicatorOffset,
               child: content,
             ),
@@ -771,8 +774,7 @@ class _IndicatorInkWell extends InkResponse {
     super.child,
     super.onTap,
     super.customBorder,
-    super.splashColor,
-    super.hoverColor,
+    super.overlayColor,
     required this.indicatorOffset,
   }) : super(
     containedInkWell: true,

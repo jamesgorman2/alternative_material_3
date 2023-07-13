@@ -327,7 +327,6 @@ class _NavigationDestinationBuilder extends StatelessWidget {
         child: SizedBox(
           height: navigationDrawerTheme.tileHeight ?? defaults.tileHeight,
           child: InkWell(
-            highlightColor: Colors.transparent,
             onTap: info.onTap,
             customBorder: info.indicatorShape ?? navigationDrawerTheme.indicatorShape ?? defaults.indicatorShape!,
             child: Stack(
@@ -676,9 +675,6 @@ class _NavigationDrawerDefaultsM3 extends NavigationDrawerThemeData {
 
   @override
   Color? get backgroundColor => _colors.surface;
-
-  @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
 
   @override
   Color? get shadowColor => Colors.transparent;

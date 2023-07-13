@@ -1325,9 +1325,6 @@ class _BottomSheetDefaultsM3 extends BottomSheetThemeData {
   Color? get backgroundColor => _colors.surface;
 
   @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
-
-  @override
   Color? get shadowColor => Colors.transparent;
 
   @override

@@ -174,6 +174,7 @@ class CheckboxListTile extends StatelessWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
@@ -210,6 +211,7 @@ class CheckboxListTile extends StatelessWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
@@ -293,6 +295,8 @@ class CheckboxListTile extends StatelessWidget {
   ///
   /// Typically a [Text] widget.
   final Widget? supportingText;
+
+  final Widget? chip;
 
   /// A widget to display on the opposite side of the tile from the checkbox.
   ///
@@ -412,6 +416,7 @@ class CheckboxListTile extends StatelessWidget {
         overline: overline,
         headline: headline,
         supportingText: supportingText,
+        chip: chip,
         trailing: trailing,
         enabled: enabled ?? onChanged != null,
         onTap: onChanged != null ? _handleValueChange : null,

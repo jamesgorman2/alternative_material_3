@@ -165,6 +165,7 @@ class RadioListTile<T> extends StatelessWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
@@ -198,6 +199,7 @@ class RadioListTile<T> extends StatelessWidget {
     this.overline,
     this.headline,
     this.supportingText,
+    this.chip,
     this.secondary,
     this.selected = false,
     this.controlAffinity = ListTileControlAffinity.platform,
@@ -300,6 +302,8 @@ class RadioListTile<T> extends StatelessWidget {
   /// Typically a [Text] widget.
   final Widget? supportingText;
 
+  final Widget? chip;
+
   /// A widget to display on the opposite side of the tile from the radio button.
   ///
   /// Typically an [Icon] widget.
@@ -381,6 +385,7 @@ class RadioListTile<T> extends StatelessWidget {
         overline: overline,
         headline: headline,
         supportingText: supportingText,
+        chip: chip,
         trailing: trailing,
         enabled: onChanged != null,
         onTap: onChanged != null

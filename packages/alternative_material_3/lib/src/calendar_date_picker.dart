@@ -979,9 +979,10 @@ class _DayPickerState extends State<_DayPicker> {
 
         final Color? dayForegroundColor = resolve<Color?>((DatePickerThemeData? theme) => isToday ? theme?.todayForegroundColor : theme?.dayForegroundColor, states);
         final Color? dayBackgroundColor = resolve<Color?>((DatePickerThemeData? theme) => isToday ? theme?.todayBackgroundColor : theme?.dayBackgroundColor, states);
-        final MaterialStateProperty<Color?> dayOverlayColor = MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) => effectiveValue((DatePickerThemeData? theme) => theme?.dayOverlayColor?.resolve(states)),
-        );
+        final StateLayerColors dayOverlayColor =
+            StateLayerColors.maybeFromMaterialStateProperty(
+                  datePickerTheme.dayOverlayColor ?? defaults.dayOverlayColor,
+                ) ?? StateLayerColors.none;
         final BoxDecoration decoration = isToday
           ? BoxDecoration(
               color: dayBackgroundColor,
@@ -1196,10 +1197,10 @@ class _YearPickerState extends State<YearPicker> {
 
     final Color? textColor = resolve<Color?>((DatePickerThemeData? theme) => isCurrentYear ? theme?.todayForegroundColor : theme?.yearForegroundColor, states);
     final Color? background = resolve<Color?>((DatePickerThemeData? theme) => isCurrentYear ? theme?.todayBackgroundColor : theme?.yearBackgroundColor, states);
-    final MaterialStateProperty<Color?> overlayColor =
-      MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) =>
-        effectiveValue((DatePickerThemeData? theme) => theme?.dayOverlayColor?.resolve(states)),
-      );
+    final StateLayerColors overlayColor =
+        StateLayerColors.maybeFromMaterialStateProperty(
+          datePickerTheme.dayOverlayColor ?? defaults.dayOverlayColor,
+        ) ?? StateLayerColors.none;
 
     BoxBorder? border;
     if (isCurrentYear) {

@@ -5,9 +5,11 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
+import 'colors.dart';
 import 'elevation.dart';
 import 'ink_well.dart';
 import 'material.dart';
+import 'state_theme.dart';
 import 'text_field/text_field_theme.dart';
 import 'text_form_field.dart';
 import 'theme.dart';
@@ -184,6 +186,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
                 onTap: () {
                   onSelected(option);
                 },
+                overlayColor: StateLayerColors.none,
                 child: Builder(builder: (BuildContext context) {
                   final bool highlight =
                       AutocompleteHighlightedOption.of(context) == index;
@@ -195,7 +198,9 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
                   }
                   return Container(
                     color: highlight
-                        ? Theme.of(context).colorScheme.focusColor
+                        ? (Theme.of(context).colorScheme.brightness == Brightness.light
+                        ? Colors.black.withOpacity(0.12)
+                        : Colors.white.withOpacity(0.12))
                         : null,
                     padding: const EdgeInsets.all(16.0),
                     child: Text(displayStringForOption(option)),

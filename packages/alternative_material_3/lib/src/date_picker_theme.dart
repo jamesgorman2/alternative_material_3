@@ -643,9 +643,6 @@ class _DatePickerDefaultsM3 extends DatePickerThemeData {
   Color? get shadowColor => Colors.transparent;
 
   @override
-  Color? get surfaceTintColor => _colors.surfaceTint;
-
-  @override
   Color? get headerBackgroundColor => Colors.transparent;
 
   @override

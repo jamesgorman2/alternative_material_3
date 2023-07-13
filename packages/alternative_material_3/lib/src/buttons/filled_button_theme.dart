@@ -195,14 +195,10 @@ class _LateResolvingFilledButtonStyle extends _LateResolvingButtonStyle {
       });
 
   @override
-  MaterialStateProperty<StateLayerTheme> get stateLayers =>
+  MaterialStateProperty<StateLayerColors> get stateLayers =>
       _stateLayers ??
       MaterialStateProperty.all(
-        StateLayerTheme(
-          hoverColor: StateLayer(_colors.onPrimary, stateTheme.hoverOpacity),
-          focusColor: StateLayer(_colors.onPrimary, stateTheme.focusOpacity),
-          pressColor: StateLayer(_colors.onPrimary, stateTheme.pressOpacity),
-        ),
+        StateLayerColors.from(_colors.onPrimary, stateTheme),
       );
 
   @override
