@@ -11,7 +11,7 @@ import '../elevation.dart';
 import '../ink_well.dart';
 import '../material.dart';
 import '../material_state.dart';
-import '../panting/borders.dart';
+import '../painting/borders.dart';
 import '../state_theme.dart';
 import '../theme.dart';
 

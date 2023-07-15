@@ -890,7 +890,7 @@ class _InkResponseState extends State<_InkResponseStateWidget>
 
     if (value) {
       if (highlight == null) {
-        Color resolvedOverlayColor = widget.overlayColor.resolve(statesController.value);
+        final Color resolvedOverlayColor = widget.overlayColor.resolve(statesController.value);
         final RenderBox referenceBox = context.findRenderObject()! as RenderBox;
         _highlights[type] = InkHighlight(
           controller: Material.of(context),

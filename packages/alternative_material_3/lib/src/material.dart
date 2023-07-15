@@ -1035,25 +1035,32 @@ class _MaterialInteriorState
         ColorExtensions.nonNullTransparency(_shadowColor?.evaluate(animation));
 
     Widget deepShadow({required Widget child}) {
-      //TODO disable from theme
       if (shadowElevation == 0.0) {
-        return child;
+        return _ShadowWidget(shadows: const [], shape: shape, child: child);
       }
       final double elevationT =
           math.min(shadowElevation / Elevation.level5.height, 1.0);
-      final radius = lerpDouble(1.0, 4.0, elevationT) ?? 0.0;
-      return Container(
-        decoration: ShapeDecoration(
-          shape: shape,
-          shadows: [
-            BoxShadow(
-              color: shadowColor.withOpacity(0.3),
-              blurRadius: radius,
-              // spreadRadius: radius,
-              offset: Offset(0.0, lerpDouble(1.0, 4.0, elevationT) ?? 0.0),
-            ),
-          ],
-        ),
+      final tightRadius = lerpDouble(0.0, 3.0, elevationT) ?? 0.0;
+      final looseRadius = lerpDouble(0.0, 12.0, elevationT) ?? 0.0;
+
+      final tightOpacity = math.min(shadowElevation / 3.0, 0.25);
+      final looseOpacity = math.min(shadowElevation / 3.0, 0.15);
+      return _ShadowWidget(
+        shape: shape,
+        shadows: [
+          BoxShadow(
+            color: shadowColor.withOpacity(tightOpacity),
+            blurRadius: tightRadius,
+            // spreadRadius: radius,
+            offset: Offset(0.0, tightRadius),
+          ),
+          BoxShadow(
+            color: shadowColor.withOpacity(looseOpacity),
+            blurRadius: looseRadius,
+            // spreadRadius: radius,
+            offset: Offset(0.0, looseRadius / 3.0),
+          ),
+        ],
         child: child,
       );
     }
@@ -1065,7 +1072,7 @@ class _MaterialInteriorState
           textDirection: Directionality.maybeOf(context),
         ),
         clipBehavior: widget.clipBehavior,
-        elevation: shadowElevation,
+        // elevation: shadowElevation,
         color: color,
         shadowColor: shadowColor,
         child: _ShapeBorderPaint(
@@ -1075,6 +1082,160 @@ class _MaterialInteriorState
         ),
       ),
     );
+  }
+}
+
+@immutable
+class _ShadowWidget extends SingleChildRenderObjectWidget {
+  const _ShadowWidget({
+    required this.shadows,
+    required this.shape,
+    required super.child,
+  });
+
+  final List<BoxShadow> shadows;
+  final ShapeBorder shape;
+
+  @override
+  _RenderShadows createRenderObject(BuildContext context) {
+    return _RenderShadows(shadows, shape, Directionality.maybeOf(context));
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderShadows renderObject) {
+    renderObject
+      ..shadows = shadows
+      ..shape = shape
+      ..textDirection = Directionality.maybeOf(context);
+  }
+}
+
+class _RenderShadows extends RenderProxyBox {
+  _RenderShadows(
+    List<BoxShadow> shadows,
+    ShapeBorder shape,
+    TextDirection? textDirection,
+  )   : _shadows = shadows,
+        _shape = shape,
+        _textDirection = textDirection;
+
+  List<BoxShadow> get shadows => _shadows;
+  List<BoxShadow> _shadows;
+
+  set shadows(List<BoxShadow> value) {
+    if (value != _shadows) {
+      _shadows = value;
+      clearCache();
+      markNeedsPaint();
+    }
+  }
+
+  ShapeBorder get shape => _shape;
+  ShapeBorder _shape;
+
+  set shape(ShapeBorder value) {
+    if (value != _shape) {
+      _shape = value;
+      clearCache();
+      markNeedsPaint();
+    }
+  }
+
+  TextDirection? get textDirection => _textDirection;
+  TextDirection? _textDirection;
+
+  set textDirection(TextDirection? value) {
+    if (value != _textDirection) {
+      _textDirection = value;
+      clearCache();
+      markNeedsPaint();
+    }
+  }
+
+  Rect? _innerShadowBounds;
+  Rect? _outerShadowBounds;
+  List<Paint>? _shadowPaints;
+  List<Rect>? _shadowBounds;
+  List<Path>? _shadowPaths;
+
+  void clearCache() {
+    _innerShadowBounds = null;
+    _outerShadowBounds = null;
+    _shadowPaints = null;
+    _shadowBounds = null;
+    _shadowPaths = null;
+  }
+
+  void _fillCache(Rect rect) {
+    _innerShadowBounds = rect;
+    _outerShadowBounds = _innerShadowBounds!.inflate(20.0);
+    _shadowPaints = <Paint>[
+      ...shadows.map((BoxShadow shadow) => shadow.toPaint()),
+    ];
+    if (shape.preferPaintInterior) {
+      _shadowBounds = <Rect>[
+        ...shadows.map((BoxShadow shadow) {
+          return rect.shift(shadow.offset).inflate(shadow.spreadRadius);
+        }),
+      ];
+    } else {
+      _shadowPaths = <Path>[
+        ...shadows.map((BoxShadow shadow) {
+          return shape.getOuterPath(
+            rect.shift(shadow.offset).inflate(shadow.spreadRadius),
+            textDirection: textDirection,
+          );
+        }),
+      ];
+    }
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (shadows.isEmpty) {
+      super.paint(context, offset);
+      return;
+    }
+
+    final canvas = context.canvas;
+    final Rect rect = offset & size;
+    if (rect != _innerShadowBounds) {
+      _fillCache(rect);
+    }
+
+    canvas.saveLayer(_outerShadowBounds, Paint());
+
+    if (shape.preferPaintInterior) {
+      for (int index = 0; index < _shadowBounds!.length; index++) {
+        shape.paintInterior(
+          canvas,
+          _shadowBounds![index],
+          _shadowPaints![index],
+          textDirection: textDirection,
+        );
+      }
+    } else {
+      for (int index = 0; index < _shadowPaths!.length; index++) {
+        canvas.drawPath(_shadowPaths![index], _shadowPaints![index]);
+      }
+    }
+
+    canvas.drawPath(
+      shape.getInnerPath(rect, textDirection: textDirection),
+      Paint()..blendMode = BlendMode.clear,
+    );
+    canvas.restore();
+
+    super.paint(context, offset);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<List<BoxShadow>>('shadows', shadows));
+    properties.add(DiagnosticsProperty<ShapeBorder>('shape', shape));
+    properties.add(
+        DiagnosticsProperty<TextDirection>('textDirection', textDirection));
   }
 }
 

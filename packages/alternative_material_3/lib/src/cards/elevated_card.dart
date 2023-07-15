@@ -55,9 +55,13 @@ class ElevatedCardTheme extends InheritedWidget {
   /// card widgets.
   final CardThemeData data;
 
-  /// The [ThemeData.cardTheme] property of the ambient [Theme].
+  /// Returns the data from the closest [ElevatedCardTheme] instance that encloses
+  /// the given context, otherwise
+  /// the [ThemeData.elevatedCardTheme] property of the ambient [Theme].
   static CardThemeData of(BuildContext context) {
-    return Theme.of(context).elevatedCardTheme;
+    final ElevatedCardTheme? inheritedTheme =
+      context.dependOnInheritedWidgetOfExactType<ElevatedCardTheme>();
+    return inheritedTheme?.data ?? Theme.of(context).elevatedCardTheme;
   }
 
   /// Return a [TextFieldThemeData] that merges the nearest ancestor [TextFieldTheme]

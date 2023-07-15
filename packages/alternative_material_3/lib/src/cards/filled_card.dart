@@ -20,7 +20,7 @@ class FilledCard extends Card {
     super.autofocus = false,
     super.statesController,
     super.child,
-  }): super(interactive: false);
+  }) : super(interactive: false);
 
   const FilledCard.interactive({
     super.key,
@@ -36,7 +36,7 @@ class FilledCard extends Card {
     super.onHover,
     super.onFocusChange,
     super.child,
-  }): super(interactive: true);
+  }) : super(interactive: true);
 
   @override
   CardThemeData resolveTheme(BuildContext context, CardThemeData? theme) {
@@ -48,16 +48,19 @@ class FilledCard extends Card {
 @immutable
 class FilledCardTheme extends InheritedWidget {
   /// Applies the given theme [data] to [child].
-  const FilledCardTheme(
-      {super.key, required this.data, required super.child});
+  const FilledCardTheme({super.key, required this.data, required super.child});
 
   /// Specifies the color, shape, and elevation style values for descendant
   /// card widgets.
   final CardThemeData data;
 
-  /// The [ThemeData.cardTheme] property of the ambient [Theme].
+  /// Returns the data from the closest [FilledCard] instance that encloses
+  /// the given context, otherwise
+  /// the [ThemeData.filledCardTheme] property of the ambient [Theme].
   static CardThemeData of(BuildContext context) {
-    return Theme.of(context).filledCardTheme;
+    final FilledCardTheme? inheritedTheme =
+        context.dependOnInheritedWidgetOfExactType<FilledCardTheme>();
+    return inheritedTheme?.data ?? Theme.of(context).filledCardTheme;
   }
 
   /// Return a [TextFieldThemeData] that merges the nearest ancestor [TextFieldTheme]

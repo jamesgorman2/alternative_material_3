@@ -4,6 +4,7 @@
 
 import 'package:flutter/widgets.dart';
 
+import '../disabled.dart';
 import '../ink_well.dart';
 import '../material.dart';
 import '../material_state.dart';
@@ -25,10 +26,11 @@ abstract class Card extends StatefulWidget {
   const Card({
     super.key,
     this.theme,
-    this.enabled = true,
+    bool enabled = true,
     this.interactive = false,
     this.borderOnForeground = true,
     this.semanticContainer = true,
+    this.ignoreSemanticsWhenDisabled = true,
     this.focusNode,
     this.autofocus = false,
     this.statesController,
@@ -37,7 +39,8 @@ abstract class Card extends StatefulWidget {
     this.onHover,
     this.onFocusChange,
     this.child,
-  });
+  }) : enabled = enabled &&
+            (!interactive || onPressed != null || onLongPress != null);
 
   /// [CardThemeData] that only apply to this card.
   final CardThemeData? theme;
@@ -109,6 +112,9 @@ abstract class Card extends StatefulWidget {
   /// This flag should be false if the card contains multiple different types
   /// of content.
   final bool semanticContainer;
+
+  /// {@macro alternative_material_3.disabled.ignoringSemantics}
+  final bool ignoreSemanticsWhenDisabled;
 
   /// {@macro flutter.widgets.Focus.focusNode}
   final FocusNode? focusNode;
@@ -249,7 +255,11 @@ class _CardState extends State<Card> with TickerProviderStateMixin {
         child: interactive(
           child: Semantics(
             explicitChildNodes: !widget.semanticContainer,
-            child: widget.child,
+            child: Disabled(
+              isDisabled: !widget.enabled,
+              ignoringSemantics: widget.ignoreSemanticsWhenDisabled,
+              child: widget.child ?? const SizedBox.shrink(),
+            ),
           ),
         ),
       ),

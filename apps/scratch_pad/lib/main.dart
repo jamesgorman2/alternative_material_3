@@ -17,16 +17,17 @@ class MyApp extends StatelessWidget {
     // cursor style between chips still text
 
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          materialTapTargetSize: MaterialTapTargetSize.padded,
-          minInteractiveDimension: 48.0,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        home: DeviceFrame(
-          device: Devices.android.mediumPhone,
-          screen: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        materialTapTargetSize: MaterialTapTargetSize.padded,
+        minInteractiveDimension: 48.0,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      // home: DeviceFrame(
+      //   device: Devices.android.mediumPhone,
+      //   screen: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -52,14 +53,39 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // width: 400,
-        // color: Colors.black26,
-        // padding: const EdgeInsets.all(24),
-        child: ListTile(
-          headline: Text("List"),
-          chip: SuggestionChip(label: Text('Chip')),
-        )
-      ),
+          // width: 600,
+          // color: Colors.white,
+          padding: const EdgeInsets.all(24),
+          child: SegmentedButton<int>(
+            onSelectionChanged: (_){},
+            selected: const {1},
+            segments: const [
+              ButtonSegment<int>(
+                value: 0,
+                icon: Icon(Icons.star_outline),
+                label: Text('Enabled1'),
+              ),
+              ButtonSegment<int>(
+                value: 1,
+                icon: Icon(Icons.palette_outlined),
+                label: Text('Selected'),
+              ),
+              ButtonSegment<int>(
+                value: 2,
+                icon: Icon(Icons.person_outline),
+                label: Text('End3'),
+              ),
+            ],
+
+          ),
+          // FilterChip(
+          //   label: const Text('Filter chip'),
+          //   isSelected: false,
+          //   onPressed: () {},
+          //
+          //   // onDeletePressed: (){},
+          // ),
+          ),
     );
   }
 }
@@ -76,13 +102,16 @@ class _StateGuyState extends State<_StateGuy> {
   void initState() {
     print('initState');
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-      setState((){print('setState');});
+      setState(() {
+        print('setState');
+      });
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     print('build');
-    return const SizedBox(width:100,height: 100,child: Placeholder());
+    return const SizedBox(width: 100, height: 100, child: Placeholder());
   }
 }

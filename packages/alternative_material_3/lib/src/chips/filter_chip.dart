@@ -24,7 +24,6 @@ class FilterChip extends StatelessWidget {
   /// Create an outlined filter chip.
   const FilterChip({
     super.key,
-    this.enabled = true,
     this.theme,
     required this.isSelected,
     this.tooltipMessage,
@@ -47,7 +46,6 @@ class FilterChip extends StatelessWidget {
   /// Create an elevated filter chip.
   const FilterChip.elevated({
     super.key,
-    this.enabled = true,
     this.theme,
     required this.isSelected,
     this.tooltipMessage,
@@ -69,8 +67,8 @@ class FilterChip extends StatelessWidget {
 
   final bool _isElevated;
 
-  /// {@macro alternative_material_3.chip.enabled}
-  final bool enabled;
+  /// {@macro alternative_material_3.chip.isEnabled}
+  bool get enabled => onPressed != null;
 
   /// {@macro alternative_material_3.chip.theme}
   final ChipThemeData? theme;
@@ -507,7 +505,8 @@ class _MultiSelectFilterChipState<T> extends State<MultiSelectFilterChip<T>>
             link: link,
             offset: Offset(
               textDirection == TextDirection.ltr
-                  ? -shadowPadding : shadowPadding,
+                  ? -shadowPadding
+                  : shadowPadding,
               -(chipBox.size.height - chipTheme.containerHeight) / 2.0 +
                   elevationVerticalOffset,
             ),
@@ -571,7 +570,10 @@ class _MultiSelectFilterChipState<T> extends State<MultiSelectFilterChip<T>>
   Widget build(BuildContext context) {
     debugCheckHasTapRegionSurface(context);
 
-    final chipTheme = ChipTheme.resolve(context, widget.theme);
+    final chipTheme = ChipTheme.resolve(
+      context,
+      currentContextTheme: widget.theme,
+    );
 
     return TapRegion(
       groupId: _tapRegionGroup,

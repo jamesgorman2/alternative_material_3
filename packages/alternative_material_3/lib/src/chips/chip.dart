@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 
 import '../animation/animated_layout.dart';
 import '../debug.dart';
+import '../disabled.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
 import '../interaction/hit_detection.dart';
@@ -478,6 +479,7 @@ class _ChipState extends State<Chip>
       );
 
       return Padding(
+        key: const Key('trailing_icon'),
         padding: EdgeInsets.symmetric(
           horizontal: chipTheme.iconPadding,
           vertical: (chipTheme.containerHeight - chipTheme.iconSize) / 2.0,
@@ -498,7 +500,10 @@ class _ChipState extends State<Chip>
     }
 
     if (!hasTrailing) {
-      return SizedBox(width: chipTheme.labelEndPadding);
+      return SizedBox(
+        key: const Key('trailing_padding'),
+        width: chipTheme.labelEndPadding,
+      );
     }
     if (widget.onTrailingIconPressed == null) {
       return wrapIcon(widget.trailingIcon!);
@@ -512,6 +517,7 @@ class _ChipState extends State<Chip>
         1.75;
 
     return Semantics(
+      key: const Key('trailing_button'),
       container: true,
       button: true,
       child: _wrapWithTooltip(
@@ -534,12 +540,14 @@ class _ChipState extends State<Chip>
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasMaterial(context));
     assert(debugCheckHasMediaQuery(context));
     assert(debugCheckHasDirectionality(context));
     assert(debugCheckHasMaterialLocalizations(context));
 
-    final ChipThemeData chipTheme = ChipTheme.resolve(context, widget.theme);
+    final ChipThemeData chipTheme = ChipTheme.resolve(
+      context,
+      currentContextTheme: widget.theme,
+    );
 
     final ThemeData theme = Theme.of(context);
 
@@ -575,9 +583,9 @@ class _ChipState extends State<Chip>
         child: SizedBox(
           width: chipTheme.avatarSize,
           height: chipTheme.avatarSize,
-          child: Opacity(
-            opacity:
-                widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
+          child: Disableable(
+            isDisabled: !widget.isEnabled,
+            stateTheme: chipTheme.stateTheme,
             child: widget.avatar,
           ),
         ),
@@ -588,9 +596,9 @@ class _ChipState extends State<Chip>
       leading = SizedBox(
         width: chipTheme.iconSize,
         height: chipTheme.iconSize,
-        child: Opacity(
-          opacity:
-              widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
+        child: Disableable(
+          isDisabled: !widget.isEnabled,
+          stateTheme: chipTheme.stateTheme,
           child: IconTheme.merge(
             data: leadingIconTheme,
             child: widget.leadingIcon!,
@@ -604,8 +612,9 @@ class _ChipState extends State<Chip>
       endLeadingPadding = null;
     }
 
-    final Widget label = Opacity(
-      opacity: widget.isEnabled ? 1.0 : chipTheme.stateTheme.disabledOpacity,
+    final Widget label = Disableable(
+      isDisabled: !widget.isEnabled,
+      stateTheme: chipTheme.stateTheme,
       child: DefaultTextStyle(
         overflow: TextOverflow.fade,
         textAlign: TextAlign.start,
@@ -631,6 +640,7 @@ class _ChipState extends State<Chip>
         final stateLayerTheme = chipTheme.stateLayers.resolve(materialStates);
         return Material(
           elevation: elevation,
+          type: MaterialType.button,
           shadowColor: shadowColor,
           color: widget.isElevatedChip
               ? chipTheme.containerColor.resolve(materialStates)

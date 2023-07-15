@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 
 import 'always_complete_animation_controller.dart';
 import 'array_distribution.dart';
+import 'cross_fade.dart';
 
 /// A widget that displays its children in a horizontal array.
 ///
@@ -291,7 +292,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
   late Animation<double> sizeAnimation;
   late Animation<double> reverseSizeAnimation;
 
-  List<_CrossFade> currentAnimations = [];
+  List<CrossFadeRenderWidget> currentAnimations = [];
 
   @override
   void initState() {
@@ -329,7 +330,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
   }
 
   @override
-  void didUpdateWidget(covariant AnimatedLayout oldWidget) {
+  void didUpdateWidget(AnimatedLayout oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration) {
       animationController.duration = widget.duration;
@@ -352,7 +353,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
         curve: widget.sizeCurve,
       );
     }
-    if (!listEquality.equals(oldWidget.children, widget.children)) {
+    if (!WidgetEquality.listEquality.equals(oldWidget.children, widget.children)) {
       hasChanges = true;
     }
   }
@@ -371,8 +372,6 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
   bool animationCompleteWidgetNotUpdated = false;
 
   static const Widget empty = SizedBox.shrink();
-  static const ListEquality<Widget?> listEquality =
-      ListEquality(_WidgetEquality());
 
   List<Widget> withoutNulls(List<Widget?> l) =>
       l.map((e) => e ?? empty).toList(growable: false);
@@ -385,22 +384,22 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
     }
   }
 
-  _CrossFade updateCrossFade({
-    _CrossFade? oldCrossFade,
+  CrossFadeRenderWidget updateCrossFade({
+    CrossFadeRenderWidget? oldCrossFade,
     required Widget newWidget,
     required TextDirection textDirection,
   }) {
-    const equality = _WidgetEquality();
+    const equality = WidgetEquality();
     final crossAxis =
         widget.direction == Axis.horizontal ? Axis.vertical : Axis.horizontal;
     if (oldCrossFade != null) {
       switch (oldCrossFade.direction) {
-        case _CrossFadeDirection.aToB:
+        case CrossFadeDirection.aToB:
           if (equality.equals(newWidget, oldCrossFade.b)) {
-            return _CrossFade(
+            return CrossFadeRenderWidget(
               a: empty,
               b: newWidget,
-              direction: _CrossFadeDirection.aToB,
+              direction: CrossFadeDirection.aToB,
               doNotAnimate: null,
               animationController: kAlwaysCompleteAnimationController,
               fadeOutAnimation: kAlwaysDismissedAnimation,
@@ -411,10 +410,10 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
               textDirection: textDirection,
             );
           }
-          return _CrossFade(
+          return CrossFadeRenderWidget(
             a: newWidget,
             b: oldCrossFade.b,
-            direction: _CrossFadeDirection.bToA,
+            direction: CrossFadeDirection.bToA,
             doNotAnimate: newWidget == empty || oldCrossFade.b == empty
                 ? crossAxis
                 : null,
@@ -426,12 +425,12 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
             clipBehaviour: widget.animationClipBehaviour,
             textDirection: textDirection,
           );
-        case _CrossFadeDirection.bToA:
+        case CrossFadeDirection.bToA:
           if (equality.equals(newWidget, oldCrossFade.a)) {
-            return _CrossFade(
+            return CrossFadeRenderWidget(
               a: newWidget,
               b: empty,
-              direction: _CrossFadeDirection.bToA,
+              direction: CrossFadeDirection.bToA,
               doNotAnimate: null,
               animationController: kAlwaysCompleteAnimationController,
               fadeOutAnimation: kAlwaysDismissedAnimation,
@@ -442,10 +441,10 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
               textDirection: textDirection,
             );
           }
-          return _CrossFade(
+          return CrossFadeRenderWidget(
             a: oldCrossFade.a,
             b: newWidget,
-            direction: _CrossFadeDirection.aToB,
+            direction: CrossFadeDirection.aToB,
             doNotAnimate: oldCrossFade.a == empty || newWidget == empty
                 ? crossAxis
                 : null,
@@ -459,10 +458,10 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
           );
       }
     } else {
-      return _CrossFade(
+      return CrossFadeRenderWidget(
         a: newWidget,
         b: empty,
-        direction: _CrossFadeDirection.bToA,
+        direction: CrossFadeDirection.bToA,
         doNotAnimate: null,
         animationController: animationController,
         fadeOutAnimation: fadeOutAnimation,
@@ -497,7 +496,7 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
       currentAnimations = currentAnimations
           .map((crossFade) => updateCrossFade(
                 oldCrossFade: crossFade,
-                newWidget: crossFade.direction == _CrossFadeDirection.aToB
+                newWidget: crossFade.direction == CrossFadeDirection.aToB
                     ? crossFade.b
                     : crossFade.a,
                 textDirection: textDirection,
@@ -507,10 +506,10 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
     }
     if (!isAnimating && hasChanges) {
       final length = math.max(currentAnimations.length, widget.children.length);
-      final List<_CrossFade> newCurrentAnimations = [];
+      final List<CrossFadeRenderWidget> newCurrentAnimations = [];
       final toWidgets = withoutNulls(widget.children);
       for (int i = 0; i < length; ++i) {
-        final _CrossFade? oldCrossFace =
+        final CrossFadeRenderWidget? oldCrossFace =
             i < currentAnimations.length ? currentAnimations[i] : null;
         final Widget newWidget = i < toWidgets.length ? toWidgets[i] : empty;
         newCurrentAnimations.add(
@@ -544,463 +543,5 @@ class _AnimatedLayoutState extends State<AnimatedLayout>
       mainAxisFit: widget.mainAxisFit,
       children: animateChildren(textDirection),
     );
-  }
-}
-
-@immutable
-class _WidgetEquality implements Equality<Widget?> {
-  const _WidgetEquality();
-
-  @override
-  bool equals(Widget? e1, Widget? e2) {
-    if (identical(e1, e2)) {
-      return true;
-    }
-    if (e1?.key == e2?.key && e1?.key != null) {
-      return true;
-    }
-    if (e1?.key != e2?.key && (e1?.key != null || e2?.key != null)) {
-      return false;
-    }
-    if (e1 == null || e2 == null) {
-      return false;
-    }
-    if (e1 is Icon && e2 is Icon) {
-      return e1.icon == e2.icon;
-    }
-    if (e1 is Text && e2 is Text) {
-      return e1.data == e2.data && e1.textSpan == e2.textSpan;
-    }
-    if (e1 is SizedBox && e2 is SizedBox) {
-      return e1.width == e2.width &&
-          e1.height == e2.height &&
-          equals(e1.child, e2.child);
-    }
-    if (e1 is ConstrainedBox && e2 is ConstrainedBox) {
-      return e1.constraints == e2.constraints && equals(e1.child, e2.child);
-    }
-
-    if (e1 is SingleChildScrollView && e2 is SingleChildScrollView) {
-      return equals(e1.child, e2.child);
-    }
-    if (e1 is SingleChildRenderObjectWidget &&
-        e2 is SingleChildRenderObjectWidget) {
-      return equals(e1.child, e2.child);
-    }
-    if (e1 is ParentDataWidget && e2 is ParentDataWidget) {
-      return equals(e1.child, e2.child);
-    }
-    if (e1 is ProxyWidget && e2 is ProxyWidget) {
-      return equals(e1.child, e2.child);
-    }
-    if (e1 is Container && e2 is Container) {
-      return equals(e1.child, e2.child);
-    }
-
-    if (e1 is MultiChildRenderObjectWidget &&
-        e2 is MultiChildRenderObjectWidget) {
-      return _AnimatedLayoutState.listEquality.equals(e1.children, e2.children);
-    }
-
-    if (e1 is SlottedMultiChildRenderObjectWidgetMixin &&
-        e2 is SlottedMultiChildRenderObjectWidgetMixin) {
-      return _AnimatedLayoutState.listEquality.equals(
-        e1.slots.map(e1.childForSlot).toList(),
-        e2.slots.map(e1.childForSlot).toList(),
-      );
-    }
-
-    return e1 == e2;
-  }
-
-  @override
-  int hash(Widget? e) {
-    return e.hashCode;
-  }
-
-  @override
-  bool isValidKey(Object? o) {
-    return o is Widget;
-  }
-}
-
-enum _CrossFadeSlot {
-  from,
-  to,
-}
-
-enum _CrossFadeDirection {
-  aToB,
-  bToA,
-}
-
-class _CrossFade extends RenderObjectWidget
-    with SlottedMultiChildRenderObjectWidgetMixin<_CrossFadeSlot> {
-  const _CrossFade({
-    required this.a,
-    required this.b,
-    required this.direction,
-    required this.doNotAnimate,
-    required this.animationController,
-    required this.fadeOutAnimation,
-    required this.fadeInAnimation,
-    required this.sizeAnimation,
-    required this.alignment,
-    required this.clipBehaviour,
-    required this.textDirection,
-  });
-
-  final Widget a;
-  final Widget b;
-  final _CrossFadeDirection direction;
-  final Axis? doNotAnimate;
-  final AnimationController animationController;
-  final Animation<double> fadeOutAnimation;
-  final Animation<double> fadeInAnimation;
-  final Animation<double> sizeAnimation;
-  final AlignmentDirectional alignment;
-  final Clip clipBehaviour;
-  final TextDirection textDirection;
-
-  @override
-  Widget? childForSlot(_CrossFadeSlot slot) {
-    Widget animatedOpacity(Widget w, Animation<double> a, [Key? key]) {
-      return AnimatedBuilder(
-        key: key,
-        animation: a,
-        builder: (context, child) => Opacity(
-          opacity: a.value,
-          child: child,
-        ),
-        child: w,
-      );
-    }
-
-    final Widget from;
-    final Widget to;
-    final Key fromKey;
-    final Key toKey;
-    switch (direction) {
-      case _CrossFadeDirection.aToB:
-        from = a;
-        fromKey = const Key('a');
-        to = b;
-        toKey = const Key('b');
-      case _CrossFadeDirection.bToA:
-        from = b;
-        fromKey = const Key('b');
-        to = a;
-        toKey = const Key('a');
-    }
-
-    switch (slot) {
-      case _CrossFadeSlot.from:
-        return IgnorePointer(
-          key: fromKey,
-          child: ExcludeSemantics(
-            child: ExcludeFocus(
-              child: animatedOpacity(from, fadeOutAnimation),
-            ),
-          ),
-        );
-      // return animatedOpacity(from, fadeOutAnimation, fromKey);
-      case _CrossFadeSlot.to:
-        return animatedOpacity(to, fadeInAnimation, toKey);
-    }
-  }
-
-  @override
-  _RenderCrossFade createRenderObject(BuildContext context) {
-    return _RenderCrossFade(
-      doNotAnimate: doNotAnimate,
-      textDirection: textDirection,
-      animationController: animationController,
-      sizeAnimation: sizeAnimation,
-      alignment: alignment,
-      clipBehavior: clipBehaviour,
-    );
-  }
-
-  @override
-  void updateRenderObject(BuildContext context, _RenderCrossFade renderObject) {
-    renderObject
-      ..doNotAnimate = doNotAnimate
-      ..textDirection = textDirection
-      ..animationController = animationController
-      ..sizeAnimation = sizeAnimation
-      ..alignment = alignment
-      ..clipBehavior = clipBehaviour;
-  }
-
-  @override
-  Iterable<_CrossFadeSlot> get slots => _CrossFadeSlot.values;
-}
-
-class _RenderCrossFade extends RenderBox
-    with SlottedContainerRenderObjectMixin<_CrossFadeSlot> {
-  _RenderCrossFade({
-    required Axis? doNotAnimate,
-    required TextDirection textDirection,
-    required AnimationController animationController,
-    required Animation<double> sizeAnimation,
-    required AlignmentDirectional alignment,
-    Clip clipBehavior = Clip.hardEdge,
-  })  : _doNotAnimate = doNotAnimate,
-        _textDirection = textDirection,
-        _animationController = animationController,
-        _sizeAnimation = sizeAnimation,
-        _alignment = alignment,
-        _clipBehavior = clipBehavior;
-
-  RenderBox? get from => childForSlot(_CrossFadeSlot.from);
-
-  RenderBox? get to => childForSlot(_CrossFadeSlot.to);
-
-  late bool _hasVisualOverflow;
-  double? _lastValue;
-
-  Axis? get doNotAnimate => _doNotAnimate;
-  Axis? _doNotAnimate;
-
-  set doNotAnimate(Axis? value) {
-    if (value != _doNotAnimate) {
-      _doNotAnimate = value;
-      markNeedsLayout();
-    }
-  }
-
-  TextDirection get textDirection => _textDirection;
-  TextDirection _textDirection;
-
-  set textDirection(TextDirection value) {
-    if (value != _textDirection) {
-      _textDirection = value;
-      markNeedsLayout();
-    }
-  }
-
-  AnimationController get animationController => _animationController;
-  AnimationController _animationController;
-
-  set animationController(AnimationController value) {
-    if (value != _animationController) {
-      _animationController = value;
-      markNeedsLayout();
-    }
-  }
-
-  Animation<double> get sizeAnimation => _sizeAnimation;
-  Animation<double> _sizeAnimation;
-
-  set sizeAnimation(Animation<double> value) {
-    if (value != _sizeAnimation) {
-      _sizeAnimation = value;
-      markNeedsLayout();
-    }
-  }
-
-  AlignmentDirectional get alignment => _alignment;
-  AlignmentDirectional _alignment;
-
-  set alignment(AlignmentDirectional value) {
-    if (value != _alignment) {
-      _alignment = value;
-      markNeedsLayout();
-    }
-  }
-
-  /// {@macro flutter.material.Material.clipBehavior}
-  ///
-  /// Defaults to [Clip.hardEdge], and must not be null.
-  Clip get clipBehavior => _clipBehavior;
-  Clip _clipBehavior = Clip.hardEdge;
-
-  set clipBehavior(Clip value) {
-    if (value != _clipBehavior) {
-      _clipBehavior = value;
-      markNeedsPaint();
-      markNeedsSemanticsUpdate();
-    }
-  }
-
-  /// Whether the size is being currently animated towards the child's size.
-  ///
-  /// See [RenderAnimatedSizeState] for situations when we may not be animating
-  /// the size.
-  bool get isAnimating => _animationController.isAnimating;
-
-  @override
-  void attach(PipelineOwner owner) {
-    super.attach(owner);
-    animationController.addListener(handleAnimationChange);
-    if (_lastValue != _animationController.value) {
-      // Call markNeedsLayout in case the RenderObject isn't marked dirty
-      // already, to resume interrupted resizing animation.
-      markNeedsLayout();
-    }
-  }
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    if (to == null) {
-      return false;
-    }
-
-    final BoxParentData parentData = to!.parentData! as BoxParentData;
-    return result.addWithPaintOffset(
-      offset: parentData.offset,
-      position: position,
-      hitTest: (BoxHitTestResult result, Offset transformed) {
-        assert(transformed == position - parentData.offset);
-        return to!.hitTest(result, position: transformed);
-      },
-    );
-  }
-
-  void handleAnimationChange() {
-    if (_lastValue != _animationController.value) {
-      // Call markNeedsLayout in case the RenderObject isn't marked dirty
-      // already, to resume interrupted resizing animation.
-      markNeedsLayout();
-    }
-  }
-
-  @override
-  void detach() {
-    animationController.removeListener(handleAnimationChange);
-    super.detach();
-  }
-
-  static Size _layoutBox(RenderBox? box, BoxConstraints constraints) {
-    if (box == null) {
-      return Size.zero;
-    }
-    box.layout(constraints, parentUsesSize: true);
-    return box.size;
-  }
-
-  static Size _dryLayout(RenderBox? box, BoxConstraints constraints) {
-    if (box == null) {
-      return Size.zero;
-    }
-    box.computeDryLayout(constraints);
-    return box.size;
-  }
-
-  static void _positionBox(RenderBox? box, Offset offset) {
-    if (box != null) {
-      final BoxParentData parentData = box.parentData! as BoxParentData;
-      parentData.offset = offset;
-    }
-  }
-
-  @override
-  void performLayout() {
-    _lastValue = _animationController.value;
-    _hasVisualOverflow = false;
-    final BoxConstraints constraints = this.constraints;
-
-    final fromSize = _layoutBox(from, constraints);
-    final toSize = _layoutBox(to, constraints);
-
-    final Size animatedSize;
-    switch (doNotAnimate) {
-      case Axis.horizontal:
-        animatedSize = Size(
-          math.max(fromSize.width, toSize.width),
-          lerpDouble(fromSize.height, toSize.height, sizeAnimation.value)!,
-        );
-      case Axis.vertical:
-        animatedSize = Size(
-          lerpDouble(fromSize.width, toSize.width, sizeAnimation.value)!,
-          math.max(fromSize.height, toSize.height),
-        );
-      case null:
-        animatedSize = Size.lerp(fromSize, toSize, sizeAnimation.value)!;
-    }
-
-    size = constraints.constrain(animatedSize);
-
-    final horizontalOffsetRatio = (alignment.start + 1.0) / 2.0;
-    final verticalOffsetRatio = (alignment.y + 1.0) / 2.0;
-
-    final fromStart = (size.width - fromSize.width) * horizontalOffsetRatio;
-    final toStart = (size.width - toSize.width) * horizontalOffsetRatio;
-
-    final fromTop = (size.height - fromSize.height) * verticalOffsetRatio;
-    final toTop = (size.height - toSize.height) * verticalOffsetRatio;
-
-    switch (textDirection) {
-      case TextDirection.ltr:
-        _positionBox(from, Offset(fromStart, fromTop));
-        _positionBox(to, Offset(toStart, toTop));
-      case TextDirection.rtl:
-        _positionBox(
-          from,
-          Offset(size.width - fromSize.width - fromStart, fromTop),
-        );
-        _positionBox(to, Offset(size.width - toSize.width - toStart, toTop));
-    }
-
-    if (size.width < fromSize.width ||
-        size.height < fromSize.height ||
-        size.width < toSize.width ||
-        size.height < toSize.height) {
-      _hasVisualOverflow = true;
-    }
-  }
-
-  @override
-  Size computeDryLayout(BoxConstraints constraints) {
-    final fromSize = _dryLayout(from, constraints);
-    final toSize = _dryLayout(to, constraints);
-
-    return constraints.constrain(
-      Size.lerp(fromSize, toSize, sizeAnimation.value)!,
-    );
-  }
-
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    void paintToAndFrom(PaintingContext context, Offset offset) {
-      void doPaint(RenderBox? child, Offset offset) {
-        if (child != null) {
-          final BoxParentData parentData = child.parentData! as BoxParentData;
-          context.paintChild(
-            child,
-            parentData.offset + offset,
-          );
-        }
-      }
-
-      doPaint(from, offset);
-      doPaint(to, offset);
-    }
-
-    if ((from != null || to != null) &&
-        _hasVisualOverflow &&
-        clipBehavior != Clip.none) {
-      final Rect rect = Offset.zero & size;
-      _clipRectLayer.layer = context.pushClipRect(
-        needsCompositing,
-        offset,
-        rect,
-        paintToAndFrom,
-        clipBehavior: clipBehavior,
-        oldLayer: _clipRectLayer.layer,
-      );
-    } else {
-      _clipRectLayer.layer = null;
-      paintToAndFrom(context, offset);
-    }
-  }
-
-  final LayerHandle<ClipRectLayer> _clipRectLayer =
-      LayerHandle<ClipRectLayer>();
-
-  @override
-  void dispose() {
-    _clipRectLayer.layer = null;
-    super.dispose();
   }
 }

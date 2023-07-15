@@ -14,7 +14,7 @@ enum RadiusType {
 }
 
 void matches(BorderRadius? borderRadius, RadiusType top, RadiusType bottom) {
-  final Radius cardRadius = kMaterialEdges[MaterialType.card]!.topLeft;
+  final Radius cardRadius = kMaterialEdges[MaterialType.widget]!.topLeft;
 
   if (top == RadiusType.Sharp) {
     expect(borderRadius?.topLeft, equals(Radius.zero));
@@ -221,7 +221,7 @@ void main() {
       ),
     );
 
-    final RRect rrect = kMaterialEdges[MaterialType.card]!.toRRect(
+    final RRect rrect = kMaterialEdges[MaterialType.widget]!.toRRect(
       const Rect.fromLTRB(0.0, 0.0, 800.0, 100.0),
     );
     expect(

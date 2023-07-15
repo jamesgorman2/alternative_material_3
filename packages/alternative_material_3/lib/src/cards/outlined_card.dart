@@ -55,9 +55,13 @@ class OutlinedCardTheme extends InheritedWidget {
   /// card widgets.
   final CardThemeData data;
 
-  /// The [ThemeData.cardTheme] property of the ambient [Theme].
+  /// Returns the data from the closest [OutlinedCardTheme] instance that encloses
+  /// the given context, otherwise
+  /// the [ThemeData.outlinedCardTheme] property of the ambient [Theme].
   static CardThemeData of(BuildContext context) {
-    return Theme.of(context).outlinedCardTheme;
+    final OutlinedCardTheme? inheritedTheme =
+        context.dependOnInheritedWidgetOfExactType<OutlinedCardTheme>();
+    return inheritedTheme?.data ?? Theme.of(context).outlinedCardTheme;
   }
 
   /// Return a [TextFieldThemeData] that merges the nearest ancestor [TextFieldTheme]

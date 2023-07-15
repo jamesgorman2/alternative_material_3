@@ -10,7 +10,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../animation/animated_layout.dart';
-import '../colors.dart';
 import '../elevation.dart';
 import '../ink_well.dart';
 import '../interaction/hit_detection.dart';
@@ -334,7 +333,7 @@ class _ButtonStyleState extends State<ButtonStyleButton>
         style.maximumContainerWidth ?? double.infinity;
 
     final BorderSide? outline = style.outline.resolve(states);
-    // TODO copying outline to material and inkwell
+
     final OutlinedBorder containerShape =
         style.containerShape.copyWith(side: outline);
 
@@ -410,29 +409,32 @@ class _ButtonStyleState extends State<ButtonStyleButton>
             onFocusChange: widget.onFocusChange,
             autofocus: widget.autofocus,
             splashFactory: resolvedSplashFactory,
-            customBorder: containerShape,//.copyWith(side: outline),
+            customBorder: style.containerShape,
             statesController: statesController,
             overlayColor: stateLayers,
             child: IconTheme.merge(
               data: IconThemeData(color: iconColor, size: iconSize),
-              child: Align(
-                alignment: alignment,
-                widthFactor: 1.0,
-                heightFactor: 1.0,
-                child: AnimatedRow(
-                  duration: animationDuration,
-                  mainAxisFit: MainAxisFit.startAndEnd,
-                  children: [
-                    SizedBox(width: startPadding),
-                    widget.icon ?? const SizedBox.shrink(),
-                    SizedBox(
-                      width: widget.icon == null || widget.label == null
-                          ? 0.0
-                          : scalePadding(internalPadding),
-                    ),
-                    widget.label,
-                    SizedBox(width: endPadding),
-                  ],
+              child: DefaultTextStyle(
+                style: textStyle,
+                child: Align(
+                  alignment: alignment,
+                  widthFactor: 1.0,
+                  heightFactor: 1.0,
+                  child: AnimatedRow(
+                    duration: animationDuration,
+                    mainAxisFit: MainAxisFit.startAndEnd,
+                    children: [
+                      SizedBox(width: startPadding),
+                      widget.icon ?? const SizedBox.shrink(),
+                      SizedBox(
+                        width: widget.icon == null || widget.label == null
+                            ? 0.0
+                            : scalePadding(internalPadding),
+                      ),
+                      widget.label,
+                      SizedBox(width: endPadding),
+                    ],
+                  ),
                 ),
               ),
             ),

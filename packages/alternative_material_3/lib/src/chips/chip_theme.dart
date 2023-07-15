@@ -107,9 +107,9 @@ class ChipTheme extends InheritedTheme {
   ///
   /// * [BuildContext.dependOnInheritedWidgetOfExactType]
   static ChipThemeData resolve(
-    BuildContext context, [
+    BuildContext context, {
     ChipThemeData? currentContextTheme,
-  ]) {
+  }) {
     final ancestorTheme =
         context.dependOnInheritedWidgetOfExactType<ChipTheme>()?.data;
     final List<ChipThemeData> ancestorThemes = [
@@ -122,7 +122,8 @@ class ChipTheme extends InheritedTheme {
           .reduce((acc, e) => acc.mergeWith(e))
           .withContext(context);
     }
-    return ancestorThemes.first.withContext(context);
+    return ancestorThemes.first
+        .withContext(context);
   }
 
   @override
@@ -304,7 +305,8 @@ class ChipThemeData with Diagnosticable {
 
   /// Copy this ChipThemeData and set any default values that
   /// require a [BuildContext] set, such as colors and text themes.
-  ChipThemeData withContext(BuildContext context) =>
+  ChipThemeData withContext(
+    BuildContext context) =>
       _LateResolvingChipThemeData(this, context);
 
   /// Defines the state layer opacities applied to this chip.
@@ -445,7 +447,7 @@ class ChipThemeData with Diagnosticable {
   double get avatarEndPadding => _avatarEndPadding ?? 8.0;
   final double? _avatarEndPadding;
 
-  /// {@template flutter.material.ListTile.mouseCursor}
+  /// {@template flutter.material.chipTheme.mouseCursor}
   /// The cursor for a mouse pointer when it enters or is hovering over the
   /// widget.
   ///
@@ -616,10 +618,11 @@ class ChipThemeData with Diagnosticable {
       outlineColor: MaterialStateProperty.lerpNonNull(
           a?._outlineColor, b?._outlineColor, t, ColorExtensions.lerpNonNull),
       outlinedContainerColor: MaterialStateProperty.lerpNonNull(
-          a?._outlinedContainerColor,
-          b?._outlinedContainerColor,
-          t,
-          ColorExtensions.lerpNonNull,),
+        a?._outlinedContainerColor,
+        b?._outlinedContainerColor,
+        t,
+        ColorExtensions.lerpNonNull,
+      ),
       containerColor: MaterialStateProperty.lerpNonNull(a?._containerColor,
           b?._containerColor, t, ColorExtensions.lerpNonNull),
       dropdownContainerColor:
@@ -823,7 +826,10 @@ class ChipThemeData with Diagnosticable {
 }
 
 class _LateResolvingChipThemeData extends ChipThemeData {
-  _LateResolvingChipThemeData(super.other, this.context) : super._clone();
+  _LateResolvingChipThemeData(
+    super.other,
+    this.context,
+  ) : super._clone();
 
   final BuildContext context;
 
@@ -866,9 +872,13 @@ class _LateResolvingChipThemeData extends ChipThemeData {
   MaterialStateProperty<Elevation> get outlinedElevation =>
       _outlinedElevation ??
       MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Elevation.level0;
+        }
         if (states.contains(MaterialState.dragged)) {
           return Elevation.level4;
         }
+
         return Elevation.level0;
       });
 
@@ -892,11 +902,11 @@ class _LateResolvingChipThemeData extends ChipThemeData {
   MaterialStateProperty<Color> get outlineColor =>
       _outlineColor ??
       MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
-          return Colors.transparent;
-        }
         if (states.contains(MaterialState.disabled)) {
           return _colors.onSurface.withOpacity(stateTheme.disabledOpacityLight);
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.transparent;
         }
         return _colors.outline;
       });

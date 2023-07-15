@@ -562,7 +562,7 @@ void main() {
       await tester.pumpWidget(
         Material(
           key: materialKey,
-          type: MaterialType.card,
+          type: MaterialType.widget,
           child: const SizedBox(width: 100.0, height: 100.0),
         ),
       );
@@ -579,7 +579,7 @@ void main() {
       await tester.pumpWidget(
         Material(
           key: materialKey,
-          type: MaterialType.card,
+          type: MaterialType.widget,
           borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           elevation: const Elevation(5.0),
           child: const SizedBox(width: 100.0, height: 100.0),
@@ -598,7 +598,7 @@ void main() {
       await tester.pumpWidget(
         Material(
           key: materialKey,
-          type: MaterialType.card,
+          type: MaterialType.widget,
           shape: const StadiumBorder(),
           elevation: const Elevation(5.0),
           child: const SizedBox(width: 100.0, height: 100.0),

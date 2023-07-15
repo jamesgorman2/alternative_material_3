@@ -4,11 +4,15 @@
 
 import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../animation/cross_fade.dart';
 import '../icons.dart';
+import '../ink_well.dart';
+import '../interaction/hit_detection.dart';
 import '../material.dart';
 import '../material_state.dart';
 import 'button.dart';
@@ -262,8 +266,6 @@ class SegmentedButton<T> extends StatelessWidget {
     const Set<MaterialState> disabledState = <MaterialState>{
       MaterialState.disabled,
     };
-    final Set<MaterialState> currentState =
-        _enabled ? enabledState : disabledState;
 
     ButtonStyle segmentStyleFor(ButtonStyle style) {
       return ButtonStyle(
@@ -294,26 +296,30 @@ class SegmentedButton<T> extends StatelessWidget {
     final Widget? selectedIcon =
         showSelectedIcon ? buttonTheme.selectedIcon : null;
 
-    Widget buttonFor(ButtonSegment<T> segment) {
+    Widget buttonFor(int index, ButtonSegment<T> segment) {
       final bool segmentSelected = selected.contains(segment.value);
       final bool hasIcon = segment.label != null && segment.icon != null;
-      final Widget? icon = (segmentSelected && showSelectedIcon)
-          ? selectedIcon
-          : hasIcon
-              ? segment.icon
-              : null;
+      final Widget? icon = hasIcon ? segment.icon : null;
 
       final Widget label =
           segment.label ?? segment.icon ?? const SizedBox.shrink();
+
+      final _SegmentLocation location = index == 0
+          ? _SegmentLocation.first
+          : index == segments.length - 1
+              ? _SegmentLocation.last
+              : _SegmentLocation.middle;
 
       final Widget button = _ButtonSegment(
         style: segmentStyle,
         onPressed: (_enabled && segment.enabled)
             ? () => _handleOnPressed(segment.value)
             : null,
+        selectedIcon: selectedIcon,
         icon: icon,
         label: label,
         isSelected: segmentSelected,
+        location: location,
       );
 
       return MergeSemantics(
@@ -334,46 +340,229 @@ class SegmentedButton<T> extends StatelessWidget {
     final OutlinedBorder disabledBorder =
         buttonTheme.style.containerShape.copyWith(side: disabledSide);
 
-    final List<Widget> buttons = segments.map(buttonFor).toList();
+    final List<Widget> buttons = segments.mapIndexed(buttonFor).toList();
 
-    return Material(
-      type: MaterialType.transparency,
-      shape: enabledBorder.copyWith(side: BorderSide.none),
-      elevation: buttonTheme.style.elevation.resolve(currentState),
-      shadowColor: buttonTheme.style.shadowColor,
-      child: TextButtonTheme(
-        data: TextButtonThemeData(style: segmentStyle),
-        child: _SegmentedButtonRenderWidget<T>(
-          segments: segments,
-          selected: selected,
-          enabledBorder: _enabled ? enabledBorder : disabledBorder,
-          disabledBorder: disabledBorder,
-          direction: direction,
-          showSelectedIcon: showSelectedIcon,
-          additionalIconWidth:
-              buttonTheme.style.iconSize + buttonTheme.style.internalPadding,
-          children: buttons,
-        ),
-      ),
+    return _SegmentedButtonRenderWidget<T>(
+      segments: segments,
+      selected: selected,
+      enabledBorder: _enabled ? enabledBorder : disabledBorder,
+      disabledBorder: disabledBorder,
+      direction: direction,
+      showSelectedIcon: showSelectedIcon,
+      additionalIconWidth:
+          buttonTheme.style.iconSize + buttonTheme.style.internalPadding,
+      children: buttons,
     );
   }
 }
 
-@immutable
-class _ButtonSegment extends ButtonStyleButton {
+// @immutable
+// class _ButtonSegment extends ButtonStyleButton {
+//   const _ButtonSegment({
+//     required this.style,
+//     required super.onPressed,
+//     super.icon,
+//     required super.label,
+//     required super.isSelected,
+//     required this.location,
+//   });
+//
+//   final ButtonStyle style;
+//   final _SegmentLocation location;
+//   @override
+//   ButtonStyle resolveStyle(BuildContext context) {
+//     final OutlinedBorder? border;
+//     switch (location) {
+//       case _SegmentLocation.first:
+//         border = RoundedRectangleBorder(
+//           borderRadius: BorderRadiusDirectional.horizontal(
+//             start: Radius.circular(style.containerHeight / 2.0),
+//           ),
+//         );
+//       case _SegmentLocation.middle:
+//         border = null;
+//       case _SegmentLocation.last:
+//         border = RoundedRectangleBorder(
+//           borderRadius: BorderRadiusDirectional.horizontal(
+//             end: Radius.circular(style.containerHeight / 2.0),
+//           ),
+//         );
+//     }
+//
+//     return style.copyWith(containerShape: border);
+//   }
+// }
+
+enum _SegmentLocation {
+  first,
+  middle,
+  last,
+}
+
+class _ButtonSegment extends StatelessWidget {
   const _ButtonSegment({
     required this.style,
-    required super.onPressed,
-    super.icon,
-    required super.label,
-    required super.isSelected,
+    required this.onPressed,
+    this.selectedIcon,
+    this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.location,
   });
 
   final ButtonStyle style;
+  final VoidCallback? onPressed;
+  final Widget? selectedIcon;
+  final Widget? icon;
+  final Widget label;
+  final bool isSelected;
+  final _SegmentLocation location;
 
   @override
-  ButtonStyle resolveStyle(BuildContext context) {
-    return style;
+  Widget build(BuildContext context) {
+    final Set<MaterialState> states = {
+      if (isSelected) MaterialState.selected,
+      if (onPressed == null) MaterialState.disabled,
+    };
+
+    final Color labelColor = style.labelColor.resolve(states);
+    final Color iconColor = style.iconColor?.resolve(states) ?? labelColor;
+    final double iconSize = style.iconSize;
+    final TextStyle textStyle = style.labelStyle.copyWith(color: labelColor);
+    final Color containerColor = style.containerColor.resolve(states);
+
+    final double maximumContainerWidth =
+        style.maximumContainerWidth ?? double.infinity;
+    final containerHeight = style.containerHeight;
+
+    final ShapeBorder? border;
+    switch (location) {
+      case _SegmentLocation.first:
+        border = RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.horizontal(
+            start: Radius.circular(containerHeight / 2.0),
+          ),
+        );
+      case _SegmentLocation.middle:
+        border = null;
+      case _SegmentLocation.last:
+        border = RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.horizontal(
+            end: Radius.circular(containerHeight / 2.0),
+          ),
+        );
+    }
+
+    final Widget effectiveLeadingPadding;
+    final Widget? effectiveIcon;
+    final Widget? effectiveInternalPadding;
+    final Widget effectiveTrailingPadding;
+
+    if ((isSelected && selectedIcon != null) || icon != null) {
+      effectiveLeadingPadding = SizedBox(
+        key: const Key('normal_start_padding'),
+        width: style.iconPadding,
+      );
+      effectiveIcon = isSelected ? selectedIcon : icon;
+      effectiveInternalPadding = SizedBox(
+        key: const Key('internal_padding'),
+        width: style.internalPadding,
+      );
+      effectiveTrailingPadding = SizedBox(
+        key: const Key('normal_end_padding'),
+        width: style.iconPadding,
+      );
+    } else if (selectedIcon != null) {
+      effectiveLeadingPadding = SizedBox(
+        key: const Key('expanded_start_padding'),
+        width:
+            style.iconPadding + (style.iconSize + style.internalPadding) / 2.0,
+      );
+      effectiveIcon = null;
+      effectiveInternalPadding = null;
+      effectiveTrailingPadding = SizedBox(
+        key: const Key('expanded_end_padding'),
+        width:
+            style.iconPadding + (style.iconSize + style.internalPadding) / 2.0,
+      );
+    } else {
+      effectiveLeadingPadding = SizedBox(
+        key: const Key('normal_start_padding'),
+        width: style.iconPadding,
+      );
+      effectiveIcon = null;
+      effectiveInternalPadding = null;
+      effectiveTrailingPadding = SizedBox(
+        key: const Key('normal_end_padding'),
+        width: style.iconPadding,
+      );
+    }
+
+    return Semantics(
+      container: true,
+      button: true,
+      enabled: onPressed != null,
+      child: RedirectingHitDetectionWidget(
+        widgetBox: Size(maximumContainerWidth, containerHeight),
+        visualDensity: style.visualDensity,
+        materialTapTargetSize: style.tapTargetSize,
+        child: Material(
+          color: containerColor,
+          type: MaterialType.button,
+          textStyle: textStyle,
+          animationDuration: style.animationDuration,
+          clipBehavior: Clip.hardEdge,
+          shape: border,
+          child: InkWell(
+            onTap: onPressed,
+            overlayColor: style.stateLayers.resolve(states),
+            customBorder: border,
+            mouseCursor: style.mouseCursor.resolve(states),
+            enableFeedback: style.enableFeedback,
+            // focusNode: focusNode,
+            canRequestFocus: onPressed != null,
+            // autofocus: autofocus,
+            splashFactory: style.splashFactory,
+            child: IconTheme.merge(
+              data: IconThemeData(color: iconColor, size: iconSize),
+              child: SizedBox(
+                height: containerHeight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CrossFade(
+                      duration: style.animationDuration,
+                      child: effectiveLeadingPadding,
+                    ),
+                    CrossFade(
+                      duration: style.animationDuration,
+                      child: effectiveIcon,
+                    ),
+                    CrossFade(
+                      duration: style.animationDuration,
+                      child: effectiveInternalPadding,
+                    ),
+                    CrossFade(
+                      duration: style.animationDuration,
+                      child: label,
+                    ),
+                    CrossFade(
+                      duration: style.animationDuration,
+                      child: effectiveTrailingPadding,
+                    ),
+                    // effectiveLeadingPadding,
+                    // if (effectiveIcon != null) effectiveIcon,
+                    // if (effectiveInternalPadding != null) effectiveInternalPadding,
+                    // label,
+                    // effectiveTrailingPadding,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -400,7 +589,7 @@ class _SegmentedButtonRenderWidget<T> extends MultiChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _RenderSegmentedButton<T>(
+    return _SegmentedButtonRender<T>(
       segments: segments,
       selected: selected,
       enabledBorder: enabledBorder,
@@ -413,7 +602,7 @@ class _SegmentedButtonRenderWidget<T> extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderSegmentedButton<T> renderObject) {
+      BuildContext context, _SegmentedButtonRender<T> renderObject) {
     renderObject
       ..segments = segments
       ..selected = selected
@@ -432,13 +621,13 @@ class _SegmentedButtonContainerBoxParentData
 
 typedef _NextChild = RenderBox? Function(RenderBox child);
 
-class _RenderSegmentedButton<T> extends RenderBox
+class _SegmentedButtonRender<T> extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox,
             ContainerBoxParentData<RenderBox>>,
         RenderBoxContainerDefaultsMixin<RenderBox,
             ContainerBoxParentData<RenderBox>> {
-  _RenderSegmentedButton({
+  _SegmentedButtonRender({
     required List<ButtonSegment<T>> segments,
     required Set<T> selected,
     required OutlinedBorder enabledBorder,
@@ -531,29 +720,16 @@ class _RenderSegmentedButton<T> extends RenderBox
     markNeedsLayout();
   }
 
-  bool _needsIconPadding(ButtonSegment<T> currentSegment) {
-    return showSelectedIcon &&
-        !selected.contains(currentSegment.value) &&
-        (currentSegment.icon == null || currentSegment.label == null);
-  }
-
-  double _additionalIconPadding(ButtonSegment<T> currentSegment) {
-    return _needsIconPadding(currentSegment) ? additionalIconWidth : 0.0;
-  }
-
   @override
   double computeMinIntrinsicWidth(double height) {
     RenderBox? child = firstChild;
     double minWidth = 0.0;
-    int i = 0;
     while (child != null) {
       final _SegmentedButtonContainerBoxParentData childParentData =
           child.parentData! as _SegmentedButtonContainerBoxParentData;
-      final double childWidth = child.getMinIntrinsicWidth(height) +
-          _additionalIconPadding(segments[i]);
+      final double childWidth = child.getMinIntrinsicWidth(height);
       minWidth = math.max(minWidth, childWidth);
       child = childParentData.nextSibling;
-      ++i;
     }
     return minWidth * childCount;
   }
@@ -562,15 +738,12 @@ class _RenderSegmentedButton<T> extends RenderBox
   double computeMaxIntrinsicWidth(double height) {
     RenderBox? child = firstChild;
     double maxWidth = 0.0;
-    int i = 0;
     while (child != null) {
       final _SegmentedButtonContainerBoxParentData childParentData =
           child.parentData! as _SegmentedButtonContainerBoxParentData;
-      final double childWidth = child.getMaxIntrinsicWidth(height) +
-          _additionalIconPadding(segments[i]);
+      final double childWidth = child.getMaxIntrinsicWidth(height);
       maxWidth = math.max(maxWidth, childWidth);
       child = childParentData.nextSibling;
-      ++i;
     }
     return maxWidth * childCount;
   }
@@ -637,15 +810,12 @@ class _RenderSegmentedButton<T> extends RenderBox
     double maxHeight = 0;
     double childWidth = constraints.minWidth / childCount;
     RenderBox? child = firstChild;
-    int i = 0;
     while (child != null) {
       childWidth = math.max(
         childWidth,
-        child.getMaxIntrinsicWidth(double.infinity) +
-            _additionalIconPadding(segments[i]),
+        child.getMaxIntrinsicWidth(double.infinity),
       );
       child = childAfter(child);
-      ++i;
     }
     childWidth = math.min(childWidth, constraints.maxWidth / childCount);
     child = firstChild;
@@ -703,8 +873,11 @@ class _RenderSegmentedButton<T> extends RenderBox
   }
 
   @override
+  bool get needsCompositing => true;
+
+  @override
   void paint(PaintingContext context, Offset offset) {
-    final Canvas canvas = context.canvas;
+    // final Canvas canvas = context.canvas;
     final Rect borderRect = offset & size;
     final Path borderClipPath =
         enabledBorder.getInnerPath(borderRect, textDirection: textDirection);
@@ -714,27 +887,32 @@ class _RenderSegmentedButton<T> extends RenderBox
     Path? enabledClipPath;
     Path? disabledClipPath;
 
-    canvas
+    context.canvas
       ..save()
       ..clipPath(borderClipPath);
+
+    // canvas.saveLayer(borderRect, Paint());
     while (child != null) {
       final _SegmentedButtonContainerBoxParentData childParentData =
           child.parentData! as _SegmentedButtonContainerBoxParentData;
       final Rect childRect =
           childParentData.surroundingRect!.outerRect.shift(offset);
 
-      canvas
+      final int saveCount = context.canvas.getSaveCount();
+      context.canvas
         ..save()
         ..clipRect(childRect);
       context.paintChild(child, childParentData.offset + offset);
-      canvas.restore();
+      context.canvas.restoreToCount(saveCount);
 
       // Compute a clip rect for the outer border of the child.
       late final double segmentLeft;
       late final double segmentRight;
       late final double dividerPos;
       final double borderOutset = math.max(
-          enabledBorder.side.strokeOutset, disabledBorder.side.strokeOutset);
+        enabledBorder.side.strokeOutset,
+        disabledBorder.side.strokeOutset,
+      );
       switch (textDirection) {
         case TextDirection.rtl:
           segmentLeft = child == lastChild
@@ -775,14 +953,14 @@ class _RenderSegmentedButton<T> extends RenderBox
                 : disabledBorder.side.copyWith(strokeAlign: 0.0);
         final Offset top = Offset(dividerPos, childRect.top);
         final Offset bottom = Offset(dividerPos, childRect.bottom);
-        canvas.drawLine(top, bottom, divider.toPaint());
+        context.canvas.drawLine(top, bottom, divider.toPaint());
       }
 
       previousChild = child;
       child = childAfter(child);
       index += 1;
     }
-    canvas.restore();
+    context.canvas.restore();
 
     // Paint the outer border for both disabled and enabled clip rect if needed.
     if (disabledClipPath == null) {
@@ -795,18 +973,18 @@ class _RenderSegmentedButton<T> extends RenderBox
           textDirection: textDirection);
     } else {
       // Paint both of them clipped appropriately for the children segments.
-      canvas
+      context.canvas
         ..save()
         ..clipPath(enabledClipPath);
       enabledBorder.paint(context.canvas, borderRect,
           textDirection: textDirection);
-      canvas
+      context.canvas
         ..restore()
         ..save()
         ..clipPath(disabledClipPath);
       disabledBorder.paint(context.canvas, borderRect,
           textDirection: textDirection);
-      canvas.restore();
+      context.canvas.restore();
     }
   }
 
